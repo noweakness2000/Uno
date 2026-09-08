@@ -3,3 +3,7 @@ node_modules
 .git
 bun.lock
 .env*
+
+credentials*.json
+.config
+**/.config

@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "generate-tts": "python3 scripts/generate-tts.py"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.23",

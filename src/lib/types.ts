@@ -86,6 +86,8 @@ export interface TranslateExercise extends ExerciseBase {
 export interface ListeningChooseExercise extends ExerciseBase {
   type: "listening-choose";
   audioText: string;
+  /** Prefetched Neural2 LatAm practice MP3 under /audio/es-mx/ */
+  audioSrc?: string;
   options: string[];
   correctIndex: number;
 }

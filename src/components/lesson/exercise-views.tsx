@@ -197,8 +197,13 @@ export function ListeningChooseView({
 }: CommonProps & { exercise: ListeningChooseExercise }) {
   const [selected, setSelected] = useState<number | null>(null);
   const [showVoiceTip, setShowVoiceTip] = useState(false);
+  const hasMp3 = Boolean(exercise.audioSrc);
 
   useEffect(() => {
+    if (hasMp3) {
+      setShowVoiceTip(false);
+      return;
+    }
     let cancelled = false;
     void hasSpanishVoice().then((ok) => {
       if (!cancelled) setShowVoiceTip(!ok);
@@ -206,24 +211,41 @@ export function ListeningChooseView({
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [hasMp3]);
+
+  const playAudio = () => {
+    if (exercise.audioSrc) {
+      const audio = new Audio(exercise.audioSrc);
+      void audio.play().catch(() => {
+        // Fall back to browser TTS if the MP3 fails to play
+        speakPracticeAudio(exercise.audioText);
+      });
+      return;
+    }
+    speakPracticeAudio(exercise.audioText);
+  };
 
   return (
     <div className="space-y-4">
       <div className="flex flex-col items-center gap-2 rounded-3xl border border-violet-100 bg-violet-50 px-4 py-6">
+        {exercise.audioSrc ? (
+          <audio src={exercise.audioSrc} preload="auto" className="hidden" />
+        ) : null}
         <Button
           type="button"
           variant="soft"
           size="lg"
           disabled={disabled}
-          onClick={() => speakPracticeAudio(exercise.audioText)}
+          onClick={playAudio}
           className="bg-violet-100 text-violet-900 hover:bg-violet-200"
         >
           <Volume2 className="h-5 w-5" />
           Play practice audio
         </Button>
         <p className="text-xs text-violet-700/80">
-          Browser TTS stub · practice audio (not studio quality)
+          {hasMp3
+            ? "LatAm practice audio (Mexico)"
+            : "Browser TTS stub · practice audio (not studio quality)"}
         </p>
         {showVoiceTip && (
           <p className="max-w-sm text-center text-[11px] leading-snug text-violet-600/90">

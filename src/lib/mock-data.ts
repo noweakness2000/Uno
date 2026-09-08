@@ -373,6 +373,7 @@ export const LESSONS: Record<string, Lesson> = {
         type: "listening-choose",
         prompt: "What did you hear?",
         audioText: "Mucho gusto",
+        audioSrc: "/audio/es-mx/mucho-gusto.mp3",
         options: ["Mucho gusto", "Me llamo", "Por favor", "De nada"],
         correctIndex: 0,
         explanation:
@@ -491,6 +492,7 @@ export const LESSONS: Record<string, Lesson> = {
         type: "listening-choose",
         prompt: "Listen and choose the matching meaning.",
         audioText: "Buenas noches",
+        audioSrc: "/audio/es-mx/buenas-noches.mp3",
         options: [
           "Good morning",
           "Good afternoon",
@@ -645,6 +647,7 @@ export const LESSONS: Record<string, Lesson> = {
         type: "listening-choose",
         prompt: "What did you hear?",
         audioText: "Gracias",
+        audioSrc: "/audio/es-mx/gracias.mp3",
         options: ["Gracias", "De nada", "Hola", "Adiós"],
         correctIndex: 0,
         explanation: "Gracias = thank you.",
@@ -832,6 +835,7 @@ export const LESSONS: Record<string, Lesson> = {
         type: "listening-choose",
         prompt: "What greeting did you hear?",
         audioText: "Hola, ¿cómo estás?",
+        audioSrc: "/audio/es-mx/hola-como-estas.mp3",
         options: [
           "Hola, ¿cómo estás?",
           "Buenas noches",
@@ -915,6 +919,7 @@ export const LESSONS: Record<string, Lesson> = {
         type: "listening-choose",
         prompt: "Match the audio.",
         audioText: "Me llamo Sofía",
+        audioSrc: "/audio/es-mx/me-llamo-sofia.mp3",
         options: [
           "Me llamo Sofía",
           "Mucho gusto Sofía",
