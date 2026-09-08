@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
+import { preferRealName, isPlaceholderName } from "@/lib/display-name";
 import { useUserStore } from "@/store/user-store";
 import type { DemoUser, StartingLevel } from "@/lib/types";
 
@@ -17,6 +18,9 @@ function isStartingLevel(v: unknown): v is StartingLevel {
  * Best-effort: when a session appears, push localStorage demo progress to DB
  * and pull the merged result back into the Zustand store. Demo mode still works
  * without login.
+ *
+ * Placeholder local names ("Learner", empty, etc.) yield to Google/session name
+ * so the home greeting shows the OAuth profile name after sign-in.
  */
 export function ProgressSync() {
   const { data: session, status } = useSession();
@@ -27,8 +31,18 @@ export function ProgressSync() {
     if (syncedFor.current === session.user.id) return;
 
     const user = useUserStore.getState().user;
+    const sessionName = session.user.name ?? undefined;
+    const resolvedName = preferRealName(user.name, sessionName);
+
+    // Snappy UI: swap placeholder for Google name before the round-trip finishes.
+    if (resolvedName !== user.name && !isPlaceholderName(resolvedName)) {
+      useUserStore.setState((s) => ({
+        user: { ...s.user, name: resolvedName },
+      }));
+    }
+
     const payload = {
-      displayName: user.name,
+      displayName: resolvedName,
       xp: user.xp,
       streak: user.streak,
       dailyGoal: user.dailyGoal,
@@ -63,7 +77,7 @@ export function ProgressSync() {
           user: {
             ...s.user,
             id: typeof p.id === "string" ? p.id : s.user.id,
-            name: p.name || s.user.name,
+            name: preferRealName(p.name, sessionName) || s.user.name,
             xp: typeof p.xp === "number" ? p.xp : s.user.xp,
             streak: typeof p.streak === "number" ? p.streak : s.user.streak,
             dailyGoal:
@@ -93,7 +107,7 @@ export function ProgressSync() {
     return () => {
       cancelled = true;
     };
-  }, [session?.user?.id, status]);
+  }, [session?.user?.id, session?.user?.name, status]);
 
   return null;
 }
