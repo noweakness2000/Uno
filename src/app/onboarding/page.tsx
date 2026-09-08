@@ -14,28 +14,24 @@ const LEVEL_OPTIONS: {
   id: StartingLevel;
   title: string;
   blurb: string;
-  badge: string;
 }[] = [
   {
     id: "absolute_beginner",
-    title: "Absolute beginner",
+    title: "Brand new",
     blurb:
-      "Little or no Spanish — start at Unit 1. Intermediate stays locked until you're ready (or jump from Home).",
-    badge: "A0",
+      "I barely know any Spanish. Start me with the basics from the beginning.",
   },
   {
     id: "some_words",
-    title: "I know some words",
+    title: "I know a little",
     blurb:
-      "Greetings and basics — Unit 1 optional; we recommend Unit 2. Intermediate (Unit 4+) unlocked to browse.",
-    badge: "False beginner",
+      "I know greetings and a few words, but conversations are still hard. Ease me in past the very first lessons.",
   },
   {
     id: "conversational_basics",
-    title: "I've practiced for a while",
+    title: "I've been practicing",
     blurb:
-      "Around Duolingo Spanish ~unit 24 / strong A2 — Continue jumps to Intermediate Unit 4. Units 1–3 optional review.",
-    badge: "A2 / early B1",
+      "I've studied for a while (apps, class, or travel). Skip the beginner path and put me in the harder practice units.",
   },
 ];
 
@@ -107,13 +103,8 @@ export default function OnboardingPage() {
                   : "border-slate-200 bg-white hover:border-slate-300"
               )}
             >
-              <div className="flex items-center justify-between gap-2">
-                <p className="font-bold text-slate-900">{opt.title}</p>
-                <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-slate-500">
-                  {opt.badge}
-                </span>
-              </div>
-              <p className="mt-1 text-xs text-slate-500">{opt.blurb}</p>
+              <p className="font-bold text-slate-900">{opt.title}</p>
+              <p className="mt-1 text-sm text-slate-500">{opt.blurb}</p>
             </button>
           ))}
         </CardContent>
