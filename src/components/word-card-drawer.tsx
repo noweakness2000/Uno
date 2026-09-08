@@ -2,6 +2,7 @@
 
 import type { WordCard } from "@/lib/types";
 import { SpeakButton } from "@/components/speak-button";
+import { audioSrcFor, voiceForIndex } from "@/lib/audio";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -42,7 +43,7 @@ export function WordCardBody({
   compact = false,
 }: {
   card: WordCard;
-  /** Teach step: meaning + conjugations + 2 examples only. */
+  /** Teach step: meaning + conjugations + examples only. */
   compact?: boolean;
 }) {
   return (
@@ -96,15 +97,24 @@ export function WordCardBody({
           Examples
         </h4>
         <ul className="space-y-2">
-          {card.examples.map((ex) => (
+          {card.examples.map((ex, i) => (
             <li
-              key={ex}
+              key={ex.es}
               className="flex items-center gap-2 rounded-2xl bg-slate-50 px-3 py-2.5 sm:gap-3 sm:px-4 sm:py-3"
             >
-              <span className="min-w-0 flex-1 break-words text-sm font-medium leading-snug text-slate-800">
-                {ex}
-              </span>
-              <SpeakButton text={ex} label={`Play: ${ex}`} />
+              <div className="min-w-0 flex-1">
+                <p className="break-words text-sm font-medium leading-snug text-slate-800">
+                  {ex.es}
+                </p>
+                <p className="mt-0.5 break-words text-xs leading-snug text-slate-500">
+                  {ex.en}
+                </p>
+              </div>
+              <SpeakButton
+                text={ex.es}
+                src={audioSrcFor(ex.es, voiceForIndex(i))}
+                label={`Play: ${ex.es}`}
+              />
             </li>
           ))}
         </ul>
@@ -156,7 +166,7 @@ export function WordCardHeaderMeta({ card }: { card: WordCard }) {
   return (
     <div className="flex flex-wrap items-center gap-2">
       <span className="text-2xl font-bold text-emerald-700">{card.lemma}</span>
-      <SpeakButton text={card.lemma} size="md" label={`Play: ${card.lemma}`} />
+      <SpeakButton text={card.lemma} src={audioSrcFor(card.lemma, "f")} size="md" label={`Play: ${card.lemma}`} />
       <Badge>{card.cefr}</Badge>
       <Badge variant="secondary">{POS_LABEL[card.pos]}</Badge>
       {card.gender !== "n/a" && (
@@ -182,7 +192,7 @@ export function WordCardDrawer({
                 <SheetTitle className="text-2xl text-emerald-700">
                   {card.lemma}
                 </SheetTitle>
-                <SpeakButton text={card.lemma} size="md" label={`Play: ${card.lemma}`} />
+                <SpeakButton text={card.lemma} src={audioSrcFor(card.lemma, "f")} size="md" label={`Play: ${card.lemma}`} />
                 <Badge>{card.cefr}</Badge>
                 <Badge variant="secondary">{POS_LABEL[card.pos]}</Badge>
                 {card.gender !== "n/a" && (

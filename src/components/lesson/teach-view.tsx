@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { SpeakButton } from "@/components/speak-button";
+import { audioSrcFor } from "@/lib/audio";
 import { WordCardBody } from "@/components/word-card-drawer";
 import type { TeachExercise, WordCard } from "@/lib/types";
 
@@ -36,7 +37,7 @@ export function TeachView({
           <h2 className="min-w-0 break-words text-xl font-extrabold text-emerald-800 sm:text-2xl">
             {card.lemma}
           </h2>
-          <SpeakButton text={card.lemma} size="md" label={`Play: ${card.lemma}`} />
+          <SpeakButton text={card.lemma} src={audioSrcFor(card.lemma, "f")} size="md" label={`Play: ${card.lemma}`} />
           <Badge>{card.cefr}</Badge>
           <Badge variant="secondary">{POS_LABEL[card.pos]}</Badge>
         </div>

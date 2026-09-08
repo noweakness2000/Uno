@@ -2,6 +2,13 @@
 
 import { speakPracticeAudio } from "@/lib/tts";
 
+/** Female = es-US-Neural2-A · Male = es-US-Neural2-B */
+export type AudioVoice = "f" | "m";
+
+export function voiceForIndex(index: number): AudioVoice {
+  return index % 2 === 0 ? "f" : "m";
+}
+
 /** Match scripts/generate-tts.py slugify for stable filenames. */
 export function slugifyAudio(text: string): string {
   const nfkd = text.normalize("NFKD");
@@ -13,7 +20,13 @@ export function slugifyAudio(text: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
-export function audioSrcFor(text: string): string {
+/** Gendered clip: `{slug}-f.mp3` / `{slug}-m.mp3`. */
+export function audioSrcFor(text: string, voice: AudioVoice = "f"): string {
+  return `/audio/es-mx/${slugifyAudio(text)}-${voice}.mp3`;
+}
+
+/** Legacy ungendered path (pre dual-voice). */
+export function audioSrcLegacy(text: string): string {
   return `/audio/es-mx/${slugifyAudio(text)}.mp3`;
 }
 
@@ -22,20 +35,18 @@ export function looksSpanish(text: string): boolean {
   const t = text.trim();
   if (!t) return false;
   if (/[áéíóúüñ¿¡]/i.test(t)) return true;
-  // Common A1 chunks / function words (accent-stripped match)
   const norm = t
     .toLowerCase()
     .normalize("NFD")
     .replace(/\p{M}/gu, "")
     .replace(/[¿?¡!,.]/g, "");
   if (
-    /\b(hola|adios|gracias|perdon|disculpe|buenos|buenas|dias|tardes|noches|mucho|gusto|llamo|llamas|llamarse|soy|eres|es|somos|son|hablo|hablas|habla|hablan|ingles|espanol|mexico|estados|unidos|vivo|viven|tambien|pero|nada|favor|luego|hasta|usted|ustedes|como|donde|de|un|poco|si|no|me|te|se|nos)\b/.test(
+    /\b(hola|adios|gracias|perdon|disculpe|buenos|buenas|dias|tardes|noches|mucho|gusto|llamo|llamas|llamarse|soy|eres|es|somos|son|hablo|hablas|habla|hablan|ingles|espanol|mexico|estados|unidos|vivo|viven|tambien|pero|nada|favor|luego|hasta|usted|ustedes|como|donde|de|un|poco|si|no|me|te|se|nos|uno|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez|veinte|cien|celular|telefono|anos|cuanto|cuesta|pesos|dolares|gratis|tengo|tienes|numero|numeros)\b/.test(
       norm
     )
   ) {
     return true;
   }
-  // Short all-lowercase tokens that are clearly not English glosses
   if (
     /^(hola|adios|gracias|perdon|disculpe|si|no|de nada|por favor|mucho gusto|hasta luego)$/i.test(
       t.trim()
@@ -48,23 +59,37 @@ export function looksSpanish(text: string): boolean {
 
 let current: HTMLAudioElement | null = null;
 
+function tryPlay(urls: string[], text: string, i = 0): void {
+  if (i >= urls.length) {
+    speakPracticeAudio(text);
+    return;
+  }
+  const audio = new Audio(urls[i]);
+  current = audio;
+  void audio.play().catch(() => {
+    tryPlay(urls, text, i + 1);
+  });
+}
+
 /**
- * Play baked MP3 for text; fall back to browser TTS if the file is missing
- * or fails to load.
+ * Play baked MP3 for text; prefer gendered Neural2 clip, then legacy slug,
+ * then browser TTS.
  */
-export function playSpanishAudio(text: string, src?: string): void {
+export function playSpanishAudio(
+  text: string,
+  src?: string,
+  voice: AudioVoice = "f"
+): void {
   if (typeof window === "undefined") return;
-  const url = src ?? audioSrcFor(text);
   try {
     if (current) {
       current.pause();
       current = null;
     }
-    const audio = new Audio(url);
-    current = audio;
-    void audio.play().catch(() => {
-      speakPracticeAudio(text);
-    });
+    const urls = src
+      ? [src, audioSrcLegacy(text)]
+      : [audioSrcFor(text, voice), audioSrcLegacy(text)];
+    tryPlay(urls, text);
   } catch {
     speakPracticeAudio(text);
   }

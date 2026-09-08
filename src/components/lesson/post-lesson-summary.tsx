@@ -2,7 +2,9 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
 import { Flame, Star, Target, BookMarked } from "lucide-react";
+import { useUserStore } from "@/store/user-store";
 
 interface Props {
   lessonTitle: string;
@@ -23,8 +25,14 @@ export function PostLessonSummary({
   onContinue,
   onReview,
 }: Props) {
+  const user = useUserStore((s) => s.user);
   const total = correctCount + wrongCount;
   const accuracy = total ? Math.round((correctCount / total) * 100) : 0;
+  const goalPct = Math.min(
+    100,
+    Math.round((user.dailyXp / Math.max(user.dailyGoal, 1)) * 100)
+  );
+  const goalMet = user.dailyXp >= user.dailyGoal;
 
   return (
     <div className="mx-auto flex min-h-dvh max-w-lg flex-col justify-center gap-6 px-4 py-10">
@@ -34,6 +42,26 @@ export function PostLessonSummary({
         </div>
         <h1 className="text-3xl font-extrabold text-slate-900">Lesson complete</h1>
         <p className="mt-2 text-slate-500">{lessonTitle}</p>
+      </div>
+
+      <div className="rounded-3xl border-2 border-orange-200 bg-gradient-to-br from-orange-50 to-white p-4 text-center shadow-sm">
+        <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-500 text-white">
+          <Flame className="h-6 w-6" />
+        </div>
+        <p className="text-xs font-bold uppercase tracking-wider text-orange-600">
+          Streak
+        </p>
+        <p className="text-3xl font-extrabold text-slate-900">
+          {user.streak} day{user.streak === 1 ? "" : "s"}
+        </p>
+        <p className="mt-1 text-sm text-slate-600">
+          {goalMet
+            ? "Daily goal met — nice work keeping the flame lit."
+            : `Today ${user.dailyXp}/${user.dailyGoal} XP — a little more keeps your streak happy.`}
+        </p>
+        <div className="mx-auto mt-3 max-w-xs">
+          <Progress value={goalPct} />
+        </div>
       </div>
 
       <div className="grid grid-cols-2 gap-3">

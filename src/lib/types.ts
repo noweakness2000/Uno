@@ -23,6 +23,11 @@ export interface ConjugationGroup {
   forms: { person: string; form: string }[];
 }
 
+export interface ExamplePair {
+  es: string;
+  en: string;
+}
+
 export interface WordCard {
   id: string;
   lemma: string;
@@ -33,7 +38,8 @@ export interface WordCard {
   meaningSummary: string;
   /** Present (etc.) tables for verbs; omit for fixed phrases. */
   conjugations?: ConjugationGroup[];
-  examples: [string, string];
+  /** Spanish example + English translation (prefer 2+). */
+  examples: ExamplePair[];
   useWhen: string;
   dontUseWhen: string;
   contrast?: string;
@@ -48,7 +54,9 @@ export type ExerciseType =
   | "tap-chips"
   | "translate"
   | "listening-choose"
-  | "situational-choose";
+  | "situational-choose"
+  | "match-pairs"
+  | "fill-blank";
 
 export interface ExerciseBase {
   id: string;
@@ -99,13 +107,30 @@ export interface SituationalChooseExercise extends ExerciseBase {
   correctIndex: number;
 }
 
+/** Match Spanish ↔ English pairs (order shuffled in UI). */
+export interface MatchPairsExercise extends ExerciseBase {
+  type: "match-pairs";
+  pairs: { left: string; right: string }[];
+}
+
+/** Type the missing Spanish word/phrase in a sentence. */
+export interface FillBlankExercise extends ExerciseBase {
+  type: "fill-blank";
+  /** Sentence with ___ for the blank. */
+  template: string;
+  acceptedAnswers: string[];
+  hint?: string;
+}
+
 export type Exercise =
   | TeachExercise
   | SelectExercise
   | TapChipsExercise
   | TranslateExercise
   | ListeningChooseExercise
-  | SituationalChooseExercise;
+  | SituationalChooseExercise
+  | MatchPairsExercise
+  | FillBlankExercise;
 
 export interface Lesson {
   id: string;
@@ -136,4 +161,8 @@ export interface DemoUser {
   weakWordIds: string[];
   onboardingComplete: boolean;
   startingLevel: StartingLevel;
+  /** Units treated as optional review / skipped for path progress. */
+  skippedUnitIds: string[];
+  /** Preferred unit for Continue / recommended path. */
+  recommendedUnitId: string;
 }

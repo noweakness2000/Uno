@@ -73,15 +73,19 @@ Scripts in `package.json`: `dev`, `build`, `start`, `lint`.
 
 ## Placement (starting level)
 
-Onboarding stores a self-claimed `startingLevel` on the demo user:
+Onboarding stores a self-claimed `startingLevel` on the demo user (plus `recommendedUnitId` / `skippedUnitIds`):
 
 | Level | Effect today |
 | --- | --- |
-| `absolute_beginner` (A0) | Unit 1 |
-| `some_words` (false beginner) | Unit 1 (preference stored for later) |
-| `conversational_basics` (A2-ish) | Units 1-2 unlocked visually — content is **not** skipped |
+| `absolute_beginner` (A0) | Start Unit 1 Lesson 1; Units 1–2 unlocked; Continue → first incomplete U1 |
+| `some_words` (false beginner) | Unit 1 = Quick review (optional); Continue / recommended path → Unit 2 |
+| `conversational_basics` (stronger) | Unit 1 marked skipped/complete; Continue → Unit 2; optional “Unit 2 check” CTA |
 
-**True placement test comes later.** This pass only stores the preference and gates Unit 2 visually for higher comfort.
+Home shows a placement banner when Unit 1 is optional, a primary **Continue** button, and a **Skip ahead** control for anyone still in Unit 1.
+
+Word-card examples are `{ es, en }` pairs — Spanish with English directly underneath on teach screens and the word-card drawer.
+
+**True placement / diagnostic test comes later.**
 
 ## Future
 

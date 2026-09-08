@@ -19,20 +19,22 @@ const LEVEL_OPTIONS: {
   {
     id: "absolute_beginner",
     title: "Absolute beginner",
-    blurb: "Start at Unit 1 — brand new to Spanish.",
+    blurb: "Little or no Spanish — start at Unit 1, Lesson 1.",
     badge: "A0",
   },
   {
     id: "some_words",
     title: "I know some words",
-    blurb: "Still Unit 1 for now — we remember you’re a false beginner.",
+    blurb:
+      "Greetings and basics, not fluent — Unit 1 is optional review; we recommend Unit 2.",
     badge: "False beginner",
   },
   {
     id: "conversational_basics",
-    title: "Conversational basics",
-    blurb: "Unlock Units 1–2 visually. True placement test comes later.",
-    badge: "A2-ish",
+    title: "I've practiced for a while",
+    blurb:
+      "Can handle greetings — start past pure hola. Unit 1 marked optional; Continue goes to Unit 2.",
+    badge: "Stronger",
   },
 ];
 

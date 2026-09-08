@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, BookOpen, Check } from "lucide-react";
+import { ArrowLeft, BookOpen, Check, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -52,12 +52,27 @@ export default function ReviewPage() {
               Miss an exercise and we&apos;ll park the related word here — no
               lockouts, just a chance to revisit.
             </p>
-            <Link href="/home">
-              <Button className="mt-2">Back to path</Button>
-            </Link>
+            <div className="mt-2 flex flex-col gap-2 sm:flex-row">
+              <Link href="/flashcards">
+                <Button variant="secondary">
+                  <Layers className="h-4 w-4" />
+                  Practice flashcards
+                </Button>
+              </Link>
+              <Link href="/home">
+                <Button>Back to path</Button>
+              </Link>
+            </div>
           </CardContent>
         </Card>
       ) : (
+        <>
+        <Link href="/flashcards" className="mb-4 block">
+          <Button className="w-full min-h-11" size="lg">
+            <Layers className="h-4 w-4" />
+            Practice with flashcards
+          </Button>
+        </Link>
         <ul className="space-y-3">
           {cards.map((card) => (
             <li key={card.id}>
@@ -95,6 +110,7 @@ export default function ReviewPage() {
             </li>
           ))}
         </ul>
+        </>
       )}
 
       <WordCardDrawer card={active} open={open} onOpenChange={setOpen} />

@@ -10,7 +10,9 @@ import { looksSpanish, playSpanishAudio } from "@/lib/audio";
 import { answersMatch, chipSequencesMatch } from "@/lib/grading";
 import type {
   Exercise,
+  FillBlankExercise,
   ListeningChooseExercise,
+  MatchPairsExercise,
   SelectExercise,
   SituationalChooseExercise,
   TapChipsExercise,
@@ -320,6 +322,176 @@ export function ListeningChooseView({
   );
 }
 
+
+export function MatchPairsView({
+  exercise,
+  disabled,
+  onSubmit,
+}: CommonProps & { exercise: MatchPairsExercise }) {
+  const leftItems = useMemo(
+    () => exercise.pairs.map((p, i) => ({ id: i, text: p.left })),
+    [exercise.pairs]
+  );
+  const rightItems = useMemo(() => {
+    const items = exercise.pairs.map((p, i) => ({ id: i, text: p.right }));
+    // Stable shuffle by pairing text length hash so SSR/client match less critical — shuffle once on mount
+    return items;
+  }, [exercise.pairs]);
+  const [rightOrder, setRightOrder] = useState<number[]>([]);
+  const [selectedLeft, setSelectedLeft] = useState<number | null>(null);
+  const [matched, setMatched] = useState<Set<number>>(new Set());
+  const [wrongFlash, setWrongFlash] = useState<number | null>(null);
+
+  useEffect(() => {
+    const ids = exercise.pairs.map((_, i) => i);
+    // Fisher–Yates with seeded-ish shuffle from pair texts for variety
+    let seed = exercise.pairs.reduce((a, p) => a + p.left.length * 7 + p.right.length, exercise.id.length);
+    const arr = [...ids];
+    for (let i = arr.length - 1; i > 0; i--) {
+      seed = (seed * 1103515245 + 12345) & 0x7fffffff;
+      const j = seed % (i + 1);
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    setRightOrder(arr);
+    setMatched(new Set());
+    setSelectedLeft(null);
+  }, [exercise.id, exercise.pairs]);
+
+  const tryMatch = (rightId: number) => {
+    if (disabled || matched.has(rightId) || selectedLeft === null) return;
+    if (selectedLeft === rightId) {
+      const next = new Set(matched);
+      next.add(rightId);
+      setMatched(next);
+      setSelectedLeft(null);
+      if (next.size === exercise.pairs.length) {
+        onSubmit(true);
+      }
+    } else {
+      setWrongFlash(rightId);
+      setTimeout(() => setWrongFlash(null), 450);
+      setSelectedLeft(null);
+    }
+  };
+
+  return (
+    <div className="space-y-4">
+      <p className="text-sm text-slate-500">
+        Tap a Spanish word, then its English match.
+      </p>
+      <div className="grid grid-cols-2 gap-3">
+        <div className="space-y-2">
+          {leftItems.map((item) => {
+            const done = matched.has(item.id);
+            return (
+              <button
+                key={`L-${item.id}`}
+                type="button"
+                disabled={disabled || done}
+                onClick={() => !done && setSelectedLeft(item.id)}
+                className={cn(
+                  "flex min-h-12 w-full touch-manipulation items-center justify-between gap-2 rounded-2xl border-2 px-3 py-3 text-left text-sm font-semibold",
+                  done
+                    ? "border-emerald-300 bg-emerald-50 text-emerald-800"
+                    : selectedLeft === item.id
+                      ? "border-emerald-500 bg-emerald-50 text-emerald-900"
+                      : "border-slate-200 bg-white text-slate-800"
+                )}
+              >
+                <span className="min-w-0 break-words">{item.text}</span>
+                {looksSpanish(item.text) && (
+                  <SpeakButton text={item.text} label={`Play: ${item.text}`} />
+                )}
+              </button>
+            );
+          })}
+        </div>
+        <div className="space-y-2">
+          {rightOrder.map((id) => {
+            const item = rightItems.find((r) => r.id === id)!;
+            const done = matched.has(id);
+            return (
+              <button
+                key={`R-${id}`}
+                type="button"
+                disabled={disabled || done || selectedLeft === null}
+                onClick={() => tryMatch(id)}
+                className={cn(
+                  "min-h-12 w-full touch-manipulation rounded-2xl border-2 px-3 py-3 text-left text-sm font-semibold",
+                  done
+                    ? "border-emerald-300 bg-emerald-50 text-emerald-800"
+                    : wrongFlash === id
+                      ? "border-rose-400 bg-rose-50 text-rose-800"
+                      : "border-slate-200 bg-white text-slate-800"
+                )}
+              >
+                {item.text}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function FillBlankView({
+  exercise,
+  disabled,
+  onSubmit,
+}: CommonProps & { exercise: FillBlankExercise }) {
+  const [value, setValue] = useState("");
+  const parts = exercise.template.split("___");
+
+  return (
+    <div className="space-y-4">
+      <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-base font-medium leading-relaxed text-slate-800">
+        {parts[0]}
+        <span className="mx-1 inline-block min-w-[5rem] border-b-2 border-emerald-400 px-1 text-emerald-700">
+          {value || "…"}
+        </span>
+        {parts.slice(1).join("___")}
+      </div>
+      {exercise.hint && (
+        <p className="text-xs text-slate-500">Hint: {exercise.hint}</p>
+      )}
+      <input
+        type="text"
+        value={value}
+        disabled={disabled}
+        onChange={(e) => setValue(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && value.trim() && !disabled) {
+            const ok = exercise.acceptedAnswers.some((a) =>
+              answersMatch(a, value)
+            );
+            onSubmit(ok);
+          }
+        }}
+        placeholder="Type the missing Spanish…"
+        className="h-12 w-full rounded-2xl border-2 border-slate-200 px-4 text-base outline-none focus:border-emerald-400"
+        autoCapitalize="off"
+        autoCorrect="off"
+        spellCheck={false}
+      />
+      <Button
+        className="min-h-12 w-full touch-manipulation"
+        size="lg"
+        disabled={!value.trim() || disabled}
+        onClick={() => {
+          const ok = exercise.acceptedAnswers.some((a) =>
+            answersMatch(a, value)
+          );
+          onSubmit(ok);
+        }}
+      >
+        Check
+      </Button>
+    </div>
+  );
+}
+
+
 export function ExerciseRenderer({
   exercise,
   disabled,
@@ -367,6 +539,22 @@ export function ExerciseRenderer({
     case "listening-choose":
       return (
         <ListeningChooseView
+          exercise={exercise}
+          disabled={disabled}
+          onSubmit={onSubmit}
+        />
+      );
+    case "match-pairs":
+      return (
+        <MatchPairsView
+          exercise={exercise}
+          disabled={disabled}
+          onSubmit={onSubmit}
+        />
+      );
+    case "fill-blank":
+      return (
+        <FillBlankView
           exercise={exercise}
           disabled={disabled}
           onSubmit={onSubmit}

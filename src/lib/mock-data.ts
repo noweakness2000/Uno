@@ -16,6 +16,8 @@ export const DEMO_USER: DemoUser = {
   weakWordIds: [],
   onboardingComplete: false,
   startingLevel: "absolute_beginner",
+  skippedUnitIds: [],
+  recommendedUnitId: "unit-1",
 };
 
 const LATAM_PRESENT = (forms: [string, string, string, string, string]) => [
@@ -40,7 +42,10 @@ export const WORD_CARDS: Record<string, WordCard> = {
     gloss: "hello / hi",
     meaningSummary:
       "The universal casual hello — any time of day, friends or friendly strangers. Pair it with a time-of-day greeting when you want to sound a bit warmer or more polite.",
-    examples: ["¡Hola! ¿Qué tal?", "Hola, me llamo Sofía."],
+    examples: [
+      { es: "¡Hola! ¿Qué tal?", en: "Hi! How's it going?" },
+      { es: "Hola, me llamo Sofía.", en: "Hi, my name is Sofía." },
+    ],
     useWhen: "Friendly greeting any time of day.",
     dontUseWhen: "In very formal written contexts, prefer a time-of-day greeting.",
     formality: "informal",
@@ -55,7 +60,10 @@ export const WORD_CARDS: Record<string, WordCard> = {
     gloss: "good morning",
     meaningSummary:
       "A warm morning greeting used from waking until around noon. Literally “good days,” it’s the default polite hello before lunch across Latin America.",
-    examples: ["¡Buenos días! ¿Cómo estás?", "Buenos días, señor López."],
+    examples: [
+      { es: "¡Buenos días! ¿Cómo estás?", en: "Good morning! How are you?" },
+      { es: "Buenos días, señor López.", en: "Good morning, Mr. López." },
+    ],
     useWhen: "Greeting someone in the morning until around noon.",
     dontUseWhen: "Don't use after midday — switch to buenas tardes.",
     contrast: "buenas tardes (afternoon) / buenas noches (evening/night)",
@@ -72,8 +80,8 @@ export const WORD_CARDS: Record<string, WordCard> = {
     meaningSummary:
       "The standard afternoon greeting from roughly noon until evening. Use it when buenos días no longer fits and it’s not yet dark enough for buenas noches.",
     examples: [
-      "Buenas tardes, ¿en qué puedo ayudarte?",
-      "¡Buenas tardes! Llegamos a tiempo.",
+      { es: "Buenas tardes, ¿en qué puedo ayudarte?", en: "Good afternoon, how can I help you?" },
+      { es: "¡Buenas tardes! Llegamos a tiempo.", en: "Good afternoon! We arrived on time." },
     ],
     useWhen: "Greeting from roughly noon until evening.",
     dontUseWhen:
@@ -92,8 +100,8 @@ export const WORD_CARDS: Record<string, WordCard> = {
     meaningSummary:
       "Works as both an evening hello and a good-night farewell. Context and tone tell you whether someone is arriving or heading to bed.",
     examples: [
-      "Buenas noches, que descanses.",
-      "¡Buenas noches! Nos vemos mañana.",
+      { es: "Buenas noches, que descanses.", en: "Good night, rest well." },
+      { es: "¡Buenas noches! Nos vemos mañana.", en: "Good night! See you tomorrow." },
     ],
     useWhen: "Greeting or farewell in the evening or before bed.",
     dontUseWhen: "Don't use as a morning greeting.",
@@ -110,7 +118,10 @@ export const WORD_CARDS: Record<string, WordCard> = {
     gloss: "goodbye",
     meaningSummary:
       "A clear goodbye, often when you won’t see someone soon. For a casual “see you later,” hasta luego or nos vemos feels warmer day to day.",
-    examples: ["Adiós, nos vemos pronto.", "¡Adiós! Que te vaya bien."],
+    examples: [
+      { es: "Adiós, nos vemos pronto.", en: "Goodbye, see you soon." },
+      { es: "¡Adiós! Que te vaya bien.", en: "Goodbye! Take care." },
+    ],
     useWhen: "Saying goodbye, especially if you won't see them soon.",
     dontUseWhen: "For 'see you later', hasta luego is more natural.",
     contrast: "hasta luego / nos vemos",
@@ -126,7 +137,10 @@ export const WORD_CARDS: Record<string, WordCard> = {
     gloss: "see you later",
     meaningSummary:
       "Friendly “see you later” when you’ll meet again soon — leaving a café, ending a call, stepping out of a shop. Softer and more everyday than adiós.",
-    examples: ["Hasta luego, ¡cuidate!", "Okay, hasta luego. Nos vemos."],
+    examples: [
+      { es: "Hasta luego, ¡cuidate!", en: "See you later, take care!" },
+      { es: "Okay, hasta luego. Nos vemos.", en: "Okay, see you later. See you." },
+    ],
     useWhen: "Casual farewell when you'll see the person again soon.",
     dontUseWhen: "If the goodbye is final or very formal, adiós may fit better.",
     contrast: "adiós (more final) / nos vemos (see you)",
@@ -150,8 +164,8 @@ export const WORD_CARDS: Record<string, WordCard> = {
       "se llaman",
     ]),
     examples: [
-      "Me llamo Diego.",
-      "Hola, me llamo Valeria. Mucho gusto.",
+      { es: "Me llamo Diego.", en: "My name is Diego." },
+      { es: "Hola, me llamo Valeria. Mucho gusto.", en: "Hi, my name is Valeria. Nice to meet you." },
     ],
     useWhen: "Introducing yourself by name.",
     dontUseWhen: "Don't say 'soy llamo' — that's a common learner error.",
@@ -169,8 +183,8 @@ export const WORD_CARDS: Record<string, WordCard> = {
     meaningSummary:
       "The everyday tú question for someone’s name. With strangers, elders, or workplace formality, switch to ¿Cómo se llama? (usted).",
     examples: [
-      "Hola, ¿cómo te llamas?",
-      "¿Cómo te llamas? Yo me llamo Ana.",
+      { es: "Hola, ¿cómo te llamas?", en: "Hi, what's your name?" },
+      { es: "¿Cómo te llamas? Yo me llamo Ana.", en: "What's your name? My name is Ana." },
     ],
     useWhen: "Asking a peer/friend their name (tú).",
     dontUseWhen: "With formal usted contexts — use ¿cómo se llama?",
@@ -188,7 +202,10 @@ export const WORD_CARDS: Record<string, WordCard> = {
     meaningSummary:
       "Ser covers identity, origin, profession, and lasting traits — who or what something is. Soy Ana / Soy de México. Don’t confuse it with estar (location / temporary states).",
     conjugations: LATAM_PRESENT(["soy", "eres", "es", "somos", "son"]),
-    examples: ["Soy estudiante.", "Ella es de México."],
+    examples: [
+      { es: "Soy estudiante.", en: "I am a student." },
+      { es: "Ella es de México.", en: "She is from Mexico." },
+    ],
     useWhen: "Identity, origin, profession, permanent characteristics.",
     dontUseWhen: "Don't use for location or temporary feelings — use estar.",
     contrast: "estar (location / temporary states)",
@@ -205,8 +222,8 @@ export const WORD_CARDS: Record<string, WordCard> = {
     meaningSummary:
       "The everyday “nice to meet you” after introductions. Short, friendly, and safe in almost any LatAm setting when you meet someone for the first time.",
     examples: [
-      "Hola, soy Ana. ¡Mucho gusto!",
-      "Mucho gusto, Carlos. Bienvenido.",
+      { es: "Hola, soy Ana. ¡Mucho gusto!", en: "Hi, I'm Ana. Nice to meet you!" },
+      { es: "Mucho gusto, Carlos. Bienvenido.", en: "Nice to meet you, Carlos. Welcome." },
     ],
     useWhen: "When meeting someone for the first time.",
     dontUseWhen: "Don't use with people you already know well.",
@@ -223,7 +240,10 @@ export const WORD_CARDS: Record<string, WordCard> = {
     gloss: "how are you? (tú)",
     meaningSummary:
       "Informal “how are you?” with tú. For strangers, elders, or workplace formality, switch to ¿cómo está? (usted).",
-    examples: ["Hola, ¿cómo estás?", "¿Cómo estás hoy?"],
+    examples: [
+      { es: "Hola, ¿cómo estás?", en: "Hi, how are you?" },
+      { es: "¿Cómo estás hoy?", en: "How are you today?" },
+    ],
     useWhen: "Informal check-in with friends, family, peers (tú).",
     dontUseWhen: "With strangers or formal situations — use ¿cómo está?",
     contrast: "¿cómo está? (formal usted)",
@@ -239,7 +259,10 @@ export const WORD_CARDS: Record<string, WordCard> = {
     gloss: "thank you",
     meaningSummary:
       "The everyday thank-you. Add muchas for stronger gratitude. Pair with de nada when someone thanks you.",
-    examples: ["Gracias por tu ayuda.", "¡Muchas gracias!"],
+    examples: [
+      { es: "Gracias por tu ayuda.", en: "Thank you for your help." },
+      { es: "¡Muchas gracias!", en: "Thank you so much!" },
+    ],
     useWhen: "Any time you want to thank someone.",
     dontUseWhen: "n/a — always safe; add de nada as the reply.",
     contrast: "muchas gracias (stronger thanks)",
@@ -255,7 +278,10 @@ export const WORD_CARDS: Record<string, WordCard> = {
     gloss: "please",
     meaningSummary:
       "Softens requests and orders. Usually sits at the end (Un café, por favor) or the start; you don’t need it on every statement — only when asking.",
-    examples: ["Un café, por favor.", "¿Me pasas el menú, por favor?"],
+    examples: [
+      { es: "Un café, por favor.", en: "A coffee, please." },
+      { es: "¿Me pasas el menú, por favor?", en: "Can you pass me the menu, please?" },
+    ],
     useWhen: "Softening requests and orders.",
     dontUseWhen: "Not needed for every statement — only requests.",
     formality: "neutral",
@@ -270,7 +296,10 @@ export const WORD_CARDS: Record<string, WordCard> = {
     gloss: "you're welcome",
     meaningSummary:
       "The classic reply to gracias — literally “of nothing,” meaning it was no trouble. Friendly alternatives include con gusto and no hay de qué.",
-    examples: ["—Gracias. —De nada.", "De nada, con gusto."],
+    examples: [
+      { es: "—Gracias. —De nada.", en: "—Thank you. —You're welcome." },
+      { es: "De nada, con gusto.", en: "You're welcome — glad to help." },
+    ],
     useWhen: "Responding to gracias.",
     dontUseWhen: "Don't use it as a greeting or standalone opener.",
     contrast: "con gusto / no hay de qué",
@@ -287,7 +316,10 @@ export const WORD_CARDS: Record<string, WordCard> = {
     gloss: "sorry / excuse me",
     meaningSummary:
       "A light apology and polite attention-getter. Use it when you bump someone, need to pass, or didn’t catch what was said — not for deep regret (prefer lo siento).",
-    examples: ["Perdón, ¿dónde está el baño?", "¡Perdón! No te vi."],
+    examples: [
+      { es: "Perdón, ¿dónde está el baño?", en: "Excuse me, where is the bathroom?" },
+      { es: "¡Perdón! No te vi.", en: "Sorry! I didn't see you." },
+    ],
     useWhen: "To apologize lightly or get someone's attention politely.",
     dontUseWhen: "For a deeper apology, prefer lo siento.",
     contrast: "disculpe / lo siento",
@@ -304,8 +336,8 @@ export const WORD_CARDS: Record<string, WordCard> = {
     meaningSummary:
       "Polite “excuse me” with usted — asking for attention, interrupting gently, or a light apology with strangers and formal settings. Disculpa is the tú counterpart.",
     examples: [
-      "Disculpe, ¿habla inglés?",
-      "Disculpe, ¿me puede ayudar?",
+      { es: "Disculpe, ¿habla inglés?", en: "Excuse me, do you speak English?" },
+      { es: "Disculpe, ¿me puede ayudar?", en: "Excuse me, can you help me?" },
     ],
     useWhen: "Polite attention / light apology with usted.",
     dontUseWhen: "With close friends, perdón or disculpa is more natural.",
@@ -322,7 +354,10 @@ export const WORD_CARDS: Record<string, WordCard> = {
     gloss: "yes",
     meaningSummary:
       "The basic yes. Accent mark (sí) distinguishes it from si = “if,” but in speech they’re clear from context — and accents are optional when you type here.",
-    examples: ["—¿Hablas español? —Sí.", "Sí, por favor."],
+    examples: [
+      { es: "—¿Hablas español? —Sí.", en: "—Do you speak Spanish? —Yes." },
+      { es: "Sí, por favor.", en: "Yes, please." },
+    ],
     useWhen: "Agreeing or answering yes.",
     dontUseWhen: "Don't confuse with si (if) in writing when clarity matters.",
     formality: "neutral",
@@ -337,7 +372,10 @@ export const WORD_CARDS: Record<string, WordCard> = {
     gloss: "no / not",
     meaningSummary:
       "Negation and the word “no.” Place it before the verb: No hablo inglés. Soften refusals with gracias when declining something offered.",
-    examples: ["No, gracias.", "No hablo mucho español."],
+    examples: [
+      { es: "No, gracias.", en: "No, thank you." },
+      { es: "No hablo mucho español.", en: "I don't speak much Spanish." },
+    ],
     useWhen: "Saying no or negating a verb.",
     dontUseWhen: "n/a — core word; tone softens blunt refusals.",
     formality: "neutral",
@@ -352,7 +390,10 @@ export const WORD_CARDS: Record<string, WordCard> = {
     gloss: "I am from…",
     meaningSummary:
       "Ser + de for origin or hometown: Soy de México. Contrast with vivo en… for where you live now — you can be from one place and live in another.",
-    examples: ["Soy de México.", "¿De dónde eres? Soy de Estados Unidos."],
+    examples: [
+      { es: "Soy de México.", en: "I'm from Mexico." },
+      { es: "¿De dónde eres? Soy de Estados Unidos.", en: "Where are you from? I'm from the United States." },
+    ],
     useWhen: "Talking about origin / hometown.",
     dontUseWhen: "For current residence, prefer vivo en…",
     contrast: "vivo en (I live in)",
@@ -376,8 +417,8 @@ export const WORD_CARDS: Record<string, WordCard> = {
       "viven",
     ]),
     examples: [
-      "Vivo en Estados Unidos.",
-      "Ella vive en un departamento en la ciudad.",
+      { es: "Vivo en Estados Unidos.", en: "I live in the United States." },
+      { es: "Ella vive en un departamento en la ciudad.", en: "She lives in an apartment in the city." },
     ],
     useWhen: "Saying where you live currently.",
     dontUseWhen: "For nationality/origin, use soy de / ser.",
@@ -395,8 +436,8 @@ export const WORD_CARDS: Record<string, WordCard> = {
     meaningSummary:
       "The country name. With ser de / vivir en: Soy de Estados Unidos / Vivo en Estados Unidos. The demonym is estadounidense.",
     examples: [
-      "Soy de Estados Unidos.",
-      "Vivo en Estados Unidos.",
+      { es: "Soy de Estados Unidos.", en: "I'm from the United States." },
+      { es: "Vivo en Estados Unidos.", en: "I live in the United States." },
     ],
     useWhen: "Naming the U.S. as origin or residence.",
     dontUseWhen: "n/a — use estadounidense for the adjective/person.",
@@ -413,7 +454,10 @@ export const WORD_CARDS: Record<string, WordCard> = {
     gloss: "Mexico",
     meaningSummary:
       "Country name. High-frequency with soy de / vivo en. Spelling México with accent is standard LatAm; accents optional when typing answers here.",
-    examples: ["Soy de México.", "¿Vives en México?"],
+    examples: [
+      { es: "Soy de México.", en: "I'm from Mexico." },
+      { es: "¿Vives en México?", en: "Do you live in Mexico?" },
+    ],
     useWhen: "Talking about Mexico as a place.",
     dontUseWhen: "n/a",
     formality: "neutral",
@@ -429,8 +473,8 @@ export const WORD_CARDS: Record<string, WordCard> = {
     meaningSummary:
       "The LatAm-friendly demonym for someone from the United States. Prefer Soy estadounidense or Soy de Estados Unidos over americano, which can mean anyone from the Americas.",
     examples: [
-      "Soy estadounidense.",
-      "Es una empresa estadounidense.",
+      { es: "Soy estadounidense.", en: "I'm American (from the U.S.)." },
+      { es: "Es una empresa estadounidense.", en: "It's a U.S. company." },
     ],
     useWhen: "Nationality / adjective for the U.S.",
     dontUseWhen:
@@ -456,8 +500,8 @@ export const WORD_CARDS: Record<string, WordCard> = {
       "hablan",
     ]),
     examples: [
-      "Hablo un poco de español.",
-      "¿Ustedes hablan inglés?",
+      { es: "Hablo un poco de español.", en: "I speak a little Spanish." },
+      { es: "¿Ustedes hablan inglés?", en: "Do you (plural) speak English?" },
     ],
     useWhen: "Talking about languages or the act of speaking.",
     dontUseWhen: "For 'say' a specific phrase, prefer decir.",
@@ -475,7 +519,10 @@ export const WORD_CARDS: Record<string, WordCard> = {
     gloss: "Spanish (language)",
     meaningSummary:
       "The Spanish language. Hablo español. As an adjective it can also mean “Spanish (from Spain),” but for the language this is the everyday word across LatAm.",
-    examples: ["Hablo español.", "Estoy aprendiendo español."],
+    examples: [
+      { es: "Hablo español.", en: "I speak Spanish." },
+      { es: "Estoy aprendiendo español.", en: "I'm learning Spanish." },
+    ],
     useWhen: "Naming the Spanish language.",
     dontUseWhen: "n/a",
     formality: "neutral",
@@ -490,7 +537,10 @@ export const WORD_CARDS: Record<string, WordCard> = {
     gloss: "English (language)",
     meaningSummary:
       "The English language. ¿Hablas inglés? / Hablo inglés. Accents optional when you type answers in Uno.",
-    examples: ["¿Hablas inglés?", "Hablo inglés y un poco de español."],
+    examples: [
+      { es: "¿Hablas inglés?", en: "Do you speak English?" },
+      { es: "Hablo inglés y un poco de español.", en: "I speak English and a little Spanish." },
+    ],
     useWhen: "Naming the English language.",
     dontUseWhen: "n/a",
     formality: "neutral",
@@ -506,8 +556,8 @@ export const WORD_CARDS: Record<string, WordCard> = {
     meaningSummary:
       "Softens ability or amount: Hablo un poco de español. Honest and natural for beginners — you’ll hear it constantly in real conversations.",
     examples: [
-      "Hablo un poco de español.",
-      "Sé un poco de inglés.",
+      { es: "Hablo un poco de español.", en: "I speak a little Spanish." },
+      { es: "Sé un poco de inglés.", en: "I know a little English." },
     ],
     useWhen: "Saying you know/speak a little of something.",
     dontUseWhen: "Don't drop de before a noun: un poco de español (not un poco español).",
@@ -524,8 +574,8 @@ export const WORD_CARDS: Record<string, WordCard> = {
     meaningSummary:
       "The classic tú origin question. Answer with Soy de… For usted: ¿De dónde es? Keep tú first in Uno; use usted when the situation is formal.",
     examples: [
-      "¿De dónde eres?",
-      "¿De dónde eres? — Soy de México.",
+      { es: "¿De dónde eres?", en: "Where are you from?" },
+      { es: "¿De dónde eres? — Soy de México.", en: "Where are you from? — I'm from Mexico." },
     ],
     useWhen: "Asking origin with tú.",
     dontUseWhen: "Formal usted → ¿de dónde es?",
@@ -542,7 +592,10 @@ export const WORD_CARDS: Record<string, WordCard> = {
     gloss: "also / too",
     meaningSummary:
       "Adds agreement or an extra item: Yo también / Hablo inglés también. Place it near what you’re adding; you’ll hear it constantly in small talk.",
-    examples: ["Yo también hablo español.", "Me llamo Ana. — Yo también soy Ana."],
+    examples: [
+      { es: "Yo también hablo español.", en: "I speak Spanish too." },
+      { es: "Me llamo Ana. — Yo también soy Ana.", en: "My name is Ana. — I'm also Ana." },
+    ],
     useWhen: "Saying also / too.",
     dontUseWhen: "Don't confuse with tampoco (neither / either in negatives).",
     contrast: "tampoco (neither)",
@@ -559,11 +612,265 @@ export const WORD_CARDS: Record<string, WordCard> = {
     meaningSummary:
       "The everyday contrast word: Hablo español, pero un poco. Softens or limits what you just said — perfect for honest beginner sentences.",
     examples: [
-      "Hablo español, pero un poco.",
-      "Soy de México, pero vivo en Estados Unidos.",
+      { es: "Hablo español, pero un poco.", en: "I speak Spanish, but a little." },
+      { es: "Soy de México, pero vivo en Estados Unidos.", en: "I'm from Mexico, but I live in the United States." },
     ],
     useWhen: "Contrasting or limiting a statement.",
     dontUseWhen: "n/a — core connector.",
+    formality: "neutral",
+    cefr: "A1",
+  },
+
+  uno: {
+    id: "uno",
+    lemma: "uno / una",
+    pos: "noun",
+    gender: "mf",
+    gloss: "one",
+    meaningSummary:
+      "The number one. As a noun/adjective it agrees: un café / una mesa. In counting aloud you’ll hear uno, dos, tres…",
+    examples: [
+      { es: "Uno, dos, tres.", en: "One, two, three." },
+      { es: "Quiero un café, por favor.", en: "I want a coffee, please." },
+    ],
+    useWhen: "Counting or saying “one / a”.",
+    dontUseWhen: "Before masculine nouns use un (un carro), not uno.",
+    formality: "neutral",
+    cefr: "A1",
+  },
+
+  dos: {
+    id: "dos",
+    lemma: "dos",
+    pos: "noun",
+    gender: "n/a",
+    gloss: "two",
+    meaningSummary:
+      "The number two. Invariant: dos carros, dos personas. High-frequency in phone numbers, prices, and ages.",
+    examples: [
+      { es: "Tengo dos hermanos.", en: "I have two siblings." },
+      { es: "Son las dos.", en: "It's two o'clock." },
+    ],
+    useWhen: "Counting or saying two of something.",
+    dontUseWhen: "n/a — core number.",
+    formality: "neutral",
+    cefr: "A1",
+  },
+
+  tres: {
+    id: "tres",
+    lemma: "tres",
+    pos: "noun",
+    gender: "n/a",
+    gloss: "three",
+    meaningSummary:
+      "The number three. Same form for all genders: tres días, tres amigas.",
+    examples: [
+      { es: "Vivo en el número tres.", en: "I live at number three." },
+      { es: "Tres por favor.", en: "Three, please." },
+    ],
+    useWhen: "Counting or ordering three of something.",
+    dontUseWhen: "n/a",
+    formality: "neutral",
+    cefr: "A1",
+  },
+
+  cinco: {
+    id: "cinco",
+    lemma: "cinco",
+    pos: "noun",
+    gender: "n/a",
+    gloss: "five",
+    meaningSummary:
+      "The number five. Common in prices, ages, and phone digits. Cinco pesos / Tengo cinco años (kids).",
+    examples: [
+      { es: "Cuesta cinco pesos.", en: "It costs five pesos." },
+      { es: "Mi número termina en cinco.", en: "My number ends in five." },
+    ],
+    useWhen: "Counting, prices, digits.",
+    dontUseWhen: "n/a",
+    formality: "neutral",
+    cefr: "A1",
+  },
+
+  diez: {
+    id: "diez",
+    lemma: "diez",
+    pos: "noun",
+    gender: "n/a",
+    gloss: "ten",
+    meaningSummary:
+      "The number ten. Milestone in counting 1–10 and a common round price or age.",
+    examples: [
+      { es: "Cuento hasta diez.", en: "I count to ten." },
+      { es: "Son diez dólares.", en: "That's ten dollars." },
+    ],
+    useWhen: "Counting to ten, round amounts.",
+    dontUseWhen: "n/a",
+    formality: "neutral",
+    cefr: "A1",
+  },
+
+  veinte: {
+    id: "veinte",
+    lemma: "veinte",
+    pos: "noun",
+    gender: "n/a",
+    gloss: "twenty",
+    meaningSummary:
+      "Twenty — useful for ages, prices, and phone chunks. After twenty, Spanish builds veintiuno, veintidós…",
+    examples: [
+      { es: "Tengo veinte años.", en: "I am twenty years old." },
+      { es: "Cuesta veinte pesos.", en: "It costs twenty pesos." },
+    ],
+    useWhen: "Ages, prices, larger counts.",
+    dontUseWhen: "n/a",
+    formality: "neutral",
+    cefr: "A1",
+  },
+
+  celular: {
+    id: "celular",
+    lemma: "celular",
+    pos: "noun",
+    gender: "m",
+    gloss: "cell phone / mobile",
+    meaningSummary:
+      "LatAm-standard word for a mobile phone (Spain prefers móvil). ¿Cuál es tu número de celular? is everyday across Latin America.",
+    examples: [
+      { es: "¿Cuál es tu número de celular?", en: "What's your cell phone number?" },
+      { es: "Mi celular no tiene señal.", en: "My phone has no signal." },
+    ],
+    useWhen: "Talking about mobile phones in LatAm Spanish.",
+    dontUseWhen: "In Spain you'll hear móvil more often.",
+    contrast: "teléfono (phone in general) / móvil (Spain)",
+    formality: "neutral",
+    region: "LatAm-wide",
+    cefr: "A1",
+  },
+
+  "cuantos-anos": {
+    id: "cuantos-anos",
+    lemma: "¿cuántos años tienes?",
+    pos: "phrase",
+    gender: "n/a",
+    gloss: "how old are you? (tú)",
+    meaningSummary:
+      "The everyday age question with tú. Answer with Tengo + number + años — never “soy veinte años.” Usted: ¿Cuántos años tiene?",
+    examples: [
+      { es: "¿Cuántos años tienes?", en: "How old are you?" },
+      { es: "Tengo veinticinco años.", en: "I am twenty-five years old." },
+    ],
+    useWhen: "Asking someone's age (tú).",
+    dontUseWhen: "Don't answer with soy + number — use tengo … años.",
+    contrast: "¿cuántos años tiene? (usted)",
+    formality: "informal",
+    cefr: "A1",
+  },
+
+  tener: {
+    id: "tener",
+    lemma: "tener",
+    pos: "verb",
+    gender: "n/a",
+    gloss: "to have",
+    meaningSummary:
+      "Irregular core verb for possession and age: Tengo un celular / Tengo veinte años. Present (LatAm): tengo, tienes, tiene, tenemos, tienen.",
+    conjugations: [
+      {
+        label: "Present indicative (LatAm)",
+        forms: [
+          { person: "yo", form: "tengo" },
+          { person: "tú", form: "tienes" },
+          { person: "él/ella/usted", form: "tiene" },
+          { person: "nosotros/as", form: "tenemos" },
+          { person: "ustedes", form: "tienen" },
+        ],
+      },
+    ],
+    examples: [
+      { es: "Tengo un celular nuevo.", en: "I have a new cell phone." },
+      { es: "¿Tienes cinco minutos?", en: "Do you have five minutes?" },
+    ],
+    useWhen: "Possession, age, and many fixed expressions.",
+    dontUseWhen: "For identity/profession prefer ser (Soy estudiante).",
+    formality: "neutral",
+    cefr: "A1",
+  },
+
+  "cuanto-cuesta": {
+    id: "cuanto-cuesta",
+    lemma: "¿cuánto cuesta?",
+    pos: "phrase",
+    gender: "n/a",
+    gloss: "how much does it cost?",
+    meaningSummary:
+      "The go-to price question. Plural: ¿Cuánto cuestan? Answer with Cuesta / Cuestan + amount (+ pesos/dólares).",
+    examples: [
+      { es: "¿Cuánto cuesta?", en: "How much does it cost?" },
+      { es: "¿Cuánto cuestan los jugos?", en: "How much do the juices cost?" },
+    ],
+    useWhen: "Asking the price of something.",
+    dontUseWhen: "n/a — safe in shops and markets.",
+    contrast: "¿cuánto es? (also common at checkout)",
+    formality: "neutral",
+    cefr: "A1",
+  },
+
+  pesos: {
+    id: "pesos",
+    lemma: "pesos",
+    pos: "noun",
+    gender: "m",
+    gloss: "pesos (currency)",
+    meaningSummary:
+      "Common currency name across several LatAm countries (Mexico, Colombia, Chile, Argentina, etc.). Pair with numbers: diez pesos. For USD say dólares.",
+    examples: [
+      { es: "Cuesta diez pesos.", en: "It costs ten pesos." },
+      { es: "Son cincuenta pesos.", en: "That's fifty pesos." },
+    ],
+    useWhen: "Talking about local LatAm currency amounts.",
+    dontUseWhen: "For US dollars use dólares.",
+    contrast: "dólares (USD)",
+    formality: "neutral",
+    region: "Mexico, Colombia, Chile, Argentina, and others",
+    cefr: "A1",
+  },
+
+  dolares: {
+    id: "dolares",
+    lemma: "dólares",
+    pos: "noun",
+    gender: "m",
+    gloss: "dollars",
+    meaningSummary:
+      "US (and other) dollars — widely understood in LatAm travel and online prices. Veinte dólares.",
+    examples: [
+      { es: "Cuesta veinte dólares.", en: "It costs twenty dollars." },
+      { es: "¿Aceptan dólares?", en: "Do you accept dollars?" },
+    ],
+    useWhen: "USD or dollar amounts.",
+    dontUseWhen: "Local cash is often pesos — ask if unsure.",
+    contrast: "pesos",
+    formality: "neutral",
+    cefr: "A1",
+  },
+
+  gratis: {
+    id: "gratis",
+    lemma: "gratis",
+    pos: "adverb",
+    gender: "n/a",
+    gloss: "free (no cost)",
+    meaningSummary:
+      "Means no charge: Es gratis / La entrada es gratis. Don't confuse with libre (free as in not busy / free time).",
+    examples: [
+      { es: "Es gratis.", en: "It's free." },
+      { es: "El agua es gratis.", en: "The water is free." },
+    ],
+    useWhen: "Saying something has no cost.",
+    dontUseWhen: "For “free time” use tiempo libre — not gratis.",
+    contrast: "libre (available / free time)",
     formality: "neutral",
     cefr: "A1",
   },
@@ -584,6 +891,8 @@ function teach(
   };
 }
 
+let listenVoiceIndex = 0;
+
 function listen(
   id: string,
   audioText: string,
@@ -593,12 +902,14 @@ function listen(
   wordCardIds: string[],
   xp = 3
 ): import("./types").ListeningChooseExercise {
+  const voice = listenVoiceIndex % 2 === 0 ? "f" : "m";
+  listenVoiceIndex += 1;
   return {
     id,
     type: "listening-choose",
     prompt: "What did you hear?",
     audioText,
-    audioSrc: audioSrcFor(audioText),
+    audioSrc: audioSrcFor(audioText, voice),
     options,
     correctIndex,
     explanation,
@@ -613,7 +924,7 @@ export const LESSONS: Record<string, Lesson> = {
     unitId: "unit-1",
     title: "Hello & goodbye",
     description: "Greet by time of day and say goodbye naturally.",
-    xpReward: 28,
+    xpReward: 32,
     exercises: [
       teach("teach-u1l1-hola", "hola"),
       {
@@ -732,6 +1043,20 @@ export const LESSONS: Record<string, Lesson> = {
         explanation: "Evening / night → buenas noches.",
         wordCardIds: ["buenas-noches"],
         xp: 3,
+      },
+      {
+        id: "u1l1-match",
+        type: "match-pairs",
+        prompt: "Match greetings & goodbyes.",
+        pairs: [
+          { left: "Hola", right: "Hi / hello" },
+          { left: "Buenos días", right: "Good morning" },
+          { left: "Buenas tardes", right: "Good afternoon" },
+          { left: "Hasta luego", right: "See you later" },
+        ],
+        explanation: "Core hello/goodbye matches.",
+        wordCardIds: ["hola", "buenos-dias", "buenas-tardes", "hasta-luego"],
+        xp: 4,
       },
     ],
   },
@@ -1306,6 +1631,31 @@ export const LESSONS: Record<string, Lesson> = {
         wordCardIds: ["vivo-en", "mexico"],
         xp: 3,
       },
+      {
+        id: "u2l1-fill",
+        type: "fill-blank",
+        prompt: "Fill in the blank.",
+        template: "___ de México.",
+        acceptedAnswers: ["Soy", "soy"],
+        hint: "I am (from…)",
+        explanation: "Soy de México.",
+        wordCardIds: ["soy-de", "mexico"],
+        xp: 3,
+      },
+      {
+        id: "u2l1-match",
+        type: "match-pairs",
+        prompt: "Match origin & residence.",
+        pairs: [
+          { left: "Soy de…", right: "I am from…" },
+          { left: "Vivo en…", right: "I live in…" },
+          { left: "Estados Unidos", right: "United States" },
+          { left: "estadounidense", right: "American (U.S.)" },
+        ],
+        explanation: "Origin vs residence.",
+        wordCardIds: ["soy-de", "vivo-en", "estados-unidos", "estadounidense"],
+        xp: 4,
+      },
     ],
   },
 
@@ -1591,6 +1941,400 @@ export const LESSONS: Record<string, Lesson> = {
       },
     ],
   },
+
+  "u3-l1": {
+    id: "u3-l1",
+    unitId: "unit-3",
+    title: "Numbers 1–10",
+    description: "Count the essentials you’ll hear every day.",
+    xpReward: 36,
+    exercises: [
+      teach("teach-u3l1-uno", "uno"),
+      {
+        id: "u3l1-1",
+        type: "select",
+        prompt: "How do you say “one” when counting?",
+        options: ["Uno", "Diez", "Gratis", "Pesos"],
+        correctIndex: 0,
+        explanation: "Uno is one when you count: uno, dos, tres…",
+        wordCardIds: ["uno"],
+        xp: 3,
+      },
+      teach("teach-u3l1-dos", "dos"),
+      {
+        id: "u3l1-2",
+        type: "select",
+        prompt: "What number is dos?",
+        options: ["One", "Two", "Five", "Ten"],
+        correctIndex: 1,
+        explanation: "Dos means two.",
+        wordCardIds: ["dos"],
+        xp: 3,
+      },
+      teach("teach-u3l1-tres", "tres"),
+      {
+        id: "u3l1-3",
+        type: "tap-chips",
+        prompt: "Build: “One, two, three.”",
+        chips: ["Uno", "dos", "tres", "cinco", "diez"],
+        correctOrder: ["Uno", "dos", "tres"],
+        explanation: "Uno, dos, tres.",
+        wordCardIds: ["uno", "dos", "tres"],
+        xp: 3,
+      },
+      teach("teach-u3l1-cinco", "cinco"),
+      listen(
+        "u3l1-4",
+        "Cuesta cinco pesos.",
+        ["It costs five pesos.", "I have five phones.", "It's free.", "Twenty dollars."],
+        0,
+        "Cuesta cinco pesos = It costs five pesos.",
+        ["cinco", "pesos"]
+      ),
+      teach("teach-u3l1-diez", "diez"),
+      {
+        id: "u3l1-5",
+        type: "select",
+        prompt: "How do you say “ten”?",
+        options: ["Cinco", "Veinte", "Diez", "Tres"],
+        correctIndex: 2,
+        explanation: "Diez is ten.",
+        wordCardIds: ["diez"],
+        xp: 3,
+      },
+      {
+        id: "u3l1-6",
+        type: "translate",
+        prompt: "Translate: “I want a coffee, please.”",
+        acceptedAnswers: [
+          "Quiero un café, por favor.",
+          "Quiero un cafe, por favor",
+          "Quiero un café por favor",
+        ],
+        hint: "un café + por favor",
+        explanation: "Quiero un café, por favor.",
+        wordCardIds: ["uno", "por"],
+        xp: 4,
+      },
+      listen(
+        "u3l1-7",
+        "Uno, dos, tres.",
+        ["One, two, three.", "Eight, nine, ten.", "How much is it?", "I'm twenty."],
+        0,
+        "Uno, dos, tres = One, two, three.",
+        ["uno", "dos", "tres"]
+      ),
+      {
+        id: "u3l1-8",
+        type: "situational-choose",
+        prompt: "Pick the best line.",
+        situation: "You're counting three tickets out loud.",
+        options: ["Uno, dos, tres.", "Es gratis.", "¿Cuánto cuesta?", "Tengo veinte años."],
+        correctIndex: 0,
+        explanation: "Counting three items: uno, dos, tres.",
+        wordCardIds: ["uno", "dos", "tres"],
+        xp: 3,
+      },
+      {
+        id: "u3l1-9",
+        type: "match-pairs",
+        prompt: "Match the numbers.",
+        pairs: [
+          { left: "uno", right: "one" },
+          { left: "dos", right: "two" },
+          { left: "tres", right: "three" },
+          { left: "cinco", right: "five" },
+          { left: "diez", right: "ten" },
+        ],
+        explanation: "uno=one, dos=two, tres=three, cinco=five, diez=ten.",
+        wordCardIds: ["uno", "dos", "tres", "cinco", "diez"],
+        xp: 4,
+      },
+      {
+        id: "u3l1-10",
+        type: "fill-blank",
+        prompt: "Fill in the blank.",
+        template: "___, dos, tres.",
+        acceptedAnswers: ["Uno", "uno"],
+        hint: "The number one",
+        explanation: "Uno, dos, tres.",
+        wordCardIds: ["uno"],
+        xp: 3,
+      },
+    ],
+  },
+
+  "u3-l2": {
+    id: "u3-l2",
+    unitId: "unit-3",
+    title: "Phone & age",
+    description: "Celular numbers and saying how old you are.",
+    xpReward: 32,
+    exercises: [
+      teach("teach-u3l2-celular", "celular"),
+      {
+        id: "u3l2-1",
+        type: "select",
+        prompt: "LatAm word for cell phone?",
+        options: ["Celular", "Móvil only", "Computadora", "Carro"],
+        correctIndex: 0,
+        explanation: "Celular is the LatAm-standard word for a mobile phone.",
+        wordCardIds: ["celular"],
+        xp: 3,
+      },
+      teach("teach-u3l2-tener", "tener"),
+      {
+        id: "u3l2-2",
+        type: "select",
+        prompt: "“I have” (yo) is…",
+        options: ["Tengo", "Soy", "Hablo", "Vivo"],
+        correctIndex: 0,
+        explanation: "Tener → yo tengo.",
+        wordCardIds: ["tener"],
+        xp: 3,
+      },
+      teach("teach-u3l2-cuantos-anos", "cuantos-anos"),
+      {
+        id: "u3l2-3",
+        type: "tap-chips",
+        prompt: "Build: “How old are you?” (tú)",
+        chips: ["¿Cuántos", "años", "tienes?", "cuesta", "celular"],
+        correctOrder: ["¿Cuántos", "años", "tienes?"],
+        explanation: "¿Cuántos años tienes?",
+        wordCardIds: ["cuantos-anos"],
+        xp: 3,
+      },
+      teach("teach-u3l2-veinte", "veinte"),
+      {
+        id: "u3l2-4",
+        type: "translate",
+        prompt: "Translate: “I am twenty years old.”",
+        acceptedAnswers: [
+          "Tengo veinte años.",
+          "Tengo veinte anos.",
+          "Tengo 20 años.",
+          "Tengo 20 anos",
+        ],
+        hint: "Tengo + number + años",
+        explanation: "Age uses tener: Tengo veinte años — not soy veinte.",
+        wordCardIds: ["tener", "veinte", "cuantos-anos"],
+        xp: 4,
+      },
+      listen(
+        "u3l2-5",
+        "¿Cuál es tu número de celular?",
+        [
+          "What's your cell phone number?",
+          "How much does it cost?",
+          "How old are you?",
+          "Do you speak Spanish?",
+        ],
+        0,
+        "¿Cuál es tu número de celular? = What's your cell number?",
+        ["celular"]
+      ),
+      {
+        id: "u3l2-6",
+        type: "situational-choose",
+        prompt: "Pick the best reply.",
+        situation: "A new classmate asks ¿Cuántos años tienes?",
+        options: [
+          "Tengo veinte años.",
+          "Soy veinte años.",
+          "Es gratis.",
+          "Cuesta veinte pesos.",
+        ],
+        correctIndex: 0,
+        explanation: "Age = tengo + number + años. Never soy veinte años.",
+        wordCardIds: ["cuantos-anos", "tener", "veinte"],
+        xp: 3,
+      },
+      {
+        id: "u3l2-7",
+        type: "select",
+        prompt: "“Do you have five minutes?”",
+        options: [
+          "¿Tienes cinco minutos?",
+          "¿Eres cinco minutos?",
+          "¿Hablas cinco minutos?",
+          "¿Vives cinco minutos?",
+        ],
+        correctIndex: 0,
+        explanation: "Tener for possession: ¿Tienes cinco minutos?",
+        wordCardIds: ["tener", "cinco"],
+        xp: 3,
+      },
+      listen(
+        "u3l2-8",
+        "Tengo un celular nuevo.",
+        [
+          "I have a new cell phone.",
+          "I am twenty years old.",
+          "It costs five pesos.",
+          "The water is free.",
+        ],
+        0,
+        "Tengo un celular nuevo = I have a new cell phone.",
+        ["tener", "celular"]
+      ),
+    ],
+  },
+
+  "u3-l3": {
+    id: "u3-l3",
+    unitId: "unit-3",
+    title: "How much?",
+    description: "Ask prices with pesos, dólares, and gratis.",
+    xpReward: 38,
+    exercises: [
+      teach("teach-u3l3-cuanto-cuesta", "cuanto-cuesta"),
+      {
+        id: "u3l3-1",
+        type: "select",
+        prompt: "How do you ask “How much does it cost?”",
+        options: [
+          "¿Cuánto cuesta?",
+          "¿Cuántos años tienes?",
+          "¿Cómo te llamas?",
+          "¿De dónde eres?",
+        ],
+        correctIndex: 0,
+        explanation: "¿Cuánto cuesta? is the classic price question.",
+        wordCardIds: ["cuanto-cuesta"],
+        xp: 3,
+      },
+      teach("teach-u3l3-pesos", "pesos"),
+      {
+        id: "u3l3-2",
+        type: "tap-chips",
+        prompt: "Build: “It costs ten pesos.”",
+        chips: ["Cuesta", "diez", "pesos.", "dólares", "gratis"],
+        correctOrder: ["Cuesta", "diez", "pesos."],
+        explanation: "Cuesta diez pesos.",
+        wordCardIds: ["pesos", "diez", "cuanto-cuesta"],
+        xp: 3,
+      },
+      teach("teach-u3l3-dolares", "dolares"),
+      listen(
+        "u3l3-3",
+        "Cuesta veinte dólares.",
+        [
+          "It costs twenty dollars.",
+          "I am twenty years old.",
+          "I have two phones.",
+          "It's free.",
+        ],
+        0,
+        "Cuesta veinte dólares = It costs twenty dollars.",
+        ["dolares", "veinte", "cuanto-cuesta"]
+      ),
+      teach("teach-u3l3-gratis", "gratis"),
+      {
+        id: "u3l3-4",
+        type: "select",
+        prompt: "How do you say “It's free” (no cost)?",
+        options: ["Es gratis.", "Es libre.", "Soy gratis.", "Tengo gratis."],
+        correctIndex: 0,
+        explanation: "Es gratis = no charge. Libre is “available / free time.”",
+        wordCardIds: ["gratis"],
+        xp: 3,
+      },
+      {
+        id: "u3l3-5",
+        type: "situational-choose",
+        prompt: "Pick the best question.",
+        situation: "You're at a market stall pointing at a juice.",
+        options: [
+          "¿Cuánto cuesta?",
+          "¿Cuántos años tienes?",
+          "Mucho gusto.",
+          "Hasta luego.",
+        ],
+        correctIndex: 0,
+        explanation: "Ask the price: ¿Cuánto cuesta?",
+        wordCardIds: ["cuanto-cuesta"],
+        xp: 3,
+      },
+      {
+        id: "u3l3-6",
+        type: "translate",
+        prompt: "Translate: “How much do the juices cost?”",
+        acceptedAnswers: [
+          "¿Cuánto cuestan los jugos?",
+          "Cuanto cuestan los jugos?",
+          "¿Cuánto cuestan los jugos",
+        ],
+        hint: "cuestan (plural) + los jugos",
+        explanation: "Plural prices: ¿Cuánto cuestan los jugos?",
+        wordCardIds: ["cuanto-cuesta"],
+        xp: 4,
+      },
+      listen(
+        "u3l3-7",
+        "El agua es gratis.",
+        [
+          "The water is free.",
+          "The water costs ten pesos.",
+          "I want water, please.",
+          "Do you accept dollars?",
+        ],
+        0,
+        "El agua es gratis = The water is free.",
+        ["gratis"]
+      ),
+      {
+        id: "u3l3-8",
+        type: "select",
+        prompt: "“Do you accept dollars?”",
+        options: [
+          "¿Aceptan dólares?",
+          "¿Aceptan pesos años?",
+          "¿Cuántos dólares tienes?",
+          "Es dólares gratis.",
+        ],
+        correctIndex: 0,
+        explanation: "¿Aceptan dólares? is a practical travel line.",
+        wordCardIds: ["dolares"],
+        xp: 3,
+      },
+      {
+        id: "u3l3-9",
+        type: "situational-choose",
+        prompt: "Pick the best answer.",
+        situation: "The clerk says the Wi-Fi has no charge.",
+        options: ["Es gratis.", "Cuesta veinte años.", "Tengo celular.", "Uno, dos, tres."],
+        correctIndex: 0,
+        explanation: "No cost → Es gratis.",
+        wordCardIds: ["gratis"],
+        xp: 3,
+      },
+      {
+        id: "u3l3-10",
+        type: "match-pairs",
+        prompt: "Match price phrases.",
+        pairs: [
+          { left: "¿Cuánto cuesta?", right: "How much does it cost?" },
+          { left: "Es gratis.", right: "It's free." },
+          { left: "diez pesos", right: "ten pesos" },
+          { left: "veinte dólares", right: "twenty dollars" },
+        ],
+        explanation: "Price & free basics.",
+        wordCardIds: ["cuanto-cuesta", "gratis", "pesos", "dolares"],
+        xp: 4,
+      },
+      {
+        id: "u3l3-11",
+        type: "fill-blank",
+        prompt: "Fill in the blank.",
+        template: "Cuesta diez ___.",
+        acceptedAnswers: ["pesos", "Pesos"],
+        hint: "LatAm currency",
+        explanation: "Cuesta diez pesos.",
+        wordCardIds: ["pesos", "diez"],
+        xp: 3,
+      },
+    ],
+  },
 };
 
 export const UNITS: Unit[] = [
@@ -1613,24 +2357,32 @@ export const UNITS: Unit[] = [
   {
     id: "unit-3",
     number: 3,
+    title: "Numbers that matter",
+    description: "Counting, phone, age, and everyday prices.",
+    lessonIds: ["u3-l1", "u3-l2", "u3-l3"],
+    unlocked: true,
+  },
+  {
+    id: "unit-4",
+    number: 4,
     title: "Around town",
     description: "Asking for places — carro, departamento, and more.",
     lessonIds: [],
     unlocked: false,
   },
   {
-    id: "unit-4",
-    number: 4,
+    id: "unit-5",
+    number: 5,
     title: "Food & drink",
     description: "Order jugo, café, and everyday snacks.",
     lessonIds: [],
     unlocked: false,
   },
   {
-    id: "unit-5",
-    number: 5,
+    id: "unit-6",
+    number: 6,
     title: "Tech talk",
-    description: "Celular, computadora, and modern life vocab.",
+    description: "Celular deeper — apps and modern life vocab.",
     lessonIds: [],
     unlocked: false,
   },

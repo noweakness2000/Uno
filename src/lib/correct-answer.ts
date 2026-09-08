@@ -12,7 +12,10 @@ export function getCorrectAnswerDisplay(exercise: Exercise): string {
     case "tap-chips":
       return exercise.correctOrder.join(" ");
     case "translate":
+    case "fill-blank":
       return exercise.acceptedAnswers[0] ?? "";
+    case "match-pairs":
+      return exercise.pairs.map((p) => `${p.left} → ${p.right}`).join(" · ");
     default:
       return "";
   }

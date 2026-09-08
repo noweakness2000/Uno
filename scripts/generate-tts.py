@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
-"""Generate LatAm (Neural2) practice MP3s for Uno listening exercises.
+"""Generate LatAm Neural2 practice MP3s for Uno (female + male).
+
+Voices (es-US Neural2 — closest LatAm Neural2; no es-MX Neural2 exists):
+  f → es-US-Neural2-A (FEMALE)
+  m → es-US-Neural2-B (MALE)
+
+Output: public/audio/es-mx/{slug}-f.mp3 and {slug}-m.mp3
 
 Requires:
   pip install google-cloud-texttospeech
   export GOOGLE_APPLICATION_CREDENTIALS=/path/to/credentials.json
-
-Note: Google Cloud TTS has no es-MX Neural2 voices. We use es-US-Neural2-A
-(female LatAm/US Spanish Neural2) — the closest Neural2 match for Mexico/LatAm.
-Files are still written under public/audio/es-mx/ for app paths.
 """
 from __future__ import annotations
 
@@ -18,10 +20,14 @@ from pathlib import Path
 
 from google.cloud import texttospeech
 
-VOICE_NAME = "es-US-Neural2-A"
 LANGUAGE_CODE = "es-US"
 SPEAKING_RATE = 0.95
+VOICES = {
+    "f": "es-US-Neural2-A",
+    "m": "es-US-Neural2-B",
+}
 
+# Existing U1–U2 + Unit 3 Numbers phrases
 PHRASES: list[str] = [
     "adiós",
     "Adiós, nos vemos pronto.",
@@ -124,7 +130,47 @@ PHRASES: list[str] = [
     "vivo en",
     "Vivo en Estados Unidos",
     "Vivo en Estados Unidos.",
-    "Yo también hablo español."
+    "Yo también hablo español.",
+    # Unit 3 — Numbers that matter
+    "uno",
+    "una",
+    "Uno, dos, tres.",
+    "Quiero un café, por favor.",
+    "dos",
+    "Tengo dos hermanos.",
+    "Son las dos.",
+    "tres",
+    "Vivo en el número tres.",
+    "Tres por favor.",
+    "cinco",
+    "Cuesta cinco pesos.",
+    "Mi número termina en cinco.",
+    "diez",
+    "Cuento hasta diez.",
+    "Son diez dólares.",
+    "veinte",
+    "Tengo veinte años.",
+    "Cuesta veinte pesos.",
+    "celular",
+    "¿Cuál es tu número de celular?",
+    "Mi celular no tiene señal.",
+    "¿Cuántos años tienes?",
+    "Tengo veinticinco años.",
+    "tener",
+    "tengo",
+    "Tengo un celular nuevo.",
+    "¿Tienes cinco minutos?",
+    "¿Cuánto cuesta?",
+    "¿Cuánto cuestan los jugos?",
+    "pesos",
+    "Cuesta diez pesos.",
+    "Son cincuenta pesos.",
+    "dólares",
+    "Cuesta veinte dólares.",
+    "¿Aceptan dólares?",
+    "gratis",
+    "Es gratis.",
+    "El agua es gratis.",
 ]
 
 
@@ -137,12 +183,14 @@ def slugify(text: str) -> str:
     return ascii_text.strip("-")
 
 
-def synthesize(client: texttospeech.TextToSpeechClient, text: str) -> bytes:
+def synthesize(
+    client: texttospeech.TextToSpeechClient, text: str, voice_name: str
+) -> bytes:
     response = client.synthesize_speech(
         input=texttospeech.SynthesisInput(text=text),
         voice=texttospeech.VoiceSelectionParams(
             language_code=LANGUAGE_CODE,
-            name=VOICE_NAME,
+            name=voice_name,
         ),
         audio_config=texttospeech.AudioConfig(
             audio_encoding=texttospeech.AudioEncoding.MP3,
@@ -158,17 +206,13 @@ def main() -> None:
         "--out",
         type=Path,
         default=Path(__file__).resolve().parents[1] / "public" / "audio" / "es-mx",
-        help="Output directory for MP3s",
     )
+    parser.add_argument("--only-missing", action="store_true")
+    parser.add_argument("--list-voices", action="store_true")
     parser.add_argument(
-        "--only-missing",
-        action="store_true",
-        help="Skip phrases that already have an mp3",
-    )
-    parser.add_argument(
-        "--list-voices",
-        action="store_true",
-        help="List Spanish Neural2 voices and exit",
+        "--voices",
+        default="f,m",
+        help="Comma list of voice keys: f,m",
     )
     args = parser.parse_args()
 
@@ -184,27 +228,35 @@ def main() -> None:
                 print(f"{v.name}\tgender={gender}\tlangs={list(v.language_codes)}")
         return
 
+    voice_keys = [k.strip() for k in args.voices.split(",") if k.strip()]
+    for k in voice_keys:
+        if k not in VOICES:
+            raise SystemExit(f"Unknown voice key {k!r}; choose from {list(VOICES)}")
+
     args.out.mkdir(parents=True, exist_ok=True)
-    print(f"voice={VOICE_NAME} language={LANGUAGE_CODE} rate={SPEAKING_RATE}")
+    print(f"language={LANGUAGE_CODE} rate={SPEAKING_RATE} voices={voice_keys}")
     print(f"out={args.out}")
 
     written: list[str] = []
     skipped = 0
-    # Dedupe by slug so first phrase wins for a given filename
-    seen_slugs: set[str] = set()
+    seen: set[tuple[str, str]] = set()
     for phrase in PHRASES:
         slug = slugify(phrase)
-        if not slug or slug in seen_slugs:
+        if not slug:
             continue
-        seen_slugs.add(slug)
-        path = args.out / f"{slug}.mp3"
-        if args.only_missing and path.exists() and path.stat().st_size > 0:
-            skipped += 1
-            continue
-        audio = synthesize(client, phrase)
-        path.write_bytes(audio)
-        written.append(path.name)
-        print(f"wrote {path.name} ({len(audio)} bytes) <- {phrase!r}")
+        for key in voice_keys:
+            pair = (slug, key)
+            if pair in seen:
+                continue
+            seen.add(pair)
+            path = args.out / f"{slug}-{key}.mp3"
+            if args.only_missing and path.exists() and path.stat().st_size > 0:
+                skipped += 1
+                continue
+            audio = synthesize(client, phrase, VOICES[key])
+            path.write_bytes(audio)
+            written.append(path.name)
+            print(f"wrote {path.name} ({len(audio)} bytes) <- {phrase!r} [{key}]")
 
     print(f"done: {len(written)} written, {skipped} skipped")
 

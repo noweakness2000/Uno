@@ -3,44 +3,63 @@
 import Link from "next/link";
 import { Check, Lock, Play, RotateCcw } from "lucide-react";
 import { UNITS, getLesson } from "@/lib/mock-data";
+import { isUnit1QuickReview, unitBadgeLabel } from "@/lib/placement";
 import { useUserStore } from "@/store/user-store";
 import { cn } from "@/lib/utils";
 import type { Unit } from "@/lib/types";
 
-/** Units 1–2 browse + play for every starting level; 3+ stay locked. */
+/** Units 1–3 browse + play for every starting level; 4+ stay locked. */
 function isUnitUnlocked(unit: Unit): boolean {
   if (!unit.unlocked) return false;
-  return unit.number <= 2;
+  return unit.number <= 3;
 }
 
 export function UnitPath() {
-  const completed = useUserStore((s) => s.user.completedLessonIds);
+  const user = useUserStore((s) => s.user);
+  const completed = user.completedLessonIds;
 
   return (
     <div className="space-y-10">
       {UNITS.map((unit) => {
         const unlocked = isUnitUnlocked(unit);
+        const badge = unitBadgeLabel(user, unit);
+        const quickReview = unit.id === "unit-1" && isUnit1QuickReview(user);
         return (
           <section key={unit.id} className="relative">
             <div
               className={cn(
                 "mb-4 rounded-3xl px-5 py-4",
                 unlocked
-                  ? "bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg shadow-emerald-500/20"
+                  ? quickReview
+                    ? "bg-gradient-to-r from-slate-500 to-slate-600 text-white shadow-lg shadow-slate-500/20"
+                    : "bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg shadow-emerald-500/20"
                   : "bg-slate-100 text-slate-400"
               )}
             >
-              <p className="text-xs font-bold uppercase tracking-wider opacity-80">
-                Unit {unit.number}
-              </p>
+              <div className="flex flex-wrap items-center gap-2">
+                <p className="text-xs font-bold uppercase tracking-wider opacity-80">
+                  Unit {unit.number}
+                </p>
+                {badge && (
+                  <span className="rounded-full bg-white/20 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide">
+                    {badge}
+                  </span>
+                )}
+              </div>
               <h2 className="text-xl font-extrabold">{unit.title}</h2>
               <p
                 className={cn(
                   "mt-1 text-sm",
-                  unlocked ? "text-emerald-50" : "text-slate-400"
+                  unlocked
+                    ? quickReview
+                      ? "text-slate-200"
+                      : "text-emerald-50"
+                    : "text-slate-400"
                 )}
               >
-                {unit.description}
+                {quickReview
+                  ? "Optional review — greetings & polite basics."
+                  : unit.description}
               </p>
             </div>
 
@@ -75,13 +94,19 @@ export function UnitPath() {
                             "group flex min-h-[72px] touch-manipulation items-stretch gap-3 rounded-2xl border-2 bg-white p-3 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md sm:gap-4 sm:p-4",
                             done
                               ? "border-emerald-200 hover:border-emerald-400"
-                              : "border-amber-200 hover:border-amber-400"
+                              : quickReview
+                                ? "border-slate-200 hover:border-slate-400"
+                                : "border-amber-200 hover:border-amber-400"
                           )}
                         >
                           <div
                             className={cn(
                               "flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl text-white shadow-inner sm:h-14 sm:w-14",
-                              done ? "bg-emerald-500" : "bg-amber-400"
+                              done
+                                ? "bg-emerald-500"
+                                : quickReview
+                                  ? "bg-slate-400"
+                                  : "bg-amber-400"
                             )}
                           >
                             {done ? (
@@ -102,10 +127,16 @@ export function UnitPath() {
                                   "rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide",
                                   done
                                     ? "bg-emerald-100 text-emerald-700"
-                                    : "bg-amber-100 text-amber-800"
+                                    : quickReview
+                                      ? "bg-slate-100 text-slate-600"
+                                      : "bg-amber-100 text-amber-800"
                                 )}
                               >
-                                {done ? "Review" : "Play"}
+                                {done
+                                  ? "Review"
+                                  : quickReview
+                                    ? "Optional"
+                                    : "Play"}
                               </span>
                             </div>
                             <p className="mt-0.5 line-clamp-2 text-sm text-slate-500">
