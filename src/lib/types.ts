@@ -1,0 +1,113 @@
+export type PartOfSpeech =
+  | "interjection"
+  | "noun"
+  | "verb"
+  | "adjective"
+  | "adverb"
+  | "phrase"
+  | "pronoun"
+  | "preposition";
+
+export type Gender = "m" | "f" | "mf" | "n/a";
+
+export type CEFR = "A1" | "A2" | "B1" | "B2" | "C1" | "C2";
+
+export interface WordCard {
+  id: string;
+  lemma: string;
+  pos: PartOfSpeech;
+  gender: Gender;
+  gloss: string;
+  examples: [string, string];
+  useWhen: string;
+  dontUseWhen: string;
+  contrast?: string;
+  formality: "neutral" | "formal" | "informal";
+  region?: string;
+  cefr: CEFR;
+}
+
+export type ExerciseType =
+  | "select"
+  | "tap-chips"
+  | "translate"
+  | "listening-choose"
+  | "situational-choose";
+
+export interface ExerciseBase {
+  id: string;
+  type: ExerciseType;
+  prompt: string;
+  explanation: string;
+  wordCardIds?: string[];
+  xp: number;
+}
+
+export interface SelectExercise extends ExerciseBase {
+  type: "select";
+  options: string[];
+  correctIndex: number;
+}
+
+export interface TapChipsExercise extends ExerciseBase {
+  type: "tap-chips";
+  chips: string[];
+  correctOrder: string[];
+}
+
+export interface TranslateExercise extends ExerciseBase {
+  type: "translate";
+  acceptedAnswers: string[];
+  hint?: string;
+}
+
+export interface ListeningChooseExercise extends ExerciseBase {
+  type: "listening-choose";
+  audioText: string;
+  options: string[];
+  correctIndex: number;
+}
+
+export interface SituationalChooseExercise extends ExerciseBase {
+  type: "situational-choose";
+  situation: string;
+  options: string[];
+  correctIndex: number;
+}
+
+export type Exercise =
+  | SelectExercise
+  | TapChipsExercise
+  | TranslateExercise
+  | ListeningChooseExercise
+  | SituationalChooseExercise;
+
+export interface Lesson {
+  id: string;
+  unitId: string;
+  title: string;
+  description: string;
+  exercises: Exercise[];
+  xpReward: number;
+}
+
+export interface Unit {
+  id: string;
+  number: number;
+  title: string;
+  description: string;
+  lessonIds: string[];
+  unlocked: boolean;
+}
+
+export interface DemoUser {
+  id: string;
+  name: string;
+  xp: number;
+  streak: number;
+  dailyGoal: number;
+  dailyXp: number;
+  completedLessonIds: string[];
+  weakWordIds: string[];
+  onboardingComplete: boolean;
+}

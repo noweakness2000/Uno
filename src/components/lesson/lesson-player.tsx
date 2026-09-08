@@ -1,0 +1,163 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { X } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
+import { Button } from "@/components/ui/button";
+import { FeedbackPanel } from "@/components/wrong-answer-panel";
+import { WordCardDrawer } from "@/components/word-card-drawer";
+import { PostLessonSummary } from "@/components/lesson/post-lesson-summary";
+import { ExerciseRenderer } from "@/components/lesson/exercise-views";
+import { getLesson, getWordCard } from "@/lib/mock-data";
+import { useLessonStore } from "@/store/lesson-store";
+import { useUserStore } from "@/store/user-store";
+import type { WordCard } from "@/lib/types";
+
+export function LessonPlayer({ lessonId }: { lessonId: string }) {
+  const router = useRouter();
+  const lesson = getLesson(lessonId);
+  const {
+    index,
+    showFeedback,
+    lastCorrect,
+    lastExplanation,
+    finished,
+    correctCount,
+    wrongCount,
+    earnedXp,
+    weakWordIds,
+    startLesson,
+    recordAnswer,
+    continueAfterFeedback,
+    reset,
+  } = useLessonStore();
+  const completeLesson = useUserStore((s) => s.completeLesson);
+  const markWeak = useUserStore((s) => s.markWeak);
+
+  const [wordOpen, setWordOpen] = useState(false);
+  const [activeCard, setActiveCard] = useState<WordCard | null>(null);
+  const [persisted, setPersisted] = useState(false);
+
+  useEffect(() => {
+    startLesson(lessonId);
+    return () => reset();
+  }, [lessonId, startLesson, reset]);
+
+  useEffect(() => {
+    if (finished && !persisted && lesson) {
+      completeLesson(lesson.id, earnedXp);
+      if (weakWordIds.length) markWeak(weakWordIds);
+      setPersisted(true);
+    }
+  }, [
+    finished,
+    persisted,
+    lesson,
+    earnedXp,
+    weakWordIds,
+    completeLesson,
+    markWeak,
+  ]);
+
+  const exercise = lesson?.exercises[index];
+  const progress = useMemo(() => {
+    if (!lesson) return 0;
+    return Math.min(100, (index / lesson.exercises.length) * 100);
+  }, [index, lesson]);
+
+  if (!lesson) {
+    return (
+      <div className="mx-auto max-w-lg p-8 text-center">
+        <p className="text-lg font-semibold">Lesson not found</p>
+        <Button className="mt-4" onClick={() => router.push("/home")}>
+          Back home
+        </Button>
+      </div>
+    );
+  }
+
+  if (finished) {
+    return (
+      <PostLessonSummary
+        lessonTitle={lesson.title}
+        correctCount={correctCount}
+        wrongCount={wrongCount}
+        earnedXp={earnedXp}
+        weakCount={weakWordIds.length}
+        onContinue={() => router.push("/home")}
+        onReview={() => router.push("/review")}
+      />
+    );
+  }
+
+  if (!exercise) return null;
+
+  const openWord = () => {
+    const id = exercise.wordCardIds?.[0];
+    if (!id) return;
+    const card = getWordCard(id);
+    if (card) {
+      setActiveCard(card);
+      setWordOpen(true);
+    }
+  };
+
+  return (
+    <div className="mx-auto flex min-h-dvh max-w-xl flex-col px-4 pb-40 pt-4">
+      <div className="mb-6 flex items-center gap-3">
+        <button
+          type="button"
+          aria-label="Exit lesson"
+          onClick={() => router.push("/home")}
+          className="rounded-full p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
+        >
+          <X className="h-5 w-5" />
+        </button>
+        <Progress value={progress} className="flex-1" />
+        <span className="text-xs font-bold tabular-nums text-slate-400">
+          {index + 1}/{lesson.exercises.length}
+        </span>
+      </div>
+
+      <div className="mb-6">
+        <p className="mb-1 text-xs font-bold uppercase tracking-wide text-emerald-600">
+          {exercise.type.replace("-", " ")}
+        </p>
+        <h1 className="text-2xl font-bold leading-snug text-slate-900">
+          {exercise.prompt}
+        </h1>
+      </div>
+
+      <ExerciseRenderer
+        key={exercise.id}
+        exercise={exercise}
+        disabled={showFeedback}
+        onSubmit={(correct) =>
+          recordAnswer({
+            correct,
+            explanation: exercise.explanation,
+            xp: exercise.xp,
+            wordCardIds: exercise.wordCardIds,
+          })
+        }
+      />
+
+      {showFeedback && lastCorrect !== null && (
+        <FeedbackPanel
+          correct={lastCorrect}
+          explanation={lastExplanation}
+          hasWordCard={Boolean(exercise.wordCardIds?.length)}
+          onOpenWordCard={openWord}
+          onContinue={() => continueAfterFeedback(lesson.exercises.length)}
+        />
+      )}
+
+      <WordCardDrawer
+        card={activeCard}
+        open={wordOpen}
+        onOpenChange={setWordOpen}
+      />
+    </div>
+  );
+}
