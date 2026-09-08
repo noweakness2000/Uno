@@ -4,6 +4,11 @@
  */
 import type { DemoUser, Lesson, Unit, WordCard } from "./types";
 import { audioSrcFor } from "./audio";
+import {
+  INTERMEDIATE_LESSONS,
+  INTERMEDIATE_UNITS_META,
+  INTERMEDIATE_WORD_CARDS,
+} from "./content/intermediate";
 
 export const DEMO_USER: DemoUser = {
   id: "demo-1",
@@ -874,6 +879,7 @@ export const WORD_CARDS: Record<string, WordCard> = {
     formality: "neutral",
     cefr: "A1",
   },
+  ...INTERMEDIATE_WORD_CARDS,
 };
 
 function teach(
@@ -2335,6 +2341,7 @@ export const LESSONS: Record<string, Lesson> = {
       },
     ],
   },
+  ...INTERMEDIATE_LESSONS,
 };
 
 export const UNITS: Unit[] = [
@@ -2345,6 +2352,7 @@ export const UNITS: Unit[] = [
     description: "Greetings, names, and polite essentials.",
     lessonIds: ["u1-l1", "u1-l2", "u1-l3", "u1-l4"],
     unlocked: true,
+    track: "beginner",
   },
   {
     id: "unit-2",
@@ -2353,6 +2361,7 @@ export const UNITS: Unit[] = [
     description: "Origin, where you live, and languages you speak.",
     lessonIds: ["u2-l1", "u2-l2", "u2-l3"],
     unlocked: true,
+    track: "beginner",
   },
   {
     id: "unit-3",
@@ -2361,31 +2370,9 @@ export const UNITS: Unit[] = [
     description: "Counting, phone, age, and everyday prices.",
     lessonIds: ["u3-l1", "u3-l2", "u3-l3"],
     unlocked: true,
+    track: "beginner",
   },
-  {
-    id: "unit-4",
-    number: 4,
-    title: "Around town",
-    description: "Asking for places — carro, departamento, and more.",
-    lessonIds: [],
-    unlocked: false,
-  },
-  {
-    id: "unit-5",
-    number: 5,
-    title: "Food & drink",
-    description: "Order jugo, café, and everyday snacks.",
-    lessonIds: [],
-    unlocked: false,
-  },
-  {
-    id: "unit-6",
-    number: 6,
-    title: "Tech talk",
-    description: "Celular deeper — apps and modern life vocab.",
-    lessonIds: [],
-    unlocked: false,
-  },
+  ...INTERMEDIATE_UNITS_META,
 ];
 
 export const DAILY_GOAL_OPTIONS = [10, 20, 30, 50] as const;

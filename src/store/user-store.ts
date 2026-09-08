@@ -5,6 +5,9 @@ import { persist } from "zustand/middleware";
 import type { DemoUser, StartingLevel } from "@/lib/types";
 import { DEMO_USER as DEFAULT_USER } from "@/lib/mock-data";
 import {
+  beginnerLessonIds,
+  BEGINNER_UNIT_IDS,
+  FIRST_INTERMEDIATE_UNIT_ID,
   recommendedUnitForLevel,
   skippedLessonsForLevel,
   skippedUnitsForLevel,
@@ -28,6 +31,8 @@ interface UserState {
   clearWeak: (wordId: string) => void;
   /** Mark Unit 1 skipped/complete and aim Continue at Unit 2. */
   skipUnit1: () => void;
+  /** Jump absolute beginners to Intermediate (Unit 4+). */
+  jumpToIntermediate: () => void;
   resetDemo: () => void;
 }
 
@@ -126,6 +131,25 @@ export const useUserStore = create<UserState>()(
               completedLessonIds: Array.from(completed),
               skippedUnitIds: Array.from(skipped),
               recommendedUnitId: UNIT_2_ID,
+            },
+          };
+        }),
+      jumpToIntermediate: () =>
+        set((s) => {
+          const completed = new Set([
+            ...s.user.completedLessonIds,
+            ...beginnerLessonIds(),
+          ]);
+          const skipped = new Set([
+            ...(s.user.skippedUnitIds ?? []),
+            ...BEGINNER_UNIT_IDS,
+          ]);
+          return {
+            user: {
+              ...s.user,
+              completedLessonIds: Array.from(completed),
+              skippedUnitIds: Array.from(skipped),
+              recommendedUnitId: FIRST_INTERMEDIATE_UNIT_ID,
             },
           };
         }),

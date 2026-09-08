@@ -18,6 +18,8 @@ export type StartingLevel =
   | "some_words"
   | "conversational_basics";
 
+export type UnitTrack = "beginner" | "intermediate";
+
 export interface ConjugationGroup {
   label: string;
   forms: { person: string; form: string }[];
@@ -148,6 +150,8 @@ export interface Unit {
   description: string;
   lessonIds: string[];
   unlocked: boolean;
+  /** Beginner path (1–3) vs Intermediate (4+). */
+  track?: UnitTrack;
 }
 
 export interface DemoUser {

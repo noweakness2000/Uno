@@ -3,36 +3,62 @@
 import Link from "next/link";
 import { Check, Lock, Play, RotateCcw } from "lucide-react";
 import { UNITS, getLesson } from "@/lib/mock-data";
-import { isUnit1QuickReview, unitBadgeLabel } from "@/lib/placement";
+import {
+  isBeginnerOptionalReview,
+  isIntermediateUnit,
+  isIntermediateUnlockedFor,
+  isUnit1QuickReview,
+  unitBadgeLabel,
+} from "@/lib/placement";
 import { useUserStore } from "@/store/user-store";
 import { cn } from "@/lib/utils";
 import type { Unit } from "@/lib/types";
 
-/** Units 1–3 browse + play for every starting level; 4+ stay locked. */
-function isUnitUnlocked(unit: Unit): boolean {
+function isUnitUnlocked(unit: Unit, intermediateOpen: boolean): boolean {
   if (!unit.unlocked) return false;
-  return unit.number <= 3;
+  if (unit.number <= 3) return true;
+  if (isIntermediateUnit(unit)) return intermediateOpen;
+  return false;
 }
 
 export function UnitPath() {
   const user = useUserStore((s) => s.user);
   const completed = user.completedLessonIds;
+  const intermediateOpen = isIntermediateUnlockedFor(user);
+  let lastTrack: string | null = null;
 
   return (
     <div className="space-y-10">
       {UNITS.map((unit) => {
-        const unlocked = isUnitUnlocked(unit);
+        const unlocked = isUnitUnlocked(unit, intermediateOpen);
         const badge = unitBadgeLabel(user, unit);
-        const quickReview = unit.id === "unit-1" && isUnit1QuickReview(user);
+        const quickReview =
+          (unit.id === "unit-1" && isUnit1QuickReview(user)) ||
+          isBeginnerOptionalReview(user, unit.id);
+        const intermediate = isIntermediateUnit(unit);
+        const track = intermediate ? "intermediate" : "beginner";
+        const showTrackDivider = track !== lastTrack;
+        lastTrack = track;
         return (
           <section key={unit.id} className="relative">
+            {showTrackDivider && (
+              <div className="mb-4 flex items-center gap-3 px-1">
+                <div className={"h-px flex-1 " + (intermediate ? "bg-violet-200" : "bg-emerald-200")} />
+                <span className={"rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider " + (intermediate ? "bg-violet-100 text-violet-700" : "bg-emerald-100 text-emerald-700")}>
+                  {intermediate ? "Intermediate" : "Beginner"}
+                </span>
+                <div className={"h-px flex-1 " + (intermediate ? "bg-violet-200" : "bg-emerald-200")} />
+              </div>
+            )}
             <div
               className={cn(
                 "mb-4 rounded-3xl px-5 py-4",
                 unlocked
                   ? quickReview
                     ? "bg-gradient-to-r from-slate-500 to-slate-600 text-white shadow-lg shadow-slate-500/20"
-                    : "bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg shadow-emerald-500/20"
+                    : intermediate
+                      ? "bg-gradient-to-r from-violet-500 to-indigo-500 text-white shadow-lg shadow-violet-500/20"
+                      : "bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg shadow-emerald-500/20"
                   : "bg-slate-100 text-slate-400"
               )}
             >
@@ -53,20 +79,29 @@ export function UnitPath() {
                   unlocked
                     ? quickReview
                       ? "text-slate-200"
-                      : "text-emerald-50"
+                      : intermediate
+                        ? "text-violet-50"
+                        : "text-emerald-50"
                     : "text-slate-400"
                 )}
               >
                 {quickReview
-                  ? "Optional review — greetings & polite basics."
-                  : unit.description}
+                  ? "Optional review — beginner path."
+                  : !unlocked && intermediate
+                    ? "Intermediate — jump here if ready, or finish Units 1–3 first."
+                    : unit.description}
               </p>
             </div>
 
             {!unlocked && (
-              <div className="flex items-center justify-center gap-2 rounded-2xl border border-dashed border-slate-200 bg-slate-50 py-8 text-sm font-medium text-slate-400">
-                <Lock className="h-4 w-4" />
-                Coming soon
+              <div className="flex flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-violet-200 bg-violet-50/50 py-8 text-sm font-medium text-violet-400">
+                <div className="flex items-center gap-2">
+                  <Lock className="h-4 w-4" />
+                  Intermediate — jump here if ready
+                </div>
+                <p className="max-w-xs text-center text-xs text-violet-400/80">
+                  Finish beginner units, or use Jump to Intermediate on Home if you are around Duolingo ~unit 24.
+                </p>
               </div>
             )}
 
@@ -96,7 +131,9 @@ export function UnitPath() {
                               ? "border-emerald-200 hover:border-emerald-400"
                               : quickReview
                                 ? "border-slate-200 hover:border-slate-400"
-                                : "border-amber-200 hover:border-amber-400"
+                                : intermediate
+                                  ? "border-violet-200 hover:border-violet-400"
+                                  : "border-amber-200 hover:border-amber-400"
                           )}
                         >
                           <div
@@ -106,7 +143,9 @@ export function UnitPath() {
                                 ? "bg-emerald-500"
                                 : quickReview
                                   ? "bg-slate-400"
-                                  : "bg-amber-400"
+                                  : intermediate
+                                    ? "bg-violet-500"
+                                    : "bg-amber-400"
                             )}
                           >
                             {done ? (
@@ -129,7 +168,9 @@ export function UnitPath() {
                                     ? "bg-emerald-100 text-emerald-700"
                                     : quickReview
                                       ? "bg-slate-100 text-slate-600"
-                                      : "bg-amber-100 text-amber-800"
+                                      : intermediate
+                                        ? "bg-violet-100 text-violet-800"
+                                        : "bg-amber-100 text-amber-800"
                                 )}
                               >
                                 {done

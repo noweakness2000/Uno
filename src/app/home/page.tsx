@@ -9,6 +9,7 @@ import { UnitPath } from "@/components/home/unit-path";
 import { Button } from "@/components/ui/button";
 import { getLesson } from "@/lib/mock-data";
 import {
+  canJumpToIntermediate,
   canSkipAhead,
   getPlacementBanner,
   getRecommendedLessonId,
@@ -20,6 +21,7 @@ export default function HomePage() {
   const resetDemo = useUserStore((s) => s.resetDemo);
   const updateName = useUserStore((s) => s.updateName);
   const skipUnit1 = useUserStore((s) => s.skipUnit1);
+  const jumpToIntermediate = useUserStore((s) => s.jumpToIntermediate);
   const weakCount = user.weakWordIds.length;
   const [editing, setEditing] = useState(false);
   const [draftName, setDraftName] = useState(user.name);
@@ -28,6 +30,7 @@ export default function HomePage() {
   const recommended = getLesson(recommendedId);
   const banner = getPlacementBanner(user);
   const showSkip = canSkipAhead(user);
+  const showJumpIntermediate = canJumpToIntermediate(user);
 
   const saveName = () => {
     updateName(draftName);
@@ -134,9 +137,9 @@ export default function HomePage() {
               </Button>
             </Link>
             {user.startingLevel === "conversational_basics" && (
-              <Link href="/lesson/u2-l3" className="flex-1">
+              <Link href="/lesson/u4-l1" className="flex-1">
                 <Button variant="secondary" className="w-full min-h-11" size="lg">
-                  I&apos;m comfortable — Unit 2 check
+                  Intermediate — Unit 4
                 </Button>
               </Link>
             )}
@@ -149,6 +152,16 @@ export default function HomePage() {
             >
               <SkipForward className="h-4 w-4" />
               Skip ahead — start Unit 2
+            </button>
+          )}
+          {showJumpIntermediate && (
+            <button
+              type="button"
+              onClick={() => jumpToIntermediate()}
+              className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-dashed border-violet-300 bg-violet-50 px-3 py-2.5 text-sm font-semibold text-violet-700 hover:border-violet-500"
+            >
+              <SkipForward className="h-4 w-4" />
+              Intermediate — jump here if ready (Unit 4)
             </button>
           )}
         </div>

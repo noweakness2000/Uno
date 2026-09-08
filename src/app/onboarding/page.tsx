@@ -19,22 +19,23 @@ const LEVEL_OPTIONS: {
   {
     id: "absolute_beginner",
     title: "Absolute beginner",
-    blurb: "Little or no Spanish — start at Unit 1, Lesson 1.",
+    blurb:
+      "Little or no Spanish — start at Unit 1. Intermediate stays locked until you're ready (or jump from Home).",
     badge: "A0",
   },
   {
     id: "some_words",
     title: "I know some words",
     blurb:
-      "Greetings and basics, not fluent — Unit 1 is optional review; we recommend Unit 2.",
+      "Greetings and basics — Unit 1 optional; we recommend Unit 2. Intermediate (Unit 4+) unlocked to browse.",
     badge: "False beginner",
   },
   {
     id: "conversational_basics",
     title: "I've practiced for a while",
     blurb:
-      "Can handle greetings — start past pure hola. Unit 1 marked optional; Continue goes to Unit 2.",
-    badge: "Stronger",
+      "Around Duolingo Spanish ~unit 24 / strong A2 — Continue jumps to Intermediate Unit 4. Units 1–3 optional review.",
+    badge: "A2 / early B1",
   },
 ];
 
