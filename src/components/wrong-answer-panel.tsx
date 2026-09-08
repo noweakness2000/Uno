@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 interface WrongAnswerPanelProps {
   correct: boolean;
   explanation: string;
+  correctAnswer?: string;
   onContinue: () => void;
   onOpenWordCard?: () => void;
   hasWordCard?: boolean;
@@ -15,6 +16,7 @@ interface WrongAnswerPanelProps {
 export function FeedbackPanel({
   correct,
   explanation,
+  correctAnswer,
   onContinue,
   onOpenWordCard,
   hasWordCard,
@@ -47,6 +49,12 @@ export function FeedbackPanel({
             <p className="mt-1 text-sm leading-relaxed text-slate-700">
               {explanation}
             </p>
+            {!correct && correctAnswer && (
+              <p className="mt-2 text-sm text-slate-800">
+                Correct answer:{" "}
+                <strong className="font-extrabold">{correctAnswer}</strong>
+              </p>
+            )}
             {!correct && (
               <p className="mt-2 text-xs font-medium text-rose-700/80">
                 Marked for review — keep going.

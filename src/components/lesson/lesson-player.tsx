@@ -10,6 +10,7 @@ import { WordCardDrawer } from "@/components/word-card-drawer";
 import { PostLessonSummary } from "@/components/lesson/post-lesson-summary";
 import { ExerciseRenderer } from "@/components/lesson/exercise-views";
 import { getLesson, getWordCard } from "@/lib/mock-data";
+import { getCorrectAnswerDisplay } from "@/lib/correct-answer";
 import { useLessonStore } from "@/store/lesson-store";
 import { useUserStore } from "@/store/user-store";
 import type { WordCard } from "@/lib/types";
@@ -22,6 +23,7 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
     showFeedback,
     lastCorrect,
     lastExplanation,
+    lastCorrectAnswer,
     finished,
     correctCount,
     wrongCount,
@@ -139,6 +141,7 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
             explanation: exercise.explanation,
             xp: exercise.xp,
             wordCardIds: exercise.wordCardIds,
+            correctAnswer: getCorrectAnswerDisplay(exercise),
           })
         }
       />
@@ -147,6 +150,7 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
         <FeedbackPanel
           correct={lastCorrect}
           explanation={lastExplanation}
+          correctAnswer={lastCorrectAnswer}
           hasWordCard={Boolean(exercise.wordCardIds?.length)}
           onOpenWordCard={openWord}
           onContinue={() => continueAfterFeedback(lesson.exercises.length)}

@@ -6,7 +6,7 @@ import type { DemoUser, Lesson, Unit, WordCard } from "./types";
 
 export const DEMO_USER: DemoUser = {
   id: "demo-1",
-  name: "Alex",
+  name: "",
   xp: 0,
   streak: 0,
   dailyGoal: 20,
@@ -14,6 +14,7 @@ export const DEMO_USER: DemoUser = {
   completedLessonIds: [],
   weakWordIds: [],
   onboardingComplete: false,
+  startingLevel: "absolute_beginner",
 };
 
 export const WORD_CARDS: Record<string, WordCard> = {
@@ -268,7 +269,13 @@ export const LESSONS: Record<string, Lesson> = {
         id: "ex-5",
         type: "translate",
         prompt: "Translate to Spanish: “Nice to meet you.”",
-        acceptedAnswers: ["mucho gusto", "¡mucho gusto!", "mucho gusto!"],
+        acceptedAnswers: [
+          "mucho gusto",
+          "¡mucho gusto!",
+          "mucho gusto!",
+          "encantado",
+          "encantada",
+        ],
         hint: "Two words; very common when meeting someone new.",
         explanation:
           "Mucho gusto is the go-to phrase when you meet someone. Encantado/a also works and feels a bit more formal.",
@@ -331,7 +338,12 @@ export const LESSONS: Record<string, Lesson> = {
         id: "ex-10",
         type: "translate",
         prompt: "Translate to Spanish: “Thank you.”",
-        acceptedAnswers: ["gracias", "¡gracias!", "muchas gracias"],
+        acceptedAnswers: [
+          "gracias",
+          "¡gracias!",
+          "muchas gracias",
+          "mil gracias",
+        ],
         hint: "One word you'll use every day.",
         explanation:
           "Gracias is thank you; muchas gracias turns up the gratitude.",
@@ -389,7 +401,7 @@ export const LESSONS: Record<string, Lesson> = {
         id: "u1l2-2",
         type: "translate",
         prompt: "Translate: “Please.”",
-        acceptedAnswers: ["por favor"],
+        acceptedAnswers: ["por favor", "porfa"],
         explanation: "Por favor goes at the end or start of a polite request.",
         wordCardIds: ["por"],
         xp: 3,
@@ -441,7 +453,11 @@ export const LESSONS: Record<string, Lesson> = {
         id: "u1l2-7",
         type: "translate",
         prompt: "Translate: “Good afternoon.”",
-        acceptedAnswers: ["buenas tardes", "¡buenas tardes!"],
+        acceptedAnswers: [
+          "buenas tardes",
+          "¡buenas tardes!",
+          "buenas tarde",
+        ],
         explanation: "Buenas tardes from midday into the evening.",
         wordCardIds: ["buenas-tardes"],
         xp: 3,
@@ -455,6 +471,26 @@ export const LESSONS: Record<string, Lesson> = {
         correctIndex: 0,
         explanation: "Mucho gusto = nice to meet you.",
         wordCardIds: ["mucho-gusto"],
+        xp: 3,
+      },
+      {
+        id: "u1l2-9",
+        type: "translate",
+        prompt: "Translate: “Excuse me” / light “sorry.”",
+        acceptedAnswers: [
+          "perdón",
+          "perdon",
+          "disculpe",
+          "desculpe",
+          "discúlpame",
+          "disculpame",
+          "disculpa",
+          "dispensa",
+        ],
+        hint: "Common light apology / attention-getter.",
+        explanation:
+          "Perdón is the everyday light “excuse me / sorry.” Disculpe / discúlpame and dispensa are also accepted near-synonyms.",
+        wordCardIds: ["perdon"],
         xp: 3,
       },
     ],
@@ -506,7 +542,7 @@ export const LESSONS: Record<string, Lesson> = {
         id: "u2l1-4",
         type: "translate",
         prompt: "Translate: “Hello.”",
-        acceptedAnswers: ["hola", "¡hola!"],
+        acceptedAnswers: ["hola", "¡hola!", "ola"],
         explanation: "Hola is the universal casual hello.",
         wordCardIds: ["hola"],
         xp: 2,
@@ -552,7 +588,13 @@ export const LESSONS: Record<string, Lesson> = {
         id: "u2l1-8",
         type: "translate",
         prompt: "Translate: “Goodbye.”",
-        acceptedAnswers: ["adiós", "adios", "¡adiós!"],
+        acceptedAnswers: [
+          "adiós",
+          "adios",
+          "¡adiós!",
+          "hasta luego",
+          "nos vemos",
+        ],
         explanation: "Adiós for goodbye; hasta luego if you'll see them soon.",
         wordCardIds: ["adios"],
         xp: 3,
@@ -576,6 +618,7 @@ export const UNITS: Unit[] = [
     title: "Meeting people",
     description: "Introductions and friendly check-ins.",
     lessonIds: ["u2-l1"],
+    // Base flag; UnitPath also gates on startingLevel (conversational_basics).
     unlocked: true,
   },
   {

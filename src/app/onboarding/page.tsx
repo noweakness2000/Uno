@@ -7,15 +7,45 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DAILY_GOAL_OPTIONS } from "@/lib/mock-data";
 import { useUserStore } from "@/store/user-store";
 import { cn } from "@/lib/utils";
-import { Sparkles } from "lucide-react";
+import type { StartingLevel } from "@/lib/types";
+import { Sparkles, User } from "lucide-react";
+
+const LEVEL_OPTIONS: {
+  id: StartingLevel;
+  title: string;
+  blurb: string;
+  badge: string;
+}[] = [
+  {
+    id: "absolute_beginner",
+    title: "Absolute beginner",
+    blurb: "Start at Unit 1 — brand new to Spanish.",
+    badge: "A0",
+  },
+  {
+    id: "some_words",
+    title: "I know some words",
+    blurb: "Still Unit 1 for now — we remember you’re a false beginner.",
+    badge: "False beginner",
+  },
+  {
+    id: "conversational_basics",
+    title: "Conversational basics",
+    blurb: "Unlock Units 1–2 visually. True placement test comes later.",
+    badge: "A2-ish",
+  },
+];
 
 export default function OnboardingPage() {
   const router = useRouter();
   const completeOnboarding = useUserStore((s) => s.completeOnboarding);
   const [goal, setGoal] = useState<number>(20);
+  const [name, setName] = useState("");
+  const [startingLevel, setStartingLevel] =
+    useState<StartingLevel>("absolute_beginner");
 
   const start = () => {
-    completeOnboarding(goal);
+    completeOnboarding(goal, name, startingLevel);
     router.push("/home");
   };
 
@@ -32,6 +62,59 @@ export default function OnboardingPage() {
           LatAm-neutral Spanish. Explanations first. No hearts, no lockouts.
         </p>
       </div>
+
+      <Card className="mb-4">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-lg">
+            <User className="h-5 w-5 text-emerald-500" />
+            What should we call you?
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Display name (optional)"
+            className="h-12 w-full rounded-2xl border-2 border-slate-200 px-4 text-base font-medium outline-none focus:border-emerald-400"
+            autoComplete="nickname"
+            maxLength={40}
+          />
+          <p className="mt-2 text-xs text-slate-500">
+            No account needed — progress stays in this browser. Leave blank to
+            use “Learner.”
+          </p>
+        </CardContent>
+      </Card>
+
+      <Card className="mb-4">
+        <CardHeader>
+          <CardTitle className="text-lg">Where are you starting?</CardTitle>
+        </CardHeader>
+        <CardContent className="grid gap-3">
+          {LEVEL_OPTIONS.map((opt) => (
+            <button
+              key={opt.id}
+              type="button"
+              onClick={() => setStartingLevel(opt.id)}
+              className={cn(
+                "rounded-2xl border-2 px-4 py-4 text-left transition-all",
+                startingLevel === opt.id
+                  ? "border-emerald-500 bg-emerald-50 shadow-sm"
+                  : "border-slate-200 bg-white hover:border-slate-300"
+              )}
+            >
+              <div className="flex items-center justify-between gap-2">
+                <p className="font-bold text-slate-900">{opt.title}</p>
+                <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-slate-500">
+                  {opt.badge}
+                </span>
+              </div>
+              <p className="mt-1 text-xs text-slate-500">{opt.blurb}</p>
+            </button>
+          ))}
+        </CardContent>
+      </Card>
 
       <Card className="mb-6">
         <CardHeader>
@@ -59,14 +142,6 @@ export default function OnboardingPage() {
           ))}
         </CardContent>
       </Card>
-
-      <div className="mb-6 rounded-2xl border border-slate-200 bg-white p-4 text-sm text-slate-600">
-        <p className="font-semibold text-slate-800">Demo learner</p>
-        <p className="mt-1">
-          You&apos;ll continue as <strong>Alex</strong> — no account needed.
-          Progress is saved in this browser only.
-        </p>
-      </div>
 
       <Button size="lg" className="w-full" onClick={start}>
         Start learning

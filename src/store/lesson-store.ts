@@ -13,6 +13,7 @@ interface LessonSessionState {
   showFeedback: boolean;
   lastCorrect: boolean | null;
   lastExplanation: string;
+  lastCorrectAnswer: string;
   finished: boolean;
   startLesson: (lessonId: string) => void;
   recordAnswer: (opts: {
@@ -20,6 +21,7 @@ interface LessonSessionState {
     explanation: string;
     xp: number;
     wordCardIds?: string[];
+    correctAnswer?: string;
   }) => void;
   continueAfterFeedback: (totalExercises: number) => void;
   reset: () => void;
@@ -35,18 +37,20 @@ const initial = {
   showFeedback: false,
   lastCorrect: null as boolean | null,
   lastExplanation: "",
+  lastCorrectAnswer: "",
   finished: false,
 };
 
 export const useLessonStore = create<LessonSessionState>((set, get) => ({
   ...initial,
   startLesson: (lessonId) => set({ ...initial, lessonId }),
-  recordAnswer: ({ correct, explanation, xp, wordCardIds }) => {
+  recordAnswer: ({ correct, explanation, xp, wordCardIds, correctAnswer }) => {
     const weak = wordCardIds ?? [];
     set((s) => ({
       showFeedback: true,
       lastCorrect: correct,
       lastExplanation: explanation,
+      lastCorrectAnswer: correctAnswer ?? "",
       correctCount: s.correctCount + (correct ? 1 : 0),
       wrongCount: s.wrongCount + (correct ? 0 : 1),
       earnedXp: s.earnedXp + (correct ? xp : Math.max(1, Math.floor(xp / 2))),
@@ -61,7 +65,12 @@ export const useLessonStore = create<LessonSessionState>((set, get) => ({
     if (next >= totalExercises) {
       set({ showFeedback: false, finished: true, index: next });
     } else {
-      set({ showFeedback: false, index: next, lastCorrect: null });
+      set({
+        showFeedback: false,
+        index: next,
+        lastCorrect: null,
+        lastCorrectAnswer: "",
+      });
     }
   },
   reset: () => set({ ...initial }),

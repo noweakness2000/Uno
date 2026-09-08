@@ -12,6 +12,12 @@ export type Gender = "m" | "f" | "mf" | "n/a";
 
 export type CEFR = "A1" | "A2" | "B1" | "B2" | "C1" | "C2";
 
+/** Self-claimed placement — true placement test comes later. */
+export type StartingLevel =
+  | "absolute_beginner"
+  | "some_words"
+  | "conversational_basics";
+
 export interface WordCard {
   id: string;
   lemma: string;
@@ -110,4 +116,5 @@ export interface DemoUser {
   completedLessonIds: string[];
   weakWordIds: string[];
   onboardingComplete: boolean;
+  startingLevel: StartingLevel;
 }

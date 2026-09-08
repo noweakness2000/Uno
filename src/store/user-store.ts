@@ -2,13 +2,18 @@
 
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { DemoUser } from "@/lib/types";
+import type { DemoUser, StartingLevel } from "@/lib/types";
 import { DEMO_USER as DEFAULT_USER } from "@/lib/mock-data";
 
 interface UserState {
   user: DemoUser;
   setDailyGoal: (goal: number) => void;
-  completeOnboarding: (goal: number) => void;
+  completeOnboarding: (
+    goal: number,
+    name: string,
+    startingLevel: StartingLevel
+  ) => void;
+  updateName: (name: string) => void;
   addXp: (amount: number) => void;
   completeLesson: (lessonId: string, earnedXp: number) => void;
   markWeak: (wordIds: string[]) => void;
@@ -22,14 +27,20 @@ export const useUserStore = create<UserState>()(
       user: { ...DEFAULT_USER },
       setDailyGoal: (goal) =>
         set((s) => ({ user: { ...s.user, dailyGoal: goal } })),
-      completeOnboarding: (goal) =>
+      completeOnboarding: (goal, name, startingLevel) =>
         set((s) => ({
           user: {
             ...s.user,
             dailyGoal: goal,
+            name: name.trim() || "Learner",
+            startingLevel,
             onboardingComplete: true,
             streak: Math.max(s.user.streak, 1),
           },
+        })),
+      updateName: (name) =>
+        set((s) => ({
+          user: { ...s.user, name: name.trim() || s.user.name },
         })),
       addXp: (amount) =>
         set((s) => ({

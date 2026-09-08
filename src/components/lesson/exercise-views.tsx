@@ -1,10 +1,11 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Volume2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { speakPracticeAudio } from "@/lib/tts";
+import { speakPracticeAudio, hasSpanishVoice } from "@/lib/tts";
+import { answersMatch, chipSequencesMatch } from "@/lib/grading";
 import type {
   Exercise,
   ListeningChooseExercise,
@@ -84,10 +85,7 @@ export function TapChipsView({
   }, [built, exercise.chips]);
 
   const check = () => {
-    const ok =
-      built.length === exercise.correctOrder.length &&
-      built.every((w, i) => w === exercise.correctOrder[i]);
-    onSubmit(ok);
+    onSubmit(chipSequencesMatch(built, exercise.correctOrder));
   };
 
   return (
@@ -154,20 +152,10 @@ export function TranslateView({
 }: CommonProps & { exercise: TranslateExercise }) {
   const [value, setValue] = useState("");
 
-  const normalize = (s: string) =>
-    s
-      .trim()
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/\p{M}/gu, "")
-      .replace(/[¡!¿?.,]/g, "")
-      .replace(/\s+/g, " ");
-
   const check = () => {
-    const answer = normalize(value);
-    const ok = exercise.acceptedAnswers.some((a) => normalize(a) === answer);
+    const ok = exercise.acceptedAnswers.some((a) => answersMatch(a, value));
     onSubmit(ok);
-  };
+  };;
 
   return (
     <div className="space-y-4">
@@ -187,6 +175,9 @@ export function TranslateView({
         autoCapitalize="off"
         autoCorrect="off"
       />
+      <p className="text-xs text-slate-500">
+        Accents are optional (e.g. perdón = perdon).
+      </p>
       <Button
         className="w-full"
         size="lg"
@@ -205,6 +196,17 @@ export function ListeningChooseView({
   onSubmit,
 }: CommonProps & { exercise: ListeningChooseExercise }) {
   const [selected, setSelected] = useState<number | null>(null);
+  const [showVoiceTip, setShowVoiceTip] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    void hasSpanishVoice().then((ok) => {
+      if (!cancelled) setShowVoiceTip(!ok);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   return (
     <div className="space-y-4">
@@ -223,6 +225,12 @@ export function ListeningChooseView({
         <p className="text-xs text-violet-700/80">
           Browser TTS stub · practice audio (not studio quality)
         </p>
+        {showVoiceTip && (
+          <p className="max-w-sm text-center text-[11px] leading-snug text-violet-600/90">
+            Tip: install a Spanish voice pack (Windows/macOS) for clearer
+            LatAm-sounding practice audio.
+          </p>
+        )}
       </div>
       <div className="grid gap-3">
         {exercise.options.map((opt, i) => (
