@@ -2,6 +2,8 @@ import Link from "next/link";
 import { isGoogleAuthConfigured } from "@/auth";
 import { GoogleSignInButton } from "./google-sign-in-button";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "Sign in — Uno",
 };
