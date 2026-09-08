@@ -5,7 +5,7 @@ import { Volume2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SpeakButton } from "@/components/speak-button";
 import { cn } from "@/lib/utils";
-import { speakPracticeAudio, hasSpanishVoice } from "@/lib/tts";
+import { hasSpanishVoice } from "@/lib/tts";
 import { looksSpanish, playSpanishAudio } from "@/lib/audio";
 import { answersMatch, chipSequencesMatch } from "@/lib/grading";
 import type {
@@ -242,11 +242,8 @@ export function ListeningChooseView({
   }, [hasMp3]);
 
   const playAudio = () => {
-    if (exercise.audioSrc) {
-      playSpanishAudio(exercise.audioText, exercise.audioSrc);
-      return;
-    }
-    speakPracticeAudio(exercise.audioText);
+    // Always resolve baked Neural2 first (audioSrc / slug); browser TTS only if missing.
+    playSpanishAudio(exercise.audioText, exercise.audioSrc);
   };
 
   return (

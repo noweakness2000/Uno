@@ -7,6 +7,9 @@ Voices (es-US Neural2 — closest LatAm Neural2; no es-MX Neural2 exists):
 
 Output: public/audio/es-mx/{slug}-f.mp3 and {slug}-m.mp3
 
+Harvests speakable Spanish from src/lib content (lemmas, examples, audioText,
+target phrases, Spanish options, match pairs) plus any EXTRA_PHRASES below.
+
 Requires:
   pip install google-cloud-texttospeech
   export GOOGLE_APPLICATION_CREDENTIALS=/path/to/credentials.json
@@ -27,8 +30,14 @@ VOICES = {
     "m": "es-US-Neural2-B",
 }
 
-# Existing U1–U2 + Unit 3 Numbers phrases
-PHRASES: list[str] = [
+ROOT = Path(__file__).resolve().parents[1]
+CONTENT_FILES = [
+    ROOT / "src" / "lib" / "content" / "intermediate.ts",
+    ROOT / "src" / "lib" / "mock-data.ts",
+]
+
+# Seed / legacy phrases (U1–U3 + extras). Harvest merges these with content.
+EXTRA_PHRASES: list[str] = [
     "adiós",
     "Adiós, nos vemos pronto.",
     "¡Adiós! Que te vaya bien.",
@@ -131,7 +140,6 @@ PHRASES: list[str] = [
     "Vivo en Estados Unidos",
     "Vivo en Estados Unidos.",
     "Yo también hablo español.",
-    # Unit 3 — Numbers that matter
     "uno",
     "una",
     "Uno, dos, tres.",
@@ -171,95 +179,116 @@ PHRASES: list[str] = [
     "gratis",
     "Es gratis.",
     "El agua es gratis.",
-    # Intermediate Units 4–8
-    'Ayer trabajé hasta tarde.',
-    'Camino al trabajo.',
-    'Comí tacos hoy.',
-    'Dije la verdad.',
-    'Disculpe, ¿cómo llego a la estación?',
-    'Disculpe, ¿me puede traer un menú?',
-    'Dobla a la izquierda.',
-    'El banco está a la derecha.',
-    'El café está cerca.',
-    'El departamento es pequeño pero cómodo.',
-    'Fui al supermercado ayer.',
-    'Gira a la derecha.',
-    'Gracias, pero ahora no puedo.',
-    'Hablé con mi hermana ayer.',
-    'Hice la tarea anoche.',
-    'Hoy comí temprano.',
-    'Hoy voy al centro.',
-    'La cuenta, por favor.',
-    'La estación está lejos.',
-    'La farmacia está a la izquierda.',
-    'Me despierto a las siete.',
-    'Me despierto temprano todos los días.',
-    'Me gusta el café con leche.',
-    'Me gusta el café.',
-    'Me gustan los tacos.',
-    'Me parece bien.',
-    'Me parece una buena idea.',
-    'No queda muy lejos caminando.',
-    'No quiero llegar tarde.',
-    'No tuve tiempo ayer.',
-    'Quiero salir el viernes.',
-    'Quiero un jugo de naranja.',
-    'Quiero un jugo, por favor.',
-    'Sigue todo recto.',
-    'Tal vez otro día. ¡Gracias!',
-    'Todo recto y luego a la derecha.',
-    'Tomo el metro todos los días.',
-    'Trabajo en una oficina.',
-    'Trabajo todos los días.',
-    'Tuve una reunión hoy.',
-    'Vivo cerca del centro.',
-    'Vivo en un departamento en la ciudad.',
-    'Voy a cocinar esta noche.',
-    'Voy a estudiar esta noche.',
-    'Voy al centro en metro.',
-    'Voy al trabajo en carro.',
-    'ayer',
-    'café',
-    'carro',
-    'cerca',
-    'departamento',
-    'el centro',
-    'hoy',
-    'jugo',
-    'lejos',
-    'me gusta',
-    'metro',
-    'quiero',
-    '¿A qué hora te despiertas?',
-    '¿Cómo llego al centro?',
-    '¿Dónde está el baño?',
-    '¿Dónde está la estación de metro?',
-    '¿Dónde está la estación?',
-    '¿En qué trabajas?',
-    '¿Hablaste con el mesero?',
-    '¿Me recomienda algo, por favor?',
-    '¿Me trae la cuenta, por favor?',
-    '¿Quieres caminar al centro?',
-    '¿Qué comiste ayer?',
-    '¿Qué hiciste ayer?',
-    '¿Qué hiciste hoy?',
-    '¿Qué quieres comer?',
-    '¿Qué te dijo?',
-    '¿Te gustaría ir al cine?',
-    '¿Te gustaría tomar un café?',
-    '¿Tienen jugo natural?',
-    '¿Tienes carro?',
-    '¿Vas a venir?',
 ]
 
 
 def slugify(text: str) -> str:
+    """Match src/lib/audio.ts slugifyAudio exactly."""
     nfkd = unicodedata.normalize("NFKD", text)
     ascii_text = "".join(c for c in nfkd if not unicodedata.combining(c))
     ascii_text = ascii_text.lower()
     ascii_text = re.sub(r"[¿?¡!,.]", "", ascii_text)
     ascii_text = re.sub(r"[^a-z0-9]+", "-", ascii_text)
     return ascii_text.strip("-")
+
+
+def looks_spanish(text: str) -> bool:
+    """Mirror src/lib/audio.ts looksSpanish for option harvesting."""
+    t = text.strip()
+    if not t:
+        return False
+    if re.search(r"[áéíóúüñ¿¡]", t, re.I):
+        return True
+    norm = unicodedata.normalize("NFD", t.lower())
+    norm = "".join(c for c in norm if not unicodedata.combining(c))
+    norm = re.sub(r"[¿?¡!,.]", "", norm)
+    if re.search(
+        r"\b(hola|adios|gracias|perdon|disculpe|buenos|buenas|dias|tardes|noches|"
+        r"mucho|gusto|llamo|llamas|llamarse|soy|eres|es|somos|son|hablo|hablas|habla|"
+        r"hablan|ingles|espanol|mexico|estados|unidos|vivo|viven|tambien|pero|nada|"
+        r"favor|luego|hasta|usted|ustedes|como|donde|de|un|poco|si|no|me|te|se|nos|"
+        r"uno|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez|veinte|cien|celular|"
+        r"telefono|anos|cuanto|cuesta|pesos|dolares|gratis|tengo|tienes|numero|"
+        r"numeros|carro|jugo|departamento|despierto|trabajo|camino|gusta|gustan|"
+        r"quiero|cuenta|cerca|lejos|derecha|izquierda|recto|centro|metro|llego|comi|"
+        r"hable|ayer|hoy|fui|hice|tuve|dije|voy|vas|gustaria|parece)\b",
+        norm,
+    ):
+        return True
+    if re.match(
+        r"^(hola|adios|gracias|perdon|disculpe|si|no|de nada|por favor|mucho gusto|hasta luego)$",
+        t,
+        re.I,
+    ):
+        return True
+    return False
+
+
+def harvest_content_phrases() -> list[str]:
+    """Pull every speakable string from lesson/word-card content."""
+    found: list[str] = []
+    seen: set[str] = set()
+
+    def add(raw: str) -> None:
+        p = raw.strip()
+        if not p or p in seen:
+            return
+        seen.add(p)
+        found.append(p)
+
+    for path in CONTENT_FILES:
+        if not path.exists():
+            continue
+        text = path.read_text(encoding="utf-8")
+        for m in re.finditer(r'lemma:\s*"([^"]+)"', text):
+            add(m.group(1))
+        for m in re.finditer(r"lemma:\s*'([^']+)'", text):
+            add(m.group(1))
+        for m in re.finditer(r'\bes:\s*"([^"]+)"', text):
+            add(m.group(1))
+        for m in re.finditer(r"\bes:\s*'([^']+)'", text):
+            add(m.group(1))
+        for m in re.finditer(r'listen\(\s*"[^"]+"\s*,\s*"([^"]+)"', text):
+            add(m.group(1))
+        for m in re.finditer(r"listen\(\s*'[^']+'\s*,\s*'([^']+)'", text):
+            add(m.group(1))
+        for m in re.finditer(r'listen\(\s*"[^"]+"\s*,\s*\'([^\']+)\'', text):
+            add(m.group(1))
+        for m in re.finditer(r'audioText:\s*"([^"]+)"', text):
+            add(m.group(1))
+        for m in re.finditer(r'targetPhrase:\s*"([^"]+)"', text):
+            add(m.group(1))
+        for m in re.finditer(r"targetPhrase:\s*'([^']+)'", text):
+            add(m.group(1))
+        for m in re.finditer(r"correctOrder:\s*\[([^\]]+)\]", text, re.S):
+            parts = [
+                a or b
+                for a, b in re.findall(r'"([^"]*)"|\'([^\']*)\'', m.group(1))
+            ]
+            if parts:
+                add(" ".join(parts))
+        for m in re.finditer(r"options:\s*\[([^\]]+)\]", text, re.S):
+            for a, b in re.findall(r'"([^"]*)"|\'([^\']*)\'', m.group(1)):
+                opt = a or b
+                if looks_spanish(opt):
+                    add(opt)
+        for m in re.finditer(r'\b(?:left|right):\s*"([^"]+)"', text):
+            if looks_spanish(m.group(1)):
+                add(m.group(1))
+        for m in re.finditer(r"\b(?:left|right):\s*'([^']+)'", text):
+            if looks_spanish(m.group(1)):
+                add(m.group(1))
+    return found
+
+
+def all_phrases() -> list[str]:
+    merged: list[str] = []
+    seen: set[str] = set()
+    for p in EXTRA_PHRASES + harvest_content_phrases():
+        if p not in seen:
+            seen.add(p)
+            merged.append(p)
+    return merged
 
 
 def synthesize(
@@ -284,16 +313,24 @@ def main() -> None:
     parser.add_argument(
         "--out",
         type=Path,
-        default=Path(__file__).resolve().parents[1] / "public" / "audio" / "es-mx",
+        default=ROOT / "public" / "audio" / "es-mx",
     )
     parser.add_argument("--only-missing", action="store_true")
     parser.add_argument("--list-voices", action="store_true")
+    parser.add_argument("--list-phrases", action="store_true")
     parser.add_argument(
         "--voices",
         default="f,m",
         help="Comma list of voice keys: f,m",
     )
     args = parser.parse_args()
+
+    phrases = all_phrases()
+    if args.list_phrases:
+        for p in phrases:
+            print(f"{slugify(p)}\t{p}")
+        print(f"# {len(phrases)} phrases")
+        return
 
     client = texttospeech.TextToSpeechClient()
 
@@ -315,11 +352,12 @@ def main() -> None:
     args.out.mkdir(parents=True, exist_ok=True)
     print(f"language={LANGUAGE_CODE} rate={SPEAKING_RATE} voices={voice_keys}")
     print(f"out={args.out}")
+    print(f"phrases={len(phrases)} (harvested + extras)")
 
     written: list[str] = []
     skipped = 0
     seen: set[tuple[str, str]] = set()
-    for phrase in PHRASES:
+    for phrase in phrases:
         slug = slugify(phrase)
         if not slug:
             continue

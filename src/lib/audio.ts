@@ -59,21 +59,46 @@ export function looksSpanish(text: string): boolean {
 
 let current: HTMLAudioElement | null = null;
 
+/**
+ * Try baked URLs in order. Prefer Neural2 MP3s; only fall back to browser TTS
+ * when every candidate fails to load/play (missing file / decode error).
+ */
 function tryPlay(urls: string[], text: string, i = 0): void {
   if (i >= urls.length) {
     speakPracticeAudio(text);
     return;
   }
-  const audio = new Audio(urls[i]);
+  const url = urls[i];
+  const audio = new Audio();
   current = audio;
-  void audio.play().catch(() => {
+
+  let settled = false;
+  const fail = () => {
+    if (settled) return;
+    settled = true;
+    audio.removeEventListener("error", fail);
+    audio.removeEventListener("canplaythrough", onReady);
     tryPlay(urls, text, i + 1);
-  });
+  };
+  const onReady = () => {
+    if (settled) return;
+    settled = true;
+    audio.removeEventListener("error", fail);
+    audio.removeEventListener("canplaythrough", onReady);
+    void audio.play().catch(fail);
+  };
+
+  audio.addEventListener("error", fail);
+  audio.addEventListener("canplaythrough", onReady);
+  audio.preload = "auto";
+  audio.src = url;
+  // Some browsers fire canplaythrough late; also kick play after a short load.
+  void audio.load();
 }
 
 /**
  * Play baked MP3 for text; prefer gendered Neural2 clip, then legacy slug,
- * then browser TTS.
+ * then browser TTS only if generation truly failed / file is missing.
  */
 export function playSpanishAudio(
   text: string,
@@ -87,9 +112,16 @@ export function playSpanishAudio(
       current = null;
     }
     const urls = src
-      ? [src, audioSrcLegacy(text)]
+      ? [src, audioSrcFor(text, voice), audioSrcLegacy(text)]
       : [audioSrcFor(text, voice), audioSrcLegacy(text)];
-    tryPlay(urls, text);
+    // Dedupe while preserving order
+    const seen = new Set<string>();
+    const unique = urls.filter((u) => {
+      if (seen.has(u)) return false;
+      seen.add(u);
+      return true;
+    });
+    tryPlay(unique, text);
   } catch {
     speakPracticeAudio(text);
   }
