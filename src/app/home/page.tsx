@@ -6,6 +6,7 @@ import { BookMarked, Layers, Pencil, Play, RotateCcw, SkipForward } from "lucide
 import { StatsBar } from "@/components/home/stats-bar";
 import { StreakPanel } from "@/components/home/streak-panel";
 import { UnitPath } from "@/components/home/unit-path";
+import { AuthControls } from "@/components/auth/auth-controls";
 import { Button } from "@/components/ui/button";
 import { getLesson } from "@/lib/mock-data";
 import {
@@ -60,6 +61,7 @@ export default function HomePage() {
           </button>
         </div>
         <div className="flex flex-wrap items-center justify-end gap-2">
+          <AuthControls />
           <Link href="/flashcards">
             <Button variant="soft" size="sm">
               <Layers className="h-4 w-4" />

@@ -6,10 +6,9 @@ Explanations-first Spanish learning for Latin American Spanish. No hearts, no en
 
 - Next.js App Router + TypeScript
 - Tailwind CSS + shadcn/ui-style components
-- Zustand (persisted demo user + lesson session state)
-- Mock data only (no real DB)
-
-> Later: Postgres on Unraid `:5433`
+- Zustand (persisted demo user + lesson session state) — works offline / without login
+- Auth.js (NextAuth v5) + Google SSO (optional until credentials are set)
+- Drizzle ORM + Postgres (`habla-latam-db` on Unraid network `habla-latam`)
 
 ## Brand / product notes
 
@@ -58,10 +57,12 @@ Scripts in `package.json`: `dev`, `build`, `start`, `lint`.
 | Route | Screen |
 | --- | --- |
 | `/` | Redirects to onboarding or home |
+| `/login` | Sign in with Google (demo continues without login) |
 | `/onboarding` | Display name, starting level, daily XP goal |
 | `/home` | Streak, XP, daily goal, unit path, edit profile |
 | `/lesson/[id]` | Lesson player (8–12 items) |
 | `/review` | Weak items from wrong answers |
+| `/api/auth/[...nextauth]` | Auth.js callbacks |
 
 ## Demo content
 
@@ -92,7 +93,47 @@ Word-card examples are `{ es, en }` pairs — Spanish with English directly unde
 
 - True placement / diagnostic test
 - TODO: illustrated characters / Duo-style art for lessons and onboarding
-- Real TTS / recorded audio; Postgres-backed content
+- Real TTS / recorded audio; richer Postgres-backed content
+
+
+## Auth (Google SSO)
+
+Demo / local mode keeps working with Zustand + `localStorage` until the user signs in. After Google sign-in, progress can sync to Postgres via `/api/progress`.
+
+### Environment variables
+
+| Variable | Purpose |
+| --- | --- |
+| `DATABASE_URL` | Postgres URL (Docker: `postgresql://habla:PASSWORD@habla-latam-db:5432/habla_latam`) |
+| `AUTH_SECRET` | Random secret (`openssl rand -base64 32`) |
+| `AUTH_GOOGLE_ID` | Google OAuth client ID |
+| `AUTH_GOOGLE_SECRET` | Google OAuth client secret |
+| `AUTH_URL` | Canonical URL, e.g. `https://uno.rivertechnologies.app` (`trustHost` also allows LAN) |
+
+If `AUTH_GOOGLE_ID` / `AUTH_GOOGLE_SECRET` are missing, the app still boots; `/login` shows a config message instead of a working Google button.
+
+### Google Cloud OAuth setup
+
+1. Open [Google Cloud Console](https://console.cloud.google.com/) → APIs & Services → Credentials.
+2. Configure the OAuth consent screen (External or Internal).
+3. Create credentials → **OAuth client ID** → Application type **Web application**.
+4. Authorized JavaScript origins (optional but useful):
+   - `https://uno.rivertechnologies.app`
+   - `http://192.168.11.100:3000`
+5. Authorized redirect URIs (required):
+   - `https://uno.rivertechnologies.app/api/auth/callback/google`
+   - `http://192.168.11.100:3000/api/auth/callback/google`
+6. Copy the client ID and secret into the Uno container env as `AUTH_GOOGLE_ID` and `AUTH_GOOGLE_SECRET`, then recreate `uno-web`.
+
+### Database schema
+
+Auth.js adapter tables live in Drizzle (`src/db/schema.ts`): `users`, `accounts`, `sessions`, `verificationTokens`, plus optional progress fields on `users`.
+
+```bash
+# From a host that can reach Postgres (LAN :5433 or Docker network)
+export DATABASE_URL='postgresql://habla:PASSWORD@127.0.0.1:5433/habla_latam'
+npm run db:push
+```
 
 ## License
 
