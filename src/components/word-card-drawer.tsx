@@ -35,6 +35,133 @@ interface WordCardDrawerProps {
   onOpenChange: (open: boolean) => void;
 }
 
+/** Shared body used by drawer + inline Teach step. */
+export function WordCardBody({
+  card,
+  compact = false,
+}: {
+  card: WordCard;
+  /** Teach step: meaning + conjugations + 2 examples only. */
+  compact?: boolean;
+}) {
+  return (
+    <div className={compact ? "space-y-4" : "mt-6 space-y-5"}>
+      <section>
+        <h4 className="mb-2 text-xs font-bold uppercase tracking-wide text-slate-400">
+          Meaning
+        </h4>
+        <p className="text-sm leading-relaxed text-slate-700">
+          {card.meaningSummary}
+        </p>
+      </section>
+
+      {card.conjugations && card.conjugations.length > 0 && (
+        <section>
+          <h4 className="mb-2 text-xs font-bold uppercase tracking-wide text-slate-400">
+            Conjugations
+          </h4>
+          <div className="space-y-3">
+            {card.conjugations.map((group) => (
+              <div
+                key={group.label}
+                className="overflow-hidden rounded-2xl border border-slate-200 bg-white"
+              >
+                <div className="border-b border-slate-100 bg-slate-50 px-3 py-2 text-xs font-bold text-slate-600">
+                  {group.label}
+                </div>
+                <div className="grid grid-cols-2 gap-px bg-slate-100 sm:grid-cols-3">
+                  {group.forms.map((row) => (
+                    <div
+                      key={`${group.label}-${row.person}`}
+                      className="bg-white px-3 py-2"
+                    >
+                      <p className="text-[11px] font-medium uppercase tracking-wide text-slate-400">
+                        {row.person}
+                      </p>
+                      <p className="text-sm font-semibold text-slate-900">
+                        {row.form}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <section>
+        <h4 className="mb-2 text-xs font-bold uppercase tracking-wide text-slate-400">
+          Examples
+        </h4>
+        <ul className="space-y-2">
+          {card.examples.map((ex) => (
+            <li
+              key={ex}
+              className="rounded-2xl bg-slate-50 px-4 py-3 text-sm font-medium text-slate-800"
+            >
+              {ex}
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {!compact && (
+        <>
+          <Separator />
+
+          <section className="grid gap-4 sm:grid-cols-2">
+            <div className="rounded-2xl border border-emerald-100 bg-emerald-50/60 p-4">
+              <h4 className="mb-1 text-xs font-bold uppercase tracking-wide text-emerald-700">
+                Use when
+              </h4>
+              <p className="text-sm text-slate-700">{card.useWhen}</p>
+            </div>
+            <div className="rounded-2xl border border-rose-100 bg-rose-50/60 p-4">
+              <h4 className="mb-1 text-xs font-bold uppercase tracking-wide text-rose-700">
+                Don&apos;t use when
+              </h4>
+              <p className="text-sm text-slate-700">{card.dontUseWhen}</p>
+            </div>
+          </section>
+
+          {card.contrast && (
+            <section>
+              <h4 className="mb-1 text-xs font-bold uppercase tracking-wide text-slate-400">
+                Contrast
+              </h4>
+              <p className="text-sm text-slate-700">{card.contrast}</p>
+            </section>
+          )}
+
+          {card.region && (
+            <section>
+              <h4 className="mb-1 text-xs font-bold uppercase tracking-wide text-slate-400">
+                Region
+              </h4>
+              <p className="text-sm text-slate-700">{card.region}</p>
+            </section>
+          )}
+        </>
+      )}
+    </div>
+  );
+}
+
+export function WordCardHeaderMeta({ card }: { card: WordCard }) {
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <span className="text-2xl font-bold text-emerald-700">{card.lemma}</span>
+      <Badge>{card.cefr}</Badge>
+      <Badge variant="secondary">{POS_LABEL[card.pos]}</Badge>
+      {card.gender !== "n/a" && (
+        <Badge variant="outline">{GENDER_LABEL[card.gender]}</Badge>
+      )}
+      <Badge variant="soft">{card.formality}</Badge>
+    </div>
+  );
+}
+
 export function WordCardDrawer({
   card,
   open,
@@ -62,58 +189,7 @@ export function WordCardDrawer({
               </SheetDescription>
             </SheetHeader>
 
-            <div className="mt-6 space-y-5">
-              <section>
-                <h4 className="mb-2 text-xs font-bold uppercase tracking-wide text-slate-400">
-                  Examples
-                </h4>
-                <ul className="space-y-2">
-                  {card.examples.map((ex) => (
-                    <li
-                      key={ex}
-                      className="rounded-2xl bg-slate-50 px-4 py-3 text-sm font-medium text-slate-800"
-                    >
-                      {ex}
-                    </li>
-                  ))}
-                </ul>
-              </section>
-
-              <Separator />
-
-              <section className="grid gap-4 sm:grid-cols-2">
-                <div className="rounded-2xl border border-emerald-100 bg-emerald-50/60 p-4">
-                  <h4 className="mb-1 text-xs font-bold uppercase tracking-wide text-emerald-700">
-                    Use when
-                  </h4>
-                  <p className="text-sm text-slate-700">{card.useWhen}</p>
-                </div>
-                <div className="rounded-2xl border border-rose-100 bg-rose-50/60 p-4">
-                  <h4 className="mb-1 text-xs font-bold uppercase tracking-wide text-rose-700">
-                    Don&apos;t use when
-                  </h4>
-                  <p className="text-sm text-slate-700">{card.dontUseWhen}</p>
-                </div>
-              </section>
-
-              {card.contrast && (
-                <section>
-                  <h4 className="mb-1 text-xs font-bold uppercase tracking-wide text-slate-400">
-                    Contrast
-                  </h4>
-                  <p className="text-sm text-slate-700">{card.contrast}</p>
-                </section>
-              )}
-
-              {card.region && (
-                <section>
-                  <h4 className="mb-1 text-xs font-bold uppercase tracking-wide text-slate-400">
-                    Region
-                  </h4>
-                  <p className="text-sm text-slate-700">{card.region}</p>
-                </section>
-              )}
-            </div>
+            <WordCardBody card={card} />
           </>
         )}
       </SheetContent>

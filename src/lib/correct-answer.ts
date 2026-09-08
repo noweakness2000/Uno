@@ -3,6 +3,8 @@ import type { Exercise } from "./types";
 /** Display form of the correct answer for feedback UI. */
 export function getCorrectAnswerDisplay(exercise: Exercise): string {
   switch (exercise.type) {
+    case "teach":
+      return "";
     case "select":
     case "situational-choose":
     case "listening-choose":

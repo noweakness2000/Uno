@@ -18,12 +18,14 @@ export const DEMO_USER: DemoUser = {
 };
 
 export const WORD_CARDS: Record<string, WordCard> = {
+
   "buenos-dias": {
     id: "buenos-dias",
     lemma: "buenos días",
     pos: "phrase",
     gender: "n/a",
     gloss: "good morning",
+    meaningSummary: "A warm morning greeting used from waking until around noon. Literally “good days,” it’s the default polite hello before lunch across Latin America.",
     examples: [
       "¡Buenos días! ¿Cómo estás?",
       "Buenos días, señor López.",
@@ -34,12 +36,14 @@ export const WORD_CARDS: Record<string, WordCard> = {
     formality: "neutral",
     cefr: "A1",
   },
+
   "buenas-tardes": {
     id: "buenas-tardes",
     lemma: "buenas tardes",
     pos: "phrase",
     gender: "n/a",
     gloss: "good afternoon",
+    meaningSummary: "The standard afternoon greeting from roughly noon until evening. Use it when buenos días no longer fits and it’s not yet dark enough for buenas noches.",
     examples: [
       "Buenas tardes, ¿en qué puedo ayudarte?",
       "¡Buenas tardes! Llegamos a tiempo.",
@@ -50,12 +54,14 @@ export const WORD_CARDS: Record<string, WordCard> = {
     formality: "neutral",
     cefr: "A1",
   },
+
   "buenas-noches": {
     id: "buenas-noches",
     lemma: "buenas noches",
     pos: "phrase",
     gender: "n/a",
     gloss: "good evening / good night",
+    meaningSummary: "Works as both an evening hello and a good-night farewell. Context and tone tell you whether someone is arriving or heading to bed.",
     examples: [
       "Buenas noches, que descanses.",
       "¡Buenas noches! Nos vemos mañana.",
@@ -66,12 +72,14 @@ export const WORD_CARDS: Record<string, WordCard> = {
     formality: "neutral",
     cefr: "A1",
   },
+
   "mucho-gusto": {
     id: "mucho-gusto",
     lemma: "mucho gusto",
     pos: "phrase",
     gender: "n/a",
     gloss: "nice to meet you",
+    meaningSummary: "The everyday “nice to meet you” after introductions. Short, friendly, and safe in almost any LatAm setting when you meet someone for the first time.",
     examples: [
       "Hola, soy Ana. ¡Mucho gusto!",
       "Mucho gusto, Carlos. Bienvenido.",
@@ -82,12 +90,14 @@ export const WORD_CARDS: Record<string, WordCard> = {
     formality: "neutral",
     cefr: "A1",
   },
-  perdon: {
+
+  "perdon": {
     id: "perdon",
     lemma: "perdón",
     pos: "interjection",
     gender: "m",
     gloss: "sorry / excuse me",
+    meaningSummary: "A light apology and polite attention-getter. Use it when you bump someone, need to pass, or didn’t catch what was said — not for deep regret (prefer lo siento).",
     examples: [
       "Perdón, ¿dónde está el baño?",
       "¡Perdón! No te vi.",
@@ -98,12 +108,14 @@ export const WORD_CARDS: Record<string, WordCard> = {
     formality: "neutral",
     cefr: "A1",
   },
-  hola: {
+
+  "hola": {
     id: "hola",
     lemma: "hola",
     pos: "interjection",
     gender: "n/a",
     gloss: "hello / hi",
+    meaningSummary: "The universal casual hello — any time of day, friends or friendly strangers. In very formal writing you might prefer a time-of-day greeting instead.",
     examples: [
       "¡Hola! ¿Qué tal?",
       "Hola, me llamo Sofía.",
@@ -113,12 +125,14 @@ export const WORD_CARDS: Record<string, WordCard> = {
     formality: "informal",
     cefr: "A1",
   },
+
   "como-estas": {
     id: "como-estas",
     lemma: "¿cómo estás?",
     pos: "phrase",
     gender: "n/a",
     gloss: "how are you?",
+    meaningSummary: "Informal “how are you?” with tú. For strangers, elders, or workplace formality, switch to ¿cómo está? (usted).",
     examples: [
       "Hola, ¿cómo estás?",
       "¿Cómo estás hoy?",
@@ -129,12 +143,26 @@ export const WORD_CARDS: Record<string, WordCard> = {
     formality: "informal",
     cefr: "A1",
   },
+
   "me-llamo": {
     id: "me-llamo",
-    lemma: "me llamo",
-    pos: "phrase",
+    lemma: "llamarse",
+    pos: "verb",
     gender: "n/a",
-    gloss: "my name is / I am called",
+    gloss: "to be called / to be named",
+    meaningSummary: "Reflexive verb for saying your name. Me llamo + name is the everyday introduction — never “soy llamo.” You’ll also hear ¿Cómo te llamas? for “What’s your name?”",
+    conjugations: [
+      {
+        label: "Present indicative",
+        forms: [
+          { person: "yo", form: "me llamo" },
+          { person: "tú", form: "te llamas" },
+          { person: "él/ella/usted", form: "se llama" },
+          { person: "nosotros/as", form: "nos llamamos" },
+          { person: "ustedes", form: "se llaman" },
+        ],
+      },
+    ],
     examples: [
       "Me llamo Diego.",
       "Hola, me llamo Valeria. Mucho gusto.",
@@ -145,12 +173,14 @@ export const WORD_CARDS: Record<string, WordCard> = {
     formality: "neutral",
     cefr: "A1",
   },
-  gracias: {
+
+  "gracias": {
     id: "gracias",
     lemma: "gracias",
     pos: "interjection",
     gender: "n/a",
     gloss: "thank you",
+    meaningSummary: "The everyday thank-you. Add muchas for stronger gratitude. Pair with de nada when someone thanks you.",
     examples: [
       "Gracias por tu ayuda.",
       "¡Muchas gracias!",
@@ -161,12 +191,14 @@ export const WORD_CARDS: Record<string, WordCard> = {
     formality: "neutral",
     cefr: "A1",
   },
+
   "de-nada": {
     id: "de-nada",
     lemma: "de nada",
     pos: "phrase",
     gender: "n/a",
     gloss: "you're welcome",
+    meaningSummary: "The classic reply to gracias — literally “of nothing,” meaning it was no trouble. Friendly alternatives include con gusto and no hay de qué.",
     examples: [
       "—Gracias. —De nada.",
       "De nada, con gusto.",
@@ -178,12 +210,14 @@ export const WORD_CARDS: Record<string, WordCard> = {
     region: "LatAm-wide; 'no hay de qué' also common",
     cefr: "A1",
   },
-  por: {
+
+  "por": {
     id: "por",
     lemma: "por favor",
     pos: "phrase",
     gender: "n/a",
     gloss: "please",
+    meaningSummary: "Softens requests and orders. Usually sits at the end (Un café, por favor) or the start; you don’t need it on every statement — only when asking.",
     examples: [
       "Un café, por favor.",
       "¿Me pasas el menú, por favor?",
@@ -193,12 +227,14 @@ export const WORD_CARDS: Record<string, WordCard> = {
     formality: "neutral",
     cefr: "A1",
   },
-  adios: {
+
+  "adios": {
     id: "adios",
     lemma: "adiós",
     pos: "interjection",
     gender: "n/a",
     gloss: "goodbye",
+    meaningSummary: "A clear goodbye, often when you won’t see someone soon. For a casual “see you later,” hasta luego or nos vemos feels warmer.",
     examples: [
       "Adiós, nos vemos pronto.",
       "¡Adiós! Que te vaya bien.",
@@ -209,7 +245,70 @@ export const WORD_CARDS: Record<string, WordCard> = {
     formality: "neutral",
     cefr: "A1",
   },
+
+  "ser": {
+    id: "ser",
+    lemma: "ser",
+    pos: "verb",
+    gender: "n/a",
+    gloss: "to be (identity / essence)",
+    meaningSummary: "Ser covers identity, origin, profession, and lasting traits — who or what something is. Don’t confuse it with estar, which is for location and temporary states.",
+    conjugations: [
+      {
+        label: "Present indicative",
+        forms: [
+          { person: "yo", form: "soy" },
+          { person: "tú", form: "eres" },
+          { person: "él/ella/usted", form: "es" },
+          { person: "nosotros/as", form: "somos" },
+          { person: "ustedes", form: "son" },
+        ],
+      },
+    ],
+    examples: [
+      "Soy estudiante.",
+      "Ella es de México.",
+    ],
+    useWhen: "Identity, origin, profession, permanent characteristics.",
+    dontUseWhen: "Don't use for location or temporary feelings — use estar.",
+    contrast: "estar (location / temporary states)",
+    formality: "neutral",
+    cefr: "A1",
+  },
+
+  "hablar": {
+    id: "hablar",
+    lemma: "hablar",
+    pos: "verb",
+    gender: "n/a",
+    gloss: "to speak / to talk",
+    meaningSummary: "Regular -ar verb for speaking a language or talking with someone. Hablo español / ¿Hablas inglés? are core A1 patterns.",
+    conjugations: [
+      {
+        label: "Present indicative",
+        forms: [
+          { person: "yo", form: "hablo" },
+          { person: "tú", form: "hablas" },
+          { person: "él/ella/usted", form: "habla" },
+          { person: "nosotros/as", form: "hablamos" },
+          { person: "ustedes", form: "hablan" },
+        ],
+      },
+    ],
+    examples: [
+      "Hablo un poco de español.",
+      "¿Ustedes hablan inglés?",
+    ],
+    useWhen: "Talking about languages or the act of speaking.",
+    dontUseWhen: "For 'say' a specific phrase, prefer decir.",
+    contrast: "decir (to say) / platicar (chat, LatAm)",
+    formality: "neutral",
+    region: "LatAm; platicar is a common casual synonym for chatting",
+    cefr: "A1",
+  },
+
 };
+
 
 export const LESSONS: Record<string, Lesson> = {
   "u1-l1": {
@@ -220,6 +319,15 @@ export const LESSONS: Record<string, Lesson> = {
     xpReward: 25,
     exercises: [
       {
+        id: "teach-u1l1-buenos-dias",
+        type: "teach",
+        prompt: "New word — learn it, then practice.",
+        explanation: "",
+        wordCardId: "buenos-dias",
+        wordCardIds: ["buenos-dias"],
+        xp: 0,
+      },
+      {
         id: "ex-1",
         type: "select",
         prompt: "How do you say “good morning” in Spanish?",
@@ -229,6 +337,15 @@ export const LESSONS: Record<string, Lesson> = {
           "Buenos días is the standard morning greeting across Latin America. Use it until around noon.",
         wordCardIds: ["buenos-dias"],
         xp: 3,
+      },
+      {
+        id: "teach-u1l1-buenas-tardes",
+        type: "teach",
+        prompt: "New word — learn it, then practice.",
+        explanation: "",
+        wordCardId: "buenas-tardes",
+        wordCardIds: ["buenas-tardes"],
+        xp: 0,
       },
       {
         id: "ex-2",
@@ -243,6 +360,15 @@ export const LESSONS: Record<string, Lesson> = {
         xp: 3,
       },
       {
+        id: "teach-u1l1-mucho-gusto",
+        type: "teach",
+        prompt: "New word — learn it, then practice.",
+        explanation: "",
+        wordCardId: "mucho-gusto",
+        wordCardIds: ["mucho-gusto"],
+        xp: 0,
+      },
+      {
         id: "ex-3",
         type: "listening-choose",
         prompt: "What did you hear?",
@@ -253,6 +379,24 @@ export const LESSONS: Record<string, Lesson> = {
           "Mucho gusto means “nice to meet you.” You'll hear it right after introductions.",
         wordCardIds: ["mucho-gusto"],
         xp: 3,
+      },
+      {
+        id: "teach-u1l1-hola",
+        type: "teach",
+        prompt: "New word — learn it, then practice.",
+        explanation: "",
+        wordCardId: "hola",
+        wordCardIds: ["hola"],
+        xp: 0,
+      },
+      {
+        id: "teach-u1l1-me-llamo",
+        type: "teach",
+        prompt: "New word — learn it, then practice.",
+        explanation: "",
+        wordCardId: "me-llamo",
+        wordCardIds: ["me-llamo"],
+        xp: 0,
       },
       {
         id: "ex-4",
@@ -283,6 +427,15 @@ export const LESSONS: Record<string, Lesson> = {
         xp: 4,
       },
       {
+        id: "teach-u1l1-perdon",
+        type: "teach",
+        prompt: "New word — learn it, then practice.",
+        explanation: "",
+        wordCardId: "perdon",
+        wordCardIds: ["perdon"],
+        xp: 0,
+      },
+      {
         id: "ex-6",
         type: "select",
         prompt: "Which phrase means “excuse me / sorry” (light apology)?",
@@ -292,6 +445,24 @@ export const LESSONS: Record<string, Lesson> = {
           "Perdón covers “excuse me” and light “sorry.” For a deeper apology, use lo siento.",
         wordCardIds: ["perdon"],
         xp: 3,
+      },
+      {
+        id: "teach-u1l1-gracias",
+        type: "teach",
+        prompt: "New word — learn it, then practice.",
+        explanation: "",
+        wordCardId: "gracias",
+        wordCardIds: ["gracias"],
+        xp: 0,
+      },
+      {
+        id: "teach-u1l1-de-nada",
+        type: "teach",
+        prompt: "New word — learn it, then practice.",
+        explanation: "",
+        wordCardId: "de-nada",
+        wordCardIds: ["de-nada"],
+        xp: 0,
       },
       {
         id: "ex-7",
@@ -305,6 +476,15 @@ export const LESSONS: Record<string, Lesson> = {
           "De nada is the classic reply to gracias across LatAm. Con gusto is also friendly.",
         wordCardIds: ["de-nada", "gracias"],
         xp: 3,
+      },
+      {
+        id: "teach-u1l1-buenas-noches",
+        type: "teach",
+        prompt: "New word — learn it, then practice.",
+        explanation: "",
+        wordCardId: "buenas-noches",
+        wordCardIds: ["buenas-noches"],
+        xp: 0,
       },
       {
         id: "ex-8",
@@ -322,6 +502,15 @@ export const LESSONS: Record<string, Lesson> = {
           "Buenas noches works as both an evening greeting and a good-night farewell.",
         wordCardIds: ["buenas-noches"],
         xp: 3,
+      },
+      {
+        id: "teach-u1l1-por",
+        type: "teach",
+        prompt: "New word — learn it, then practice.",
+        explanation: "",
+        wordCardId: "por",
+        wordCardIds: ["por"],
+        xp: 0,
       },
       {
         id: "ex-9",
@@ -351,6 +540,15 @@ export const LESSONS: Record<string, Lesson> = {
         xp: 3,
       },
       {
+        id: "teach-u1l1-como-estas",
+        type: "teach",
+        prompt: "New word — learn it, then practice.",
+        explanation: "",
+        wordCardId: "como-estas",
+        wordCardIds: ["como-estas"],
+        xp: 0,
+      },
+      {
         id: "ex-11",
         type: "select",
         prompt: "How do you casually ask a friend “How are you?”",
@@ -365,6 +563,15 @@ export const LESSONS: Record<string, Lesson> = {
           "¿Cómo estás? uses tú (informal). With strangers or formal settings, prefer ¿cómo está?",
         wordCardIds: ["como-estas"],
         xp: 3,
+      },
+      {
+        id: "teach-u1l1-adios",
+        type: "teach",
+        prompt: "New word — learn it, then practice.",
+        explanation: "",
+        wordCardId: "adios",
+        wordCardIds: ["adios"],
+        xp: 0,
       },
       {
         id: "ex-12",
@@ -388,6 +595,15 @@ export const LESSONS: Record<string, Lesson> = {
     xpReward: 20,
     exercises: [
       {
+        id: "teach-u1l2-perdon",
+        type: "teach",
+        prompt: "New word — learn it, then practice.",
+        explanation: "",
+        wordCardId: "perdon",
+        wordCardIds: ["perdon"],
+        xp: 0,
+      },
+      {
         id: "u1l2-1",
         type: "select",
         prompt: "Someone bumps into you lightly. What do they often say?",
@@ -398,6 +614,15 @@ export const LESSONS: Record<string, Lesson> = {
         xp: 3,
       },
       {
+        id: "teach-u1l2-por",
+        type: "teach",
+        prompt: "New word — learn it, then practice.",
+        explanation: "",
+        wordCardId: "por",
+        wordCardIds: ["por"],
+        xp: 0,
+      },
+      {
         id: "u1l2-2",
         type: "translate",
         prompt: "Translate: “Please.”",
@@ -405,6 +630,15 @@ export const LESSONS: Record<string, Lesson> = {
         explanation: "Por favor goes at the end or start of a polite request.",
         wordCardIds: ["por"],
         xp: 3,
+      },
+      {
+        id: "teach-u1l2-gracias",
+        type: "teach",
+        prompt: "New word — learn it, then practice.",
+        explanation: "",
+        wordCardId: "gracias",
+        wordCardIds: ["gracias"],
+        xp: 0,
       },
       {
         id: "u1l2-3",
@@ -418,6 +652,15 @@ export const LESSONS: Record<string, Lesson> = {
         xp: 3,
       },
       {
+        id: "teach-u1l2-de-nada",
+        type: "teach",
+        prompt: "New word — learn it, then practice.",
+        explanation: "",
+        wordCardId: "de-nada",
+        wordCardIds: ["de-nada"],
+        xp: 0,
+      },
+      {
         id: "u1l2-4",
         type: "situational-choose",
         prompt: "Best reply?",
@@ -429,6 +672,15 @@ export const LESSONS: Record<string, Lesson> = {
         xp: 3,
       },
       {
+        id: "teach-u1l2-buenas-noches",
+        type: "teach",
+        prompt: "New word — learn it, then practice.",
+        explanation: "",
+        wordCardId: "buenas-noches",
+        wordCardIds: ["buenas-noches"],
+        xp: 0,
+      },
+      {
         id: "u1l2-5",
         type: "tap-chips",
         prompt: "Build: “Good evening.”",
@@ -437,6 +689,15 @@ export const LESSONS: Record<string, Lesson> = {
         explanation: "Buenas noches for evening/night.",
         wordCardIds: ["buenas-noches"],
         xp: 3,
+      },
+      {
+        id: "teach-u1l2-hola",
+        type: "teach",
+        prompt: "New word — learn it, then practice.",
+        explanation: "",
+        wordCardId: "hola",
+        wordCardIds: ["hola"],
+        xp: 0,
       },
       {
         id: "u1l2-6",
@@ -450,6 +711,15 @@ export const LESSONS: Record<string, Lesson> = {
         xp: 3,
       },
       {
+        id: "teach-u1l2-buenas-tardes",
+        type: "teach",
+        prompt: "New word — learn it, then practice.",
+        explanation: "",
+        wordCardId: "buenas-tardes",
+        wordCardIds: ["buenas-tardes"],
+        xp: 0,
+      },
+      {
         id: "u1l2-7",
         type: "translate",
         prompt: "Translate: “Good afternoon.”",
@@ -461,6 +731,15 @@ export const LESSONS: Record<string, Lesson> = {
         explanation: "Buenas tardes from midday into the evening.",
         wordCardIds: ["buenas-tardes"],
         xp: 3,
+      },
+      {
+        id: "teach-u1l2-mucho-gusto",
+        type: "teach",
+        prompt: "New word — learn it, then practice.",
+        explanation: "",
+        wordCardId: "mucho-gusto",
+        wordCardIds: ["mucho-gusto"],
+        xp: 0,
       },
       {
         id: "u1l2-8",
@@ -482,7 +761,7 @@ export const LESSONS: Record<string, Lesson> = {
           "perdon",
           "disculpe",
           "desculpe",
-          "discúlpame",
+          "disculúlpame",
           "disculpame",
           "disculpa",
           "dispensa",
@@ -503,6 +782,24 @@ export const LESSONS: Record<string, Lesson> = {
     xpReward: 25,
     exercises: [
       {
+        id: "teach-u2l1-me-llamo",
+        type: "teach",
+        prompt: "New word — learn it, then practice.",
+        explanation: "",
+        wordCardId: "me-llamo",
+        wordCardIds: ["me-llamo"],
+        xp: 0,
+      },
+      {
+        id: "teach-u2l1-ser",
+        type: "teach",
+        prompt: "New word — learn it, then practice.",
+        explanation: "",
+        wordCardId: "ser",
+        wordCardIds: ["ser"],
+        xp: 0,
+      },
+      {
         id: "u2l1-1",
         type: "select",
         prompt: "“My name is…” in Spanish is:",
@@ -511,6 +808,24 @@ export const LESSONS: Record<string, Lesson> = {
         explanation: "Me llamo + name. Never “soy llamo.”",
         wordCardIds: ["me-llamo"],
         xp: 3,
+      },
+      {
+        id: "teach-u2l1-hola",
+        type: "teach",
+        prompt: "New word — learn it, then practice.",
+        explanation: "",
+        wordCardId: "hola",
+        wordCardIds: ["hola"],
+        xp: 0,
+      },
+      {
+        id: "teach-u2l1-como-estas",
+        type: "teach",
+        prompt: "New word — learn it, then practice.",
+        explanation: "",
+        wordCardId: "como-estas",
+        wordCardIds: ["como-estas"],
+        xp: 0,
       },
       {
         id: "u2l1-2",
@@ -527,6 +842,15 @@ export const LESSONS: Record<string, Lesson> = {
         explanation: "A friendly informal check-in: Hola, ¿cómo estás?",
         wordCardIds: ["hola", "como-estas"],
         xp: 3,
+      },
+      {
+        id: "teach-u2l1-mucho-gusto",
+        type: "teach",
+        prompt: "New word — learn it, then practice.",
+        explanation: "",
+        wordCardId: "mucho-gusto",
+        wordCardIds: ["mucho-gusto"],
+        xp: 0,
       },
       {
         id: "u2l1-3",
@@ -546,6 +870,15 @@ export const LESSONS: Record<string, Lesson> = {
         explanation: "Hola is the universal casual hello.",
         wordCardIds: ["hola"],
         xp: 2,
+      },
+      {
+        id: "teach-u2l1-buenos-dias",
+        type: "teach",
+        prompt: "New word — learn it, then practice.",
+        explanation: "",
+        wordCardId: "buenos-dias",
+        wordCardIds: ["buenos-dias"],
+        xp: 0,
       },
       {
         id: "u2l1-5",
@@ -569,6 +902,15 @@ export const LESSONS: Record<string, Lesson> = {
         xp: 3,
       },
       {
+        id: "teach-u2l1-hablar",
+        type: "teach",
+        prompt: "New word — learn it, then practice.",
+        explanation: "",
+        wordCardId: "hablar",
+        wordCardIds: ["hablar"],
+        xp: 0,
+      },
+      {
         id: "u2l1-7",
         type: "listening-choose",
         prompt: "Match the audio.",
@@ -583,6 +925,15 @@ export const LESSONS: Record<string, Lesson> = {
         explanation: "Self-introduction with me llamo.",
         wordCardIds: ["me-llamo"],
         xp: 3,
+      },
+      {
+        id: "teach-u2l1-adios",
+        type: "teach",
+        prompt: "New word — learn it, then practice.",
+        explanation: "",
+        wordCardId: "adios",
+        wordCardIds: ["adios"],
+        xp: 0,
       },
       {
         id: "u2l1-8",
@@ -603,6 +954,7 @@ export const LESSONS: Record<string, Lesson> = {
   },
 };
 
+
 export const UNITS: Unit[] = [
   {
     id: "unit-1",
@@ -618,7 +970,6 @@ export const UNITS: Unit[] = [
     title: "Meeting people",
     description: "Introductions and friendly check-ins.",
     lessonIds: ["u2-l1"],
-    // Base flag; UnitPath also gates on startingLevel (conversational_basics).
     unlocked: true,
   },
   {

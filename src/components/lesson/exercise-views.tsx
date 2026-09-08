@@ -274,6 +274,8 @@ export function ExerciseRenderer({
   onSubmit: (correct: boolean) => void;
 }) {
   switch (exercise.type) {
+    case "teach":
+      return null;
     case "select":
       return (
         <SelectView

@@ -23,6 +23,8 @@ interface LessonSessionState {
     wordCardIds?: string[];
     correctAnswer?: string;
   }) => void;
+  /** Advance past a Teach step — 0 XP, no wrong count, no feedback panel. */
+  continueTeach: (totalExercises: number) => void;
   continueAfterFeedback: (totalExercises: number) => void;
   reset: () => void;
 }
@@ -58,6 +60,20 @@ export const useLessonStore = create<LessonSessionState>((set, get) => ({
         ? s.weakWordIds
         : Array.from(new Set([...s.weakWordIds, ...weak])),
     }));
+  },
+  continueTeach: (totalExercises) => {
+    const { index } = get();
+    const next = index + 1;
+    if (next >= totalExercises) {
+      set({ finished: true, index: next, showFeedback: false });
+    } else {
+      set({
+        index: next,
+        showFeedback: false,
+        lastCorrect: null,
+        lastCorrectAnswer: "",
+      });
+    }
   },
   continueAfterFeedback: (totalExercises) => {
     const { index } = get();

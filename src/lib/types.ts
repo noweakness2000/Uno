@@ -18,12 +18,21 @@ export type StartingLevel =
   | "some_words"
   | "conversational_basics";
 
+export interface ConjugationGroup {
+  label: string;
+  forms: { person: string; form: string }[];
+}
+
 export interface WordCard {
   id: string;
   lemma: string;
   pos: PartOfSpeech;
   gender: Gender;
   gloss: string;
+  /** 1–3 sentence plain-English meaning / nuance (Rosetta-style teach). */
+  meaningSummary: string;
+  /** Present (etc.) tables for verbs; omit for fixed phrases. */
+  conjugations?: ConjugationGroup[];
   examples: [string, string];
   useWhen: string;
   dontUseWhen: string;
@@ -34,6 +43,7 @@ export interface WordCard {
 }
 
 export type ExerciseType =
+  | "teach"
   | "select"
   | "tap-chips"
   | "translate"
@@ -47,6 +57,12 @@ export interface ExerciseBase {
   explanation: string;
   wordCardIds?: string[];
   xp: number;
+}
+
+/** Inline word-card teach moment before practice. 0 XP, no hearts. */
+export interface TeachExercise extends ExerciseBase {
+  type: "teach";
+  wordCardId: string;
 }
 
 export interface SelectExercise extends ExerciseBase {
@@ -82,6 +98,7 @@ export interface SituationalChooseExercise extends ExerciseBase {
 }
 
 export type Exercise =
+  | TeachExercise
   | SelectExercise
   | TapChipsExercise
   | TranslateExercise

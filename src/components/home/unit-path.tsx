@@ -1,33 +1,25 @@
 "use client";
 
 import Link from "next/link";
-import { Check, Lock, Play } from "lucide-react";
+import { Check, Lock, Play, RotateCcw } from "lucide-react";
 import { UNITS, getLesson } from "@/lib/mock-data";
 import { useUserStore } from "@/store/user-store";
 import { cn } from "@/lib/utils";
-import type { StartingLevel, Unit } from "@/lib/types";
+import type { Unit } from "@/lib/types";
 
-function isUnitUnlocked(unit: Unit, startingLevel: StartingLevel): boolean {
+/** Units 1–2 browse + play for every starting level; 3+ stay locked. */
+function isUnitUnlocked(unit: Unit): boolean {
   if (!unit.unlocked) return false;
-  // Absolute / some_words: Unit 1 only for now.
-  // Conversational basics: Units 1-2 visually unlocked (no content skip yet).
-  if (unit.number >= 3) return false;
-  if (unit.number === 2) {
-    return startingLevel === "conversational_basics";
-  }
-  return true;
+  return unit.number <= 2;
 }
 
 export function UnitPath() {
   const completed = useUserStore((s) => s.user.completedLessonIds);
-  const startingLevel = useUserStore(
-    (s) => s.user.startingLevel ?? "absolute_beginner"
-  );
 
   return (
     <div className="space-y-10">
       {UNITS.map((unit) => {
-        const unlocked = isUnitUnlocked(unit, startingLevel);
+        const unlocked = isUnitUnlocked(unit);
         return (
           <section key={unit.id} className="relative">
             <div
@@ -55,58 +47,95 @@ export function UnitPath() {
             {!unlocked && (
               <div className="flex items-center justify-center gap-2 rounded-2xl border border-dashed border-slate-200 bg-slate-50 py-8 text-sm font-medium text-slate-400">
                 <Lock className="h-4 w-4" />
-                {unit.number === 2
-                  ? "Pick Conversational basics in onboarding to unlock Unit 2 visually"
-                  : "Visually locked — finish earlier units to unlock"}
+                Coming soon
               </div>
             )}
 
             {unlocked && (
-              <ol className="relative mx-auto flex max-w-xs flex-col items-center gap-6 py-2">
-                <div className="absolute left-1/2 top-0 h-full w-1 -translate-x-1/2 rounded-full bg-emerald-100" />
-                {unit.lessonIds.map((lessonId, i) => {
-                  const lesson = getLesson(lessonId);
-                  if (!lesson) return null;
-                  const done = completed.includes(lessonId);
-                  const offset = i % 2 === 0 ? "-translate-x-8" : "translate-x-8";
-                  return (
-                    <li
-                      key={lessonId}
-                      className={cn("relative z-10", offset)}
-                    >
-                      <Link
-                        href={`/lesson/${lessonId}`}
-                        className={cn(
-                          "group flex h-16 w-16 items-center justify-center rounded-full border-4 shadow-md transition-transform hover:scale-105",
-                          done
-                            ? "border-emerald-300 bg-emerald-500 text-white"
-                            : "border-amber-200 bg-amber-400 text-white"
-                        )}
-                      >
-                        {done ? (
-                          <Check className="h-7 w-7" strokeWidth={3} />
-                        ) : (
-                          <Play className="h-7 w-7 fill-current" />
-                        )}
-                      </Link>
-                      <div className="mt-2 w-36 -translate-x-1/2 left-1/2 relative text-center">
-                        <p className="text-sm font-bold text-slate-800">
-                          {lesson.title}
-                        </p>
-                        <p className="text-xs text-slate-500">
-                          {lesson.exercises.length} exercises · {lesson.xpReward}{" "}
-                          XP
-                        </p>
-                      </div>
-                    </li>
-                  );
-                })}
+              <div className="space-y-3">
+                <div className="mb-1 flex items-center gap-2 px-1">
+                  <div className="h-1 flex-1 rounded-full bg-emerald-100" />
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-500">
+                    {unit.lessonIds.length} lesson
+                    {unit.lessonIds.length === 1 ? "" : "s"}
+                  </span>
+                  <div className="h-1 flex-1 rounded-full bg-emerald-100" />
+                </div>
+
+                <ul className="grid gap-3">
+                  {unit.lessonIds.map((lessonId, i) => {
+                    const lesson = getLesson(lessonId);
+                    if (!lesson) return null;
+                    const done = completed.includes(lessonId);
+                    return (
+                      <li key={lessonId}>
+                        <Link
+                          href={`/lesson/${lessonId}`}
+                          className={cn(
+                            "group flex items-stretch gap-4 rounded-2xl border-2 bg-white p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md",
+                            done
+                              ? "border-emerald-200 hover:border-emerald-400"
+                              : "border-amber-200 hover:border-amber-400"
+                          )}
+                        >
+                          <div
+                            className={cn(
+                              "flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl text-white shadow-inner",
+                              done ? "bg-emerald-500" : "bg-amber-400"
+                            )}
+                          >
+                            {done ? (
+                              <Check className="h-7 w-7" strokeWidth={3} />
+                            ) : (
+                              <span className="text-lg font-extrabold">
+                                {i + 1}
+                              </span>
+                            )}
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <h3 className="text-base font-bold text-slate-900 group-hover:text-emerald-700">
+                                {lesson.title}
+                              </h3>
+                              <span
+                                className={cn(
+                                  "rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide",
+                                  done
+                                    ? "bg-emerald-100 text-emerald-700"
+                                    : "bg-amber-100 text-amber-800"
+                                )}
+                              >
+                                {done ? "Review" : "Play"}
+                              </span>
+                            </div>
+                            <p className="mt-0.5 line-clamp-2 text-sm text-slate-500">
+                              {lesson.description}
+                            </p>
+                            <p className="mt-2 text-xs font-semibold text-slate-400">
+                              {lesson.exercises.filter((e) => e.type !== "teach")
+                                .length}{" "}
+                              practice · {lesson.xpReward} XP
+                            </p>
+                          </div>
+                          <div className="flex shrink-0 items-center text-slate-300 group-hover:text-emerald-500">
+                            {done ? (
+                              <RotateCcw className="h-5 w-5" />
+                            ) : (
+                              <Play className="h-5 w-5 fill-current" />
+                            )}
+                          </div>
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+
                 {unit.lessonIds.length === 0 && (
-                  <p className="relative z-10 text-sm text-slate-400">
+                  <p className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 py-6 text-center text-sm text-slate-400">
                     Lessons coming soon
                   </p>
                 )}
-              </ol>
+              </div>
             )}
           </section>
         );

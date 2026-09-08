@@ -9,11 +9,12 @@ import { FeedbackPanel } from "@/components/wrong-answer-panel";
 import { WordCardDrawer } from "@/components/word-card-drawer";
 import { PostLessonSummary } from "@/components/lesson/post-lesson-summary";
 import { ExerciseRenderer } from "@/components/lesson/exercise-views";
+import { TeachView } from "@/components/lesson/teach-view";
 import { getLesson, getWordCard } from "@/lib/mock-data";
 import { getCorrectAnswerDisplay } from "@/lib/correct-answer";
 import { useLessonStore } from "@/store/lesson-store";
 import { useUserStore } from "@/store/user-store";
-import type { WordCard } from "@/lib/types";
+import type { TeachExercise, WordCard } from "@/lib/types";
 
 export function LessonPlayer({ lessonId }: { lessonId: string }) {
   const router = useRouter();
@@ -31,6 +32,7 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
     weakWordIds,
     startLesson,
     recordAnswer,
+    continueTeach,
     continueAfterFeedback,
     reset,
   } = useLessonStore();
@@ -95,6 +97,11 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
 
   if (!exercise) return null;
 
+  const isTeach = exercise.type === "teach";
+  const teachCard = isTeach
+    ? getWordCard((exercise as TeachExercise).wordCardId)
+    : undefined;
+
   const openWord = () => {
     const id = exercise.wordCardIds?.[0];
     if (!id) return;
@@ -122,39 +129,49 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
         </span>
       </div>
 
-      <div className="mb-6">
-        <p className="mb-1 text-xs font-bold uppercase tracking-wide text-emerald-600">
-          {exercise.type.replace("-", " ")}
-        </p>
-        <h1 className="text-2xl font-bold leading-snug text-slate-900">
-          {exercise.prompt}
-        </h1>
-      </div>
-
-      <ExerciseRenderer
-        key={exercise.id}
-        exercise={exercise}
-        disabled={showFeedback}
-        onSubmit={(correct) =>
-          recordAnswer({
-            correct,
-            explanation: exercise.explanation,
-            xp: exercise.xp,
-            wordCardIds: exercise.wordCardIds,
-            correctAnswer: getCorrectAnswerDisplay(exercise),
-          })
-        }
-      />
-
-      {showFeedback && lastCorrect !== null && (
-        <FeedbackPanel
-          correct={lastCorrect}
-          explanation={lastExplanation}
-          correctAnswer={lastCorrectAnswer}
-          hasWordCard={Boolean(exercise.wordCardIds?.length)}
-          onOpenWordCard={openWord}
-          onContinue={() => continueAfterFeedback(lesson.exercises.length)}
+      {isTeach && teachCard ? (
+        <TeachView
+          exercise={exercise as TeachExercise}
+          card={teachCard}
+          onContinue={() => continueTeach(lesson.exercises.length)}
         />
+      ) : (
+        <>
+          <div className="mb-6">
+            <p className="mb-1 text-xs font-bold uppercase tracking-wide text-emerald-600">
+              {exercise.type.replace("-", " ")}
+            </p>
+            <h1 className="text-2xl font-bold leading-snug text-slate-900">
+              {exercise.prompt}
+            </h1>
+          </div>
+
+          <ExerciseRenderer
+            key={exercise.id}
+            exercise={exercise}
+            disabled={showFeedback}
+            onSubmit={(correct) =>
+              recordAnswer({
+                correct,
+                explanation: exercise.explanation,
+                xp: exercise.xp,
+                wordCardIds: exercise.wordCardIds,
+                correctAnswer: getCorrectAnswerDisplay(exercise),
+              })
+            }
+          />
+
+          {showFeedback && lastCorrect !== null && (
+            <FeedbackPanel
+              correct={lastCorrect}
+              explanation={lastExplanation}
+              correctAnswer={lastCorrectAnswer}
+              hasWordCard={Boolean(exercise.wordCardIds?.length)}
+              onOpenWordCard={openWord}
+              onContinue={() => continueAfterFeedback(lesson.exercises.length)}
+            />
+          )}
+        </>
       )}
 
       <WordCardDrawer
