@@ -1,6 +1,7 @@
 "use client";
 
 import type { WordCard } from "@/lib/types";
+import { SpeakButton } from "@/components/speak-button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -98,9 +99,12 @@ export function WordCardBody({
           {card.examples.map((ex) => (
             <li
               key={ex}
-              className="rounded-2xl bg-slate-50 px-4 py-3 text-sm font-medium text-slate-800"
+              className="flex items-center gap-2 rounded-2xl bg-slate-50 px-3 py-2.5 sm:gap-3 sm:px-4 sm:py-3"
             >
-              {ex}
+              <span className="min-w-0 flex-1 break-words text-sm font-medium leading-snug text-slate-800">
+                {ex}
+              </span>
+              <SpeakButton text={ex} label={`Play: ${ex}`} />
             </li>
           ))}
         </ul>
@@ -152,6 +156,7 @@ export function WordCardHeaderMeta({ card }: { card: WordCard }) {
   return (
     <div className="flex flex-wrap items-center gap-2">
       <span className="text-2xl font-bold text-emerald-700">{card.lemma}</span>
+      <SpeakButton text={card.lemma} size="md" label={`Play: ${card.lemma}`} />
       <Badge>{card.cefr}</Badge>
       <Badge variant="secondary">{POS_LABEL[card.pos]}</Badge>
       {card.gender !== "n/a" && (
@@ -177,6 +182,7 @@ export function WordCardDrawer({
                 <SheetTitle className="text-2xl text-emerald-700">
                   {card.lemma}
                 </SheetTitle>
+                <SpeakButton text={card.lemma} size="md" label={`Play: ${card.lemma}`} />
                 <Badge>{card.cefr}</Badge>
                 <Badge variant="secondary">{POS_LABEL[card.pos]}</Badge>
                 {card.gender !== "n/a" && (

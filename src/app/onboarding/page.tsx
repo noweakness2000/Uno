@@ -50,7 +50,7 @@ export default function OnboardingPage() {
   };
 
   return (
-    <div className="mx-auto flex min-h-dvh max-w-lg flex-col justify-center px-4 py-10">
+    <div className="mx-auto flex min-h-dvh w-full max-w-lg flex-col justify-center overflow-x-hidden px-3 py-8 sm:px-4 sm:py-10">
       <div className="mb-8 text-center">
         <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-3xl bg-gradient-to-br from-emerald-400 to-teal-600 text-2xl font-black text-white shadow-lg shadow-emerald-500/30">
           U

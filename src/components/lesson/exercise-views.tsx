@@ -3,8 +3,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { Volume2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { SpeakButton } from "@/components/speak-button";
 import { cn } from "@/lib/utils";
 import { speakPracticeAudio, hasSpanishVoice } from "@/lib/tts";
+import { looksSpanish, playSpanishAudio } from "@/lib/audio";
 import { answersMatch, chipSequencesMatch } from "@/lib/grading";
 import type {
   Exercise,
@@ -37,25 +39,37 @@ export function SelectView({
         </div>
       )}
       <div className="grid gap-3">
-        {exercise.options.map((opt, i) => (
-          <button
-            key={opt}
-            type="button"
-            disabled={disabled}
-            onClick={() => setSelected(i)}
-            className={cn(
-              "rounded-2xl border-2 px-4 py-4 text-left text-base font-semibold transition-all",
-              selected === i
-                ? "border-emerald-500 bg-emerald-50 text-emerald-900 shadow-sm"
-                : "border-slate-200 bg-white text-slate-800 hover:border-slate-300"
-            )}
-          >
-            {opt}
-          </button>
-        ))}
+        {exercise.options.map((opt, i) => {
+          const spanish = looksSpanish(opt);
+          return (
+            <div
+              key={`${opt}-${i}`}
+              className={cn(
+                "flex min-h-12 items-stretch gap-1 rounded-2xl border-2 transition-all",
+                selected === i
+                  ? "border-emerald-500 bg-emerald-50 text-emerald-900 shadow-sm"
+                  : "border-slate-200 bg-white text-slate-800"
+              )}
+            >
+              <button
+                type="button"
+                disabled={disabled}
+                onClick={() => setSelected(i)}
+                className="min-h-12 min-w-0 flex-1 touch-manipulation rounded-2xl px-4 py-3.5 text-left text-base font-semibold"
+              >
+                <span className="break-words">{opt}</span>
+              </button>
+              {spanish && (
+                <div className="flex items-center pr-2">
+                  <SpeakButton text={opt} label={`Play: ${opt}`} />
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
       <Button
-        className="w-full"
+        className="min-h-12 w-full touch-manipulation"
         size="lg"
         disabled={selected === null || disabled}
         onClick={() =>
@@ -84,12 +98,19 @@ export function TapChipsView({
     });
   }, [built, exercise.chips]);
 
+  const phrase = exercise.correctOrder.join(" ");
+  const builtPhrase = built.join(" ");
+
   const check = () => {
     onSubmit(chipSequencesMatch(built, exercise.correctOrder));
   };
 
   return (
     <div className="space-y-4">
+      <div className="flex items-center justify-end gap-2">
+        <span className="text-xs font-medium text-slate-400">Hear target</span>
+        <SpeakButton text={phrase} label={`Play: ${phrase}`} />
+      </div>
       <div className="min-h-[64px] rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50 p-3">
         <div className="flex flex-wrap gap-2">
           {built.length === 0 && (
@@ -103,12 +124,17 @@ export function TapChipsView({
               onClick={() =>
                 setBuilt((b) => b.filter((_, idx) => idx !== i))
               }
-              className="rounded-xl border-2 border-emerald-300 bg-white px-3 py-2 text-sm font-bold text-emerald-800"
+              className="min-h-11 touch-manipulation rounded-xl border-2 border-emerald-300 bg-white px-3 py-2.5 text-sm font-bold text-emerald-800"
             >
               {chip}
             </button>
           ))}
         </div>
+        {built.length > 0 && looksSpanish(builtPhrase) && (
+          <div className="mt-2 flex justify-end">
+            <SpeakButton text={builtPhrase} label={`Play: ${builtPhrase}`} />
+          </div>
+        )}
       </div>
       <div className="flex flex-wrap gap-2">
         {remaining.map((chip, i) => (
@@ -117,23 +143,23 @@ export function TapChipsView({
             type="button"
             disabled={disabled}
             onClick={() => setBuilt((b) => [...b, chip])}
-            className="rounded-xl border-2 border-slate-200 bg-white px-3 py-2 text-sm font-bold text-slate-800 hover:border-emerald-300"
+            className="min-h-11 touch-manipulation rounded-xl border-2 border-slate-200 bg-white px-3 py-2.5 text-sm font-bold text-slate-800 hover:border-emerald-300"
           >
             {chip}
           </button>
         ))}
       </div>
-      <div className="flex gap-2">
+      <div className="flex flex-col gap-2 sm:flex-row">
         <Button
           variant="secondary"
-          className="flex-1"
+          className="min-h-12 flex-1 touch-manipulation"
           disabled={disabled || built.length === 0}
           onClick={() => setBuilt([])}
         >
           Clear
         </Button>
         <Button
-          className="flex-[2]"
+          className="min-h-12 flex-[2] touch-manipulation"
           size="lg"
           disabled={disabled || built.length === 0}
           onClick={check}
@@ -155,7 +181,7 @@ export function TranslateView({
   const check = () => {
     const ok = exercise.acceptedAnswers.some((a) => answersMatch(a, value));
     onSubmit(ok);
-  };;
+  };
 
   return (
     <div className="space-y-4">
@@ -171,7 +197,7 @@ export function TranslateView({
           if (e.key === "Enter" && value.trim() && !disabled) check();
         }}
         placeholder="Type in Spanish…"
-        className="h-14 w-full rounded-2xl border-2 border-slate-200 px-4 text-lg font-medium outline-none focus:border-emerald-400"
+        className="h-14 w-full max-w-full rounded-2xl border-2 border-slate-200 px-4 text-lg font-medium outline-none focus:border-emerald-400"
         autoCapitalize="off"
         autoCorrect="off"
       />
@@ -179,7 +205,7 @@ export function TranslateView({
         Accents are optional (e.g. perdón = perdon).
       </p>
       <Button
-        className="w-full"
+        className="min-h-12 w-full touch-manipulation"
         size="lg"
         disabled={disabled || !value.trim()}
         onClick={check}
@@ -215,11 +241,7 @@ export function ListeningChooseView({
 
   const playAudio = () => {
     if (exercise.audioSrc) {
-      const audio = new Audio(exercise.audioSrc);
-      void audio.play().catch(() => {
-        // Fall back to browser TTS if the MP3 fails to play
-        speakPracticeAudio(exercise.audioText);
-      });
+      playSpanishAudio(exercise.audioText, exercise.audioSrc);
       return;
     }
     speakPracticeAudio(exercise.audioText);
@@ -237,7 +259,7 @@ export function ListeningChooseView({
           size="lg"
           disabled={disabled}
           onClick={playAudio}
-          className="bg-violet-100 text-violet-900 hover:bg-violet-200"
+          className="min-h-12 touch-manipulation bg-violet-100 text-violet-900 hover:bg-violet-200"
         >
           <Volume2 className="h-5 w-5" />
           Play practice audio
@@ -255,25 +277,37 @@ export function ListeningChooseView({
         )}
       </div>
       <div className="grid gap-3">
-        {exercise.options.map((opt, i) => (
-          <button
-            key={opt}
-            type="button"
-            disabled={disabled}
-            onClick={() => setSelected(i)}
-            className={cn(
-              "rounded-2xl border-2 px-4 py-4 text-left text-base font-semibold transition-all",
-              selected === i
-                ? "border-violet-500 bg-violet-50 text-violet-900"
-                : "border-slate-200 bg-white text-slate-800 hover:border-slate-300"
-            )}
-          >
-            {opt}
-          </button>
-        ))}
+        {exercise.options.map((opt, i) => {
+          const spanish = looksSpanish(opt);
+          return (
+            <div
+              key={`${opt}-${i}`}
+              className={cn(
+                "flex min-h-12 items-stretch gap-1 rounded-2xl border-2 transition-all",
+                selected === i
+                  ? "border-violet-500 bg-violet-50 text-violet-900"
+                  : "border-slate-200 bg-white text-slate-800"
+              )}
+            >
+              <button
+                type="button"
+                disabled={disabled}
+                onClick={() => setSelected(i)}
+                className="min-h-12 min-w-0 flex-1 touch-manipulation rounded-2xl px-4 py-3.5 text-left text-base font-semibold"
+              >
+                <span className="break-words">{opt}</span>
+              </button>
+              {spanish && (
+                <div className="flex items-center pr-2">
+                  <SpeakButton text={opt} label={`Play: ${opt}`} />
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
       <Button
-        className="w-full"
+        className="min-h-12 w-full touch-manipulation"
         size="lg"
         disabled={selected === null || disabled}
         onClick={() =>

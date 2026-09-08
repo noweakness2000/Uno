@@ -72,7 +72,7 @@ export function UnitPath() {
                         <Link
                           href={`/lesson/${lessonId}`}
                           className={cn(
-                            "group flex items-stretch gap-4 rounded-2xl border-2 bg-white p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md",
+                            "group flex min-h-[72px] touch-manipulation items-stretch gap-3 rounded-2xl border-2 bg-white p-3 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md sm:gap-4 sm:p-4",
                             done
                               ? "border-emerald-200 hover:border-emerald-400"
                               : "border-amber-200 hover:border-amber-400"
@@ -80,7 +80,7 @@ export function UnitPath() {
                         >
                           <div
                             className={cn(
-                              "flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl text-white shadow-inner",
+                              "flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl text-white shadow-inner sm:h-14 sm:w-14",
                               done ? "bg-emerald-500" : "bg-amber-400"
                             )}
                           >

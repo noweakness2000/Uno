@@ -18,30 +18,117 @@ from pathlib import Path
 
 from google.cloud import texttospeech
 
-# Closest Neural2 LatAm voice (no es-MX Neural2 exists in the API).
 VOICE_NAME = "es-US-Neural2-A"
 LANGUAGE_CODE = "es-US"
 SPEAKING_RATE = 0.95
 
-# Listening-choose phrases + useful teach/word clips
 PHRASES: list[str] = [
-    "Mucho gusto",
-    "Buenas noches",
-    "Gracias",
-    "Hola, ¿cómo estás?",
-    "Me llamo Sofía",
-    "buenos días",
-    "buenas tardes",
-    "perdón",
-    "disculpe",
-    "hola",
     "adiós",
+    "Adiós, nos vemos pronto.",
+    "¡Adiós! Que te vaya bien.",
+    "Buenas noches",
+    "buenas noches",
+    "¡Buenas noches! Nos vemos mañana.",
+    "Buenas noches, que descanses.",
+    "buenas tardes",
+    "Buenas tardes, ¿en qué puedo ayudarte?",
+    "¡Buenas tardes! Llegamos a tiempo.",
+    "Buenos días",
+    "buenos días",
+    "¡Buenos días! ¿Cómo estás?",
+    "Buenos días, señor López.",
+    "¿cómo estás?",
+    "¿Cómo estás hoy?",
+    "¿cómo te llamas?",
+    "¿Cómo te llamas? Yo me llamo Ana.",
+    "¿De dónde eres?",
+    "¿de dónde eres?",
+    "¿De dónde eres? Soy de Estados Unidos.",
+    "¿De dónde eres? — Soy de México.",
+    "de nada",
+    "De nada, con gusto.",
+    "Disculpe",
+    "disculpe",
+    "Disculpe, ¿habla inglés?",
+    "Disculpe, ¿me puede ayudar?",
+    "Ella es de México.",
+    "Ella vive en un departamento en la ciudad.",
+    "Es una empresa estadounidense.",
+    "español",
+    "Estados Unidos",
+    "estadounidense",
+    "Estoy aprendiendo español.",
+    "Gracias",
+    "gracias",
+    "—Gracias. —De nada.",
+    "Gracias por tu ayuda.",
+    "hablar",
+    "—¿Hablas español? —Sí.",
+    "¿Hablas inglés?",
+    "Hablo español",
+    "Hablo español.",
+    "Hablo español, pero un poco.",
+    "Hablo inglés y un poco de español.",
+    "Hablo un poco de español",
+    "Hablo un poco de español.",
+    "Hasta luego",
+    "hasta luego",
+    "Hasta luego, ¡cuidate!",
+    "hola",
+    "Hola, ¿cómo estás?",
+    "Hola, ¿cómo te llamas?",
+    "Hola, me llamo Sofía.",
+    "Hola, me llamo Valeria. Mucho gusto.",
+    "¡Hola! ¿Qué tal?",
+    "Hola, soy Ana. ¡Mucho gusto!",
+    "inglés",
+    "llamarse",
+    "me llamo",
+    "Me llamo Ana. — Yo también soy Ana.",
+    "Me llamo Diego.",
+    "Me llamo Sofía",
+    "¿Me pasas el menú, por favor?",
+    "México",
+    "¡Muchas gracias!",
+    "Mucho gusto",
+    "mucho gusto",
+    "Mucho gusto, Carlos. Bienvenido.",
+    "no",
+    "No, gracias",
+    "No, gracias.",
+    "No hablo mucho español.",
+    "Okay, hasta luego. Nos vemos.",
+    "Perdón",
+    "perdón",
+    "Perdón, ¿dónde está el baño?",
+    "¡Perdón! No te vi.",
+    "pero",
+    "por favor",
+    "Sé un poco de inglés.",
+    "ser",
+    "sí",
+    "Sí, por favor",
+    "Sí, por favor.",
+    "soy de",
+    "Soy de Estados Unidos.",
+    "Soy de México",
+    "Soy de México.",
+    "Soy de México, pero vivo en Estados Unidos.",
+    "Soy estadounidense.",
+    "Soy estudiante.",
+    "también",
+    "Un café, por favor.",
+    "un poco de",
+    "¿Ustedes hablan inglés?",
+    "¿Vives en México?",
+    "vivo en",
+    "Vivo en Estados Unidos",
+    "Vivo en Estados Unidos.",
+    "Yo también hablo español."
 ]
 
 
 def slugify(text: str) -> str:
-    """Stable filename slug from Spanish phrase text."""
-    # Normalize accents to ASCII for filenames, keep readability
     nfkd = unicodedata.normalize("NFKD", text)
     ascii_text = "".join(c for c in nfkd if not unicodedata.combining(c))
     ascii_text = ascii_text.lower()
@@ -74,6 +161,11 @@ def main() -> None:
         help="Output directory for MP3s",
     )
     parser.add_argument(
+        "--only-missing",
+        action="store_true",
+        help="Skip phrases that already have an mp3",
+    )
+    parser.add_argument(
         "--list-voices",
         action="store_true",
         help="List Spanish Neural2 voices and exit",
@@ -97,15 +189,24 @@ def main() -> None:
     print(f"out={args.out}")
 
     written: list[str] = []
+    skipped = 0
+    # Dedupe by slug so first phrase wins for a given filename
+    seen_slugs: set[str] = set()
     for phrase in PHRASES:
         slug = slugify(phrase)
+        if not slug or slug in seen_slugs:
+            continue
+        seen_slugs.add(slug)
         path = args.out / f"{slug}.mp3"
+        if args.only_missing and path.exists() and path.stat().st_size > 0:
+            skipped += 1
+            continue
         audio = synthesize(client, phrase)
         path.write_bytes(audio)
         written.append(path.name)
         print(f"wrote {path.name} ({len(audio)} bytes) <- {phrase!r}")
 
-    print(f"done: {len(written)} files")
+    print(f"done: {len(written)} written, {skipped} skipped")
 
 
 if __name__ == "__main__":

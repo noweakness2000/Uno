@@ -113,13 +113,13 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
   };
 
   return (
-    <div className="mx-auto flex min-h-dvh max-w-xl flex-col px-4 pb-40 pt-4">
+    <div className="mx-auto flex min-h-dvh w-full max-w-xl flex-col px-3 pt-[max(1rem,env(safe-area-inset-top))] pb-[max(11rem,calc(env(safe-area-inset-bottom)+9rem))] sm:px-4">
       <div className="mb-6 flex items-center gap-3">
         <button
           type="button"
           aria-label="Exit lesson"
           onClick={() => router.push("/home")}
-          className="rounded-full p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
+          className="flex h-11 w-11 touch-manipulation items-center justify-center rounded-full text-slate-400 hover:bg-slate-100 hover:text-slate-700"
         >
           <X className="h-5 w-5" />
         </button>
@@ -141,7 +141,7 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
             <p className="mb-1 text-xs font-bold uppercase tracking-wide text-emerald-600">
               {exercise.type.replace("-", " ")}
             </p>
-            <h1 className="text-2xl font-bold leading-snug text-slate-900">
+            <h1 className="text-xl font-bold leading-snug text-slate-900 sm:text-2xl">
               {exercise.prompt}
             </h1>
           </div>

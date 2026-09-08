@@ -22,8 +22,8 @@ export default function HomePage() {
   };
 
   return (
-    <div className="mx-auto min-h-dvh max-w-lg px-4 pb-16 pt-6">
-      <header className="mb-6 flex items-center justify-between">
+    <div className="mx-auto min-h-dvh w-full max-w-lg overflow-x-hidden px-3 pb-[max(4rem,env(safe-area-inset-bottom))] pt-[max(1.5rem,env(safe-area-inset-top))] sm:px-4">
+      <header className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div>
           <p className="text-xs font-bold uppercase tracking-widest text-emerald-600">
             Uno

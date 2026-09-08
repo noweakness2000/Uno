@@ -65,10 +65,11 @@ Scripts in `package.json`: `dev`, `build`, `start`, `lint`.
 
 ## Demo content
 
-- **Unit 1 — First contact**: playable lessons `u1-l1`, `u1-l2`
-- **Unit 2 — Meeting people**: `u2-l1` unlocked when starting level is `conversational_basics`
+- **Unit 1 — First contact**: `u1-l1` Hello & goodbye · `u1-l2` What's your name? · `u1-l3` Thanks & sorry · `u1-l4` First chat check
+- **Unit 2 — Who I am**: `u2-l1` I'm from… / I live in… · `u2-l2` I speak… · `u2-l3` About you check (Units 1–2 unlocked for all)
 - Units 3–5 visually locked for sequence
-- Word cards for greetings & polite basics (`buenos días`, `mucho gusto`, `perdón`, …)
+- Teach-before-practice word cards with meaningSummary, conjugations (LatAm, ustedes), examples + speaker audio
+- Baked LatAm Neural2 MP3s under `public/audio/es-mx/`
 
 ## Placement (starting level)
 

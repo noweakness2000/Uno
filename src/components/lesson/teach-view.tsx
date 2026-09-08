@@ -2,9 +2,8 @@
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import {
-  WordCardBody,
-} from "@/components/word-card-drawer";
+import { SpeakButton } from "@/components/speak-button";
+import { WordCardBody } from "@/components/word-card-drawer";
 import type { TeachExercise, WordCard } from "@/lib/types";
 
 const POS_LABEL: Record<WordCard["pos"], string> = {
@@ -28,15 +27,16 @@ export function TeachView({
   onContinue: () => void;
 }) {
   return (
-    <div className="space-y-5">
-      <div className="rounded-3xl border-2 border-emerald-200 bg-gradient-to-b from-emerald-50 to-white p-5 shadow-sm">
+    <div className="space-y-5 pb-8">
+      <div className="rounded-3xl border-2 border-emerald-200 bg-gradient-to-b from-emerald-50 to-white p-4 shadow-sm sm:p-5">
         <p className="mb-3 text-[11px] font-bold uppercase tracking-wider text-emerald-600">
           New word · learn first
         </p>
         <div className="mb-1 flex flex-wrap items-center gap-2">
-          <h2 className="text-2xl font-extrabold text-emerald-800">
+          <h2 className="min-w-0 break-words text-xl font-extrabold text-emerald-800 sm:text-2xl">
             {card.lemma}
           </h2>
+          <SpeakButton text={card.lemma} size="md" label={`Play: ${card.lemma}`} />
           <Badge>{card.cefr}</Badge>
           <Badge variant="secondary">{POS_LABEL[card.pos]}</Badge>
         </div>
@@ -46,7 +46,7 @@ export function TeachView({
       <p className="text-center text-xs text-slate-400">
         {exercise.prompt || "Read this, then practice."} · 0 XP
       </p>
-      <Button className="w-full" size="lg" onClick={onContinue}>
+      <Button className="min-h-12 w-full touch-manipulation" size="lg" onClick={onContinue}>
         Got it — practice
       </Button>
     </div>

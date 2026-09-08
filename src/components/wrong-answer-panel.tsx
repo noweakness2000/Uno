@@ -1,8 +1,10 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { SpeakButton } from "@/components/speak-button";
 import { CheckCircle2, XCircle, BookOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { looksSpanish } from "@/lib/audio";
 
 interface WrongAnswerPanelProps {
   correct: boolean;
@@ -21,23 +23,26 @@ export function FeedbackPanel({
   onOpenWordCard,
   hasWordCard,
 }: WrongAnswerPanelProps) {
+  const answerIsSpanish = Boolean(correctAnswer && looksSpanish(correctAnswer));
+
   return (
     <div
       className={cn(
-        "fixed inset-x-0 bottom-0 z-40 border-t px-4 pb-6 pt-4 shadow-[0_-8px_30px_rgba(0,0,0,0.08)]",
+        "fixed inset-x-0 bottom-0 z-40 border-t px-4 pt-4 shadow-[0_-8px_30px_rgba(0,0,0,0.08)]",
+        "pb-[max(1.5rem,env(safe-area-inset-bottom))]",
         correct
           ? "border-emerald-200 bg-emerald-50"
           : "border-rose-200 bg-rose-50"
       )}
     >
-      <div className="mx-auto flex max-w-xl flex-col gap-3">
+      <div className="mx-auto flex w-full max-w-xl flex-col gap-3">
         <div className="flex items-start gap-3">
           {correct ? (
             <CheckCircle2 className="mt-0.5 h-7 w-7 shrink-0 text-emerald-600" />
           ) : (
             <XCircle className="mt-0.5 h-7 w-7 shrink-0 text-rose-600" />
           )}
-          <div className="flex-1">
+          <div className="min-w-0 flex-1">
             <p
               className={cn(
                 "text-lg font-bold",
@@ -50,10 +55,15 @@ export function FeedbackPanel({
               {explanation}
             </p>
             {!correct && correctAnswer && (
-              <p className="mt-2 text-sm text-slate-800">
-                Correct answer:{" "}
-                <strong className="font-extrabold">{correctAnswer}</strong>
-              </p>
+              <div className="mt-2 flex flex-wrap items-center gap-2 text-sm text-slate-800">
+                <span>
+                  Correct answer:{" "}
+                  <strong className="font-extrabold break-words">{correctAnswer}</strong>
+                </span>
+                {answerIsSpanish && (
+                  <SpeakButton text={correctAnswer} label={`Play: ${correctAnswer}`} />
+                )}
+              </div>
             )}
             {!correct && (
               <p className="mt-2 text-xs font-medium text-rose-700/80">
@@ -62,11 +72,11 @@ export function FeedbackPanel({
             )}
           </div>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-col gap-2 sm:flex-row">
           {hasWordCard && onOpenWordCard && (
             <Button
               variant="outline"
-              className="flex-1 border-slate-300 bg-white"
+              className="min-h-12 flex-1 touch-manipulation border-slate-300 bg-white"
               onClick={onOpenWordCard}
             >
               <BookOpen className="h-4 w-4" />
@@ -74,7 +84,7 @@ export function FeedbackPanel({
             </Button>
           )}
           <Button
-            className="flex-[2]"
+            className="min-h-12 flex-[2] touch-manipulation"
             variant={correct ? "correct" : "wrong"}
             onClick={onContinue}
           >
