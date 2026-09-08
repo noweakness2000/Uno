@@ -167,7 +167,6 @@ export function WordCardHeaderMeta({ card }: { card: WordCard }) {
     <div className="flex flex-wrap items-center gap-2">
       <span className="text-2xl font-bold text-emerald-700">{card.lemma}</span>
       <SpeakButton text={card.lemma} src={audioSrcFor(card.lemma, "f")} size="md" label={`Play: ${card.lemma}`} />
-      <Badge>{card.cefr}</Badge>
       <Badge variant="secondary">{POS_LABEL[card.pos]}</Badge>
       {card.gender !== "n/a" && (
         <Badge variant="outline">{GENDER_LABEL[card.gender]}</Badge>
@@ -193,7 +192,6 @@ export function WordCardDrawer({
                   {card.lemma}
                 </SheetTitle>
                 <SpeakButton text={card.lemma} src={audioSrcFor(card.lemma, "f")} size="md" label={`Play: ${card.lemma}`} />
-                <Badge>{card.cefr}</Badge>
                 <Badge variant="secondary">{POS_LABEL[card.pos]}</Badge>
                 {card.gender !== "n/a" && (
                   <Badge variant="outline">{GENDER_LABEL[card.gender]}</Badge>

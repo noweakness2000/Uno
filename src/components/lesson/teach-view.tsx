@@ -38,7 +38,6 @@ export function TeachView({
             {card.lemma}
           </h2>
           <SpeakButton text={card.lemma} src={audioSrcFor(card.lemma, "f")} size="md" label={`Play: ${card.lemma}`} />
-          <Badge>{card.cefr}</Badge>
           <Badge variant="secondary">{POS_LABEL[card.pos]}</Badge>
         </div>
         <p className="mb-4 text-base font-medium text-slate-600">{card.gloss}</p>

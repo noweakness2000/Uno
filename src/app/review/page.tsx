@@ -5,7 +5,6 @@ import Link from "next/link";
 import { ArrowLeft, BookOpen, Check, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { WordCardDrawer } from "@/components/word-card-drawer";
 import { getWordCard } from "@/lib/mock-data";
 import { useUserStore } from "@/store/user-store";
@@ -79,12 +78,9 @@ export default function ReviewPage() {
               <Card className="overflow-hidden">
                 <CardContent className="flex items-center gap-3 p-4">
                   <div className="flex-1">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <p className="text-lg font-bold text-emerald-700">
-                        {card.lemma}
-                      </p>
-                      <Badge variant="secondary">{card.cefr}</Badge>
-                    </div>
+                    <p className="text-lg font-bold text-emerald-700">
+                      {card.lemma}
+                    </p>
                     <p className="text-sm text-slate-600">{card.gloss}</p>
                   </div>
                   <Button
