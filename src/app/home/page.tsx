@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { BookMarked, Layers, Pencil, Play, RotateCcw, SkipForward } from "lucide-react";
+import { BookMarked, Layers, Pencil, Play, RotateCcw, SkipForward, Trophy } from "lucide-react";
 import { StatsBar } from "@/components/home/stats-bar";
 import { StreakPanel } from "@/components/home/streak-panel";
 import { UnitPath } from "@/components/home/unit-path";
@@ -75,6 +75,12 @@ export default function HomePage() {
         </div>
         <div className="flex flex-wrap items-center justify-end gap-2">
           <AuthControls />
+          <Link href="/leaderboard">
+            <Button variant="soft" size="sm">
+              <Trophy className="h-4 w-4" />
+              Leaderboard
+            </Button>
+          </Link>
           <Link href="/flashcards">
             <Button variant="soft" size="sm">
               <Layers className="h-4 w-4" />
