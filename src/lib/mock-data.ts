@@ -9,6 +9,9 @@ import {
   INTERMEDIATE_UNITS_META,
   INTERMEDIATE_WORD_CARDS,
 } from "./content/intermediate";
+import { UNIT1_LESSONS, UNIT1_WORD_CARDS } from "./content/unit1";
+import { UNIT2_LESSONS, UNIT2_WORD_CARDS } from "./content/unit2";
+import { UNIT3_LESSONS, UNIT3_WORD_CARDS } from "./content/unit3";
 
 export const DEMO_USER: DemoUser = {
   id: "demo-1",
@@ -880,6 +883,9 @@ export const WORD_CARDS: Record<string, WordCard> = {
     formality: "neutral",
     cefr: "A1",
   },
+  ...UNIT1_WORD_CARDS,
+  ...UNIT2_WORD_CARDS,
+  ...UNIT3_WORD_CARDS,
   ...INTERMEDIATE_WORD_CARDS,
 };
 
@@ -2345,6 +2351,9 @@ export const LESSONS: Record<string, Lesson> = {
       },
     ],
   },
+  ...UNIT1_LESSONS,
+  ...UNIT2_LESSONS,
+  ...UNIT3_LESSONS,
   ...INTERMEDIATE_LESSONS,
 };
 
@@ -2354,7 +2363,7 @@ export const UNITS: Unit[] = [
     number: 1,
     title: "First contact",
     description: "Greetings, names, and polite essentials.",
-    lessonIds: ["u1-l1", "u1-l2", "u1-l3", "u1-l4"],
+    lessonIds: ["u1-l1", "u1-l2", "u1-l3", "u1-l4", "u1-l5", "u1-l6", "u1-l7", "u1-l8", "u1-l9", "u1-l10", "u1-l11", "u1-l12"],
     unlocked: true,
     track: "beginner",
   },
@@ -2363,7 +2372,7 @@ export const UNITS: Unit[] = [
     number: 2,
     title: "Who I am",
     description: "Origin, where you live, and languages you speak.",
-    lessonIds: ["u2-l1", "u2-l2", "u2-l3"],
+    lessonIds: ["u2-l1", "u2-l2", "u2-l3", "u2-l4", "u2-l5", "u2-l6", "u2-l7", "u2-l8", "u2-l9", "u2-l10", "u2-l11", "u2-l12"],
     unlocked: true,
     track: "beginner",
   },
@@ -2372,7 +2381,7 @@ export const UNITS: Unit[] = [
     number: 3,
     title: "Numbers that matter",
     description: "Counting, phone, age, and everyday prices.",
-    lessonIds: ["u3-l1", "u3-l2", "u3-l3"],
+    lessonIds: ["u3-l1", "u3-l2", "u3-l3", "u3-l4", "u3-l5", "u3-l6", "u3-l7", "u3-l8", "u3-l9", "u3-l10", "u3-l11", "u3-l12"],
     unlocked: true,
     track: "beginner",
   },

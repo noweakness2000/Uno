@@ -35,6 +35,9 @@ VOICES = {
 ROOT = Path(__file__).resolve().parents[1]
 CONTENT_FILES = [
     ROOT / "src" / "lib" / "content" / "intermediate.ts",
+    ROOT / "src" / "lib" / "content" / "unit1.ts",
+    ROOT / "src" / "lib" / "content" / "unit2.ts",
+    ROOT / "src" / "lib" / "content" / "unit3.ts",
     ROOT / "src" / "lib" / "content" / "unit5.ts",
     ROOT / "src" / "lib" / "content" / "unit6.ts",
     ROOT / "src" / "lib" / "content" / "unit7.ts",
