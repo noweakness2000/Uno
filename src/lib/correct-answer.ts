@@ -14,6 +14,8 @@ export function getCorrectAnswerDisplay(exercise: Exercise): string {
     case "translate":
     case "fill-blank":
     case "cloze":
+    case "dictation":
+    case "conjugate":
       return exercise.acceptedAnswers[0] ?? "";
     case "match-pairs":
       return exercise.pairs.map((p) => `${p.left} → ${p.right}`).join(" · ");

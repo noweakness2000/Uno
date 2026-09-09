@@ -67,7 +67,7 @@ export function FeedbackPanel({
             )}
             {!correct && (
               <p className="mt-2 text-xs font-medium text-rose-700/80">
-                Marked for review — keep going.
+                Marked for review — read the tip above, then keep going.
               </p>
             )}
           </div>

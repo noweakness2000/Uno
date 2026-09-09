@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { BookMarked, Layers, Pencil, Play, RotateCcw, SkipForward, Trophy } from "lucide-react";
 import { StatsBar } from "@/components/home/stats-bar";
+import { WordOfTheDayCard } from "@/components/home/word-of-the-day-card";
 import { StreakPanel } from "@/components/home/streak-panel";
 import { UnitPath } from "@/components/home/unit-path";
 import { AuthControls } from "@/components/auth/auth-controls";
@@ -105,6 +106,8 @@ export default function HomePage() {
           </Link>
         </div>
       </header>
+
+      <WordOfTheDayCard />
 
       {editing && (
         <div className="mb-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">

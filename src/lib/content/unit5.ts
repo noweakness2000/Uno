@@ -1,5 +1,5 @@
 /**
- * Unit 5 — Food & ordering (~12 lessons). LatAm-neutral.
+ * Unit 5 — Food & ordering (~12 lessons). Spanish.
  * Merged via intermediate.ts into mock-data.
  */
 import type { Lesson, WordCard } from "../types";
@@ -81,7 +81,7 @@ function cloze(
 function storyListen(
   id: string,
   title: string,
-  lines: { text: string; voice?: AudioVoice }[],
+  lines: { text: string; en?: string; voice?: AudioVoice }[],
   questions: {
     prompt: string;
     options: string[];
@@ -94,6 +94,7 @@ function storyListen(
 ): import("../types").StoryListenExercise {
   const withVoices = lines.map((line, i) => ({
     text: line.text,
+    en: line.en,
     voice: line.voice ?? voiceForIndex(i),
   }));
   return {
@@ -110,6 +111,31 @@ function storyListen(
 }
 
 
+
+function dictation(
+  id: string,
+  audioText: string,
+  acceptedAnswers: string[],
+  explanation: string,
+  wordCardIds: string[],
+  opts: { hint?: string; voice?: AudioVoice; xp?: number } = {}
+): import("../types").DictationExercise {
+  const voice = opts.voice ?? "f";
+  return {
+    id,
+    type: "dictation",
+    prompt: "Type what you hear",
+    audioText,
+    audioSrc: audioSrcFor(audioText, voice),
+    acceptedAnswers,
+    hint: opts.hint,
+    explanation,
+    wordCardIds,
+    xp: opts.xp ?? 4,
+  };
+}
+
+
 export const UNIT5_WORD_CARDS: Record<string, WordCard> = {
   tacos: {
     id: "tacos",
@@ -118,15 +144,14 @@ export const UNIT5_WORD_CARDS: Record<string, WordCard> = {
     gender: "m",
     gloss: "tacos",
     meaningSummary:
-      "Everyday LatAm food word. Me gustan los tacos / Quiero tacos, por favor. Plural is the default when talking about the dish.",
+      "Everyday food word. Me gustan los tacos / Quiero tacos, por favor. Plural is the default when talking about the dish.",
     examples: [
       { es: "Me gustan los tacos.", en: "I like tacos." },
       { es: "Quiero tacos, por favor.", en: "I want tacos, please." },
     ],
     useWhen: "Talking about or ordering tacos.",
-    dontUseWhen: "n/a — extremely common across LatAm.",
+    dontUseWhen: "n/a — extremely common.",
     formality: "neutral",
-    region: "LatAm-wide",
     cefr: "A2",
   },
   agua: {
@@ -288,15 +313,14 @@ export const UNIT5_WORD_CARDS: Record<string, WordCard> = {
     gender: "mf",
     gloss: "waiter / waitress",
     meaningSummary:
-      "Service staff at a restaurant (LatAm). Ask politely with usted: Disculpe… to the mesero/mesera.",
+      "Service staff at a restaurant. Ask politely with usted: Disculpe… to the mesero/mesera.",
     examples: [
       { es: "El mesero trae la cuenta.", en: "The waiter brings the check." },
       { es: "Disculpe, ¿me puede ayudar?", en: "Excuse me, can you help me?" },
     ],
-    useWhen: "Referring to restaurant staff in LatAm Spanish.",
+    useWhen: "Referring to restaurant staff.",
     dontUseWhen: "With the person, usted + Disculpe is more useful than naming the job.",
     formality: "neutral",
-    region: "LatAm-wide",
     cefr: "A2",
   },
   "me-gustaria": {
@@ -497,7 +521,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         pairs: [
           { left: "Me gusta el café", right: "I like coffee" },
           { left: "Quiero un café", right: "I want a coffee (ordering)" },
-          { left: "jugo", right: "juice (LatAm)" },
+          { left: "jugo", right: "juice" },
           { left: "Me gustan los tacos", right: "I like tacos" },
         ],
         explanation: "Gustar = like; querer = want/order.",
@@ -544,7 +568,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         prompt: "With a waiter you don't know, the safer default is…",
         options: ["only slang nicknames", "skip the name", "no greeting", "usted"],
         correctIndex: 3,
-        explanation: "Usted is the polite default with service staff in much of LatAm.",
+        explanation: "Usted is the polite default with service staff in many places.",
         wordCardIds: ["usted-server"],
         xp: 3,
       },
@@ -1313,7 +1337,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         englishPrompt: "I live in an apartment.",
         template: "Vivo en un ___.",
         acceptedAnswers: ["departamento", "Departamento"],
-        hint: "apartment (LatAm)",
+        hint: "apartment",
         explanation: "Vivo en un departamento — weak reuse from Unit 4.",
         wordCardIds: ["departamento"],
         xp: 3,
@@ -1376,7 +1400,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
       {
         id: "u5l8-9",
         type: "select",
-        prompt: "LatAm word for juice?",
+        prompt: "Word for juice?",
         options: ["cuenta", "oficina", "jugo", "platos"],
         correctIndex: 2,
         explanation: "jugo.",
@@ -1397,12 +1421,12 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         "u5l9-story",
         "Pedimos el almuerzo",
         [
-          { text: "Entramos a un restaurante cerca del centro." },
-          { text: "Disculpe, ¿me puede traer un menú?" },
-          { text: "Me gustaría el pollo con arroz, por favor." },
-          { text: "También quiero un jugo de naranja." },
-          { text: "La comida está muy buena. Gracias." },
-          { text: "¿Me trae la cuenta, por favor?" },
+          { text: "Entramos a un restaurante cerca del centro.", en: "We go into a restaurant near downtown." },
+          { text: "Disculpe, ¿me puede traer un menú?", en: "Excuse me, can you bring me a menu?" },
+          { text: "Me gustaría el pollo con arroz, por favor.", en: "I would like the chicken with rice, please." },
+          { text: "También quiero un jugo de naranja.", en: "I also want an orange juice." },
+          { text: "La comida está muy buena. Gracias.", en: "The food is really good. Thank you." },
+          { text: "¿Me trae la cuenta, por favor?", en: "Can you bring me the check, please?" },
         ],
         [
           {
@@ -1438,6 +1462,22 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         ["restaurante", "menu", "me-gustaria", "pollo", "arroz", "jugo", "comida", "la-cuenta", "el-centro"],
         "Ordering story — voices rotate across Neural2 A/B/C.",
         12
+      ),
+      dictation(
+        "u5l9-story-dict-1",
+        "Entramos a un restaurante cerca del centro.",
+        ["Entramos a un restaurante cerca del centro."],
+        "Type the line you heard: Entramos a un restaurante cerca del centro.",
+        [],
+        { hint: "Replay if needed", voice: "f", xp: 4 }
+      ),
+      dictation(
+        "u5l9-story-dict-2",
+        "Disculpe, ¿me puede traer un menú?",
+        ["Disculpe, ¿me puede traer un menú?", "Disculpe, me puede traer un menú"],
+        "Type the line you heard: Disculpe, ¿me puede traer un menú?",
+        [],
+        { hint: "Replay if needed", voice: "m", xp: 4 }
       ),
       {
         id: "u5l9-1",
@@ -1621,12 +1661,12 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         "u5l11-story",
         "Un café con un amigo",
         [
-          { text: "Hola, ¿cómo estás? ¿Quieres un café?" },
-          { text: "Sí, me gusta el café con leche." },
-          { text: "Yo quiero un té, por favor." },
-          { text: "También pedimos pan. La comida es simple." },
-          { text: "Para llevar el jugo de mi amigo." },
-          { text: "Pagamos la cuenta y dejamos propina. ¡Hasta luego!" },
+          { text: "Hola, ¿cómo estás? ¿Quieres un café?", en: "Hi, how are you? Do you want a coffee?" },
+          { text: "Sí, me gusta el café con leche.", en: "Yes, I like coffee with milk." },
+          { text: "Yo quiero un té, por favor.", en: "I want a tea, please." },
+          { text: "También pedimos pan. La comida es simple.", en: "We also order bread. The food is simple." },
+          { text: "Para llevar el jugo de mi amigo.", en: "To go — my friend's juice." },
+          { text: "Pagamos la cuenta y dejamos propina. ¡Hasta luego!", en: "We pay the bill and leave a tip. See you later!" },
         ],
         [
           {
@@ -1662,6 +1702,22 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         ["cafe", "leche", "te", "pan", "comida", "jugo", "para-llevar", "la-cuenta", "propina", "hola", "como-estas"],
         "Café story — mixed Neural2 voices.",
         12
+      ),
+      dictation(
+        "u5l11-story-dict-1",
+        "Hola, ¿cómo estás? ¿Quieres un café?",
+        ["Hola, ¿cómo estás? ¿Quieres un café?", "Hola, cómo estás Quieres un café"],
+        "Type the line you heard: Hola, ¿cómo estás? ¿Quieres un café?",
+        [],
+        { hint: "Replay if needed", voice: "f", xp: 4 }
+      ),
+      dictation(
+        "u5l11-story-dict-2",
+        "Sí, me gusta el café con leche.",
+        ["Sí, me gusta el café con leche."],
+        "Type the line you heard: Sí, me gusta el café con leche.",
+        [],
+        { hint: "Replay if needed", voice: "m", xp: 4 }
       ),
       {
         id: "u5l11-1",
@@ -1723,7 +1779,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
       {
         id: "u5l12-1",
         type: "select",
-        prompt: "LatAm word for juice?",
+        prompt: "Word for juice?",
         options: ["oficina", "jugo", "platos", "derecha"],
         correctIndex: 1,
         explanation: "jugo.",

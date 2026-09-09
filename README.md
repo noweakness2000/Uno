@@ -1,4 +1,4 @@
-# Uno — LatAm Spanish
+# Uno — Spanish
 
 Explanations-first Spanish learning for Latin American Spanish. No hearts, no energy, no lockouts — XP, streak, and daily goals are motivational only.
 
@@ -13,7 +13,7 @@ Explanations-first Spanish learning for Latin American Spanish. No hearts, no en
 ## Brand / product notes
 
 - Brand: **Uno** (not Habla)
-- LatAm-neutral vocab: **carro**, **jugo**, **departamento**, **celular**, **computadora**
+- Spanish vocab: **carro**, **jugo**, **departamento**, **celular**, **computadora**
 - English prompts for exercises; Spanish chrome only when obvious
 - Wrong answers: short explanation + mark weak + continue
 - Listening: browser TTS stub labeled **practice audio** (prefers es-MX / es-US / es-419)
@@ -70,8 +70,8 @@ Scripts in `package.json`: `dev`, `build`, `start`, `lint`.
 - **Unit 2 — Who I am**: `u2-l1`…`u2-l12` (~12 lessons + story-listen; Units 1–2 unlocked for all)
 - **Unit 3 — Numbers that matter**: `u3-l1`…`u3-l12` (~12 lessons + story-listen)
 - **Intermediate Units 4–8**: Daily life (~12 lessons + story-listen) · Food & ordering (~12 lessons + story-listen) · Getting around · What I did (preterite) · Plans & invitations (~12 lessons + story-listen) (`u4-l1`…`u4-l12` … `u8-l1`…`u8-l12`)
-- Teach-before-practice word cards with meaningSummary, conjugations (LatAm, ustedes), examples + speaker audio
-- Baked LatAm Neural2 MP3s under `public/audio/es-mx/`
+- Teach-before-practice word cards with meaningSummary, conjugations (ustedes), examples + speaker audio
+- Baked Spanish Neural2 MP3s under `public/audio/es-mx/`
 
 ## Placement (starting level)
 

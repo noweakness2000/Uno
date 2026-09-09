@@ -12,6 +12,7 @@ import { ExerciseRenderer } from "@/components/lesson/exercise-views";
 import { TeachView } from "@/components/lesson/teach-view";
 import { getLesson, getWordCard } from "@/lib/mock-data";
 import { getCorrectAnswerDisplay } from "@/lib/correct-answer";
+import { enrichWrongExplanation } from "@/lib/feedback-coach";
 import { useLessonStore } from "@/store/lesson-store";
 import { useUserStore } from "@/store/user-store";
 import type { TeachExercise, WordCard } from "@/lib/types";
@@ -150,15 +151,23 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
             key={exercise.id}
             exercise={exercise}
             disabled={showFeedback}
-            onSubmit={(correct) =>
+            onSubmit={(correct) => {
+              const correctAnswer = getCorrectAnswerDisplay(exercise);
+              const explanation = correct
+                ? exercise.explanation
+                : enrichWrongExplanation(
+                    exercise,
+                    exercise.explanation,
+                    correctAnswer
+                  );
               recordAnswer({
                 correct,
-                explanation: exercise.explanation,
+                explanation,
                 xp: exercise.xp,
                 wordCardIds: exercise.wordCardIds,
-                correctAnswer: getCorrectAnswerDisplay(exercise),
-              })
-            }
+                correctAnswer,
+              });
+            }}
           />
 
           {showFeedback && lastCorrect !== null && (

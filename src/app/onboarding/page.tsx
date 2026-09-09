@@ -58,7 +58,7 @@ export default function OnboardingPage() {
           Welcome to Uno
         </h1>
         <p className="mt-2 text-slate-500">
-          LatAm-neutral Spanish. Explanations first. No hearts, no lockouts.
+          Spanish. Explanations first. No hearts, no lockouts.
         </p>
       </div>
 

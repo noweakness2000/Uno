@@ -1,5 +1,5 @@
 /**
- * Unit 1 — First contact (lessons 5–12). LatAm-neutral.
+ * Unit 1 — First contact (lessons 5–12). Spanish.
  * Existing u1-l1…u1-l4 stay in mock-data.ts (audio voice indices stable).
  */
 import type { Lesson, WordCard } from "../types";
@@ -81,7 +81,7 @@ function cloze(
 function storyListen(
   id: string,
   title: string,
-  lines: { text: string; voice?: AudioVoice }[],
+  lines: { text: string; en?: string; voice?: AudioVoice }[],
   questions: {
     prompt: string;
     options: string[];
@@ -94,6 +94,7 @@ function storyListen(
 ): import("../types").StoryListenExercise {
   const withVoices = lines.map((line, i) => ({
     text: line.text,
+    en: line.en,
     voice: line.voice ?? voiceForIndex(i),
   }));
   return {
@@ -110,6 +111,9 @@ function storyListen(
 }
 
 
+
+
+
 export const UNIT1_WORD_CARDS: Record<string, WordCard> = {
   bien: {
     id: "bien",
@@ -118,7 +122,7 @@ export const UNIT1_WORD_CARDS: Record<string, WordCard> = {
     gender: "n/a",
     gloss: "well / fine",
     meaningSummary:
-      "The everyday answer to ¿Cómo estás?: Estoy bien / Bien, gracias. Neutral and friendly across LatAm.",
+      "The everyday answer to ¿Cómo estás?: Estoy bien / Bien, gracias. Neutral and friendly in everyday Spanish.",
     examples: [
       { es: "Estoy bien, gracias.", en: "I'm fine, thanks." },
       { es: "Todo bien.", en: "All good." },
@@ -154,7 +158,7 @@ export const UNIT1_WORD_CARDS: Record<string, WordCard> = {
     gender: "n/a",
     gloss: "see you / see you around",
     meaningSummary:
-      "Warm everyday goodbye when you'll meet again. Soft like hasta luego; very common in LatAm chats and goodbyes.",
+      "Warm everyday goodbye when you'll meet again. Soft like hasta luego; very common in chats and goodbyes.",
     examples: [
       { es: "Nos vemos mañana.", en: "See you tomorrow." },
       { es: "Okay, nos vemos.", en: "Okay, see you." },
@@ -326,7 +330,7 @@ export const UNIT1_LESSONS: Record<string, Lesson> = {
         prompt: "Build: “A coffee, please.”",
         chips: ["Un", "café,", "por", "favor", "carro", "mal"],
         correctOrder: ["Un", "café,", "por", "favor"],
-        explanation: "Un café, por favor. (LatAm: car is carro — not in this line.)",
+        explanation: "Un café, por favor.",
         wordCardIds: ["por-favor"],
         xp: 4,
       },
@@ -624,12 +628,12 @@ export const UNIT1_LESSONS: Record<string, Lesson> = {
         "u1l9-story",
         "En el café",
         [
-          { text: "Hola, buenos días." },
-          { text: "Hola, ¿cómo te llamas?" },
-          { text: "Me llamo Sofía. ¿Y tú?" },
-          { text: "Me llamo Mateo. Mucho gusto." },
-          { text: "Mucho gusto. ¿Cómo estás?" },
-          { text: "Estoy bien, gracias. Nos vemos." },
+          { text: "Hola, buenos días.", en: "Hello, good morning." },
+          { text: "Hola, ¿cómo te llamas?", en: "Hi, what's your name?" },
+          { text: "Me llamo Sofía. ¿Y tú?", en: "My name is Sofía. And you?" },
+          { text: "Me llamo Mateo. Mucho gusto.", en: "My name is Mateo. Nice to meet you." },
+          { text: "Mucho gusto. ¿Cómo estás?", en: "Nice to meet you. How are you?" },
+          { text: "Estoy bien, gracias. Nos vemos.", en: "I'm fine, thanks. See you." },
         ],
         [
           {
@@ -794,12 +798,12 @@ export const UNIT1_LESSONS: Record<string, Lesson> = {
         "u1l11-story",
         "Hasta luego",
         [
-          { text: "Buenas tardes." },
-          { text: "Buenas tardes. ¿Qué tal?" },
-          { text: "Bien, gracias. ¿Y tú?" },
-          { text: "También bien." },
-          { text: "Gracias por tu ayuda." },
-          { text: "De nada. Hasta luego." },
+          { text: "Buenas tardes.", en: "Good afternoon." },
+          { text: "Buenas tardes. ¿Qué tal?", en: "Good afternoon. How's it going?" },
+          { text: "Bien, gracias. ¿Y tú?", en: "Good, thanks. And you?" },
+          { text: "También bien.", en: "Also good." },
+          { text: "Gracias por tu ayuda.", en: "Thanks for your help." },
+          { text: "De nada. Hasta luego.", en: "You're welcome. See you later." },
         ],
         [
           {

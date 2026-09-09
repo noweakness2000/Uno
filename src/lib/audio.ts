@@ -1,4 +1,4 @@
-/** Baked LatAm practice MP3s under /public/audio/es-mx/ (Neural2). */
+/** Baked Spanish practice MP3s under /public/audio/es-mx/ (Neural2). */
 
 import { speakPracticeAudio } from "@/lib/tts";
 

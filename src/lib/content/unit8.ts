@@ -1,5 +1,5 @@
 /**
- * Unit 8 — Plans & invitations (~12 lessons). Near future, wants, invites. LatAm-neutral.
+ * Unit 8 — Plans & invitations (~12 lessons). Near future, wants, invites. Spanish.
  * Merged via intermediate.ts into mock-data.
  */
 import type { Lesson, WordCard } from "../types";
@@ -81,7 +81,7 @@ function cloze(
 function storyListen(
   id: string,
   title: string,
-  lines: { text: string; voice?: AudioVoice }[],
+  lines: { text: string; en?: string; voice?: AudioVoice }[],
   questions: {
     prompt: string;
     options: string[];
@@ -94,6 +94,7 @@ function storyListen(
 ): import("../types").StoryListenExercise {
   const withVoices = lines.map((line, i) => ({
     text: line.text,
+    en: line.en,
     voice: line.voice ?? voiceForIndex(i),
   }));
   return {
@@ -106,6 +107,55 @@ function storyListen(
     explanation,
     wordCardIds,
     xp,
+  };
+}
+
+
+function dictation(
+  id: string,
+  audioText: string,
+  acceptedAnswers: string[],
+  explanation: string,
+  wordCardIds: string[],
+  opts: { hint?: string; voice?: AudioVoice; xp?: number } = {}
+): import("../types").DictationExercise {
+  const voice = opts.voice ?? "f";
+  return {
+    id,
+    type: "dictation",
+    prompt: "Type what you hear",
+    audioText,
+    audioSrc: audioSrcFor(audioText, voice),
+    acceptedAnswers,
+    hint: opts.hint,
+    explanation,
+    wordCardIds,
+    xp: opts.xp ?? 4,
+  };
+}
+
+function conjugate(
+  id: string,
+  infinitive: string,
+  pronoun: string,
+  tense: string,
+  acceptedAnswers: string[],
+  explanation: string,
+  wordCardIds: string[],
+  opts: { hint?: string; xp?: number } = {}
+): import("../types").ConjugateExercise {
+  return {
+    id,
+    type: "conjugate",
+    prompt: `Conjugate: ${pronoun} + ${infinitive} (${tense})`,
+    infinitive,
+    pronoun,
+    tense,
+    acceptedAnswers,
+    hint: opts.hint,
+    explanation,
+    wordCardIds,
+    xp: opts.xp ?? 3,
   };
 }
 
@@ -224,7 +274,7 @@ export const UNIT8_WORD_CARDS: Record<string, WordCard> = {
     gender: "n/a",
     gloss: "on Saturday / this Saturday",
     meaningSummary:
-      "Day-of-week plan phrase: El sábado voy al cine. In LatAm, el + day often means 'this coming' Saturday.",
+      "Day-of-week plan phrase: El sábado voy al cine. In Spanish, el + day often means 'this coming' Saturday.",
     examples: [
       { es: "El sábado voy al cine.", en: "On Saturday I'm going to the movies." },
       { es: "¿Qué haces el sábado?", en: "What are you doing on Saturday?" },
@@ -289,6 +339,65 @@ export const UNIT8_WORD_CARDS: Record<string, WordCard> = {
     formality: "neutral",
     cefr: "A2",
   },
+  querer: {
+    id: "querer",
+    lemma: "querer",
+    pos: "verb",
+    gender: "n/a",
+    gloss: "to want",
+    meaningSummary:
+      "Core verb for wants: Quiero café / ¿Qué quieres hacer? Irregular present: quiero, quieres, quiere, queremos, quieren.",
+    conjugations: [
+      {
+        label: "Present indicative",
+        forms: [
+          { person: "yo", form: "quiero" },
+          { person: "tú", form: "quieres" },
+          { person: "él/ella/usted", form: "quiere" },
+          { person: "nosotros/as", form: "queremos" },
+          { person: "ustedes", form: "quieren" },
+        ],
+      },
+    ],
+    examples: [
+      { es: "Quiero salir el viernes.", en: "I want to go out on Friday." },
+      { es: "¿Qué quieres hacer?", en: "What do you want to do?" },
+    ],
+    useWhen: "Saying what you want.",
+    dontUseWhen: "For polite soft requests, ¿te gustaría…? often sounds softer.",
+    formality: "neutral",
+    cefr: "A1",
+  },
+  poder: {
+    id: "poder",
+    lemma: "poder",
+    pos: "verb",
+    gender: "n/a",
+    gloss: "to be able to / can",
+    meaningSummary:
+      "Ability and soft no: No puedo esta noche / ¿Puedes venir? Present: puedo, puedes, puede, podemos, pueden.",
+    conjugations: [
+      {
+        label: "Present indicative",
+        forms: [
+          { person: "yo", form: "puedo" },
+          { person: "tú", form: "puedes" },
+          { person: "él/ella/usted", form: "puede" },
+          { person: "nosotros/as", form: "podemos" },
+          { person: "ustedes", form: "pueden" },
+        ],
+      },
+    ],
+    examples: [
+      { es: "No puedo esta noche.", en: "I can't tonight." },
+      { es: "¿Puedes venir mañana?", en: "Can you come tomorrow?" },
+    ],
+    useWhen: "Ability, permission, soft declines.",
+    dontUseWhen: "For 'I want' use querer, not poder.",
+    formality: "neutral",
+    cefr: "A2",
+  },
+
   salir: {
     id: "salir",
     lemma: "salir",
@@ -299,7 +408,7 @@ export const UNIT8_WORD_CARDS: Record<string, WordCard> = {
       "Go out socially or leave: Quiero salir / Vamos a salir el viernes. Everyday invite verb.",
     conjugations: [
       {
-        label: "Present indicative (LatAm)",
+        label: "Present indicative",
         forms: [
           { person: "yo", form: "salgo" },
           { person: "tú", form: "sales" },
@@ -417,7 +526,7 @@ export const UNIT8_WORD_CARDS: Record<string, WordCard> = {
       "Cook at home: Voy a cocinar esta noche. Pairs with cocina (kitchen) from daily-life units.",
     conjugations: [
       {
-        label: "Present indicative (LatAm)",
+        label: "Present indicative",
         forms: [
           { person: "yo", form: "cocino" },
           { person: "tú", form: "cocinas" },
@@ -560,6 +669,27 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         wordCardIds: ["ir-a", "trabajar"],
         xp: 3,
       },
+    
+      conjugate(
+        "u8l1-conj-1",
+        "ir",
+        "yo",
+        "Present indicative",
+        ["voy", "Voy"],
+        "yo + ir → voy (also used in voy a…).",
+        ["ir"],
+        { hint: "voy", xp: 3 }
+      ),
+      conjugate(
+        "u8l1-conj-2",
+        "ir",
+        "nosotros/as",
+        "Present indicative",
+        ["vamos", "Vamos"],
+        "nosotros + ir → vamos.",
+        ["ir"],
+        { hint: "vamos", xp: 3 }
+      ),
     ],
   },
 
@@ -829,6 +959,27 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         wordCardIds: ["manana", "vamos-a", "descansar"],
         xp: 3,
       },
+    
+      conjugate(
+        "u8l3-conj-1",
+        "querer",
+        "yo",
+        "Present indicative",
+        ["quiero", "Quiero"],
+        "yo + querer → quiero.",
+        ["querer"],
+        { hint: "quiero", xp: 3 }
+      ),
+      conjugate(
+        "u8l3-conj-2",
+        "poder",
+        "yo",
+        "Present indicative",
+        ["puedo", "Puedo"],
+        "yo + poder → puedo.",
+        ["poder"],
+        { hint: "puedo", xp: 3 }
+      ),
     ],
   },
 
@@ -1525,11 +1676,11 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         "u8l9-story",
         "Planes para el viernes",
         [
-          { text: "Ana me dice: ¿Te gustaría salir el viernes?" },
-          { text: "Me parece bien. ¿Qué tal si vamos al cine?" },
-          { text: "Sí. Vamos a tomar un café antes." },
-          { text: "Nos vemos a las siete en el centro." },
-          { text: "Yo voy a llegar temprano." },
+          { text: "Ana me dice: ¿Te gustaría salir el viernes?", en: "Ana says to me: Would you like to go out on Friday?" },
+          { text: "Me parece bien. ¿Qué tal si vamos al cine?", en: "Sounds good to me. How about we go to the movies?" },
+          { text: "Sí. Vamos a tomar un café antes.", en: "Yes. We're going to have a coffee beforehand." },
+          { text: "Nos vemos a las siete en el centro.", en: "See you at seven downtown." },
+          { text: "Yo voy a llegar temprano.", en: "I'm going to arrive early." },
         ],
         [
           {
@@ -1560,6 +1711,22 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         ["te-gustaria", "salir", "el-viernes", "me-parece", "que-tal-si", "el-cine", "vamos-a", "cafe", "a-las", "el-centro", "ir-a", "temprano"],
         "Friday-plans story — Neural2 voice rotation.",
         12
+      ),
+      dictation(
+        "u8l9-story-dict-1",
+        "Ana me dice: ¿Te gustaría salir el viernes?",
+        ["Ana me dice: ¿Te gustaría salir el viernes?", "Ana me dice: Te gustaría salir el viernes"],
+        "Type the line you heard: Ana me dice: ¿Te gustaría salir el viernes?",
+        [],
+        { hint: "Replay if needed", voice: "f", xp: 4 }
+      ),
+      dictation(
+        "u8l9-story-dict-2",
+        "Me parece bien. ¿Qué tal si vamos al cine?",
+        ["Me parece bien. ¿Qué tal si vamos al cine?", "Me parece bien. Qué tal si vamos al cine"],
+        "Type the line you heard: Me parece bien. ¿Qué tal si vamos al cine?",
+        [],
+        { hint: "Replay if needed", voice: "m", xp: 4 }
       ),
       {
         id: "u8l9-1",
@@ -1757,11 +1924,11 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         "u8l11-story",
         "Invitación de fin de semana",
         [
-          { text: "Luis pregunta: ¿Quieres salir esta noche?" },
-          { text: "Gracias, pero ahora no puedo." },
-          { text: "¿Qué tal el sábado?" },
-          { text: "El sábado me parece bien." },
-          { text: "Vamos a caminar por el centro a las diez." },
+          { text: "Luis pregunta: ¿Quieres salir esta noche?", en: "Luis asks: Do you want to go out tonight?" },
+          { text: "Gracias, pero ahora no puedo.", en: "Thanks, but I can't right now." },
+          { text: "¿Qué tal el sábado?", en: "How about Saturday?" },
+          { text: "El sábado me parece bien.", en: "Saturday works for me." },
+          { text: "Vamos a caminar por el centro a las diez.", en: "We're going to walk downtown at ten." },
         ],
         [
           {
@@ -1792,6 +1959,22 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         ["quieres-inf", "salir", "esta-noche", "otra-vez", "el-sabado", "me-parece", "vamos-a", "caminar", "el-centro", "a-las", "fin-de-semana"],
         "Weekend-invite story — Neural2 voice rotation.",
         12
+      ),
+      dictation(
+        "u8l11-story-dict-1",
+        "Luis pregunta: ¿Quieres salir esta noche?",
+        ["Luis pregunta: ¿Quieres salir esta noche?", "Luis pregunta: Quieres salir esta noche"],
+        "Type the line you heard: Luis pregunta: ¿Quieres salir esta noche?",
+        [],
+        { hint: "Replay if needed", voice: "f", xp: 4 }
+      ),
+      dictation(
+        "u8l11-story-dict-2",
+        "Gracias, pero ahora no puedo.",
+        ["Gracias, pero ahora no puedo."],
+        "Type the line you heard: Gracias, pero ahora no puedo.",
+        [],
+        { hint: "Replay if needed", voice: "m", xp: 4 }
       ),
       {
         id: "u8l11-1",

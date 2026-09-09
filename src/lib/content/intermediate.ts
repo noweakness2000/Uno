@@ -1,5 +1,5 @@
 /**
- * Intermediate track (Units 4–8) — strong A2 / early B1 LatAm Spanish.
+ * Intermediate track (Units 4–8) — strong A2 / early B1 Spanish.
  * Merged into mock-data WORD_CARDS / LESSONS.
  */
 import type { Lesson, WordCard } from "../types";
@@ -11,7 +11,7 @@ import { UNIT8_LESSONS, UNIT8_WORD_CARDS } from "./unit8";
 
 const LATAM_PRESENT = (forms: [string, string, string, string, string]) => [
   {
-    label: "Present indicative (LatAm)",
+    label: "Present indicative",
     forms: [
       { person: "yo", form: forms[0] },
       { person: "tú", form: forms[1] },
@@ -24,7 +24,7 @@ const LATAM_PRESENT = (forms: [string, string, string, string, string]) => [
 
 const LATAM_PRETERITE = (forms: [string, string, string, string, string]) => [
   {
-    label: "Preterite (LatAm)",
+    label: "Preterite",
     forms: [
       { person: "yo", form: forms[0] },
       { person: "tú", form: forms[1] },
@@ -112,7 +112,7 @@ function cloze(
 function storyListen(
   id: string,
   title: string,
-  lines: { text: string; voice?: AudioVoice }[],
+  lines: { text: string; en?: string; voice?: AudioVoice }[],
   questions: {
     prompt: string;
     options: string[];
@@ -125,6 +125,7 @@ function storyListen(
 ): import("../types").StoryListenExercise {
   const withVoices = lines.map((line, i) => ({
     text: line.text,
+    en: line.en,
     voice: line.voice ?? voiceForIndex(i),
   }));
   return {
@@ -137,6 +138,55 @@ function storyListen(
     explanation,
     wordCardIds,
     xp,
+  };
+}
+
+
+function dictation(
+  id: string,
+  audioText: string,
+  acceptedAnswers: string[],
+  explanation: string,
+  wordCardIds: string[],
+  opts: { hint?: string; voice?: AudioVoice; xp?: number } = {}
+): import("../types").DictationExercise {
+  const voice = opts.voice ?? "f";
+  return {
+    id,
+    type: "dictation",
+    prompt: "Type what you hear",
+    audioText,
+    audioSrc: audioSrcFor(audioText, voice),
+    acceptedAnswers,
+    hint: opts.hint,
+    explanation,
+    wordCardIds,
+    xp: opts.xp ?? 4,
+  };
+}
+
+function conjugate(
+  id: string,
+  infinitive: string,
+  pronoun: string,
+  tense: string,
+  acceptedAnswers: string[],
+  explanation: string,
+  wordCardIds: string[],
+  opts: { hint?: string; xp?: number } = {}
+): import("../types").ConjugateExercise {
+  return {
+    id,
+    type: "conjugate",
+    prompt: `Conjugate: ${pronoun} + ${infinitive} (${tense})`,
+    infinitive,
+    pronoun,
+    tense,
+    acceptedAnswers,
+    hint: opts.hint,
+    explanation,
+    wordCardIds,
+    xp: opts.xp ?? 3,
   };
 }
 
@@ -200,16 +250,15 @@ export const INTERMEDIATE_WORD_CARDS: Record<string, WordCard> = {
     gender: "m",
     gloss: "apartment",
     meaningSummary:
-      "Everyday LatAm word for an apartment. Vivo en un departamento cerca del centro.",
+      "Everyday word for an apartment. Vivo en un departamento cerca del centro.",
     examples: [
       { es: "Vivo en un departamento en la ciudad.", en: "I live in an apartment in the city." },
       { es: "El departamento es pequeño pero cómodo.", en: "The apartment is small but comfortable." },
     ],
-    useWhen: "Housing in LatAm Spanish.",
+    useWhen: "Talking about housing.",
     dontUseWhen: "When you mean a whole house — use casa.",
     contrast: "casa (house) / departamento (apartment)",
     formality: "neutral",
-    region: "LatAm-wide",
     cefr: "A2",
   },
   carro: {
@@ -219,16 +268,15 @@ export const INTERMEDIATE_WORD_CARDS: Record<string, WordCard> = {
     gender: "m",
     gloss: "car",
     meaningSummary:
-      "Everyday LatAm word for car. Voy en carro / No tengo carro.",
+      "Everyday word for car. Voy en carro / No tengo carro.",
     examples: [
       { es: "Voy al trabajo en carro.", en: "I go to work by car." },
       { es: "¿Tienes carro?", en: "Do you have a car?" },
     ],
-    useWhen: "Talking about cars in LatAm.",
+    useWhen: "Talking about cars.",
     dontUseWhen: "When you mean a bus or other transit — use autobús / metro.",
     contrast: "autobús (bus) / metro (subway)",
     formality: "neutral",
-    region: "LatAm-wide",
     cefr: "A2",
   },
   "todos-los-dias": {
@@ -283,7 +331,7 @@ export const INTERMEDIATE_WORD_CARDS: Record<string, WordCard> = {
       "Gustar flips the usual subject: Me gusta el café = Coffee is pleasing to me. Plural: Me gustan los tacos. Soft preference — not the same as ordering with quiero.",
     conjugations: [
       {
-        label: "Present with me/te/le… (LatAm)",
+        label: "Present with me/te/le…",
         forms: [
           { person: "me gusta(n)", form: "me gusta / me gustan" },
           { person: "te gusta(n)", form: "te gusta / te gustan" },
@@ -337,16 +385,15 @@ export const INTERMEDIATE_WORD_CARDS: Record<string, WordCard> = {
     gender: "m",
     gloss: "juice",
     meaningSummary:
-      "Everyday LatAm word for juice. Un jugo de naranja is a classic café order.",
+      "Everyday word for juice. Un jugo de naranja is a classic café order.",
     examples: [
       { es: "Quiero un jugo de naranja.", en: "I want an orange juice." },
       { es: "¿Tienen jugo natural?", en: "Do you have fresh juice?" },
     ],
-    useWhen: "Ordering or talking about juice in LatAm.",
+    useWhen: "Ordering or talking about juice.",
     dontUseWhen: "When you mean water or coffee — use agua / café.",
     contrast: "agua / café / jugo",
     formality: "neutral",
-    region: "LatAm-wide",
     cefr: "A2",
   },
   cafe: {
@@ -390,7 +437,7 @@ export const INTERMEDIATE_WORD_CARDS: Record<string, WordCard> = {
     gender: "n/a",
     gloss: "formal you with service staff",
     meaningSummary:
-      "With waiters and shop staff, usted is the safe default in much of LatAm: ¿Me puede traer…? Softer and more polite than tú with strangers at work.",
+      "With waiters and shop staff, usted is the safe default in many places: ¿Me puede traer…? Softer and more polite than tú with strangers at work.",
     examples: [
       { es: "Disculpe, ¿me puede traer un menú?", en: "Excuse me, could you bring me a menu?" },
       { es: "¿Me recomienda algo, por favor?", en: "Could you recommend something, please?" },
@@ -560,7 +607,7 @@ export const INTERMEDIATE_WORD_CARDS: Record<string, WordCard> = {
     gender: "n/a",
     gloss: "to eat",
     meaningSummary:
-      "Core -er verb. Present: como… Preterite: comí, comiste, comió… Comí tacos hoy is natural LatAm past talk.",
+      "Core -er verb. Present: como… Preterite: comí, comiste, comió… Comí tacos hoy is natural past talk.",
     conjugations: [
       ...LATAM_PRESENT(["como", "comes", "come", "comemos", "comen"]),
       ...LATAM_PRETERITE(["comí", "comiste", "comió", "comimos", "comieron"]),
@@ -752,7 +799,7 @@ export const INTERMEDIATE_WORD_CARDS: Record<string, WordCard> = {
     gender: "n/a",
     gloss: "to take a shower",
     meaningSummary:
-      "Reflexive for showering. Me ducho por la mañana is everyday LatAm routine speech.",
+      "Reflexive for showering. Me ducho por la mañana is everyday routine speech.",
     conjugations: LATAM_PRESENT([
       "me ducho",
       "te duchas",
@@ -1089,6 +1136,27 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         "Trabajo todos los días = I work every day.",
         ["trabajar", "todos-los-dias"]
       ),
+    
+      conjugate(
+        "u4l1-conj-1",
+        "despertarse",
+        "yo",
+        "Present indicative",
+        ["me despierto", "Me despierto"],
+        "yo + despertarse → me despierto.",
+        ["despertarse"],
+        { hint: "me despierto", xp: 3 }
+      ),
+      conjugate(
+        "u4l1-conj-2",
+        "trabajar",
+        "tú",
+        "Present indicative",
+        ["trabajas", "Trabajas"],
+        "tú + trabajar → trabajas.",
+        ["trabajar"],
+        { hint: "trabajas", xp: 3 }
+      ),
     ],
   },
   "u4-l2": {
@@ -1102,10 +1170,10 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
       {
         id: "u4l2-1",
         type: "select",
-        prompt: "LatAm word for apartment?",
+        prompt: "Word for apartment?",
         options: ["Departamento", "Casa grande only", "Jugo", "Metro"],
         correctIndex: 0,
-        explanation: "Departamento is the LatAm-standard word for apartment.",
+        explanation: "Departamento is the everyday word for apartment here.",
         wordCardIds: ["departamento"],
         xp: 3,
       },
@@ -1113,10 +1181,10 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
       {
         id: "u4l2-2",
         type: "select",
-        prompt: "LatAm word for car?",
+        prompt: "Word for car?",
         options: ["Carro", "Autobús", "Cuenta", "Derecha"],
         correctIndex: 0,
-        explanation: "Carro is everyday LatAm for car.",
+        explanation: "Carro is the everyday word for car here.",
         wordCardIds: ["carro"],
         xp: 3,
       },
@@ -1171,7 +1239,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         englishPrompt: "I live in an apartment.",
         template: "Vivo en un ___.",
         acceptedAnswers: ["departamento", "Departamento"],
-        hint: "apartment (LatAm)",
+        hint: "apartment",
         explanation: "Vivo en un departamento.",
         wordCardIds: ["departamento"],
         xp: 3,
@@ -1179,7 +1247,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
       {
         id: "u4l2-8",
         type: "match-pairs",
-        prompt: "Match LatAm daily-life words.",
+        prompt: "Match everyday words.",
         pairs: [
           { left: "departamento", right: "apartment" },
           { left: "carro", right: "car" },
@@ -1412,6 +1480,27 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         wordCardIds: ["hola"],
         xp: 2,
       },
+    
+      conjugate(
+        "u4l4-conj-1",
+        "levantarse",
+        "yo",
+        "Present indicative",
+        ["me levanto", "Me levanto"],
+        "yo + levantarse → me levanto.",
+        ["levantarse"],
+        { hint: "me levanto", xp: 3 }
+      ),
+      conjugate(
+        "u4l4-conj-2",
+        "ducharse",
+        "tú",
+        "Present indicative",
+        ["te duchas", "Te duchas"],
+        "tú + ducharse → te duchas.",
+        ["ducharse"],
+        { hint: "te duchas", xp: 3 }
+      ),
     ],
   },
   "u4-l5": {
@@ -1726,6 +1815,27 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         wordCardIds: ["cinco"],
         xp: 2,
       },
+    
+      conjugate(
+        "u4l7-conj-1",
+        "caminar",
+        "yo",
+        "Present indicative",
+        ["camino", "Camino"],
+        "yo + caminar → camino.",
+        ["caminar"],
+        { hint: "camino", xp: 3 }
+      ),
+      conjugate(
+        "u4l7-conj-2",
+        "limpiar",
+        "nosotros/as",
+        "Present indicative",
+        ["limpiamos", "Limpiamos"],
+        "nosotros + limpiar → limpiamos.",
+        ["limpiar"],
+        { hint: "limpiamos", xp: 3 }
+      ),
     ],
   },
   "u4-l8": {
@@ -1739,11 +1849,11 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         "u4l8-story",
         "Mi mañana",
         [
-          { text: "Me despierto temprano todos los días." },
-          { text: "Me levanto y me ducho por la mañana." },
-          { text: "Desayuno café en mi departamento." },
-          { text: "Después camino a la oficina." },
-          { text: "Trabajo mucho, pero me gusta mi día." },
+          { text: "Me despierto temprano todos los días." , en: "I wake up early every day." },
+          { text: "Me levanto y me ducho por la mañana." , en: "I get up and shower in the morning." },
+          { text: "Desayuno café en mi departamento." , en: "I have coffee for breakfast in my apartment." },
+          { text: "Después camino a la oficina." , en: "Afterwards I walk to the office." },
+          { text: "Trabajo mucho, pero me gusta mi día." , en: "I work a lot, but I like my day." },
         ],
         [
           {
@@ -1774,6 +1884,22 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         ["despertarse", "levantarse", "ducharse", "desayunar", "oficina", "departamento"],
         "Follow the morning story — replay with mixed Neural2 voices.",
         12
+      ),
+      dictation(
+        "u4l8-story-dict-1",
+        "Me despierto temprano todos los días.",
+        ["Me despierto temprano todos los días."],
+        "Type the line you heard: Me despierto temprano todos los días.",
+        [],
+        { hint: "Replay if needed", voice: "f", xp: 4 }
+      ),
+      dictation(
+        "u4l8-story-dict-2",
+        "Me levanto y me ducho por la mañana.",
+        ["Me levanto y me ducho por la mañana."],
+        "Type the line you heard: Me levanto y me ducho por la mañana.",
+        [],
+        { hint: "Replay if needed", voice: "m", xp: 4 }
       ),
       {
         id: "u4l8-1",
@@ -1946,12 +2072,12 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         "u4l10-story",
         "El fin de semana en casa",
         [
-          { text: "El fin de semana no voy a la oficina." },
-          { text: "Me levanto tarde y desayuno sin prisa." },
-          { text: "Luego limpio la cocina y lavo los platos." },
-          { text: "Por la tarde descanso en mi departamento." },
-          { text: "A veces camino cerca de casa. ¡Me gusta!" },
-          { text: "El domingo hablo con mi familia. Gracias por escuchar." },
+          { text: "El fin de semana no voy a la oficina." , en: "On the weekend I don't go to the office." },
+          { text: "Me levanto tarde y desayuno sin prisa." , en: "I get up late and have breakfast without rushing." },
+          { text: "Luego limpio la cocina y lavo los platos." , en: "Then I clean the kitchen and wash the dishes." },
+          { text: "Por la tarde descanso en mi departamento." , en: "In the afternoon I rest in my apartment." },
+          { text: "A veces camino cerca de casa. ¡Me gusta!" , en: "Sometimes I walk near home. I like it!" },
+          { text: "El domingo hablo con mi familia. Gracias por escuchar." , en: "On Sunday I talk with my family. Thanks for listening." },
         ],
         [
           {
@@ -1981,6 +2107,22 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         ["fin-de-semana", "levantarse", "limpiar", "lavar", "descansar", "departamento", "caminar"],
         "Weekend story — voices rotate across Neural2 A/B/C.",
         12
+      ),
+      dictation(
+        "u4l10-story-dict-1",
+        "El fin de semana no voy a la oficina.",
+        ["El fin de semana no voy a la oficina."],
+        "Type the line you heard: El fin de semana no voy a la oficina.",
+        [],
+        { hint: "Replay if needed", voice: "f", xp: 4 }
+      ),
+      dictation(
+        "u4l10-story-dict-2",
+        "Me levanto tarde y desayuno sin prisa.",
+        ["Me levanto tarde y desayuno sin prisa."],
+        "Type the line you heard: Me levanto tarde y desayuno sin prisa.",
+        [],
+        { hint: "Replay if needed", voice: "m", xp: 4 }
       ),
       {
         id: "u4l10-1",
@@ -2145,7 +2287,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
       {
         id: "u4l12-1",
         type: "select",
-        prompt: "LatAm word for apartment?",
+        prompt: "Word for apartment?",
         options: ["Departamento", "Casa only forever", "Jugo", "Cinco"],
         correctIndex: 0,
         explanation: "Departamento.",
@@ -2202,7 +2344,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         englishPrompt: "I go to work by car.",
         template: "Voy al trabajo en ___.",
         acceptedAnswers: ["carro", "Carro"],
-        hint: "car (LatAm)",
+        hint: "car",
         explanation: "Voy al trabajo en carro.",
         wordCardIds: ["carro"],
         xp: 3,

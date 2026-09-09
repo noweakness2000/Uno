@@ -70,7 +70,9 @@ export type ExerciseType =
   | "match-pairs"
   | "fill-blank"
   | "cloze"
-  | "story-listen";
+  | "story-listen"
+  | "dictation"
+  | "conjugate";
 
 export interface ExerciseBase {
   id: string;
@@ -108,7 +110,7 @@ export interface TranslateExercise extends ExerciseBase {
 export interface ListeningChooseExercise extends ExerciseBase {
   type: "listening-choose";
   audioText: string;
-  /** Prefetched Neural2 LatAm practice MP3 under /audio/es-mx/ */
+  /** Prefetched Neural2 practice MP3 under /audio/es-mx/ */
   audioSrc?: string;
   options: string[];
   correctIndex: number;
@@ -162,7 +164,7 @@ export interface StoryListenExercise extends ExerciseBase {
   type: "story-listen";
   title?: string;
   /** Ordered Spanish lines shown while listening (Neural2 voice per line). */
-  lines: { text: string; voice?: "f" | "m" | "c" }[];
+  lines: { text: string; en?: string; voice?: "f" | "m" | "c" }[];
   /** Optional full-story audio; else play line-by-line. */
   audioSrc?: string;
   questions: {
@@ -171,6 +173,25 @@ export interface StoryListenExercise extends ExerciseBase {
     correctIndex: number;
     explanation?: string;
   }[];
+}
+
+/** Play Neural2 line → type what you heard (near-miss soft retry). */
+export interface DictationExercise extends ExerciseBase {
+  type: "dictation";
+  audioText: string;
+  audioSrc?: string;
+  acceptedAnswers: string[];
+  hint?: string;
+}
+
+/** Pronoun + infinitive + tense → type the conjugated form. */
+export interface ConjugateExercise extends ExerciseBase {
+  type: "conjugate";
+  infinitive: string;
+  pronoun: string;
+  tense: string;
+  acceptedAnswers: string[];
+  hint?: string;
 }
 
 export type Exercise =
@@ -183,7 +204,9 @@ export type Exercise =
   | MatchPairsExercise
   | FillBlankExercise
   | ClozeExercise
-  | StoryListenExercise;
+  | StoryListenExercise
+  | DictationExercise
+  | ConjugateExercise;
 
 export interface Lesson {
   id: string;

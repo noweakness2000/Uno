@@ -24,6 +24,8 @@ import {
 import type {
   Exercise,
   ClozeExercise,
+  ConjugateExercise,
+  DictationExercise,
   FillBlankExercise,
   ListeningChooseExercise,
   MatchPairsExercise,
@@ -368,13 +370,13 @@ export function ListeningChooseView({
         </Button>
         <p className="text-xs text-violet-700/80">
           {hasMp3
-            ? "LatAm practice audio (Mexico)"
+            ? "Spanish practice audio"
             : "Browser TTS stub · practice audio (not studio quality)"}
         </p>
         {showVoiceTip && (
           <p className="max-w-sm text-center text-[11px] leading-snug text-violet-600/90">
             Tip: install a Spanish voice pack (Windows/macOS) for clearer
-            LatAm-sounding practice audio.
+            Spanish practice audio.
           </p>
         )}
       </div>
@@ -672,6 +674,183 @@ export function FillBlankView({
 
 
 
+
+export function DictationView({
+  exercise,
+  disabled,
+  onSubmit,
+}: CommonProps & { exercise: DictationExercise }) {
+  const [value, setValue] = useState("");
+  const [nearMissUsed, setNearMissUsed] = useState(false);
+  const voice: AudioVoice = "f";
+  const src = exercise.audioSrc ?? audioSrcFor(exercise.audioText, voice);
+
+  useEffect(() => {
+    setValue("");
+    setNearMissUsed(false);
+  }, [exercise.id]);
+
+  const play = () => {
+    if (disabled) return;
+    playSpanishAudio(exercise.audioText, src);
+  };
+
+  const check = () => {
+    const ok = exercise.acceptedAnswers.some((a) => answersMatch(a, value));
+    if (ok) {
+      setNearMissUsed(false);
+      onSubmit(true);
+      return;
+    }
+    if (!nearMissUsed && isNearMiss(value, exercise.acceptedAnswers)) {
+      setNearMissUsed(true);
+      return;
+    }
+    onSubmit(false);
+  };
+
+  return (
+    <div className="space-y-4">
+      <div className="flex flex-col items-center gap-2 rounded-3xl border border-violet-100 bg-violet-50/80 px-4 py-5">
+        <Button
+          type="button"
+          variant="soft"
+          size="lg"
+          disabled={disabled}
+          onClick={play}
+          className="min-h-14 w-full max-w-xs touch-manipulation bg-violet-600 text-base font-bold text-white hover:bg-violet-700"
+        >
+          <Volume2 className="h-6 w-6" />
+          Play line
+        </Button>
+        <p className="text-xs text-violet-700/80">Spanish practice audio — type exactly what you hear</p>
+      </div>
+      {exercise.hint && (
+        <p className="text-sm text-slate-500">Hint: {exercise.hint}</p>
+      )}
+      <input
+        type="text"
+        value={value}
+        disabled={disabled}
+        onChange={(e) => setValue(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && value.trim() && !disabled) check();
+        }}
+        placeholder="Type what you heard…"
+        className="h-14 w-full max-w-full rounded-2xl border-2 border-slate-200 px-4 text-lg font-medium outline-none focus:border-emerald-400"
+        autoCapitalize="off"
+        autoCorrect="off"
+        autoComplete="off"
+      />
+      <p className="text-xs text-slate-500">
+        Accents are optional. Replay as many times as you need.
+      </p>
+      {nearMissUsed && (
+        <div
+          role="status"
+          className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900"
+        >
+          <p className="font-semibold">Close, but not quite.</p>
+          <p className="mt-0.5 text-amber-800/90">
+            Check a word or two, then try again.
+          </p>
+        </div>
+      )}
+      <Button
+        className="min-h-12 w-full touch-manipulation"
+        size="lg"
+        disabled={disabled || !value.trim()}
+        onClick={check}
+      >
+        {nearMissUsed ? "Check again" : "Check"}
+      </Button>
+    </div>
+  );
+}
+
+export function ConjugateView({
+  exercise,
+  disabled,
+  onSubmit,
+}: CommonProps & { exercise: ConjugateExercise }) {
+  const [value, setValue] = useState("");
+  const [nearMissUsed, setNearMissUsed] = useState(false);
+
+  useEffect(() => {
+    setValue("");
+    setNearMissUsed(false);
+  }, [exercise.id]);
+
+  const check = () => {
+    const ok = exercise.acceptedAnswers.some((a) => answersMatch(a, value));
+    if (ok) {
+      setNearMissUsed(false);
+      onSubmit(true);
+      return;
+    }
+    if (!nearMissUsed && isNearMiss(value, exercise.acceptedAnswers)) {
+      setNearMissUsed(true);
+      return;
+    }
+    onSubmit(false);
+  };
+
+  return (
+    <div className="space-y-4">
+      <div className="rounded-3xl border border-emerald-100 bg-emerald-50/70 px-4 py-4">
+        <p className="text-[11px] font-bold uppercase tracking-wider text-emerald-700">
+          {exercise.tense}
+        </p>
+        <p className="mt-1 text-lg font-extrabold text-slate-900">
+          <span className="text-emerald-700">{exercise.pronoun}</span>
+          <span className="mx-2 text-slate-300">+</span>
+          <span>{exercise.infinitive}</span>
+        </p>
+        <p className="mt-1 text-sm text-slate-600">
+          Type the conjugated form for this person.
+        </p>
+      </div>
+      {exercise.hint && (
+        <p className="text-sm text-slate-500">Hint: {exercise.hint}</p>
+      )}
+      <input
+        type="text"
+        value={value}
+        disabled={disabled}
+        onChange={(e) => setValue(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && value.trim() && !disabled) check();
+        }}
+        placeholder="Type the form…"
+        className="h-14 w-full max-w-full rounded-2xl border-2 border-slate-200 px-4 text-lg font-medium outline-none focus:border-emerald-400"
+        autoCapitalize="off"
+        autoCorrect="off"
+        autoComplete="off"
+      />
+      <p className="text-xs text-slate-500">Accents are optional.</p>
+      {nearMissUsed && (
+        <div
+          role="status"
+          className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900"
+        >
+          <p className="font-semibold">Close, but not quite.</p>
+          <p className="mt-0.5 text-amber-800/90">
+            Check the ending, then try again.
+          </p>
+        </div>
+      )}
+      <Button
+        className="min-h-12 w-full touch-manipulation"
+        size="lg"
+        disabled={disabled || !value.trim()}
+        onClick={check}
+      >
+        {nearMissUsed ? "Check again" : "Check"}
+      </Button>
+    </div>
+  );
+}
+
 export function StoryListenView({
   exercise,
   disabled,
@@ -681,6 +860,7 @@ export function StoryListenView({
   const [selected, setSelected] = useState<number | null>(null);
   const [playing, setPlaying] = useState(false);
   const [activeLine, setActiveLine] = useState<number>(-1);
+  const [showEn, setShowEn] = useState(false);
   const [localFeedback, setLocalFeedback] = useState<{
     correct: boolean;
     explanation: string;
@@ -787,23 +967,40 @@ export function StoryListenView({
             {playing ? "Playing…" : "Play / Replay story"}
           </Button>
           <p className="text-xs text-violet-700/80">
-            LatAm Neural2 · follow along in Spanish
+            Practice audio · follow along in Spanish
           </p>
+          {lines.some((l) => l.en) ? (
+            <button
+              type="button"
+              disabled={disabled}
+              onClick={() => setShowEn((v) => !v)}
+              className="min-h-10 rounded-full border border-violet-200 bg-white px-4 text-xs font-bold text-violet-800 hover:bg-violet-50 disabled:opacity-50"
+            >
+              {showEn ? "Hide English" : "Show English"}
+            </button>
+          ) : null}
         </div>
 
         <div className="space-y-3">
           {lines.map((line, i) => (
-            <p
+            <div
               key={`${line.text}-${i}`}
               className={cn(
-                "rounded-2xl px-3 py-2.5 text-xl font-semibold leading-snug transition-colors sm:text-2xl",
+                "rounded-2xl px-3 py-2.5 transition-colors",
                 activeLine === i
                   ? "bg-violet-200/80 text-violet-950"
                   : "text-slate-800"
               )}
             >
-              {line.text}
-            </p>
+              <p className="text-xl font-semibold leading-snug sm:text-2xl">
+                {line.text}
+              </p>
+              {showEn && line.en ? (
+                <p className="mt-1 text-sm font-medium leading-snug text-slate-600">
+                  {line.en}
+                </p>
+              ) : null}
+            </div>
           ))}
         </div>
 
@@ -959,6 +1156,22 @@ export function ExerciseRenderer({
     case "story-listen":
       return (
         <StoryListenView
+          exercise={exercise}
+          disabled={disabled}
+          onSubmit={onSubmit}
+        />
+      );
+    case "dictation":
+      return (
+        <DictationView
+          exercise={exercise}
+          disabled={disabled}
+          onSubmit={onSubmit}
+        />
+      );
+    case "conjugate":
+      return (
+        <ConjugateView
           exercise={exercise}
           disabled={disabled}
           onSubmit={onSubmit}

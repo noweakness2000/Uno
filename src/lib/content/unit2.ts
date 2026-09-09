@@ -1,5 +1,5 @@
 /**
- * Unit 2 — Who I am (lessons 4–12). LatAm-neutral.
+ * Unit 2 — Who I am (lessons 4–12). Spanish.
  * Existing u2-l1…u2-l3 stay in mock-data.ts (audio voice indices stable).
  */
 import type { Lesson, WordCard } from "../types";
@@ -81,7 +81,7 @@ function cloze(
 function storyListen(
   id: string,
   title: string,
-  lines: { text: string; voice?: AudioVoice }[],
+  lines: { text: string; en?: string; voice?: AudioVoice }[],
   questions: {
     prompt: string;
     options: string[];
@@ -94,6 +94,7 @@ function storyListen(
 ): import("../types").StoryListenExercise {
   const withVoices = lines.map((line, i) => ({
     text: line.text,
+    en: line.en,
     voice: line.voice ?? voiceForIndex(i),
   }));
   return {
@@ -109,6 +110,33 @@ function storyListen(
   };
 }
 
+
+
+
+function conjugate(
+  id: string,
+  infinitive: string,
+  pronoun: string,
+  tense: string,
+  acceptedAnswers: string[],
+  explanation: string,
+  wordCardIds: string[],
+  opts: { hint?: string; xp?: number } = {}
+): import("../types").ConjugateExercise {
+  return {
+    id,
+    type: "conjugate",
+    prompt: `Conjugate: ${pronoun} + ${infinitive} (${tense})`,
+    infinitive,
+    pronoun,
+    tense,
+    acceptedAnswers,
+    hint: opts.hint,
+    explanation,
+    wordCardIds,
+    xp: opts.xp ?? 3,
+  };
+}
 
 export const UNIT2_WORD_CARDS: Record<string, WordCard> = {
   ciudad: {
@@ -288,6 +316,27 @@ export const UNIT2_LESSONS: Record<string, Lesson> = {
         wordCardIds: ["me-llamo", "ser", "como-te-llamas", "mucho-gusto"],
         xp: 4,
       },
+    
+      conjugate(
+        "u2l4-conj-1",
+        "ser",
+        "yo",
+        "Present indicative",
+        ["soy", "Soy"],
+        "yo + ser → soy.",
+        ["ser"],
+        { hint: "soy", xp: 3 }
+      ),
+      conjugate(
+        "u2l4-conj-2",
+        "ser",
+        "tú",
+        "Present indicative",
+        ["eres", "Eres"],
+        "tú + ser → eres.",
+        ["ser"],
+        { hint: "eres", xp: 3 }
+      ),
     ],
   },
 
@@ -490,6 +539,27 @@ export const UNIT2_LESSONS: Record<string, Lesson> = {
         wordCardIds: ["vivo-en", "soy-de", "ciudad", "pais"],
         xp: 4,
       },
+    
+      conjugate(
+        "u2l6-conj-1",
+        "hablar",
+        "yo",
+        "Present indicative",
+        ["hablo", "Hablo"],
+        "yo + hablar → hablo.",
+        ["hablar"],
+        { hint: "hablo", xp: 3 }
+      ),
+      conjugate(
+        "u2l6-conj-2",
+        "hablar",
+        "nosotros/as",
+        "Present indicative",
+        ["hablamos", "Hablamos"],
+        "nosotros + hablar → hablamos.",
+        ["hablar"],
+        { hint: "hablamos", xp: 3 }
+      ),
     ],
   },
 
@@ -712,12 +782,12 @@ export const UNIT2_LESSONS: Record<string, Lesson> = {
         "u2l9-story",
         "Me presento",
         [
-          { text: "Hola, me llamo Valentina." },
-          { text: "Soy de México." },
-          { text: "Ahora vivo en la ciudad." },
-          { text: "Hablo español e inglés." },
-          { text: "Hablo un poco de inglés también." },
-          { text: "Mucho gusto." },
+          { text: "Hola, me llamo Valentina.", en: "Hi, my name is Valentina." },
+          { text: "Soy de México.", en: "I'm from Mexico." },
+          { text: "Ahora vivo en la ciudad.", en: "Now I live in the city." },
+          { text: "Hablo español e inglés.", en: "I speak Spanish and English." },
+          { text: "Hablo un poco de inglés también.", en: "I also speak a little English." },
+          { text: "Mucho gusto.", en: "Nice to meet you." },
         ],
         [
           {
@@ -887,12 +957,12 @@ export const UNIT2_LESSONS: Record<string, Lesson> = {
         "u2l11-story",
         "Los vecinos",
         [
-          { text: "Hola, ¿cómo te llamas?" },
-          { text: "Me llamo Bruno. ¿Y tú?" },
-          { text: "Me llamo Camila." },
-          { text: "¿De dónde eres?" },
-          { text: "Soy de México. Vivo aquí en la ciudad." },
-          { text: "Yo hablo inglés y un poco de español." },
+          { text: "Hola, ¿cómo te llamas?", en: "Hi, what's your name?" },
+          { text: "Me llamo Bruno. ¿Y tú?", en: "My name is Bruno. And you?" },
+          { text: "Me llamo Camila.", en: "My name is Camila." },
+          { text: "¿De dónde eres?", en: "Where are you from?" },
+          { text: "Soy de México. Vivo aquí en la ciudad.", en: "I'm from Mexico. I live here in the city." },
+          { text: "Yo hablo inglés y un poco de español.", en: "I speak English and a little Spanish." },
         ],
         [
           {

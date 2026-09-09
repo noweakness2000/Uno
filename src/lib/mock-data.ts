@@ -1,5 +1,5 @@
 /**
- * Mock content for Uno (LatAm-neutral Spanish).
+ * Mock content for Uno (Spanish Spanish).
  * Later: replace with Postgres on Unraid :5433
  */
 import type { DemoUser, Lesson, Unit, WordCard } from "./types";
@@ -31,7 +31,7 @@ export const DEMO_USER: DemoUser = {
 
 const LATAM_PRESENT = (forms: [string, string, string, string, string]) => [
   {
-    label: "Present indicative (LatAm)",
+    label: "Present indicative",
     forms: [
       { person: "yo", form: forms[0] },
       { person: "tú", form: forms[1] },
@@ -68,7 +68,7 @@ export const WORD_CARDS: Record<string, WordCard> = {
     gender: "n/a",
     gloss: "good morning",
     meaningSummary:
-      "A warm morning greeting used from waking until around noon. Literally “good days,” it’s the default polite hello before lunch across Latin America.",
+      "A warm morning greeting used from waking until around noon. Literally “good days,” it’s the default polite hello before lunch in everyday Spanish.",
     examples: [
       { es: "¡Buenos días! ¿Cómo estás?", en: "Good morning! How are you?" },
       { es: "Buenos días, señor López.", en: "Good morning, Mr. López." },
@@ -229,7 +229,7 @@ export const WORD_CARDS: Record<string, WordCard> = {
     gender: "n/a",
     gloss: "nice to meet you",
     meaningSummary:
-      "The everyday “nice to meet you” after introductions. Short, friendly, and safe in almost any LatAm setting when you meet someone for the first time.",
+      "The everyday “nice to meet you” after introductions. Short, friendly, and safe in almost any setting when you meet someone for the first time.",
     examples: [
       { es: "Hola, soy Ana. ¡Mucho gusto!", en: "Hi, I'm Ana. Nice to meet you!" },
       { es: "Mucho gusto, Carlos. Bienvenido.", en: "Nice to meet you, Carlos. Welcome." },
@@ -313,7 +313,7 @@ export const WORD_CARDS: Record<string, WordCard> = {
     dontUseWhen: "Don't use it as a greeting or standalone opener.",
     contrast: "con gusto / no hay de qué",
     formality: "neutral",
-    region: "LatAm-wide; 'no hay de qué' also common",
+    region: "'no hay de qué' also common",
     cefr: "A1",
   },
 
@@ -462,7 +462,7 @@ export const WORD_CARDS: Record<string, WordCard> = {
     gender: "m",
     gloss: "Mexico",
     meaningSummary:
-      "Country name. High-frequency with soy de / vivo en. Spelling México with accent is standard LatAm; accents optional when typing answers here.",
+      "Country name. High-frequency with soy de / vivo en. Spelling México with accent is standard; accents optional when typing answers here.",
     examples: [
       { es: "Soy de México.", en: "I'm from Mexico." },
       { es: "¿Vives en México?", en: "Do you live in Mexico?" },
@@ -480,7 +480,7 @@ export const WORD_CARDS: Record<string, WordCard> = {
     gender: "mf",
     gloss: "American (U.S.) / from the U.S.",
     meaningSummary:
-      "The LatAm-friendly demonym for someone from the United States. Prefer Soy estadounidense or Soy de Estados Unidos over americano, which can mean anyone from the Americas.",
+      "The preferred demonym for someone from the United States. Prefer Soy estadounidense or Soy de Estados Unidos over americano, which can mean anyone from the Americas.",
     examples: [
       { es: "Soy estadounidense.", en: "I'm American (from the U.S.)." },
       { es: "Es una empresa estadounidense.", en: "It's a U.S. company." },
@@ -514,9 +514,8 @@ export const WORD_CARDS: Record<string, WordCard> = {
     ],
     useWhen: "Talking about languages or the act of speaking.",
     dontUseWhen: "For 'say' a specific phrase, prefer decir.",
-    contrast: "decir (to say) / platicar (chat, LatAm)",
+    contrast: "decir (to say) / platicar (to chat)",
     formality: "neutral",
-    region: "LatAm; platicar is a common casual synonym for chatting",
     cefr: "A1",
   },
 
@@ -527,7 +526,7 @@ export const WORD_CARDS: Record<string, WordCard> = {
     gender: "m",
     gloss: "Spanish (language)",
     meaningSummary:
-      "The Spanish language. Hablo español is the everyday way to say you speak Spanish across Latin America.",
+      "The Spanish language. Hablo español is the everyday way to say you speak Spanish in everyday Spanish.",
     examples: [
       { es: "Hablo español.", en: "I speak Spanish." },
       { es: "Estoy aprendiendo español.", en: "I'm learning Spanish." },
@@ -745,16 +744,15 @@ export const WORD_CARDS: Record<string, WordCard> = {
     gender: "m",
     gloss: "cell phone / mobile",
     meaningSummary:
-      "Everyday LatAm word for a mobile phone. ¿Cuál es tu número de celular? is common across Latin America.",
+      "Everyday word for a mobile phone. ¿Cuál es tu número de celular? is common in everyday Spanish.",
     examples: [
       { es: "¿Cuál es tu número de celular?", en: "What's your cell phone number?" },
       { es: "Mi celular no tiene señal.", en: "My phone has no signal." },
     ],
-    useWhen: "Talking about mobile phones in LatAm Spanish.",
+    useWhen: "Talking about mobile phones.",
     dontUseWhen: "When you mean a landline or phones in general — use teléfono.",
     contrast: "teléfono (phone in general) / celular (mobile)",
     formality: "neutral",
-    region: "LatAm-wide",
     cefr: "A1",
   },
 
@@ -784,10 +782,10 @@ export const WORD_CARDS: Record<string, WordCard> = {
     gender: "n/a",
     gloss: "to have",
     meaningSummary:
-      "Irregular core verb for possession and age: Tengo un celular / Tengo veinte años. Present (LatAm): tengo, tienes, tiene, tenemos, tienen.",
+      "Irregular core verb for possession and age: Tengo un celular / Tengo veinte años. Present: tengo, tienes, tiene, tenemos, tienen.",
     conjugations: [
       {
-        label: "Present indicative (LatAm)",
+        label: "Present indicative",
         forms: [
           { person: "yo", form: "tengo" },
           { person: "tú", form: "tienes" },
@@ -833,12 +831,12 @@ export const WORD_CARDS: Record<string, WordCard> = {
     gender: "m",
     gloss: "pesos (currency)",
     meaningSummary:
-      "Common currency name across several LatAm countries (Mexico, Colombia, Chile, Argentina, etc.). Pair with numbers: diez pesos. For USD say dólares.",
+      "Common currency name across several countries (Mexico, Colombia, Chile, Argentina, etc.). Pair with numbers: diez pesos. For USD say dólares.",
     examples: [
       { es: "Cuesta diez pesos.", en: "It costs ten pesos." },
       { es: "Son cincuenta pesos.", en: "That's fifty pesos." },
     ],
-    useWhen: "Talking about local LatAm currency amounts.",
+    useWhen: "Talking about local currency amounts.",
     dontUseWhen: "For US dollars use dólares.",
     contrast: "dólares (USD)",
     formality: "neutral",
@@ -853,7 +851,7 @@ export const WORD_CARDS: Record<string, WordCard> = {
     gender: "m",
     gloss: "dollars",
     meaningSummary:
-      "US (and other) dollars — widely understood in LatAm travel and online prices. Veinte dólares.",
+      "US (and other) dollars — widely understood in travel and online prices. Veinte dólares.",
     examples: [
       { es: "Cuesta veinte dólares.", en: "It costs twenty dollars." },
       { es: "¿Aceptan dólares?", en: "Do you accept dollars?" },
@@ -958,7 +956,7 @@ export const LESSONS: Record<string, Lesson> = {
         options: ["Buenas noches", "Buenos días", "Hasta luego", "De nada"],
         correctIndex: 1,
         explanation:
-          "Buenos días is the standard morning greeting across Latin America.",
+          "Buenos días is the standard morning greeting in everyday Spanish.",
         wordCardIds: ["buenos-dias"],
         xp: 3,
       },
@@ -1261,7 +1259,7 @@ export const LESSONS: Record<string, Lesson> = {
         chips: ["Un", "café,", "por", "favor", "jugo", "carro"],
         correctOrder: ["Un", "café,", "por", "favor"],
         explanation:
-          "Por favor softens requests. (LatAm tip: juice is jugo; car is carro.)",
+          "Por favor softens requests.",
         wordCardIds: ["por"],
         xp: 4,
       },
@@ -1473,7 +1471,7 @@ export const LESSONS: Record<string, Lesson> = {
         options: ["Hola", "Departamento", "Celular", "Computadora"],
         correctIndex: 0,
         explanation:
-          "Hola works any time. (LatAm vocab tip: departamento, celular, computadora.)",
+          "Hola works any time.",
         wordCardIds: ["hola"],
         xp: 3,
       },
@@ -1778,11 +1776,11 @@ export const LESSONS: Record<string, Lesson> = {
       {
         id: "u2l2-9",
         type: "select",
-        prompt: "Plural “you speak” (LatAm) is:",
+        prompt: "Plural “you speak” is:",
         options: ["hablan", "habláis", "hablo", "hablamos"],
         correctIndex: 0,
         explanation:
-          "Ustedes hablan… Uno’s LatAm default is ustedes.",
+          "Ustedes hablan… Uno uses ustedes for plural “you.”",
         wordCardIds: ["hablar"],
         xp: 3,
       },
@@ -2090,10 +2088,10 @@ export const LESSONS: Record<string, Lesson> = {
       {
         id: "u3l2-1",
         type: "select",
-        prompt: "LatAm word for cell phone?",
+        prompt: "Word for cell phone?",
         options: ["Celular", "Teléfono fijo only", "Computadora", "Carro"],
         correctIndex: 0,
-        explanation: "Celular is the LatAm-standard word for a mobile phone.",
+        explanation: "Celular is the everyday word for a mobile phone.",
         wordCardIds: ["celular"],
         xp: 3,
       },
@@ -2344,7 +2342,7 @@ export const LESSONS: Record<string, Lesson> = {
         englishPrompt: "It costs ten pesos.",
         template: "Cuesta diez ___.",
         acceptedAnswers: ["pesos", "Pesos"],
-        hint: "LatAm currency",
+        hint: "currency",
         explanation: "Cuesta diez pesos.",
         wordCardIds: ["pesos", "diez"],
         xp: 3,

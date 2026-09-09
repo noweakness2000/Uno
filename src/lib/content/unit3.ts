@@ -1,5 +1,5 @@
 /**
- * Unit 3 — Numbers that matter (lessons 4–12). LatAm-neutral.
+ * Unit 3 — Numbers that matter (lessons 4–12). Spanish.
  * Existing u3-l1…u3-l3 stay in mock-data.ts (audio voice indices stable).
  */
 import type { Lesson, WordCard } from "../types";
@@ -81,7 +81,7 @@ function cloze(
 function storyListen(
   id: string,
   title: string,
-  lines: { text: string; voice?: AudioVoice }[],
+  lines: { text: string; en?: string; voice?: AudioVoice }[],
   questions: {
     prompt: string;
     options: string[];
@@ -94,6 +94,7 @@ function storyListen(
 ): import("../types").StoryListenExercise {
   const withVoices = lines.map((line, i) => ({
     text: line.text,
+    en: line.en,
     voice: line.voice ?? voiceForIndex(i),
   }));
   return {
@@ -108,6 +109,9 @@ function storyListen(
     xp,
   };
 }
+
+
+
 
 export const UNIT3_WORD_CARDS: Record<string, WordCard> = {
   "cuatro": {
@@ -372,7 +376,7 @@ export const UNIT3_WORD_CARDS: Record<string, WordCard> = {
     gender: "n/a",
     gloss: "my number",
     meaningSummary:
-      "Handy chunk for phone exchange: Mi número es… Pair with celular in LatAm.",
+      "Handy chunk for phone exchange: Mi número es… Pair with celular.",
     examples: [
       { es: "Mi número es cinco cinco cinco…", en: "My number is five five five…" },
       { es: "Te paso mi número.", en: "I'll give you my number." },
@@ -606,10 +610,10 @@ export const UNIT3_LESSONS: Record<string, Lesson> = {
       {
         id: "u3l6-1",
         type: "select",
-        prompt: "LatAm everyday word for cell phone:",
+        prompt: "Everyday word for cell phone:",
         options: ["celular", "móvil only forever", "carro", "gratis"],
         correctIndex: 0,
-        explanation: "Celular is the LatAm-default learner word here.",
+        explanation: "Celular is the everyday word for cell phone here.",
         wordCardIds: ["celular"],
         xp: 3,
       },
@@ -674,7 +678,7 @@ export const UNIT3_LESSONS: Record<string, Lesson> = {
         type: "translate",
         prompt: "Translate to Spanish: “cell phone”",
         acceptedAnswers: ["celular", "el celular", "mi celular", "Celular"],
-        hint: "LatAm word",
+        hint: "everyday word",
         explanation: "Celular.",
         wordCardIds: ["celular"],
         xp: 3,
@@ -859,7 +863,7 @@ export const UNIT3_LESSONS: Record<string, Lesson> = {
         template: "Cuesta doce ___.",
         englishPrompt: "It costs twelve pesos.",
         acceptedAnswers: ["pesos", "Pesos"],
-        hint: "LatAm currency word",
+        hint: "currency word",
         explanation: "Cuesta doce pesos.",
         wordCardIds: ["pesos", "doce"],
         xp: 3,
@@ -912,12 +916,12 @@ export const UNIT3_LESSONS: Record<string, Lesson> = {
         "u3l9-story",
         "En el mercado",
         [
-          { text: "Hola, buenos días." },
-          { text: "¿Cuánto cuesta?" },
-          { text: "Cuesta quince pesos." },
-          { text: "Quiero cuatro, por favor." },
-          { text: "Okay, quince por uno." },
-          { text: "Gracias. Está bien." },
+          { text: "Hola, buenos días.", en: "Hello, good morning." },
+          { text: "¿Cuánto cuesta?", en: "How much does it cost?" },
+          { text: "Cuesta quince pesos.", en: "It costs fifteen pesos." },
+          { text: "Quiero cuatro, por favor.", en: "I want four, please." },
+          { text: "Okay, quince por uno.", en: "Okay, fifteen each." },
+          { text: "Gracias. Está bien.", en: "Thanks. That's fine." },
         ],
         [
           {
@@ -1082,12 +1086,12 @@ export const UNIT3_LESSONS: Record<string, Lesson> = {
         "u3l11-story",
         "Tu número",
         [
-          { text: "Hola, ¿qué tal?" },
-          { text: "Bien. ¿Cuántos años tienes?" },
-          { text: "Tengo diecinueve años." },
-          { text: "Yo tengo veinte." },
-          { text: "¿Cuál es tu número de celular?" },
-          { text: "Mi número es cinco cinco cinco… Gracias." },
+          { text: "Hola, ¿qué tal?", en: "Hi, how's it going?" },
+          { text: "Bien. ¿Cuántos años tienes?", en: "Good. How old are you?" },
+          { text: "Tengo diecinueve años.", en: "I am nineteen years old." },
+          { text: "Yo tengo veinte.", en: "I am twenty." },
+          { text: "¿Cuál es tu número de celular?", en: "What is your cell phone number?" },
+          { text: "Mi número es cinco cinco cinco… Gracias.", en: "My number is five five five… Thanks." },
         ],
         [
           {
@@ -1188,7 +1192,7 @@ export const UNIT3_LESSONS: Record<string, Lesson> = {
         type: "translate",
         prompt: "Translate to Spanish: “cell phone”",
         acceptedAnswers: ["celular", "el celular", "Celular"],
-        hint: "LatAm",
+        hint: "everyday word",
         explanation: "Celular.",
         wordCardIds: ["celular"],
         xp: 3,

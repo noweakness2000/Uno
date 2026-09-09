@@ -1,4 +1,4 @@
-/** Browser TTS labeled as practice audio — prefer Spanish LatAm voices. */
+/** Browser TTS labeled as practice audio — prefer Spanish voices. */
 
 function scoreVoice(voice: SpeechSynthesisVoice): number {
   const lang = voice.lang.replace("_", "-");

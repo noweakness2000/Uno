@@ -1,5 +1,5 @@
 /**
- * Unit 6 — Getting around (~12 lessons). LatAm-neutral.
+ * Unit 6 — Getting around (~12 lessons). Spanish.
  * Merged via intermediate.ts into mock-data.
  */
 import type { Lesson, WordCard } from "../types";
@@ -81,7 +81,7 @@ function cloze(
 function storyListen(
   id: string,
   title: string,
-  lines: { text: string; voice?: AudioVoice }[],
+  lines: { text: string; en?: string; voice?: AudioVoice }[],
   questions: {
     prompt: string;
     options: string[];
@@ -94,6 +94,7 @@ function storyListen(
 ): import("../types").StoryListenExercise {
   const withVoices = lines.map((line, i) => ({
     text: line.text,
+    en: line.en,
     voice: line.voice ?? voiceForIndex(i),
   }));
   return {
@@ -108,6 +109,31 @@ function storyListen(
     xp,
   };
 }
+
+
+function dictation(
+  id: string,
+  audioText: string,
+  acceptedAnswers: string[],
+  explanation: string,
+  wordCardIds: string[],
+  opts: { hint?: string; voice?: AudioVoice; xp?: number } = {}
+): import("../types").DictationExercise {
+  const voice = opts.voice ?? "f";
+  return {
+    id,
+    type: "dictation",
+    prompt: "Type what you hear",
+    audioText,
+    audioSrc: audioSrcFor(audioText, voice),
+    acceptedAnswers,
+    hint: opts.hint,
+    explanation,
+    wordCardIds,
+    xp: opts.xp ?? 4,
+  };
+}
+
 
 export const UNIT6_WORD_CARDS: Record<string, WordCard> = {
   bano: {
@@ -216,7 +242,7 @@ export const UNIT6_WORD_CARDS: Record<string, WordCard> = {
     gender: "m",
     gloss: "bus",
     meaningSummary:
-      "Bus (widely understood LatAm). Tomo el autobús / Voy en autobús. Some countries also say camión — we stay with autobús here.",
+      "Bus (widely understood). Tomo el autobús / Voy en autobús. Some countries also say camión — we stay with autobús here.",
     examples: [
       { es: "Tomo el autobús al centro.", en: "I take the bus downtown." },
       { es: "¿Dónde está la parada del autobús?", en: "Where is the bus stop?" },
@@ -237,7 +263,7 @@ export const UNIT6_WORD_CARDS: Record<string, WordCard> = {
       "Common street direction: Gira a la derecha / Gira a la izquierda. Dobla is a close synonym in many places.",
     conjugations: [
       {
-        label: "Present indicative (LatAm)",
+        label: "Present indicative",
         forms: [
           { person: "yo", form: "giro" },
           { person: "tú", form: "giras" },
@@ -264,7 +290,7 @@ export const UNIT6_WORD_CARDS: Record<string, WordCard> = {
     gender: "f",
     gloss: "city block",
     meaningSummary:
-      "City block — everyday LatAm street talk. Sigue dos cuadras / Está a una cuadra.",
+      "City block — everyday street talk. Sigue dos cuadras / Está a una cuadra.",
     examples: [
       { es: "Sigue todo recto dos cuadras.", en: "Keep going straight two blocks." },
       { es: "La farmacia está a una cuadra.", en: "The pharmacy is one block away." },
@@ -986,7 +1012,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
         englishPrompt: "I go to work by car.",
         template: "Voy al trabajo en ___.",
         acceptedAnswers: ["carro", "Carro"],
-        hint: "car (LatAm)",
+        hint: "car",
         explanation: "Voy al trabajo en carro.",
         wordCardIds: ["carro"],
         xp: 3,
@@ -1276,7 +1302,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
       {
         id: "u6l8-8",
         type: "select",
-        prompt: "Unit 5 reuse: LatAm word for juice?",
+        prompt: "Unit 5 reuse: word for juice?",
         options: ["oficina", "jugo", "derecha", "cuadra"],
         correctIndex: 1,
         explanation: "jugo.",
@@ -1310,11 +1336,11 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
         "u6l9-story",
         "Buscamos la estación",
         [
-          { text: "Disculpe, ¿dónde está la estación de metro?" },
-          { text: "Está cerca. Sigue todo recto dos cuadras." },
-          { text: "Luego gira a la derecha." },
-          { text: "La estación no está lejos a pie." },
-          { text: "¡Gracias! Voy a tomar el metro al centro." },
+          { text: "Disculpe, ¿dónde está la estación de metro?", en: "Excuse me, where is the metro station?" },
+          { text: "Está cerca. Sigue todo recto dos cuadras.", en: "It's nearby. Go straight two blocks." },
+          { text: "Luego gira a la derecha.", en: "Then turn right." },
+          { text: "La estación no está lejos a pie.", en: "The station isn't far on foot." },
+          { text: "¡Gracias! Voy a tomar el metro al centro.", en: "Thanks! I'm going to take the metro downtown." },
         ],
         [
           {
@@ -1345,6 +1371,22 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
         ["disculpe", "estacion", "metro", "cerca", "todo-recto", "cuadra", "gira", "a-la-derecha", "a-pie", "el-centro"],
         "Directions story — voices rotate across Neural2 A/B/C.",
         12
+      ),
+      dictation(
+        "u6l9-story-dict-1",
+        "Disculpe, ¿dónde está la estación de metro?",
+        ["Disculpe, ¿dónde está la estación de metro?", "Disculpe, dónde está la estación de metro"],
+        "Type the line you heard: Disculpe, ¿dónde está la estación de metro?",
+        [],
+        { hint: "Replay if needed", voice: "f", xp: 4 }
+      ),
+      dictation(
+        "u6l9-story-dict-2",
+        "Está cerca. Sigue todo recto dos cuadras.",
+        ["Está cerca. Sigue todo recto dos cuadras."],
+        "Type the line you heard: Está cerca. Sigue todo recto dos cuadras.",
+        [],
+        { hint: "Replay if needed", voice: "m", xp: 4 }
       ),
       {
         id: "u6l9-1",
@@ -1528,12 +1570,12 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
         "u6l11-story",
         "Al hotel a pie",
         [
-          { text: "Disculpe, ¿tiene un mapa?" },
-          { text: "Sí. Su hotel está cerca del centro." },
-          { text: "Puede ir a pie. No está lejos." },
-          { text: "Todo recto una cuadra y luego a la izquierda." },
-          { text: "El banco está a la derecha. El hotel queda después." },
-          { text: "¡Perfecto! Gracias." },
+          { text: "Disculpe, ¿tiene un mapa?", en: "Excuse me, do you have a map?" },
+          { text: "Sí. Su hotel está cerca del centro.", en: "Yes. Your hotel is near downtown." },
+          { text: "Puede ir a pie. No está lejos.", en: "You can go on foot. It isn't far." },
+          { text: "Todo recto una cuadra y luego a la izquierda.", en: "Straight one block and then left." },
+          { text: "El banco está a la derecha. El hotel queda después.", en: "The bank is on the right. The hotel is after that." },
+          { text: "¡Perfecto! Gracias.", en: "Perfect! Thank you." },
         ],
         [
           {
@@ -1564,6 +1606,22 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
         ["disculpe", "mapa", "hotel", "cerca", "el-centro", "a-pie", "lejos", "todo-recto", "cuadra", "a-la-izquierda", "banco", "a-la-derecha"],
         "Hotel walk story — Neural2 A/B/C rotation.",
         12
+      ),
+      dictation(
+        "u6l11-story-dict-1",
+        "Disculpe, ¿tiene un mapa?",
+        ["Disculpe, ¿tiene un mapa?", "Disculpe, tiene un mapa"],
+        "Type the line you heard: Disculpe, ¿tiene un mapa?",
+        [],
+        { hint: "Replay if needed", voice: "f", xp: 4 }
+      ),
+      dictation(
+        "u6l11-story-dict-2",
+        "Sí. Su hotel está cerca del centro.",
+        ["Sí. Su hotel está cerca del centro."],
+        "Type the line you heard: Sí. Su hotel está cerca del centro.",
+        [],
+        { hint: "Replay if needed", voice: "m", xp: 4 }
       ),
       cloze(
         "u6l11-cloze-1",

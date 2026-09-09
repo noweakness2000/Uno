@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Uno — LatAm Spanish",
+  title: "Uno — Spanish",
   description:
     "Learn Latin American Spanish with explanations-first lessons. No hearts, no lockouts.",
   icons: {

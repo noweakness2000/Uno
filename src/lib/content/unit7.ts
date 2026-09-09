@@ -1,5 +1,5 @@
 /**
- * Unit 7 — What I did (~12 lessons). Preterite / past focus. LatAm-neutral.
+ * Unit 7 — What I did (~12 lessons). Preterite / past focus. Spanish.
  * Merged via intermediate.ts into mock-data.
  */
 import type { Lesson, WordCard } from "../types";
@@ -7,7 +7,7 @@ import { audioSrcFor, voiceForIndex, type AudioVoice } from "../audio";
 
 const LATAM_PRETERITE = (forms: [string, string, string, string, string]) => [
   {
-    label: "Preterite (LatAm)",
+    label: "Preterite",
     forms: [
       { person: "yo", form: forms[0] },
       { person: "tú", form: forms[1] },
@@ -94,7 +94,7 @@ function cloze(
 function storyListen(
   id: string,
   title: string,
-  lines: { text: string; voice?: AudioVoice }[],
+  lines: { text: string; en?: string; voice?: AudioVoice }[],
   questions: {
     prompt: string;
     options: string[];
@@ -107,6 +107,7 @@ function storyListen(
 ): import("../types").StoryListenExercise {
   const withVoices = lines.map((line, i) => ({
     text: line.text,
+    en: line.en,
     voice: line.voice ?? voiceForIndex(i),
   }));
   return {
@@ -119,6 +120,55 @@ function storyListen(
     explanation,
     wordCardIds,
     xp,
+  };
+}
+
+
+function dictation(
+  id: string,
+  audioText: string,
+  acceptedAnswers: string[],
+  explanation: string,
+  wordCardIds: string[],
+  opts: { hint?: string; voice?: AudioVoice; xp?: number } = {}
+): import("../types").DictationExercise {
+  const voice = opts.voice ?? "f";
+  return {
+    id,
+    type: "dictation",
+    prompt: "Type what you hear",
+    audioText,
+    audioSrc: audioSrcFor(audioText, voice),
+    acceptedAnswers,
+    hint: opts.hint,
+    explanation,
+    wordCardIds,
+    xp: opts.xp ?? 4,
+  };
+}
+
+function conjugate(
+  id: string,
+  infinitive: string,
+  pronoun: string,
+  tense: string,
+  acceptedAnswers: string[],
+  explanation: string,
+  wordCardIds: string[],
+  opts: { hint?: string; xp?: number } = {}
+): import("../types").ConjugateExercise {
+  return {
+    id,
+    type: "conjugate",
+    prompt: `Conjugate: ${pronoun} + ${infinitive} (${tense})`,
+    infinitive,
+    pronoun,
+    tense,
+    acceptedAnswers,
+    hint: opts.hint,
+    explanation,
+    wordCardIds,
+    xp: opts.xp ?? 3,
   };
 }
 
@@ -433,6 +483,27 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         wordCardIds: ["comer", "hoy", "arroz"],
         xp: 3,
       },
+    
+      conjugate(
+        "u7l1-conj-1",
+        "comer",
+        "yo",
+        "Preterite",
+        ["comí", "comi", "Comí", "Comi"],
+        "yo + comer (preterite) → comí.",
+        ["comer"],
+        { hint: "comí", xp: 3 }
+      ),
+      conjugate(
+        "u7l1-conj-2",
+        "hablar",
+        "tú",
+        "Preterite",
+        ["hablaste", "Hablaste"],
+        "tú + hablar (preterite) → hablaste.",
+        ["hablar"],
+        { hint: "hablaste", xp: 3 }
+      ),
     ],
   },
 
@@ -698,6 +769,27 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         wordCardIds: ["hablar-preterite"],
         xp: 3,
       },
+    
+      conjugate(
+        "u7l3-conj-1",
+        "ir",
+        "yo",
+        "Preterite",
+        ["fui", "Fui"],
+        "yo + ir (preterite) → fui.",
+        ["ir"],
+        { hint: "fui", xp: 3 }
+      ),
+      conjugate(
+        "u7l3-conj-2",
+        "hacer",
+        "él/ella/usted",
+        "Preterite",
+        ["hizo", "Hizo"],
+        "él/ella/usted + hacer → hizo.",
+        ["hacer"],
+        { hint: "hizo", xp: 3 }
+      ),
     ],
   },
 
@@ -953,6 +1045,27 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         wordCardIds: ["esta-manana", "anoche", "ayer"],
         xp: 3,
       },
+    
+      conjugate(
+        "u7l5-conj-1",
+        "tener",
+        "yo",
+        "Preterite",
+        ["tuve", "Tuve"],
+        "yo + tener (preterite) → tuve.",
+        ["tener"],
+        { hint: "tuve", xp: 3 }
+      ),
+      conjugate(
+        "u7l5-conj-2",
+        "decir",
+        "yo",
+        "Preterite",
+        ["dije", "Dije"],
+        "yo + decir (preterite) → dije.",
+        ["decir"],
+        { hint: "dije", xp: 3 }
+      ),
     ],
   },
 
@@ -1061,7 +1174,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
       {
         id: "u7l6-9",
         type: "select",
-        prompt: "Unit 5 reuse: LatAm “juice” is…",
+        prompt: "Unit 5 reuse: everyday word for juice?",
         options: ["oficina", "jugo", "derecha", "anoche"],
         correctIndex: 1,
         explanation: "jugo.",
@@ -1358,11 +1471,11 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         "u7l9-story",
         "Ayer con Ana",
         [
-          { text: "Ayer fui al centro con Ana." },
-          { text: "Comimos tacos y tomamos jugo." },
-          { text: "Después hablé con mi hermana por teléfono." },
-          { text: "Anoche estudié español una hora." },
-          { text: "Hoy trabajé en la oficina." },
+          { text: "Ayer fui al centro con Ana.", en: "Yesterday I went downtown with Ana." },
+          { text: "Comimos tacos y tomamos jugo.", en: "We ate tacos and drank juice." },
+          { text: "Después hablé con mi hermana por teléfono.", en: "Afterwards I talked with my sister on the phone." },
+          { text: "Anoche estudié español una hora.", en: "Last night I studied Spanish for an hour." },
+          { text: "Hoy trabajé en la oficina.", en: "Today I worked at the office." },
         ],
         [
           {
@@ -1393,6 +1506,22 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         ["ayer", "ir", "el-centro", "comer", "tacos", "jugo", "hablar-preterite", "anoche", "estudiar-preterite", "hoy", "trabajar-preterite", "oficina"],
         "Past-day story — voices rotate across Neural2 A/B/C.",
         12
+      ),
+      dictation(
+        "u7l9-story-dict-1",
+        "Ayer fui al centro con Ana.",
+        ["Ayer fui al centro con Ana."],
+        "Type the line you heard: Ayer fui al centro con Ana.",
+        [],
+        { hint: "Replay if needed", voice: "f", xp: 4 }
+      ),
+      dictation(
+        "u7l9-story-dict-2",
+        "Comimos tacos y tomamos jugo.",
+        ["Comimos tacos y tomamos jugo."],
+        "Type the line you heard: Comimos tacos y tomamos jugo.",
+        [],
+        { hint: "Replay if needed", voice: "m", xp: 4 }
       ),
       {
         id: "u7l9-1",
@@ -1590,11 +1719,11 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         "u7l11-story",
         "Un ayer ocupado",
         [
-          { text: "Esta mañana desayuné café en mi departamento." },
-          { text: "Luego fui al supermercado." },
-          { text: "Por la tarde limpié la cocina." },
-          { text: "Mi amigo vino a las seis." },
-          { text: "Anoche hicimos la tarea juntos." },
+          { text: "Esta mañana desayuné café en mi departamento.", en: "This morning I had coffee for breakfast in my apartment." },
+          { text: "Luego fui al supermercado.", en: "Then I went to the supermarket." },
+          { text: "Por la tarde limpié la cocina.", en: "In the afternoon I cleaned the kitchen." },
+          { text: "Mi amigo vino a las seis.", en: "My friend came at six." },
+          { text: "Anoche hicimos la tarea juntos.", en: "Last night we did homework together." },
         ],
         [
           {
@@ -1625,6 +1754,22 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         ["esta-manana", "desayunar-preterite", "cafe", "departamento", "ir", "limpiar-preterite", "cocina", "venir-preterite", "anoche", "hacer"],
         "Busy-day story — Neural2 voice rotation.",
         12
+      ),
+      dictation(
+        "u7l11-story-dict-1",
+        "Esta mañana desayuné café en mi departamento.",
+        ["Esta mañana desayuné café en mi departamento."],
+        "Type the line you heard: Esta mañana desayuné café en mi departamento.",
+        [],
+        { hint: "Replay if needed", voice: "f", xp: 4 }
+      ),
+      dictation(
+        "u7l11-story-dict-2",
+        "Luego fui al supermercado.",
+        ["Luego fui al supermercado."],
+        "Type the line you heard: Luego fui al supermercado.",
+        [],
+        { hint: "Replay if needed", voice: "m", xp: 4 }
       ),
       {
         id: "u7l11-1",

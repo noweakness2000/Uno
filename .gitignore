@@ -46,3 +46,4 @@ credentials*.json
 .config/
 **/.config/
 uno-tts/
+scripts/__pycache__/
