@@ -37,6 +37,7 @@ CONTENT_FILES = [
     ROOT / "src" / "lib" / "content" / "intermediate.ts",
     ROOT / "src" / "lib" / "content" / "unit5.ts",
     ROOT / "src" / "lib" / "content" / "unit6.ts",
+    ROOT / "src" / "lib" / "content" / "unit7.ts",
     ROOT / "src" / "lib" / "mock-data.ts",
 ]
 
