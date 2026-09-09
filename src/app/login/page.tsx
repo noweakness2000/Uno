@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { isGoogleAuthConfigured } from "@/auth";
 import { GoogleSignInButton } from "./google-sign-in-button";
@@ -14,10 +15,20 @@ export default function LoginPage() {
   return (
     <div className="mx-auto flex min-h-dvh w-full max-w-md flex-col justify-center px-4 py-10">
       <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-        <p className="text-xs font-bold uppercase tracking-widest text-emerald-600">
+        <div className="mb-3 flex justify-center">
+          <Image
+            src="/images/mascot.png"
+            alt="Uno mascot"
+            width={64}
+            height={64}
+            className="h-14 w-14 rounded-2xl object-cover sm:h-16 sm:w-16"
+            priority
+          />
+        </div>
+        <p className="text-center text-xs font-bold uppercase tracking-widest text-emerald-600">
           Uno
         </p>
-        <h1 className="mt-2 text-2xl font-extrabold text-slate-900">
+        <h1 className="mt-2 text-center text-2xl font-extrabold text-slate-900">
           Sign in
         </h1>
         <p className="mt-2 text-sm text-slate-500">

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { Check, Lock, Play, RotateCcw } from "lucide-react";
 import { UNITS, getLesson } from "@/lib/mock-data";
@@ -13,6 +14,22 @@ import {
 import { useUserStore } from "@/store/user-store";
 import { cn } from "@/lib/utils";
 import type { Unit } from "@/lib/types";
+
+
+const UNIT_IMAGE_IDS = new Set([
+  "unit-1",
+  "unit-2",
+  "unit-3",
+  "unit-4",
+  "unit-5",
+  "unit-6",
+  "unit-7",
+  "unit-8",
+]);
+
+function unitImageSrc(unitId: string): string | null {
+  return UNIT_IMAGE_IDS.has(unitId) ? `/images/units/${unitId}.png` : null;
+}
 
 function isUnitUnlocked(unit: Unit, intermediateOpen: boolean): boolean {
   if (!unit.unlocked) return false;
@@ -39,6 +56,7 @@ export function UnitPath() {
         const track = intermediate ? "intermediate" : "beginner";
         const showTrackDivider = track !== lastTrack;
         lastTrack = track;
+        const imgSrc = unitImageSrc(unit.id);
         return (
           <section key={unit.id} className="relative">
             {showTrackDivider && (
@@ -62,35 +80,61 @@ export function UnitPath() {
                   : "bg-slate-100 text-slate-400"
               )}
             >
-              <div className="flex flex-wrap items-center gap-2">
-                <p className="text-xs font-bold uppercase tracking-wider opacity-80">
-                  Unit {unit.number}
-                </p>
-                {badge && (
-                  <span className="rounded-full bg-white/20 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide">
-                    {badge}
-                  </span>
+              <div className="flex items-start gap-3">
+                {imgSrc ? (
+                  <Image
+                    src={imgSrc}
+                    alt={`Unit ${unit.number} art`}
+                    width={64}
+                    height={64}
+                    className={cn(
+                      "h-14 w-14 shrink-0 rounded-2xl object-cover shadow-md ring-2 ring-white/30 sm:h-[72px] sm:w-[72px]",
+                      !unlocked && "grayscale opacity-70"
+                    )}
+                  />
+                ) : (
+                  <div
+                    className={cn(
+                      "flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl text-lg font-extrabold shadow-md ring-2 ring-white/30 sm:h-[72px] sm:w-[72px]",
+                      unlocked ? "bg-white/20 text-white" : "bg-slate-200 text-slate-400"
+                    )}
+                    aria-hidden
+                  >
+                    {unit.number}
+                  </div>
                 )}
+                <div className="min-w-0 flex-1">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <p className="text-xs font-bold uppercase tracking-wider opacity-80">
+                      Unit {unit.number}
+                    </p>
+                    {badge && (
+                      <span className="rounded-full bg-white/20 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide">
+                        {badge}
+                      </span>
+                    )}
+                  </div>
+                  <h2 className="text-xl font-extrabold">{unit.title}</h2>
+                  <p
+                    className={cn(
+                      "mt-1 text-sm",
+                      unlocked
+                        ? quickReview
+                          ? "text-slate-200"
+                          : intermediate
+                            ? "text-violet-50"
+                            : "text-emerald-50"
+                        : "text-slate-400"
+                    )}
+                  >
+                    {quickReview
+                      ? "Optional review — beginner path."
+                      : !unlocked && intermediate
+                        ? "Intermediate — jump here if ready, or finish Units 1–3 first."
+                        : unit.description}
+                  </p>
+                </div>
               </div>
-              <h2 className="text-xl font-extrabold">{unit.title}</h2>
-              <p
-                className={cn(
-                  "mt-1 text-sm",
-                  unlocked
-                    ? quickReview
-                      ? "text-slate-200"
-                      : intermediate
-                        ? "text-violet-50"
-                        : "text-emerald-50"
-                    : "text-slate-400"
-                )}
-              >
-                {quickReview
-                  ? "Optional review — beginner path."
-                  : !unlocked && intermediate
-                    ? "Intermediate — jump here if ready, or finish Units 1–3 first."
-                    : unit.description}
-              </p>
             </div>
 
             {!unlocked && (

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { BookMarked, Layers, Pencil, Play, RotateCcw, SkipForward } from "lucide-react";
 import { StatsBar } from "@/components/home/stats-bar";
@@ -41,24 +42,34 @@ export default function HomePage() {
   return (
     <div className="mx-auto min-h-dvh w-full max-w-lg overflow-x-hidden px-3 pb-[max(4rem,env(safe-area-inset-bottom))] pt-[max(1.5rem,env(safe-area-inset-top))] sm:px-4">
       <header className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <p className="text-xs font-bold uppercase tracking-widest text-emerald-600">
-            Uno
-          </p>
-          <h1 className="text-2xl font-extrabold text-slate-900">
-            Hola, {user.name || "Learner"}
-          </h1>
-          <button
-            type="button"
-            onClick={() => {
-              setDraftName(user.name);
-              setEditing((v) => !v);
-            }}
-            className="mt-1 inline-flex items-center gap-1 text-xs font-medium text-slate-400 hover:text-emerald-600"
-          >
-            <Pencil className="h-3 w-3" />
-            Edit profile
-          </button>
+        <div className="flex min-w-0 items-center gap-3">
+          <Image
+            src="/images/mascot.png"
+            alt="Uno mascot"
+            width={72}
+            height={72}
+            className="h-16 w-16 shrink-0 rounded-2xl object-cover sm:h-20 sm:w-20"
+            priority
+          />
+          <div className="min-w-0">
+            <p className="text-xs font-bold uppercase tracking-widest text-emerald-600">
+              Uno
+            </p>
+            <h1 className="truncate text-2xl font-extrabold text-slate-900">
+              Hola, {user.name || "Learner"}
+            </h1>
+            <button
+              type="button"
+              onClick={() => {
+                setDraftName(user.name);
+                setEditing((v) => !v);
+              }}
+              className="mt-1 inline-flex items-center gap-1 text-xs font-medium text-slate-400 hover:text-emerald-600"
+            >
+              <Pencil className="h-3 w-3" />
+              Edit profile
+            </button>
+          </div>
         </div>
         <div className="flex flex-wrap items-center justify-end gap-2">
           <AuthControls />
