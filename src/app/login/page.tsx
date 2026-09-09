@@ -47,6 +47,12 @@ export default function LoginPage() {
           Continue without signing in
         </Link>
       </div>
+
+      <p className="mt-6 text-center text-xs text-slate-400">
+        <Link href="/privacy" className="hover:text-emerald-700 hover:underline">
+          Privacy Policy
+        </Link>
+      </p>
     </div>
   );
 }

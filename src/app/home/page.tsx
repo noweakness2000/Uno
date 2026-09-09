@@ -185,6 +185,12 @@ export default function HomePage() {
         <RotateCcw className="h-3 w-3" />
         Reset demo progress
       </button>
+
+      <p className="mt-4 text-center text-xs text-slate-400">
+        <Link href="/privacy" className="hover:text-emerald-700 hover:underline">
+          Privacy Policy
+        </Link>
+      </p>
     </div>
   );
 }
