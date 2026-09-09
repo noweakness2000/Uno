@@ -7,7 +7,12 @@ import { SpeakButton } from "@/components/speak-button";
 import { cn } from "@/lib/utils";
 import { hasSpanishVoice } from "@/lib/tts";
 import { looksSpanish, playSpanishAudio } from "@/lib/audio";
-import { answersMatch, chipSequencesMatch } from "@/lib/grading";
+import {
+  answersMatch,
+  chipSequencesMatch,
+  isChipNearMiss,
+  isNearMiss,
+} from "@/lib/grading";
 import type {
   Exercise,
   FillBlankExercise,
@@ -90,6 +95,7 @@ export function TapChipsView({
   onSubmit,
 }: CommonProps & { exercise: TapChipsExercise }) {
   const [built, setBuilt] = useState<string[]>([]);
+  const [nearMissUsed, setNearMissUsed] = useState(false);
   const remaining = useMemo(() => {
     const used = [...built];
     return exercise.chips.filter((chip) => {
@@ -100,11 +106,26 @@ export function TapChipsView({
     });
   }, [built, exercise.chips]);
 
+  useEffect(() => {
+    setBuilt([]);
+    setNearMissUsed(false);
+  }, [exercise.id]);
+
   const phrase = exercise.correctOrder.join(" ");
   const builtPhrase = built.join(" ");
 
   const check = () => {
-    onSubmit(chipSequencesMatch(built, exercise.correctOrder));
+    const ok = chipSequencesMatch(built, exercise.correctOrder);
+    if (ok) {
+      setNearMissUsed(false);
+      onSubmit(true);
+      return;
+    }
+    if (!nearMissUsed && isChipNearMiss(built, exercise.correctOrder)) {
+      setNearMissUsed(true);
+      return;
+    }
+    onSubmit(false);
   };
 
   return (
@@ -151,6 +172,17 @@ export function TapChipsView({
           </button>
         ))}
       </div>
+      {nearMissUsed && (
+        <div
+          role="status"
+          className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900"
+        >
+          <p className="font-semibold">Close, but not quite.</p>
+          <p className="mt-0.5 text-amber-800/90">
+            Check your chips or try again.
+          </p>
+        </div>
+      )}
       <div className="flex flex-col gap-2 sm:flex-row">
         <Button
           variant="secondary"
@@ -166,7 +198,7 @@ export function TapChipsView({
           disabled={disabled || built.length === 0}
           onClick={check}
         >
-          Check
+          {nearMissUsed ? "Check again" : "Check"}
         </Button>
       </div>
     </div>
@@ -179,10 +211,25 @@ export function TranslateView({
   onSubmit,
 }: CommonProps & { exercise: TranslateExercise }) {
   const [value, setValue] = useState("");
+  const [nearMissUsed, setNearMissUsed] = useState(false);
+
+  useEffect(() => {
+    setValue("");
+    setNearMissUsed(false);
+  }, [exercise.id]);
 
   const check = () => {
     const ok = exercise.acceptedAnswers.some((a) => answersMatch(a, value));
-    onSubmit(ok);
+    if (ok) {
+      setNearMissUsed(false);
+      onSubmit(true);
+      return;
+    }
+    if (!nearMissUsed && isNearMiss(value, exercise.acceptedAnswers)) {
+      setNearMissUsed(true);
+      return;
+    }
+    onSubmit(false);
   };
 
   return (
@@ -206,13 +253,24 @@ export function TranslateView({
       <p className="text-xs text-slate-500">
         Accents are optional (e.g. perdón = perdon).
       </p>
+      {nearMissUsed && (
+        <div
+          role="status"
+          className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900"
+        >
+          <p className="font-semibold">Close, but not quite.</p>
+          <p className="mt-0.5 text-amber-800/90">
+            Check spelling or try again.
+          </p>
+        </div>
+      )}
       <Button
         className="min-h-12 w-full touch-manipulation"
         size="lg"
         disabled={disabled || !value.trim()}
         onClick={check}
       >
-        Check
+        {nearMissUsed ? "Check again" : "Check"}
       </Button>
     </div>
   );
@@ -438,7 +496,27 @@ export function FillBlankView({
   onSubmit,
 }: CommonProps & { exercise: FillBlankExercise }) {
   const [value, setValue] = useState("");
+  const [nearMissUsed, setNearMissUsed] = useState(false);
   const parts = exercise.template.split("___");
+
+  useEffect(() => {
+    setValue("");
+    setNearMissUsed(false);
+  }, [exercise.id]);
+
+  const check = () => {
+    const ok = exercise.acceptedAnswers.some((a) => answersMatch(a, value));
+    if (ok) {
+      setNearMissUsed(false);
+      onSubmit(true);
+      return;
+    }
+    if (!nearMissUsed && isNearMiss(value, exercise.acceptedAnswers)) {
+      setNearMissUsed(true);
+      return;
+    }
+    onSubmit(false);
+  };
 
   return (
     <div className="space-y-4">
@@ -458,12 +536,7 @@ export function FillBlankView({
         disabled={disabled}
         onChange={(e) => setValue(e.target.value)}
         onKeyDown={(e) => {
-          if (e.key === "Enter" && value.trim() && !disabled) {
-            const ok = exercise.acceptedAnswers.some((a) =>
-              answersMatch(a, value)
-            );
-            onSubmit(ok);
-          }
+          if (e.key === "Enter" && value.trim() && !disabled) check();
         }}
         placeholder="Type the missing Spanish…"
         className="h-12 w-full rounded-2xl border-2 border-slate-200 px-4 text-base outline-none focus:border-emerald-400"
@@ -471,18 +544,24 @@ export function FillBlankView({
         autoCorrect="off"
         spellCheck={false}
       />
+      {nearMissUsed && (
+        <div
+          role="status"
+          className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900"
+        >
+          <p className="font-semibold">Close, but not quite.</p>
+          <p className="mt-0.5 text-amber-800/90">
+            Check spelling or try again.
+          </p>
+        </div>
+      )}
       <Button
         className="min-h-12 w-full touch-manipulation"
         size="lg"
         disabled={!value.trim() || disabled}
-        onClick={() => {
-          const ok = exercise.acceptedAnswers.some((a) =>
-            answersMatch(a, value)
-          );
-          onSubmit(ok);
-        }}
+        onClick={check}
       >
-        Check
+        {nearMissUsed ? "Check again" : "Check"}
       </Button>
     </div>
   );
