@@ -2399,3 +2399,75 @@ export function getLesson(id: string): Lesson | undefined {
 export function getAllWordCards(): WordCard[] {
   return Object.values(WORD_CARDS);
 }
+
+/** Lessons that include a story-listen (podcast) exercise — Units 4–11 preferred. */
+export function getStoryListenLessons(): Lesson[] {
+  return Object.values(LESSONS).filter((lesson) =>
+    lesson.exercises.some((ex) => ex.type === "story-listen")
+  );
+}
+
+/** Prefer an unlocked intermediate story for the home Audio workout card. */
+export function pickAudioWorkoutLesson(opts: {
+  completedLessonIds: string[];
+  intermediateOpen: boolean;
+}): Lesson | undefined {
+  const stories = getStoryListenLessons();
+  const rank = (id: string) => {
+    const m = /^u(\d+)-l(\d+)$/.exec(id);
+    if (!m) return 0;
+    return Number(m[1]) * 100 + Number(m[2]);
+  };
+  // Prefer Units 4–11 stories, highest unit first among unlocked
+  const intermediate = stories
+    .filter((l) => {
+      const m = /^u(\d+)/.exec(l.id);
+      const n = m ? Number(m[1]) : 0;
+      return n >= 4 && n <= 11;
+    })
+    .sort((a, b) => rank(b.id) - rank(a.id));
+
+  const unlocked = intermediate.filter((lesson) => {
+    const unitNum = Number(/^u(\d+)/.exec(lesson.id)?.[1] ?? 0);
+    if (unitNum >= 4 && !opts.intermediateOpen) return false;
+    const unit = UNITS.find((u) => u.id === lesson.unitId);
+    if (!unit?.unlocked && unitNum >= 4) return false;
+    // Lesson reachable if prior lessons in unit completed, or already completed
+    if (opts.completedLessonIds.includes(lesson.id)) return true;
+    if (!unit) return true;
+    const idx = unit.lessonIds.indexOf(lesson.id);
+    if (idx <= 0) return true;
+    return unit.lessonIds.slice(0, idx).every((id) =>
+      opts.completedLessonIds.includes(id)
+    );
+  });
+
+  // Prefer not-yet-completed unlocked story; else any unlocked; else beginner stories
+  const next = unlocked.find((l) => !opts.completedLessonIds.includes(l.id));
+  if (next) return next;
+  if (unlocked.length) return unlocked[0];
+
+  const beginner = stories
+    .filter((l) => {
+      const n = Number(/^u(\d+)/.exec(l.id)?.[1] ?? 0);
+      return n >= 1 && n <= 3;
+    })
+    .sort((a, b) => rank(b.id) - rank(a.id));
+  const beginnerUnlocked = beginner.filter((lesson) => {
+    if (opts.completedLessonIds.includes(lesson.id)) return true;
+    const unit = UNITS.find((u) => u.id === lesson.unitId);
+    if (!unit) return true;
+    const idx = unit.lessonIds.indexOf(lesson.id);
+    if (idx <= 0) return true;
+    return unit.lessonIds
+      .slice(0, idx)
+      .every((id) => opts.completedLessonIds.includes(id));
+  });
+  return (
+    beginnerUnlocked.find((l) => !opts.completedLessonIds.includes(l.id)) ??
+    beginnerUnlocked[0] ??
+    beginner[0] ??
+    intermediate[0] ??
+    stories[0]
+  );
+}

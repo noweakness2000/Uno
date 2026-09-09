@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { Volume2 } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Headphones, Pause, Play, RotateCcw, Volume2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SpeakButton } from "@/components/speak-button";
 import { cn } from "@/lib/utils";
@@ -858,8 +858,10 @@ export function StoryListenView({
 }: CommonProps & { exercise: StoryListenExercise }) {
   const [qIndex, setQIndex] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
-  const [playing, setPlaying] = useState(false);
+  const [status, setStatus] = useState<"idle" | "playing" | "paused">("idle");
   const [activeLine, setActiveLine] = useState<number>(-1);
+  const [resumeFrom, setResumeFrom] = useState(0);
+  const [rate, setRate] = useState<0.75 | 1>(1);
   const [showEn, setShowEn] = useState(false);
   const [localFeedback, setLocalFeedback] = useState<{
     correct: boolean;
@@ -870,10 +872,20 @@ export function StoryListenView({
   const [displayOptions, setDisplayOptions] = useState<
     { text: string; originalIndex: number }[]
   >([]);
+  const abortRef = useRef<AbortController | null>(null);
+  const lineRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const generationRef = useRef(0);
 
   const questions = exercise.questions;
   const question = questions[qIndex];
   const lines = exercise.lines;
+  const playing = status === "playing";
+
+  const stopPlayback = () => {
+    abortRef.current?.abort();
+    abortRef.current = null;
+    stopSpanishAudio();
+  };
 
   useEffect(() => {
     setQIndex(0);
@@ -882,9 +894,18 @@ export function StoryListenView({
     setCorrectCount(0);
     setDone(false);
     setActiveLine(-1);
-    stopSpanishAudio();
-    return () => stopSpanishAudio();
+    setResumeFrom(0);
+    setStatus("idle");
+    stopPlayback();
+    return () => stopPlayback();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [exercise.id]);
+
+  useEffect(() => {
+    if (activeLine < 0) return;
+    const el = lineRefs.current[activeLine];
+    el?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }, [activeLine]);
 
   useEffect(() => {
     if (!question) {
@@ -903,20 +924,68 @@ export function StoryListenView({
     setSelected(null);
   }, [exercise.id, qIndex, question]);
 
-  const playStory = async () => {
-    if (disabled || playing) return;
-    setPlaying(true);
+  const runPlayback = async (startIndex: number, playbackRate: 0.75 | 1) => {
+    if (disabled) return;
+    stopPlayback();
+    const gen = ++generationRef.current;
+    const ac = new AbortController();
+    abortRef.current = ac;
+    setStatus("playing");
+    setResumeFrom(startIndex);
     try {
       await playStoryLines(
         lines.map((line, i) => ({
           text: line.text,
           voice: (line.voice ?? voiceForIndex(i)) as AudioVoice,
         })),
-        (i) => setActiveLine(i)
+        {
+          startIndex,
+          gapMs: 600,
+          rate: playbackRate,
+          signal: ac.signal,
+          onLine: (i) => {
+            if (generationRef.current !== gen) return;
+            setActiveLine(i);
+            setResumeFrom(i);
+          },
+        }
       );
-    } finally {
-      setPlaying(false);
+      if (generationRef.current !== gen || ac.signal.aborted) return;
+      setStatus("idle");
       setActiveLine(-1);
+      setResumeFrom(0);
+    } catch {
+      if (generationRef.current === gen) {
+        setStatus("idle");
+      }
+    }
+  };
+
+  const togglePlayPause = () => {
+    if (disabled || done) return;
+    if (status === "playing") {
+      const keep = activeLine >= 0 ? activeLine : resumeFrom;
+      stopPlayback();
+      setResumeFrom(keep);
+      setActiveLine(keep);
+      setStatus("paused");
+      return;
+    }
+    const start = status === "paused" ? resumeFrom : 0;
+    void runPlayback(start, rate);
+  };
+
+  const restart = () => {
+    if (disabled || done) return;
+    void runPlayback(0, rate);
+  };
+
+  const toggleRate = () => {
+    const next: 0.75 | 1 = rate === 1 ? 0.75 : 1;
+    setRate(next);
+    if (status === "playing") {
+      const start = activeLine >= 0 ? activeLine : resumeFrom;
+      void runPlayback(start, next);
     }
   };
 
@@ -953,43 +1022,88 @@ export function StoryListenView({
         <h2 className="text-lg font-bold text-violet-900">{exercise.title}</h2>
       ) : null}
 
-      <div className="rounded-3xl border border-violet-100 bg-violet-50/80 px-4 py-5">
-        <div className="mb-4 flex flex-col items-center gap-2">
-          <Button
-            type="button"
-            variant="soft"
-            size="lg"
-            disabled={disabled || playing}
-            onClick={() => void playStory()}
-            className="min-h-14 w-full max-w-xs touch-manipulation bg-violet-600 text-base font-bold text-white hover:bg-violet-700"
-          >
-            <Volume2 className="h-6 w-6" />
-            {playing ? "Playing…" : "Play / Replay story"}
-          </Button>
-          <p className="text-xs text-violet-700/80">
-            Practice audio · follow along in Spanish
+      <div className="rounded-3xl border border-violet-100 bg-gradient-to-b from-violet-50 to-white px-4 py-5 shadow-sm">
+        <div className="mb-1 flex items-center justify-center gap-2 text-violet-700">
+          <Headphones className="h-4 w-4" />
+          <p className="text-[11px] font-bold uppercase tracking-wider">
+            Listen workout
           </p>
-          {lines.some((l) => l.en) ? (
+        </div>
+        <p className="mb-4 text-center text-xs text-violet-700/80">
+          Hands-free · press play and follow along
+        </p>
+
+        <div className="mb-4 flex flex-col items-center gap-3">
+          <div className="flex w-full max-w-sm items-stretch gap-2">
+            <Button
+              type="button"
+              variant="soft"
+              size="lg"
+              disabled={disabled || done}
+              onClick={togglePlayPause}
+              className="min-h-14 flex-1 touch-manipulation bg-violet-600 text-base font-bold text-white hover:bg-violet-700"
+            >
+              {playing ? (
+                <>
+                  <Pause className="h-6 w-6" />
+                  Pause
+                </>
+              ) : (
+                <>
+                  <Play className="h-6 w-6 fill-current" />
+                  {status === "paused" ? "Resume" : "Play"}
+                </>
+              )}
+            </Button>
+            <Button
+              type="button"
+              variant="soft"
+              size="lg"
+              disabled={disabled || done}
+              onClick={restart}
+              className="min-h-14 min-w-14 touch-manipulation border border-violet-200 bg-white px-3 text-violet-800 hover:bg-violet-50"
+              aria-label="Restart from beginning"
+            >
+              <RotateCcw className="h-5 w-5" />
+            </Button>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-2">
             <button
               type="button"
-              disabled={disabled}
-              onClick={() => setShowEn((v) => !v)}
-              className="min-h-10 rounded-full border border-violet-200 bg-white px-4 text-xs font-bold text-violet-800 hover:bg-violet-50 disabled:opacity-50"
+              disabled={disabled || done}
+              onClick={toggleRate}
+              className="min-h-11 rounded-full border border-violet-200 bg-white px-4 text-xs font-bold text-violet-800 hover:bg-violet-50 disabled:opacity-50"
             >
-              {showEn ? "Hide English" : "Show English"}
+              Speed {rate === 1 ? "1×" : "0.75×"}
             </button>
-          ) : null}
+            {lines.some((l) => l.en) ? (
+              <button
+                type="button"
+                disabled={disabled}
+                onClick={() => setShowEn((v) => !v)}
+                className="min-h-11 rounded-full border border-violet-200 bg-white px-4 text-xs font-bold text-violet-800 hover:bg-violet-50 disabled:opacity-50"
+              >
+                {showEn ? "Hide English" : "Show English"}
+              </button>
+            ) : null}
+          </div>
         </div>
 
-        <div className="space-y-3">
+        <div className="max-h-[50vh] space-y-2 overflow-y-auto overscroll-contain rounded-2xl bg-white/60 p-1 sm:max-h-none sm:overflow-visible">
           {lines.map((line, i) => (
             <div
               key={`${line.text}-${i}`}
+              ref={(el) => {
+                lineRefs.current[i] = el;
+              }}
               className={cn(
-                "rounded-2xl px-3 py-2.5 transition-colors",
+                "rounded-2xl px-3 py-3 transition-colors",
                 activeLine === i
-                  ? "bg-violet-200/80 text-violet-950"
-                  : "text-slate-800"
+                  ? "bg-violet-200/90 text-violet-950 ring-2 ring-violet-400/60"
+                  : activeLine > i
+                    ? "text-slate-500"
+                    : "text-slate-800"
               )}
             >
               <p className="text-xl font-semibold leading-snug sm:text-2xl">
@@ -1008,9 +1122,10 @@ export function StoryListenView({
           type="button"
           disabled={disabled || done}
           onClick={() => {
-            stopSpanishAudio();
-            setPlaying(false);
+            stopPlayback();
+            setStatus("idle");
             setActiveLine(-1);
+            setResumeFrom(0);
             setDone(true);
             onSubmit(true);
           }}

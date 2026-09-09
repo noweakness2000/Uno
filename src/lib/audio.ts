@@ -146,21 +146,57 @@ export function stopSpanishAudio(): void {
 /**
  * Play one baked clip and resolve when it ends (or immediately on total failure).
  */
+export type PlayAudioOptions = {
+  src?: string;
+  voice?: AudioVoice;
+  /** Playback rate (e.g. 0.75 or 1). */
+  rate?: number;
+  /** Abort mid-clip (pause / restart). */
+  signal?: AbortSignal;
+};
+
 export function playSpanishAudioAsync(
   text: string,
-  src?: string,
-  voice: AudioVoice = "f"
+  srcOrOpts?: string | PlayAudioOptions,
+  voiceArg: AudioVoice = "f"
 ): Promise<void> {
   if (typeof window === "undefined") return Promise.resolve();
 
+  const opts: PlayAudioOptions =
+    typeof srcOrOpts === "object" && srcOrOpts !== null
+      ? srcOrOpts
+      : { src: srcOrOpts, voice: voiceArg };
+  const voice = opts.voice ?? voiceArg;
+  const rate = opts.rate && opts.rate > 0 ? opts.rate : 1;
+  const signal = opts.signal;
+
   return new Promise((resolve) => {
+    if (signal?.aborted) {
+      resolve();
+      return;
+    }
+
+    const onAbort = () => {
+      if (current) {
+        current.pause();
+        current = null;
+      }
+      try {
+        window.speechSynthesis?.cancel();
+      } catch {
+        /* ignore */
+      }
+      resolve();
+    };
+    signal?.addEventListener("abort", onAbort, { once: true });
+
     try {
       if (current) {
         current.pause();
         current = null;
       }
-      const urls = src
-        ? [src, audioSrcFor(text, voice), audioSrcLegacy(text)]
+      const urls = opts.src
+        ? [opts.src, audioSrcFor(text, voice), audioSrcLegacy(text)]
         : [audioSrcFor(text, voice), audioSrcLegacy(text)];
       const seen = new Set<string>();
       const unique = urls.filter((u) => {
@@ -170,14 +206,20 @@ export function playSpanishAudioAsync(
       });
 
       const tryUrl = (i: number) => {
+        if (signal?.aborted) {
+          resolve();
+          return;
+        }
         if (i >= unique.length) {
           speakPracticeAudio(text);
           // Browser TTS has no reliable ended event across engines — short pause.
-          window.setTimeout(() => resolve(), Math.min(4000, 400 + text.length * 60));
+          const ms = Math.min(4000, 400 + text.length * 60) / rate;
+          window.setTimeout(() => resolve(), ms);
           return;
         }
         const audio = new Audio();
         current = audio;
+        audio.playbackRate = rate;
         let settled = false;
         const fail = () => {
           if (settled) return;
@@ -190,9 +232,16 @@ export function playSpanishAudioAsync(
         const onEnded = () => {
           if (settled) return;
           settled = true;
+          signal?.removeEventListener("abort", onAbort);
           resolve();
         };
         const onReady = () => {
+          if (signal?.aborted) {
+            if (settled) return;
+            settled = true;
+            resolve();
+            return;
+          }
           void audio.play().catch(fail);
         };
         audio.addEventListener("error", fail);
@@ -210,14 +259,51 @@ export function playSpanishAudioAsync(
   });
 }
 
+export type StoryPlayOptions = {
+  onLine?: (index: number) => void;
+  /** Gap between lines in ms (podcast breathing room). Default 550. */
+  gapMs?: number;
+  rate?: number;
+  signal?: AbortSignal;
+  /** Start at this line index (resume after pause). */
+  startIndex?: number;
+};
+
 /** Play story lines sequentially with optional per-line highlight callback. */
 export async function playStoryLines(
   lines: { text: string; voice?: AudioVoice }[],
-  onLine?: (index: number) => void
+  onLineOrOpts?: ((index: number) => void) | StoryPlayOptions
 ): Promise<void> {
-  for (let i = 0; i < lines.length; i++) {
-    onLine?.(i);
+  const opts: StoryPlayOptions =
+    typeof onLineOrOpts === "function"
+      ? { onLine: onLineOrOpts }
+      : onLineOrOpts ?? {};
+  const gapMs = opts.gapMs ?? 550;
+  const rate = opts.rate ?? 1;
+  const start = Math.max(0, opts.startIndex ?? 0);
+
+  for (let i = start; i < lines.length; i++) {
+    if (opts.signal?.aborted) return;
+    opts.onLine?.(i);
     const voice = lines[i].voice ?? voiceForIndex(i);
-    await playSpanishAudioAsync(lines[i].text, undefined, voice);
+    await playSpanishAudioAsync(lines[i].text, {
+      voice,
+      rate,
+      signal: opts.signal,
+    });
+    if (opts.signal?.aborted) return;
+    if (i < lines.length - 1 && gapMs > 0) {
+      await new Promise<void>((resolve) => {
+        const t = window.setTimeout(resolve, gapMs);
+        opts.signal?.addEventListener(
+          "abort",
+          () => {
+            window.clearTimeout(t);
+            resolve();
+          },
+          { once: true }
+        );
+      });
+    }
   }
 }
