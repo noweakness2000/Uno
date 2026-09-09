@@ -524,7 +524,7 @@ export const WORD_CARDS: Record<string, WordCard> = {
     gender: "m",
     gloss: "Spanish (language)",
     meaningSummary:
-      "The Spanish language. Hablo español. As an adjective it can also mean “Spanish (from Spain),” but for the language this is the everyday word across LatAm.",
+      "The Spanish language. Hablo español is the everyday way to say you speak Spanish across Latin America.",
     examples: [
       { es: "Hablo español.", en: "I speak Spanish." },
       { es: "Estoy aprendiendo español.", en: "I'm learning Spanish." },
@@ -742,14 +742,14 @@ export const WORD_CARDS: Record<string, WordCard> = {
     gender: "m",
     gloss: "cell phone / mobile",
     meaningSummary:
-      "LatAm-standard word for a mobile phone (Spain prefers móvil). ¿Cuál es tu número de celular? is everyday across Latin America.",
+      "Everyday LatAm word for a mobile phone. ¿Cuál es tu número de celular? is common across Latin America.",
     examples: [
       { es: "¿Cuál es tu número de celular?", en: "What's your cell phone number?" },
       { es: "Mi celular no tiene señal.", en: "My phone has no signal." },
     ],
     useWhen: "Talking about mobile phones in LatAm Spanish.",
-    dontUseWhen: "In Spain you'll hear móvil more often.",
-    contrast: "teléfono (phone in general) / móvil (Spain)",
+    dontUseWhen: "When you mean a landline or phones in general — use teléfono.",
+    contrast: "teléfono (phone in general) / celular (mobile)",
     formality: "neutral",
     region: "LatAm-wide",
     cefr: "A1",
@@ -1775,7 +1775,7 @@ export const LESSONS: Record<string, Lesson> = {
         options: ["hablan", "habláis", "hablo", "hablamos"],
         correctIndex: 0,
         explanation:
-          "Ustedes hablan… Uno uses ustedes, not vosotros.",
+          "Ustedes hablan… Uno’s LatAm default is ustedes.",
         wordCardIds: ["hablar"],
         xp: 3,
       },
@@ -2083,7 +2083,7 @@ export const LESSONS: Record<string, Lesson> = {
         id: "u3l2-1",
         type: "select",
         prompt: "LatAm word for cell phone?",
-        options: ["Celular", "Móvil only", "Computadora", "Carro"],
+        options: ["Celular", "Teléfono fijo only", "Computadora", "Carro"],
         correctIndex: 0,
         explanation: "Celular is the LatAm-standard word for a mobile phone.",
         wordCardIds: ["celular"],
