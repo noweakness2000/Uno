@@ -7,12 +7,15 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { WordCardDrawer } from "@/components/word-card-drawer";
 import { getWordCard } from "@/lib/mock-data";
+import { countDue } from "@/lib/srs";
 import { useUserStore } from "@/store/user-store";
 import type { WordCard } from "@/lib/types";
 
 export default function ReviewPage() {
   const weakWordIds = useUserStore((s) => s.user.weakWordIds);
+  const srsCards = useUserStore((s) => s.user.srsCards);
   const clearWeak = useUserStore((s) => s.clearWeak);
+  const dueCount = countDue(srsCards);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState<WordCard | null>(null);
 
@@ -35,10 +38,19 @@ export default function ReviewPage() {
         <div>
           <h1 className="text-2xl font-extrabold text-slate-900">Review</h1>
           <p className="text-sm text-slate-500">
-            Words marked weak from wrong answers
+            Weak words + optional SRS — never locks lessons
           </p>
         </div>
       </div>
+
+      {dueCount > 0 && (
+        <Link href="/flashcards" className="mb-4 block">
+          <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
+            <span className="font-bold">{dueCount} due today</span>
+            {" — "}optional flashcard practice. Lessons stay open.
+          </div>
+        </Link>
+      )}
 
       {cards.length === 0 ? (
         <Card>

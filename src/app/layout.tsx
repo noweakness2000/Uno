@@ -18,6 +18,13 @@ export const metadata: Metadata = {
   title: "Uno — LatAm Spanish",
   description:
     "Learn Latin American Spanish with explanations-first lessons. No hearts, no lockouts.",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.png", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
+  },
 };
 
 export const viewport = {

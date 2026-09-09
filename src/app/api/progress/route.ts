@@ -5,6 +5,7 @@ import { auth } from "@/auth";
 import { getDb, hasDatabase } from "@/db";
 import { users } from "@/db/schema";
 import { isPlaceholderName } from "@/lib/display-name";
+import { mergeSrsCards } from "@/lib/srs";
 
 const progressSchema = z.object({
   displayName: z.string().min(1).max(64).optional(),
@@ -18,6 +19,17 @@ const progressSchema = z.object({
   onboardingComplete: z.boolean().optional(),
   completedLessonIds: z.array(z.string()).optional(),
   weakWordIds: z.array(z.string()).optional(),
+  srsCards: z
+    .record(
+      z.string(),
+      z.object({
+        intervalDays: z.number(),
+        ease: z.number(),
+        dueAt: z.string(),
+        reps: z.number().int().min(0),
+      })
+    )
+    .optional(),
   skippedUnitIds: z.array(z.string()).optional(),
   recommendedUnitId: z.string().nullable().optional(),
 });
@@ -147,6 +159,7 @@ export async function GET() {
         onboardingComplete: updated.onboardingComplete,
         completedLessonIds: updated.completedLessonIds ?? [],
         weakWordIds: updated.weakWordIds ?? [],
+        srsCards: updated.srsCards ?? {},
         skippedUnitIds: updated.skippedUnitIds ?? [],
         recommendedUnitId: updated.recommendedUnitId,
       },
@@ -165,6 +178,7 @@ export async function GET() {
       onboardingComplete: row.onboardingComplete,
       completedLessonIds: row.completedLessonIds ?? [],
       weakWordIds: row.weakWordIds ?? [],
+      srsCards: row.srsCards ?? {},
       skippedUnitIds: row.skippedUnitIds ?? [],
       recommendedUnitId: row.recommendedUnitId,
     },
@@ -232,6 +246,10 @@ export async function PUT(req: Request) {
       existing.weakWordIds ?? [],
       incoming.weakWordIds ?? []
     ),
+    srsCards: mergeSrsCards(
+      (existing.srsCards as Record<string, { intervalDays: number; ease: number; dueAt: string; reps: number }> | null) ?? {},
+      incoming.srsCards ?? {}
+    ),
     skippedUnitIds: mergeIds(
       existing.skippedUnitIds ?? [],
       incoming.skippedUnitIds ?? []
@@ -261,6 +279,7 @@ export async function PUT(req: Request) {
       onboardingComplete: updated.onboardingComplete,
       completedLessonIds: updated.completedLessonIds ?? [],
       weakWordIds: updated.weakWordIds ?? [],
+      srsCards: updated.srsCards ?? {},
       skippedUnitIds: updated.skippedUnitIds ?? [],
       recommendedUnitId: updated.recommendedUnitId,
     },

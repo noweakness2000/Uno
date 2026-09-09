@@ -73,6 +73,38 @@ function listen(
   };
 }
 
+
+function cloze(
+  id: string,
+  template: string,
+  acceptedAnswers: string[],
+  explanation: string,
+  wordCardIds: string[],
+  opts: {
+    hint?: string;
+    audioText: string;
+    voice?: AudioVoice;
+    storyLabel?: string;
+    xp?: number;
+  }
+): import("../types").ClozeExercise {
+  const voice = opts.voice ?? "f";
+  return {
+    id,
+    type: "cloze",
+    prompt: "Fill the blank from the story",
+    template,
+    acceptedAnswers,
+    hint: opts.hint,
+    explanation,
+    wordCardIds,
+    audioText: opts.audioText,
+    audioSrc: audioSrcFor(opts.audioText, voice),
+    storyLabel: opts.storyLabel ?? "From the story",
+    xp: opts.xp ?? 3,
+  };
+}
+
 function storyListen(
   id: string,
   title: string,
@@ -1767,8 +1799,8 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
     id: "u4-l8",
     unitId: "unit-4",
     title: "Story: My morning",
-    description: "Listen to a short daily-routine story, then answer.",
-    xpReward: 36,
+    description: "Listen to a short daily-routine story, then answer — plus story cloze drills.",
+    xpReward: 45,
     exercises: [
       storyListen(
         "u4l8-story",
@@ -1825,6 +1857,42 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         wordCardIds: ["me-gusta"],
         xp: 3,
       },
+      cloze(
+        "u4l8-cloze-1",
+        "Me ___ temprano todos los días.",
+        ["despierto", "Despierto"],
+        "Me despierto temprano todos los días — wake up early every day.",
+        ["despertarse", "temprano"],
+        {
+          hint: "I wake up (yo)",
+          audioText: "Me despierto temprano todos los días.",
+          voice: "f",
+        }
+      ),
+      cloze(
+        "u4l8-cloze-2",
+        "Me levanto y me ___ por la mañana.",
+        ["ducho", "Ducho"],
+        "Me levanto y me ducho por la mañana.",
+        ["ducharse", "levantarse"],
+        {
+          hint: "I shower (reflexive yo)",
+          audioText: "Me levanto y me ducho por la mañana.",
+          voice: "m",
+        }
+      ),
+      cloze(
+        "u4l8-cloze-3",
+        "Después ___ a la oficina.",
+        ["camino", "Camino"],
+        "Después camino a la oficina — I walk to the office.",
+        ["caminar", "oficina"],
+        {
+          hint: "I walk (yo)",
+          audioText: "Después camino a la oficina.",
+          voice: "c",
+        }
+      ),
     ],
   },
   "u4-l9": {
@@ -1937,8 +2005,8 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
     id: "u4-l10",
     unitId: "unit-4",
     title: "Story: Weekend at home",
-    description: "A second story with a different voice mix + questions.",
-    xpReward: 36,
+    description: "A second story with a different voice mix + questions — plus story cloze drills.",
+    xpReward: 45,
     exercises: [
       storyListen(
         "u4l10-story",
@@ -1991,6 +2059,42 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         wordCardIds: ["descansar", "fin-de-semana"],
         xp: 3,
       },
+      cloze(
+        "u4l10-cloze-1",
+        "El fin de semana no voy a la ___.",
+        ["oficina", "Oficina"],
+        "El fin de semana no voy a la oficina.",
+        ["oficina", "fin-de-semana"],
+        {
+          hint: "office",
+          audioText: "El fin de semana no voy a la oficina.",
+          voice: "f",
+        }
+      ),
+      cloze(
+        "u4l10-cloze-2",
+        "Luego ___ la cocina y lavo los platos.",
+        ["limpio", "Limpio"],
+        "Luego limpio la cocina y lavo los platos.",
+        ["limpiar", "lavar", "cocina"],
+        {
+          hint: "I clean (yo)",
+          audioText: "Luego limpio la cocina y lavo los platos.",
+          voice: "m",
+        }
+      ),
+      cloze(
+        "u4l10-cloze-3",
+        "Por la tarde ___ en mi departamento.",
+        ["descanso", "Descanso"],
+        "Por la tarde descanso en mi departamento.",
+        ["descansar", "departamento"],
+        {
+          hint: "I rest (yo)",
+          audioText: "Por la tarde descanso en mi departamento.",
+          voice: "c",
+        }
+      ),
     ],
   },
   "u4-l11": {

@@ -5,6 +5,12 @@ import { persist } from "zustand/middleware";
 import type { DemoUser, StartingLevel } from "@/lib/types";
 import { DEMO_USER as DEFAULT_USER } from "@/lib/mock-data";
 import {
+  ensureDueSoon,
+  gradeAgain,
+  gradeGood,
+  type SrsCards,
+} from "@/lib/srs";
+import {
   beginnerLessonIds,
   BEGINNER_UNIT_IDS,
   FIRST_INTERMEDIATE_UNIT_ID,
@@ -29,6 +35,10 @@ interface UserState {
   completeLesson: (lessonId: string, earnedXp: number) => void;
   markWeak: (wordIds: string[]) => void;
   clearWeak: (wordId: string) => void;
+  /** Flashcard Again — short interval + stay weak. */
+  srsAgain: (wordId: string) => void;
+  /** Flashcard Good — grow interval + clear weak. */
+  srsGood: (wordId: string) => void;
   /** Mark Unit 1 skipped/complete and aim Continue at Unit 2. */
   skipUnit1: () => void;
   /** Jump absolute beginners to Intermediate (Unit 4+). */
@@ -40,6 +50,7 @@ function withPlacementDefaults(user: DemoUser): DemoUser {
   return {
     ...user,
     skippedUnitIds: user.skippedUnitIds ?? [],
+    srsCards: user.srsCards ?? {},
     recommendedUnitId:
       user.recommendedUnitId ??
       recommendedUnitForLevel(user.startingLevel ?? "absolute_beginner"),
@@ -106,7 +117,18 @@ export const useUserStore = create<UserState>()(
       markWeak: (wordIds) =>
         set((s) => {
           const setIds = new Set([...s.user.weakWordIds, ...wordIds]);
-          return { user: { ...s.user, weakWordIds: Array.from(setIds) } };
+          const now = new Date();
+          const srsCards: SrsCards = { ...(s.user.srsCards ?? {}) };
+          for (const id of wordIds) {
+            srsCards[id] = ensureDueSoon(srsCards[id], now);
+          }
+          return {
+            user: {
+              ...s.user,
+              weakWordIds: Array.from(setIds),
+              srsCards,
+            },
+          };
         }),
       clearWeak: (wordId) =>
         set((s) => ({
@@ -115,6 +137,37 @@ export const useUserStore = create<UserState>()(
             weakWordIds: s.user.weakWordIds.filter((id) => id !== wordId),
           },
         })),
+      srsAgain: (wordId) =>
+        set((s) => {
+          const now = new Date();
+          const srsCards = {
+            ...(s.user.srsCards ?? {}),
+            [wordId]: gradeAgain(s.user.srsCards?.[wordId], now),
+          };
+          const weak = new Set([...s.user.weakWordIds, wordId]);
+          return {
+            user: {
+              ...s.user,
+              srsCards,
+              weakWordIds: Array.from(weak),
+            },
+          };
+        }),
+      srsGood: (wordId) =>
+        set((s) => {
+          const now = new Date();
+          const srsCards = {
+            ...(s.user.srsCards ?? {}),
+            [wordId]: gradeGood(s.user.srsCards?.[wordId], now),
+          };
+          return {
+            user: {
+              ...s.user,
+              srsCards,
+              weakWordIds: s.user.weakWordIds.filter((id) => id !== wordId),
+            },
+          };
+        }),
       skipUnit1: () =>
         set((s) => {
           const completed = new Set([

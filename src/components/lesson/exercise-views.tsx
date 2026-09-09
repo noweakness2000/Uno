@@ -7,6 +7,7 @@ import { SpeakButton } from "@/components/speak-button";
 import { cn } from "@/lib/utils";
 import { hasSpanishVoice } from "@/lib/tts";
 import {
+  audioSrcFor,
   looksSpanish,
   playSpanishAudio,
   playStoryLines,
@@ -22,6 +23,7 @@ import {
 } from "@/lib/grading";
 import type {
   Exercise,
+  ClozeExercise,
   FillBlankExercise,
   ListeningChooseExercise,
   MatchPairsExercise,
@@ -502,10 +504,14 @@ export function FillBlankView({
   exercise,
   disabled,
   onSubmit,
-}: CommonProps & { exercise: FillBlankExercise }) {
+}: CommonProps & { exercise: FillBlankExercise | ClozeExercise }) {
   const [value, setValue] = useState("");
   const [nearMissUsed, setNearMissUsed] = useState(false);
   const parts = exercise.template.split("___");
+  const isCloze = exercise.type === "cloze";
+  const cloze = isCloze ? (exercise as ClozeExercise) : null;
+  const audioText = cloze?.audioText;
+  const audioSrc = cloze?.audioSrc;
 
   useEffect(() => {
     setValue("");
@@ -528,7 +534,38 @@ export function FillBlankView({
 
   return (
     <div className="space-y-4">
-      <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-base font-medium leading-relaxed text-slate-800">
+      {isCloze && (
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <span className="rounded-full bg-violet-100 px-3 py-1 text-xs font-bold uppercase tracking-wide text-violet-800">
+            {cloze?.storyLabel ?? "From the story"}
+          </span>
+          {audioText ? (
+            <Button
+              type="button"
+              variant="soft"
+              size="sm"
+              className="min-h-10 touch-manipulation"
+              disabled={disabled}
+              onClick={() =>
+                playSpanishAudio(
+                  audioText,
+                  audioSrc ?? audioSrcFor(audioText, "f")
+                )
+              }
+            >
+              <Volume2 className="h-4 w-4" />
+              Hear sentence
+            </Button>
+          ) : null}
+        </div>
+      )}
+      <div
+        className={
+          isCloze
+            ? "rounded-2xl border border-violet-100 bg-violet-50/80 px-4 py-4 text-base font-medium leading-relaxed text-slate-800"
+            : "rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-base font-medium leading-relaxed text-slate-800"
+        }
+      >
         {parts[0]}
         <span className="mx-1 inline-block min-w-[5rem] border-b-2 border-emerald-400 px-1 text-emerald-700">
           {value || "…"}
@@ -816,6 +853,7 @@ export function ExerciseRenderer({
         />
       );
     case "fill-blank":
+    case "cloze":
       return (
         <FillBlankView
           exercise={exercise}

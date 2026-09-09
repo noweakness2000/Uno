@@ -50,6 +50,16 @@ export interface WordCard {
   cefr: CEFR;
 }
 
+/** Persisted SM-2-ish state for one Word Card. */
+export interface SrsCardState {
+  intervalDays: number;
+  ease: number;
+  dueAt: string;
+  reps: number;
+}
+
+export type SrsCards = Record<string, SrsCardState>;
+
 export type ExerciseType =
   | "teach"
   | "select"
@@ -59,6 +69,7 @@ export type ExerciseType =
   | "situational-choose"
   | "match-pairs"
   | "fill-blank"
+  | "cloze"
   | "story-listen";
 
 export interface ExerciseBase {
@@ -125,6 +136,20 @@ export interface FillBlankExercise extends ExerciseBase {
   hint?: string;
 }
 
+/** Cloze from story: blank a content word in a story sentence. */
+export interface ClozeExercise extends ExerciseBase {
+  type: "cloze";
+  /** Sentence with ___ for the blank. */
+  template: string;
+  acceptedAnswers: string[];
+  hint?: string;
+  /** Full sentence for optional Neural2 playback. */
+  audioText?: string;
+  audioSrc?: string;
+  /** Soft chrome, e.g. "From the story". */
+  storyLabel?: string;
+}
+
 /** Follow-along story listening with comprehension questions (no STT). */
 export interface StoryListenExercise extends ExerciseBase {
   type: "story-listen";
@@ -150,6 +175,7 @@ export type Exercise =
   | SituationalChooseExercise
   | MatchPairsExercise
   | FillBlankExercise
+  | ClozeExercise
   | StoryListenExercise;
 
 export interface Lesson {
@@ -181,6 +207,8 @@ export interface DemoUser {
   dailyXp: number;
   completedLessonIds: string[];
   weakWordIds: string[];
+  /** Lightweight SRS schedule keyed by wordCardId. */
+  srsCards: SrsCards;
   onboardingComplete: boolean;
   startingLevel: StartingLevel;
   /** Units treated as optional review / skipped for path progress. */

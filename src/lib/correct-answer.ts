@@ -13,6 +13,7 @@ export function getCorrectAnswerDisplay(exercise: Exercise): string {
       return exercise.correctOrder.join(" ");
     case "translate":
     case "fill-blank":
+    case "cloze":
       return exercise.acceptedAnswers[0] ?? "";
     case "match-pairs":
       return exercise.pairs.map((p) => `${p.left} → ${p.right}`).join(" · ");

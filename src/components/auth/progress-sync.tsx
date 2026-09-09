@@ -51,6 +51,7 @@ export function ProgressSync() {
       onboardingComplete: user.onboardingComplete,
       completedLessonIds: user.completedLessonIds,
       weakWordIds: user.weakWordIds,
+      srsCards: user.srsCards ?? {},
       skippedUnitIds: user.skippedUnitIds ?? [],
       recommendedUnitId: user.recommendedUnitId ?? null,
     };
@@ -93,6 +94,7 @@ export function ProgressSync() {
             completedLessonIds:
               p.completedLessonIds ?? s.user.completedLessonIds,
             weakWordIds: p.weakWordIds ?? s.user.weakWordIds,
+            srsCards: (p as { srsCards?: DemoUser["srsCards"] }).srsCards ?? s.user.srsCards ?? {},
             skippedUnitIds: p.skippedUnitIds ?? s.user.skippedUnitIds ?? [],
             recommendedUnitId:
               p.recommendedUnitId ?? s.user.recommendedUnitId,

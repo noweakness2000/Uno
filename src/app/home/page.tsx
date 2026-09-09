@@ -16,6 +16,7 @@ import {
   getPlacementBanner,
   getRecommendedLessonId,
 } from "@/lib/placement";
+import { countDue } from "@/lib/srs";
 import { useUserStore } from "@/store/user-store";
 
 export default function HomePage() {
@@ -25,6 +26,7 @@ export default function HomePage() {
   const skipUnit1 = useUserStore((s) => s.skipUnit1);
   const jumpToIntermediate = useUserStore((s) => s.jumpToIntermediate);
   const weakCount = user.weakWordIds.length;
+  const dueCount = countDue(user.srsCards);
   const [editing, setEditing] = useState(false);
   const [draftName, setDraftName] = useState(user.name);
 
@@ -77,6 +79,11 @@ export default function HomePage() {
             <Button variant="soft" size="sm">
               <Layers className="h-4 w-4" />
               Cards
+              {dueCount > 0 && (
+                <span className="ml-1 rounded-full bg-emerald-600 px-1.5 py-0.5 text-[10px] text-white">
+                  {dueCount} due
+                </span>
+              )}
             </Button>
           </Link>
           <Link href="/review">

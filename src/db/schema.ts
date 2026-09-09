@@ -31,6 +31,7 @@ export const users = pgTable("users", {
     .notNull()
     .default([]),
   weakWordIds: jsonb("weakWordIds").$type<string[]>().notNull().default([]),
+  srsCards: jsonb("srsCards").$type<Record<string, { intervalDays: number; ease: number; dueAt: string; reps: number }>>().notNull().default({}),
   skippedUnitIds: jsonb("skippedUnitIds").$type<string[]>().notNull().default([]),
   recommendedUnitId: text("recommendedUnitId"),
   createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),

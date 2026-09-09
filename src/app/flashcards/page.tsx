@@ -15,6 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { getAllWordCards, getWordCard } from "@/lib/mock-data";
 import { audioSrcFor, playSpanishAudio } from "@/lib/audio";
+import { countDue, getDueSrsCardIds, type SrsCards } from "@/lib/srs";
 import { useUserStore } from "@/store/user-store";
 import { cn } from "@/lib/utils";
 import type { WordCard } from "@/lib/types";
@@ -30,25 +31,53 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-function buildDeck(weakIds: string[]): WordCard[] {
+/**
+ * Default deck: due SRS first, then weak (not already due), then a small
+ * sample of other learned cards. Motivational only — never locks lessons.
+ */
+function buildDeck(
+  weakIds: string[],
+  srsCards: SrsCards | undefined,
+  now: Date = new Date()
+): WordCard[] {
   const all = getAllWordCards();
-  const weak = weakIds
-    .map((id) => getWordCard(id))
-    .filter((c): c is WordCard => Boolean(c));
-  const weakSet = new Set(weak.map((c) => c.id));
-  const rest = all.filter((c) => !weakSet.has(c.id));
-  // Weak first (duplicated once for priority), then a sample of the rest
-  const prioritized = [...weak, ...weak, ...shuffle(rest).slice(0, 24)];
-  return shuffle(prioritized);
+  const byId = new Map(all.map((c) => [c.id, c]));
+  const seen = new Set<string>();
+  const out: WordCard[] = [];
+
+  const push = (id: string) => {
+    if (seen.has(id)) return;
+    const card = byId.get(id) ?? getWordCard(id);
+    if (!card) return;
+    seen.add(id);
+    out.push(card);
+  };
+
+  for (const id of getDueSrsCardIds(srsCards, now)) push(id);
+  for (const id of weakIds) push(id);
+
+  const rest = shuffle(all.filter((c) => !seen.has(c.id))).slice(0, 12);
+  for (const c of rest) {
+    seen.add(c.id);
+    out.push(c);
+  }
+
+  // Keep due+weak order stable at front; lightly shuffle within tiers already done via rest
+  return out;
 }
 
 export default function FlashcardsPage() {
   const weakWordIds = useUserStore((s) => s.user.weakWordIds);
-  const markWeak = useUserStore((s) => s.markWeak);
-  const clearWeak = useUserStore((s) => s.clearWeak);
+  const srsCards = useUserStore((s) => s.user.srsCards);
+  const srsAgain = useUserStore((s) => s.srsAgain);
+  const srsGood = useUserStore((s) => s.srsGood);
+
+  const dueToday = countDue(srsCards);
 
   const [mode, setMode] = useState<Mode>("es-en");
-  const [deck, setDeck] = useState<WordCard[]>(() => buildDeck(weakWordIds));
+  const [deck, setDeck] = useState<WordCard[]>(() =>
+    buildDeck(weakWordIds, srsCards)
+  );
   const [index, setIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
   const [known, setKnown] = useState(0);
@@ -74,7 +103,8 @@ export default function FlashcardsPage() {
     (mode === "es-en" && !flipped) || (mode === "en-es" && flipped);
 
   const resetDeck = () => {
-    setDeck(buildDeck(useUserStore.getState().user.weakWordIds));
+    const u = useUserStore.getState().user;
+    setDeck(buildDeck(u.weakWordIds, u.srsCards));
     setIndex(0);
     setFlipped(false);
     setKnown(0);
@@ -85,10 +115,10 @@ export default function FlashcardsPage() {
     if (!card) return;
     if (know) {
       setKnown((n) => n + 1);
-      clearWeak(card.id);
+      srsGood(card.id);
     } else {
       setUnknown((n) => n + 1);
-      markWeak([card.id]);
+      srsAgain(card.id);
     }
     setFlipped(false);
     setIndex((i) => i + 1);
@@ -105,11 +135,18 @@ export default function FlashcardsPage() {
         <div className="min-w-0 flex-1">
           <h1 className="text-2xl font-extrabold text-slate-900">Flashcards</h1>
           <p className="text-sm text-slate-500">
-            Weak words first · tap card to flip
+            {dueToday > 0
+              ? `${dueToday} due today · optional practice`
+              : "Due cards first · tap to flip"}
           </p>
         </div>
         <Layers className="h-5 w-5 text-emerald-500" />
       </div>
+
+      <p className="mb-3 rounded-2xl border border-teal-100 bg-teal-50 px-3 py-2 text-xs text-teal-900">
+        Review is motivational only — it never locks lessons. Wrong answers still
+        explain, mark weak, and continue.
+      </p>
 
       <div className="mb-4 flex gap-2">
         <Button
@@ -153,7 +190,8 @@ export default function FlashcardsPage() {
           <p className="text-3xl">✨</p>
           <h2 className="text-xl font-extrabold text-slate-900">Deck complete</h2>
           <p className="text-sm text-slate-500">
-            Knew {known} · Still learning {unknown}. Weak items stay in Review.
+            Knew {known} · Still learning {unknown}. Due cards resurface when
+            it&apos;s time — lessons stay open.
           </p>
           <Button size="lg" className="w-full" onClick={resetDeck}>
             <RotateCcw className="h-4 w-4" />
@@ -231,7 +269,7 @@ export default function FlashcardsPage() {
                 onClick={() => grade(false)}
               >
                 <ThumbsDown className="h-5 w-5" />
-                Still learning
+                Again
               </Button>
               <Button
                 size="lg"
@@ -239,7 +277,7 @@ export default function FlashcardsPage() {
                 onClick={() => grade(true)}
               >
                 <ThumbsUp className="h-5 w-5" />
-                Know it
+                Good
               </Button>
             </div>
           )}

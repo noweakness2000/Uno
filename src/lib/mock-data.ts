@@ -19,6 +19,7 @@ export const DEMO_USER: DemoUser = {
   dailyXp: 0,
   completedLessonIds: [],
   weakWordIds: [],
+  srsCards: {},
   onboardingComplete: false,
   startingLevel: "absolute_beginner",
   skippedUnitIds: [],
