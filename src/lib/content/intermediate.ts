@@ -1,5 +1,5 @@
 /**
- * Intermediate track (Units 4–8) — strong A2 / early B1 Spanish.
+ * Intermediate track (Units 4–9) — strong A2 / early B1 Spanish.
  * Merged into mock-data WORD_CARDS / LESSONS.
  */
 import type { Lesson, WordCard } from "../types";
@@ -8,6 +8,7 @@ import { UNIT5_LESSONS, UNIT5_WORD_CARDS } from "./unit5";
 import { UNIT6_LESSONS, UNIT6_WORD_CARDS } from "./unit6";
 import { UNIT7_LESSONS, UNIT7_WORD_CARDS } from "./unit7";
 import { UNIT8_LESSONS, UNIT8_WORD_CARDS } from "./unit8";
+import { UNIT9_LESSONS, UNIT9_WORD_CARDS } from "./unit9";
 
 const LATAM_PRESENT = (forms: [string, string, string, string, string]) => [
   {
@@ -195,6 +196,7 @@ export const INTERMEDIATE_WORD_CARDS: Record<string, WordCard> = {
   ...UNIT6_WORD_CARDS,
   ...UNIT7_WORD_CARDS,
   ...UNIT8_WORD_CARDS,
+  ...UNIT9_WORD_CARDS,
   despertarse: {
     id: "despertarse",
     lemma: "despertarse",
@@ -1033,6 +1035,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
   ...UNIT6_LESSONS,
   ...UNIT7_LESSONS,
   ...UNIT8_LESSONS,
+  ...UNIT9_LESSONS,
   "u4-l1": {
     id: "u4-l1",
     unitId: "unit-4",
@@ -2432,6 +2435,15 @@ export const INTERMEDIATE_UNITS_META = [
     title: "Plans & invitations",
     description: "ir a, quiero/me gustaría, invites, soft no + story listening — ~12 lessons.",
     lessonIds: ["u8-l1", "u8-l2", "u8-l3", "u8-l4", "u8-l5", "u8-l6", "u8-l7", "u8-l8", "u8-l9", "u8-l10", "u8-l11", "u8-l12"],
+    unlocked: true,
+    track: "intermediate" as const,
+  },
+  {
+    id: "unit-9",
+    number: 9,
+    title: "Opinions & travel stories",
+    description: "Opinions, imperfect habits/descriptions, airport and lodging — ~12 lessons.",
+    lessonIds: ["u9-l1", "u9-l2", "u9-l3", "u9-l4", "u9-l5", "u9-l6", "u9-l7", "u9-l8", "u9-l9", "u9-l10", "u9-l11", "u9-l12"],
     unlocked: true,
     track: "intermediate" as const,
   },
