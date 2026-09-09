@@ -7,6 +7,7 @@ import { ArrowLeft, Flame, LogIn, Trophy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { flushProgressToServer } from "@/components/auth/progress-sync";
 
 type Entry = {
   rank: number;
@@ -25,11 +26,21 @@ export default function LeaderboardPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (status === "loading") return;
+
     let cancelled = false;
     (async () => {
       setLoading(true);
       setError(null);
       try {
+        // Push local XP/streak before reading the board so ranks are fresh.
+        if (status === "authenticated" && session?.user?.id) {
+          await flushProgressToServer({
+            sessionName: session.user.name,
+          });
+        }
+        if (cancelled) return;
+
         const res = await fetch("/api/leaderboard");
         if (res.status === 503) {
           if (!cancelled) {
@@ -56,7 +67,7 @@ export default function LeaderboardPage() {
     return () => {
       cancelled = true;
     };
-  }, [session?.user?.id]);
+  }, [session?.user?.id, session?.user?.name, status]);
 
   const signedIn = status === "authenticated" && Boolean(session?.user);
 
