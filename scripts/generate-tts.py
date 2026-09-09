@@ -35,6 +35,7 @@ VOICES = {
 ROOT = Path(__file__).resolve().parents[1]
 CONTENT_FILES = [
     ROOT / "src" / "lib" / "content" / "intermediate.ts",
+    ROOT / "src" / "lib" / "content" / "unit5.ts",
     ROOT / "src" / "lib" / "mock-data.ts",
 ]
 
@@ -213,7 +214,7 @@ def looks_spanish(text: str) -> bool:
         r"telefono|anos|cuanto|cuesta|pesos|dolares|gratis|tengo|tienes|numero|"
         r"numeros|carro|jugo|departamento|despierto|trabajo|camino|gusta|gustan|"
         r"quiero|cuenta|cerca|lejos|derecha|izquierda|recto|centro|metro|llego|comi|"
-        r"hable|ayer|hoy|fui|hice|tuve|dije|voy|vas|gustaria|parece|levanto|levantas|ducho|duchas|desayuno|estudio|limpio|cocina|fin|semana|descanso|temprano|manana|preparo|lavo|oficina|escuela|tarea|ropa|platos|dormir|duermo)\b",
+        r"hable|ayer|hoy|fui|hice|tuve|dije|voy|vas|gustaria|parece|levanto|levantas|ducho|duchas|desayuno|estudio|limpio|cocina|fin|semana|descanso|temprano|manana|preparo|lavo|oficina|escuela|tarea|ropa|platos|dormir|duermo|tacos|pollo|arroz|pan|comida|menu|agua|leche|te|restaurante|mesero|propina|almuerzo|cena|llevar|gustaria|recomienda|traiga|trae|natural|naranja)\b",
         norm,
     ):
         return True

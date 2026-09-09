@@ -45,7 +45,23 @@ export function SelectView({
   onSubmit,
 }: CommonProps & { exercise: SelectExercise | SituationalChooseExercise }) {
   const [selected, setSelected] = useState<number | null>(null);
+  const [displayOptions, setDisplayOptions] = useState<
+    { text: string; originalIndex: number }[]
+  >([]);
   const isSituational = exercise.type === "situational-choose";
+
+  useEffect(() => {
+    const items = exercise.options.map((text, originalIndex) => ({
+      text,
+      originalIndex,
+    }));
+    for (let i = items.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [items[i], items[j]] = [items[j], items[i]];
+    }
+    setDisplayOptions(items);
+    setSelected(null);
+  }, [exercise.id, exercise.options]);
 
   return (
     <div className="space-y-4">
@@ -56,11 +72,11 @@ export function SelectView({
         </div>
       )}
       <div className="grid gap-3">
-        {exercise.options.map((opt, i) => {
-          const spanish = looksSpanish(opt);
+        {displayOptions.map((opt, i) => {
+          const spanish = looksSpanish(opt.text);
           return (
             <div
-              key={`${opt}-${i}`}
+              key={`${opt.text}-${opt.originalIndex}`}
               className={cn(
                 "flex min-h-12 items-stretch gap-1 rounded-2xl border-2 transition-all",
                 selected === i
@@ -74,11 +90,11 @@ export function SelectView({
                 onClick={() => setSelected(i)}
                 className="min-h-12 min-w-0 flex-1 touch-manipulation rounded-2xl px-4 py-3.5 text-left text-base font-semibold"
               >
-                <span className="break-words">{opt}</span>
+                <span className="break-words">{opt.text}</span>
               </button>
               {spanish && (
                 <div className="flex items-center pr-2">
-                  <SpeakButton text={opt} label={`Play: ${opt}`} />
+                  <SpeakButton text={opt.text} label={`Play: ${opt.text}`} />
                 </div>
               )}
             </div>
@@ -90,7 +106,10 @@ export function SelectView({
         size="lg"
         disabled={selected === null || disabled}
         onClick={() =>
-          selected !== null && onSubmit(selected === exercise.correctIndex)
+          selected !== null &&
+          onSubmit(
+            displayOptions[selected]?.originalIndex === exercise.correctIndex
+          )
         }
       >
         Check
@@ -293,7 +312,23 @@ export function ListeningChooseView({
 }: CommonProps & { exercise: ListeningChooseExercise }) {
   const [selected, setSelected] = useState<number | null>(null);
   const [showVoiceTip, setShowVoiceTip] = useState(false);
+  const [displayOptions, setDisplayOptions] = useState<
+    { text: string; originalIndex: number }[]
+  >([]);
   const hasMp3 = Boolean(exercise.audioSrc);
+
+  useEffect(() => {
+    const items = exercise.options.map((text, originalIndex) => ({
+      text,
+      originalIndex,
+    }));
+    for (let i = items.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [items[i], items[j]] = [items[j], items[i]];
+    }
+    setDisplayOptions(items);
+    setSelected(null);
+  }, [exercise.id, exercise.options]);
 
   useEffect(() => {
     if (hasMp3) {
@@ -344,11 +379,11 @@ export function ListeningChooseView({
         )}
       </div>
       <div className="grid gap-3">
-        {exercise.options.map((opt, i) => {
-          const spanish = looksSpanish(opt);
+        {displayOptions.map((opt, i) => {
+          const spanish = looksSpanish(opt.text);
           return (
             <div
-              key={`${opt}-${i}`}
+              key={`${opt.text}-${opt.originalIndex}`}
               className={cn(
                 "flex min-h-12 items-stretch gap-1 rounded-2xl border-2 transition-all",
                 selected === i
@@ -362,11 +397,11 @@ export function ListeningChooseView({
                 onClick={() => setSelected(i)}
                 className="min-h-12 min-w-0 flex-1 touch-manipulation rounded-2xl px-4 py-3.5 text-left text-base font-semibold"
               >
-                <span className="break-words">{opt}</span>
+                <span className="break-words">{opt.text}</span>
               </button>
               {spanish && (
                 <div className="flex items-center pr-2">
-                  <SpeakButton text={opt} label={`Play: ${opt}`} />
+                  <SpeakButton text={opt.text} label={`Play: ${opt.text}`} />
                 </div>
               )}
             </div>
@@ -378,7 +413,10 @@ export function ListeningChooseView({
         size="lg"
         disabled={selected === null || disabled}
         onClick={() =>
-          selected !== null && onSubmit(selected === exercise.correctIndex)
+          selected !== null &&
+          onSubmit(
+            displayOptions[selected]?.originalIndex === exercise.correctIndex
+          )
         }
       >
         Check
@@ -521,8 +559,10 @@ export function FillBlankView({
   const parts = exercise.template.split("___");
   const isCloze = exercise.type === "cloze";
   const cloze = isCloze ? (exercise as ClozeExercise) : null;
-  const audioText = cloze?.audioText;
-  const audioSrc = cloze?.audioSrc;
+  const fill = !isCloze ? (exercise as FillBlankExercise) : null;
+  const englishPrompt = fill?.englishPrompt ?? cloze?.englishPrompt;
+  const audioText = fill?.audioText ?? cloze?.audioText;
+  const audioSrc = fill?.audioSrc ?? cloze?.audioSrc;
 
   useEffect(() => {
     setValue("");
@@ -550,26 +590,33 @@ export function FillBlankView({
           <span className="rounded-full bg-violet-100 px-3 py-1 text-xs font-bold uppercase tracking-wide text-violet-800">
             {cloze?.storyLabel ?? "From the story"}
           </span>
-          {audioText ? (
-            <Button
-              type="button"
-              variant="soft"
-              size="sm"
-              className="min-h-10 touch-manipulation"
-              disabled={disabled}
-              onClick={() =>
-                playSpanishAudio(
-                  audioText,
-                  audioSrc ?? audioSrcFor(audioText, "f")
-                )
-              }
-            >
-              <Volume2 className="h-4 w-4" />
-              Hear sentence
-            </Button>
-          ) : null}
         </div>
       )}
+      {englishPrompt ? (
+        <p className="rounded-2xl border border-emerald-100 bg-emerald-50/70 px-4 py-3 text-base font-semibold text-emerald-950">
+          {englishPrompt}
+        </p>
+      ) : null}
+      {audioText ? (
+        <div className="flex justify-end">
+          <Button
+            type="button"
+            variant="soft"
+            size="sm"
+            className="min-h-10 touch-manipulation"
+            disabled={disabled}
+            onClick={() =>
+              playSpanishAudio(
+                audioText,
+                audioSrc ?? audioSrcFor(audioText, "f")
+              )
+            }
+          >
+            <Volume2 className="h-4 w-4" />
+            Play practice audio
+          </Button>
+        </div>
+      ) : null}
       <div
         className={
           isCloze
@@ -640,6 +687,9 @@ export function StoryListenView({
   } | null>(null);
   const [correctCount, setCorrectCount] = useState(0);
   const [done, setDone] = useState(false);
+  const [displayOptions, setDisplayOptions] = useState<
+    { text: string; originalIndex: number }[]
+  >([]);
 
   const questions = exercise.questions;
   const question = questions[qIndex];
@@ -655,6 +705,23 @@ export function StoryListenView({
     stopSpanishAudio();
     return () => stopSpanishAudio();
   }, [exercise.id]);
+
+  useEffect(() => {
+    if (!question) {
+      setDisplayOptions([]);
+      return;
+    }
+    const items = question.options.map((text, originalIndex) => ({
+      text,
+      originalIndex,
+    }));
+    for (let i = items.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [items[i], items[j]] = [items[j], items[i]];
+    }
+    setDisplayOptions(items);
+    setSelected(null);
+  }, [exercise.id, qIndex, question]);
 
   const playStory = async () => {
     if (disabled || playing) return;
@@ -675,7 +742,8 @@ export function StoryListenView({
 
   const checkQuestion = () => {
     if (selected === null || !question || localFeedback) return;
-    const correct = selected === question.correctIndex;
+    const correct =
+      displayOptions[selected]?.originalIndex === question.correctIndex;
     const explanation =
       question.explanation ??
       (correct
@@ -762,9 +830,9 @@ export function StoryListenView({
           </p>
           <p className="text-base font-semibold text-slate-900">{question.prompt}</p>
           <div className="grid gap-3">
-            {question.options.map((opt, i) => (
+            {displayOptions.map((opt, i) => (
               <button
-                key={`${opt}-${i}`}
+                key={`${opt.text}-${opt.originalIndex}`}
                 type="button"
                 disabled={disabled || Boolean(localFeedback)}
                 onClick={() => setSelected(i)}
@@ -775,7 +843,7 @@ export function StoryListenView({
                     : "border-slate-200 bg-white text-slate-800"
                 )}
               >
-                {opt}
+                {opt.text}
               </button>
             ))}
           </div>

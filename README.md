@@ -69,7 +69,7 @@ Scripts in `package.json`: `dev`, `build`, `start`, `lint`.
 - **Unit 1 — First contact**: `u1-l1` Hello & goodbye · `u1-l2` What's your name? · `u1-l3` Thanks & sorry · `u1-l4` First chat check
 - **Unit 2 — Who I am**: `u2-l1` I'm from… / I live in… · `u2-l2` I speak… · `u2-l3` About you check (Units 1–2 unlocked for all)
 - **Unit 3 — Numbers that matter**: `u3-l1`–`u3-l3`
-- **Intermediate Units 4–8**: Daily life (~12 lessons + story-listen) · Food & ordering · Getting around · What I did (preterite) · Plans & invitations (`u4-l1`…`u4-l12`, `u5-l1`…`u8-l2`)
+- **Intermediate Units 4–8**: Daily life (~12 lessons + story-listen) · Food & ordering (~12 lessons + story-listen) · Getting around · What I did (preterite) · Plans & invitations (`u4-l1`…`u4-l12`, `u5-l1`…`u5-l12`, `u6-l1`…`u8-l2`)
 - Teach-before-practice word cards with meaningSummary, conjugations (LatAm, ustedes), examples + speaker audio
 - Baked LatAm Neural2 MP3s under `public/audio/es-mx/`
 

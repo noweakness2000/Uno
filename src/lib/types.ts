@@ -134,6 +134,11 @@ export interface FillBlankExercise extends ExerciseBase {
   template: string;
   acceptedAnswers: string[];
   hint?: string;
+  /** Full English sentence shown above the Spanish blank (preferred cue). */
+  englishPrompt?: string;
+  /** Optional Spanish listen-target (Neural2) as alternate/additional cue. */
+  audioText?: string;
+  audioSrc?: string;
 }
 
 /** Cloze from story: blank a content word in a story sentence. */
@@ -143,6 +148,8 @@ export interface ClozeExercise extends ExerciseBase {
   template: string;
   acceptedAnswers: string[];
   hint?: string;
+  /** Full English sentence shown above the Spanish blank. */
+  englishPrompt?: string;
   /** Full sentence for optional Neural2 playback. */
   audioText?: string;
   audioSrc?: string;

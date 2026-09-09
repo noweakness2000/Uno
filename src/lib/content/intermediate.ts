@@ -4,6 +4,7 @@
  */
 import type { Lesson, WordCard } from "../types";
 import { audioSrcFor, voiceForIndex, type AudioVoice } from "../audio";
+import { UNIT5_LESSONS, UNIT5_WORD_CARDS } from "./unit5";
 
 const LATAM_PRESENT = (forms: [string, string, string, string, string]) => [
   {
@@ -137,6 +138,7 @@ function storyListen(
 }
 
 export const INTERMEDIATE_WORD_CARDS: Record<string, WordCard> = {
+  ...UNIT5_WORD_CARDS,
   despertarse: {
     id: "despertarse",
     lemma: "despertarse",
@@ -1060,6 +1062,7 @@ export const INTERMEDIATE_WORD_CARDS: Record<string, WordCard> = {
 
 
 export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
+  ...UNIT5_LESSONS,
   "u4-l1": {
     id: "u4-l1",
     unitId: "unit-4",
@@ -1132,7 +1135,8 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
       {
         id: "u4l1-6",
         type: "fill-blank",
-        prompt: "Fill in the blank.",
+        prompt: "Type the missing Spanish.",
+        englishPrompt: "I wake up at seven.",
         template: "Me ___ a las siete.",
         acceptedAnswers: ["despierto", "Despierto"],
         hint: "wake up (yo)",
@@ -1240,7 +1244,8 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
       {
         id: "u4l2-7",
         type: "fill-blank",
-        prompt: "Fill in the blank.",
+        prompt: "Type the missing Spanish.",
+        englishPrompt: "I live in an apartment.",
         template: "Vivo en un ___.",
         acceptedAnswers: ["departamento", "Departamento"],
         hint: "apartment (LatAm)",
@@ -1330,7 +1335,8 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
       {
         id: "u4l3-5",
         type: "fill-blank",
-        prompt: "Fill in the blank.",
+        prompt: "Type the missing Spanish.",
+        englishPrompt: "I shower in the morning.",
         template: "Me ___ por la mañana.",
         acceptedAnswers: ["ducho", "Ducho"],
         hint: "shower (yo)",
@@ -1450,7 +1456,8 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
       {
         id: "u4l4-6",
         type: "fill-blank",
-        prompt: "Fill in the blank.",
+        prompt: "Type the missing Spanish.",
+        englishPrompt: "I walk to the office.",
         template: "Camino a la ___.",
         acceptedAnswers: ["oficina", "Oficina"],
         hint: "office",
@@ -1539,7 +1546,8 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
       {
         id: "u4l5-5",
         type: "fill-blank",
-        prompt: "Fill in the blank.",
+        prompt: "Type the missing Spanish.",
+        englishPrompt: "I clean the kitchen every day.",
         template: "___ la cocina todos los días.",
         acceptedAnswers: ["Limpio", "limpio"],
         hint: "I clean",
@@ -1659,7 +1667,8 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
       {
         id: "u4l6-6",
         type: "fill-blank",
-        prompt: "Fill in the blank.",
+        prompt: "Type the missing Spanish.",
+        englishPrompt: "On the weekend I rest.",
         template: "El fin de semana ___.",
         acceptedAnswers: ["descanso", "Descanso"],
         hint: "I rest",
@@ -1764,7 +1773,8 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
       {
         id: "u4l7-6",
         type: "fill-blank",
-        prompt: "Fill in the blank.",
+        prompt: "Type the missing Spanish.",
+        englishPrompt: "I speak a little Spanish.",
         template: "Hablo un poco de ___.",
         acceptedAnswers: ["español", "Espanol", "Español"],
         hint: "Spanish",
@@ -1937,7 +1947,8 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
       {
         id: "u4l9-4",
         type: "fill-blank",
-        prompt: "Fill in the blank.",
+        prompt: "Type the missing Spanish.",
+        englishPrompt: "I study Spanish in my apartment.",
         template: "Estudio español en mi ___.",
         acceptedAnswers: ["departamento", "Departamento"],
         hint: "apartment",
@@ -2051,7 +2062,8 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
       {
         id: "u4l10-1",
         type: "fill-blank",
-        prompt: "From the story vibe — fill in.",
+        prompt: "Type the missing Spanish.",
+        englishPrompt: "On the weekend I rest.",
         template: "El fin de semana ___.",
         acceptedAnswers: ["descanso", "Descanso"],
         hint: "I rest",
@@ -2263,7 +2275,8 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
       {
         id: "u4l12-6",
         type: "fill-blank",
-        prompt: "Fill in the blank.",
+        prompt: "Type the missing Spanish.",
+        englishPrompt: "I go to work by car.",
         template: "Voy al trabajo en ___.",
         acceptedAnswers: ["carro", "Carro"],
         hint: "car (LatAm)",
@@ -2309,237 +2322,6 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
     ],
   },
 
-  "u5-l1": {
-    id: "u5-l1",
-    unitId: "unit-5",
-    title: "Me gusta vs quiero",
-    description: "Likes vs ordering — café, jugo, and clear wants.",
-    xpReward: 42,
-    exercises: [
-      teach("teach-u5l1-me-gusta", "me-gusta"),
-      {
-        id: "u5l1-1",
-        type: "select",
-        prompt: "“I like coffee” is…",
-        options: ["Me gusta el café.", "Quiero gusta café.", "Soy café.", "Tengo gusto café."],
-        correctIndex: 0,
-        explanation: "Me gusta el café — gustar flips the subject.",
-        wordCardIds: ["me-gusta", "cafe"],
-        xp: 3,
-      },
-      teach("teach-u5l1-quiero", "quiero"),
-      {
-        id: "u5l1-2",
-        type: "situational-choose",
-        prompt: "Pick the best line.",
-        situation: "You're at the counter ordering a juice.",
-        options: [
-          "Quiero un jugo, por favor.",
-          "Me gusta un jugo, por favor.",
-          "Soy un jugo.",
-          "Comí un jugo ayer.",
-        ],
-        correctIndex: 0,
-        explanation: "Orders use quiero. Me gusta states preference, not the order itself.",
-        wordCardIds: ["quiero", "jugo"],
-        xp: 4,
-      },
-      teach("teach-u5l1-jugo", "jugo"),
-      teach("teach-u5l1-cafe", "cafe"),
-      {
-        id: "u5l1-3",
-        type: "tap-chips",
-        prompt: "Build: “I like tacos.”",
-        chips: ["Me", "gustan", "los", "tacos.", "quiero", "jugo"],
-        correctOrder: ["Me", "gustan", "los", "tacos."],
-        explanation: "Plural liked things → me gustan.",
-        wordCardIds: ["me-gusta"],
-        xp: 3,
-      },
-      {
-        id: "u5l1-4",
-        type: "translate",
-        prompt: "Translate: “I want an orange juice.”",
-        acceptedAnswers: [
-          "Quiero un jugo de naranja.",
-          "Quiero un jugo de naranja",
-          "Yo quiero un jugo de naranja.",
-        ],
-        hint: "jugo de naranja",
-        explanation: "Quiero un jugo de naranja.",
-        wordCardIds: ["quiero", "jugo"],
-        xp: 4,
-      },
-      listen(
-        "u5l1-5",
-        "Me gusta el café.",
-        ["I like coffee.", "I want coffee.", "The check, please.", "I ate coffee."],
-        0,
-        "Me gusta el café = I like coffee.",
-        ["me-gusta", "cafe"]
-      ),
-      {
-        id: "u5l1-6",
-        type: "select",
-        prompt: "At a café, the clearer order is…",
-        options: [
-          "Quiero un café, por favor.",
-          "Me gusta un café, por favor.",
-          "Fui un café.",
-          "Me parece un café.",
-        ],
-        correctIndex: 0,
-        explanation: "Quiero + item (+ por favor) for ordering.",
-        wordCardIds: ["quiero", "cafe"],
-        xp: 3,
-      },
-      {
-        id: "u5l1-7",
-        type: "fill-blank",
-        prompt: "Fill in the blank.",
-        template: "Me ___ el café.",
-        acceptedAnswers: ["gusta", "Gusta"],
-        hint: "I like (singular)",
-        explanation: "Me gusta el café.",
-        wordCardIds: ["me-gusta"],
-        xp: 3,
-      },
-      {
-        id: "u5l1-8",
-        type: "match-pairs",
-        prompt: "Match preference vs order.",
-        pairs: [
-          { left: "Me gusta el café", right: "I like coffee" },
-          { left: "Quiero un café", right: "I want a coffee (ordering)" },
-          { left: "jugo", right: "juice (LatAm)" },
-          { left: "Me gustan los tacos", right: "I like tacos" },
-        ],
-        explanation: "Gustar = like; querer = want/order.",
-        wordCardIds: ["me-gusta", "quiero", "jugo", "cafe"],
-        xp: 4,
-      },
-      listen(
-        "u5l1-9",
-        "Quiero un jugo de naranja.",
-        ["I want an orange juice.", "I like orange juice.", "Where is the juice?", "I went for juice yesterday."],
-        0,
-        "Quiero un jugo de naranja = I want an orange juice.",
-        ["quiero", "jugo"]
-      ),
-    ],
-  },
-  "u5-l2": {
-    id: "u5-l2",
-    unitId: "unit-5",
-    title: "Ordering with usted",
-    description: "Polite café Spanish — menus, recommendations, the check.",
-    xpReward: 40,
-    exercises: [
-      teach("teach-u5l2-usted", "usted-server"),
-      {
-        id: "u5l2-1",
-        type: "select",
-        prompt: "With a waiter you don't know, the safer default is…",
-        options: ["usted", "only slang nicknames", "skip the name", "no greeting"],
-        correctIndex: 0,
-        explanation: "Usted is the polite default with service staff in much of LatAm.",
-        wordCardIds: ["usted-server"],
-        xp: 3,
-      },
-      teach("teach-u5l2-cuenta", "la-cuenta"),
-      {
-        id: "u5l2-2",
-        type: "tap-chips",
-        prompt: "Build: “The check, please.”",
-        chips: ["La", "cuenta,", "por", "favor.", "jugo", "carro"],
-        correctOrder: ["La", "cuenta,", "por", "favor."],
-        explanation: "La cuenta, por favor.",
-        wordCardIds: ["la-cuenta"],
-        xp: 3,
-      },
-      {
-        id: "u5l2-3",
-        type: "situational-choose",
-        prompt: "Pick the best line.",
-        situation: "You need a menu from the server (polite).",
-        options: [
-          "Disculpe, ¿me puede traer un menú?",
-          "Oye, dame menú ya.",
-          "Me gusta el menú ayer.",
-          "Fui el menú.",
-        ],
-        correctIndex: 0,
-        explanation: "Disculpe + ¿me puede traer…? is polite usted service Spanish.",
-        wordCardIds: ["usted-server"],
-        xp: 4,
-      },
-      listen(
-        "u5l2-4",
-        "¿Me trae la cuenta, por favor?",
-        ["Could you bring me the check, please?", "Do you like the check?", "Where is the metro?", "I woke up early."],
-        0,
-        "¿Me trae la cuenta, por favor? — polite bill request.",
-        ["la-cuenta", "usted-server"]
-      ),
-      {
-        id: "u5l2-5",
-        type: "translate",
-        prompt: "Translate: “Could you recommend something, please?”",
-        acceptedAnswers: [
-          "¿Me recomienda algo, por favor?",
-          "Me recomienda algo, por favor?",
-          "¿Me recomienda algo por favor?",
-        ],
-        hint: "me recomienda (usted)",
-        explanation: "¿Me recomienda algo, por favor?",
-        wordCardIds: ["usted-server"],
-        xp: 4,
-      },
-      {
-        id: "u5l2-6",
-        type: "select",
-        prompt: "“Excuse me” to get a server's attention:",
-        options: ["Disculpe", "Adiós", "Todo recto", "Ayer"],
-        correctIndex: 0,
-        explanation: "Disculpe is the polite attention-getter.",
-        wordCardIds: ["usted-server"],
-        xp: 3,
-      },
-      {
-        id: "u5l2-7",
-        type: "fill-blank",
-        prompt: "Fill in the blank.",
-        template: "¿Me trae la ___, por favor?",
-        acceptedAnswers: ["cuenta", "Cuenta"],
-        hint: "the check",
-        explanation: "¿Me trae la cuenta, por favor?",
-        wordCardIds: ["la-cuenta"],
-        xp: 3,
-      },
-      {
-        id: "u5l2-8",
-        type: "match-pairs",
-        prompt: "Match café service lines.",
-        pairs: [
-          { left: "Disculpe", right: "Excuse me (polite)" },
-          { left: "la cuenta", right: "the check" },
-          { left: "¿Me puede traer…?", right: "Could you bring me…?" },
-          { left: "¿Me recomienda algo?", right: "Could you recommend something?" },
-        ],
-        explanation: "Polite ordering toolkit.",
-        wordCardIds: ["usted-server", "la-cuenta"],
-        xp: 4,
-      },
-      listen(
-        "u5l2-9",
-        "Disculpe, ¿me puede traer un menú?",
-        ["Excuse me, could you bring me a menu?", "I like the menu.", "Where is the apartment?", "I went yesterday."],
-        0,
-        "Polite menu request with usted.",
-        ["usted-server"]
-      ),
-    ],
-  },
   "u6-l1": {
     id: "u6-l1",
     unitId: "unit-6",
@@ -2638,7 +2420,8 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
       {
         id: "u6l1-8",
         type: "fill-blank",
-        prompt: "Fill in the blank.",
+        prompt: "Type the missing Spanish.",
+        englishPrompt: "Where is the bathroom?",
         template: "¿Dónde ___ el baño?",
         acceptedAnswers: ["está", "esta", "Está"],
         hint: "is (location)",
@@ -2734,7 +2517,8 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
       {
         id: "u6l2-7",
         type: "fill-blank",
-        prompt: "Fill in the blank.",
+        prompt: "Type the missing Spanish.",
+        englishPrompt: "How do I get downtown?",
         template: "¿Cómo ___ al centro?",
         acceptedAnswers: ["llego", "Llego"],
         hint: "I arrive / I get (to)",
@@ -2841,7 +2625,8 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
       {
         id: "u7l1-7",
         type: "fill-blank",
-        prompt: "Fill in the blank.",
+        prompt: "Type the missing Spanish.",
+        englishPrompt: "Yesterday I talked with Ana.",
         template: "Ayer ___ con Ana.",
         acceptedAnswers: ["hablé", "hable", "Hablé"],
         hint: "I talked (preterite)",
@@ -2956,7 +2741,8 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
       {
         id: "u7l2-7",
         type: "fill-blank",
-        prompt: "Fill in the blank.",
+        prompt: "Type the missing Spanish.",
+        englishPrompt: "I told the truth.",
         template: "___ la verdad.",
         acceptedAnswers: ["Dije", "dije"],
         hint: "I said (decir)",
@@ -3064,7 +2850,8 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
       {
         id: "u8l1-6",
         type: "fill-blank",
-        prompt: "Fill in the blank.",
+        prompt: "Type the missing Spanish.",
+        englishPrompt: "I'm going to study tonight.",
         template: "Voy ___ estudiar esta noche.",
         acceptedAnswers: ["a", "A"],
         hint: "ir a + infinitive",
@@ -3183,7 +2970,8 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
       {
         id: "u8l2-7",
         type: "fill-blank",
-        prompt: "Fill in the blank.",
+        prompt: "Type the missing Spanish.",
+        englishPrompt: "Would you like to go to the movies?",
         template: "¿Te ___ ir al cine?",
         acceptedAnswers: ["gustaría", "gustaria", "Gustaría"],
         hint: "would like",
@@ -3231,8 +3019,8 @@ export const INTERMEDIATE_UNITS_META = [
     id: "unit-5",
     number: 5,
     title: "Food & ordering",
-    description: "Me gusta vs quiero, café/jugo, usted with servers.",
-    lessonIds: ["u5-l1", "u5-l2"],
+    description: "Likes vs orders, menu nouns, café drinks, restaurant + story listening — ~12 lessons.",
+    lessonIds: ["u5-l1", "u5-l2", "u5-l3", "u5-l4", "u5-l5", "u5-l6", "u5-l7", "u5-l8", "u5-l9", "u5-l10", "u5-l11", "u5-l12"],
     unlocked: true,
     track: "intermediate" as const,
   },

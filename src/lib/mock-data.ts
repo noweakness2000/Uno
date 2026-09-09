@@ -1641,7 +1641,8 @@ export const LESSONS: Record<string, Lesson> = {
       {
         id: "u2l1-fill",
         type: "fill-blank",
-        prompt: "Fill in the blank.",
+        prompt: "Type the missing Spanish.",
+        englishPrompt: "I'm from Mexico.",
         template: "___ de México.",
         acceptedAnswers: ["Soy", "soy"],
         hint: "I am (from…)",
@@ -2060,7 +2061,8 @@ export const LESSONS: Record<string, Lesson> = {
       {
         id: "u3l1-10",
         type: "fill-blank",
-        prompt: "Fill in the blank.",
+        prompt: "Type the missing Spanish.",
+        englishPrompt: "One, two, three.",
         template: "___, dos, tres.",
         acceptedAnswers: ["Uno", "uno"],
         hint: "The number one",
@@ -2332,7 +2334,8 @@ export const LESSONS: Record<string, Lesson> = {
       {
         id: "u3l3-11",
         type: "fill-blank",
-        prompt: "Fill in the blank.",
+        prompt: "Type the missing Spanish.",
+        englishPrompt: "It costs ten pesos.",
         template: "Cuesta diez ___.",
         acceptedAnswers: ["pesos", "Pesos"],
         hint: "LatAm currency",
