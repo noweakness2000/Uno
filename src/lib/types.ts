@@ -58,7 +58,8 @@ export type ExerciseType =
   | "listening-choose"
   | "situational-choose"
   | "match-pairs"
-  | "fill-blank";
+  | "fill-blank"
+  | "story-listen";
 
 export interface ExerciseBase {
   id: string;
@@ -124,6 +125,22 @@ export interface FillBlankExercise extends ExerciseBase {
   hint?: string;
 }
 
+/** Follow-along story listening with comprehension questions (no STT). */
+export interface StoryListenExercise extends ExerciseBase {
+  type: "story-listen";
+  title?: string;
+  /** Ordered Spanish lines shown while listening (Neural2 voice per line). */
+  lines: { text: string; voice?: "f" | "m" | "c" }[];
+  /** Optional full-story audio; else play line-by-line. */
+  audioSrc?: string;
+  questions: {
+    prompt: string;
+    options: string[];
+    correctIndex: number;
+    explanation?: string;
+  }[];
+}
+
 export type Exercise =
   | TeachExercise
   | SelectExercise
@@ -132,7 +149,8 @@ export type Exercise =
   | ListeningChooseExercise
   | SituationalChooseExercise
   | MatchPairsExercise
-  | FillBlankExercise;
+  | FillBlankExercise
+  | StoryListenExercise;
 
 export interface Lesson {
   id: string;

@@ -16,6 +16,14 @@ export function getCorrectAnswerDisplay(exercise: Exercise): string {
       return exercise.acceptedAnswers[0] ?? "";
     case "match-pairs":
       return exercise.pairs.map((p) => `${p.left} → ${p.right}`).join(" · ");
+    case "story-listen": {
+      const q = exercise.questions[0];
+      if (!q) return "";
+      // Summary of all Q answers for the final feedback panel
+      return exercise.questions
+        .map((qq, i) => `Q${i + 1}: ${qq.options[qq.correctIndex] ?? ""}`)
+        .join(" · ");
+    }
     default:
       return "";
   }

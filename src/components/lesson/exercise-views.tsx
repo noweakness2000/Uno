@@ -6,7 +6,14 @@ import { Button } from "@/components/ui/button";
 import { SpeakButton } from "@/components/speak-button";
 import { cn } from "@/lib/utils";
 import { hasSpanishVoice } from "@/lib/tts";
-import { looksSpanish, playSpanishAudio } from "@/lib/audio";
+import {
+  looksSpanish,
+  playSpanishAudio,
+  playStoryLines,
+  stopSpanishAudio,
+  voiceForIndex,
+  type AudioVoice,
+} from "@/lib/audio";
 import {
   answersMatch,
   chipSequencesMatch,
@@ -20,6 +27,7 @@ import type {
   MatchPairsExercise,
   SelectExercise,
   SituationalChooseExercise,
+  StoryListenExercise,
   TapChipsExercise,
   TranslateExercise,
 } from "@/lib/types";
@@ -568,6 +576,185 @@ export function FillBlankView({
 }
 
 
+
+export function StoryListenView({
+  exercise,
+  disabled,
+  onSubmit,
+}: CommonProps & { exercise: StoryListenExercise }) {
+  const [qIndex, setQIndex] = useState(0);
+  const [selected, setSelected] = useState<number | null>(null);
+  const [playing, setPlaying] = useState(false);
+  const [activeLine, setActiveLine] = useState<number>(-1);
+  const [localFeedback, setLocalFeedback] = useState<{
+    correct: boolean;
+    explanation: string;
+  } | null>(null);
+  const [correctCount, setCorrectCount] = useState(0);
+  const [done, setDone] = useState(false);
+
+  const questions = exercise.questions;
+  const question = questions[qIndex];
+  const lines = exercise.lines;
+
+  useEffect(() => {
+    setQIndex(0);
+    setSelected(null);
+    setLocalFeedback(null);
+    setCorrectCount(0);
+    setDone(false);
+    setActiveLine(-1);
+    stopSpanishAudio();
+    return () => stopSpanishAudio();
+  }, [exercise.id]);
+
+  const playStory = async () => {
+    if (disabled || playing) return;
+    setPlaying(true);
+    try {
+      await playStoryLines(
+        lines.map((line, i) => ({
+          text: line.text,
+          voice: (line.voice ?? voiceForIndex(i)) as AudioVoice,
+        })),
+        (i) => setActiveLine(i)
+      );
+    } finally {
+      setPlaying(false);
+      setActiveLine(-1);
+    }
+  };
+
+  const checkQuestion = () => {
+    if (selected === null || !question || localFeedback) return;
+    const correct = selected === question.correctIndex;
+    const explanation =
+      question.explanation ??
+      (correct
+        ? "Nice — that matches the story."
+        : `The answer is: ${question.options[question.correctIndex]}`);
+    setLocalFeedback({ correct, explanation });
+    if (correct) setCorrectCount((c) => c + 1);
+  };
+
+  const advance = () => {
+    if (!localFeedback) return;
+    const next = qIndex + 1;
+    if (next >= questions.length) {
+      const totalCorrect = correctCount;
+      setDone(true);
+      onSubmit(totalCorrect === questions.length);
+      return;
+    }
+    setQIndex(next);
+    setSelected(null);
+    setLocalFeedback(null);
+  };
+
+  return (
+    <div className="space-y-5">
+      {exercise.title ? (
+        <h2 className="text-lg font-bold text-violet-900">{exercise.title}</h2>
+      ) : null}
+
+      <div className="rounded-3xl border border-violet-100 bg-violet-50/80 px-4 py-5">
+        <div className="mb-4 flex flex-col items-center gap-2">
+          <Button
+            type="button"
+            variant="soft"
+            size="lg"
+            disabled={disabled || playing}
+            onClick={() => void playStory()}
+            className="min-h-14 w-full max-w-xs touch-manipulation bg-violet-600 text-base font-bold text-white hover:bg-violet-700"
+          >
+            <Volume2 className="h-6 w-6" />
+            {playing ? "Playing…" : "Play / Replay story"}
+          </Button>
+          <p className="text-xs text-violet-700/80">
+            LatAm Neural2 · follow along in Spanish
+          </p>
+        </div>
+
+        <div className="space-y-3">
+          {lines.map((line, i) => (
+            <p
+              key={`${line.text}-${i}`}
+              className={cn(
+                "rounded-2xl px-3 py-2.5 text-xl font-semibold leading-snug transition-colors sm:text-2xl",
+                activeLine === i
+                  ? "bg-violet-200/80 text-violet-950"
+                  : "text-slate-800"
+              )}
+            >
+              {line.text}
+            </p>
+          ))}
+        </div>
+      </div>
+
+      {question && !done ? (
+        <div className="space-y-3">
+          <p className="text-sm font-bold uppercase tracking-wide text-violet-600">
+            Question {qIndex + 1} of {questions.length}
+          </p>
+          <p className="text-base font-semibold text-slate-900">{question.prompt}</p>
+          <div className="grid gap-3">
+            {question.options.map((opt, i) => (
+              <button
+                key={`${opt}-${i}`}
+                type="button"
+                disabled={disabled || Boolean(localFeedback)}
+                onClick={() => setSelected(i)}
+                className={cn(
+                  "min-h-12 w-full touch-manipulation rounded-2xl border-2 px-4 py-3.5 text-left text-base font-semibold",
+                  selected === i
+                    ? "border-violet-500 bg-violet-50 text-violet-900"
+                    : "border-slate-200 bg-white text-slate-800"
+                )}
+              >
+                {opt}
+              </button>
+            ))}
+          </div>
+
+          {localFeedback ? (
+            <div
+              className={cn(
+                "rounded-2xl border px-4 py-3 text-sm",
+                localFeedback.correct
+                  ? "border-emerald-200 bg-emerald-50 text-emerald-900"
+                  : "border-rose-200 bg-rose-50 text-rose-900"
+              )}
+            >
+              <p className="font-bold">
+                {localFeedback.correct ? "Correct!" : "Not quite"}
+              </p>
+              <p className="mt-1">{localFeedback.explanation}</p>
+              <Button
+                className="mt-3 min-h-12 w-full touch-manipulation"
+                size="lg"
+                disabled={disabled}
+                onClick={advance}
+              >
+                {qIndex + 1 >= questions.length ? "Finish story" : "Next question"}
+              </Button>
+            </div>
+          ) : (
+            <Button
+              className="min-h-12 w-full touch-manipulation"
+              size="lg"
+              disabled={selected === null || disabled}
+              onClick={checkQuestion}
+            >
+              Check
+            </Button>
+          )}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
 export function ExerciseRenderer({
   exercise,
   disabled,
@@ -631,6 +818,14 @@ export function ExerciseRenderer({
     case "fill-blank":
       return (
         <FillBlankView
+          exercise={exercise}
+          disabled={disabled}
+          onSubmit={onSubmit}
+        />
+      );
+    case "story-listen":
+      return (
+        <StoryListenView
           exercise={exercise}
           disabled={disabled}
           onSubmit={onSubmit}

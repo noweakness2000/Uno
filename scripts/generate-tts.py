@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""Generate LatAm Neural2 practice MP3s for Uno (female + male).
+"""Generate LatAm Neural2 practice MP3s for Uno (varied Neural2 voices).
 
 Voices (es-US Neural2 — closest LatAm Neural2; no es-MX Neural2 exists):
   f → es-US-Neural2-A (FEMALE)
   m → es-US-Neural2-B (MALE)
+  c → es-US-Neural2-C (MALE)
 
-Output: public/audio/es-mx/{slug}-f.mp3 and {slug}-m.mp3
+Output: public/audio/es-mx/{slug}-{voice}.mp3
 
 Harvests speakable Spanish from src/lib content (lemmas, examples, audioText,
 target phrases, Spanish options, match pairs) plus any EXTRA_PHRASES below.
@@ -28,6 +29,7 @@ SPEAKING_RATE = 0.95
 VOICES = {
     "f": "es-US-Neural2-A",
     "m": "es-US-Neural2-B",
+    "c": "es-US-Neural2-C",
 }
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -211,7 +213,7 @@ def looks_spanish(text: str) -> bool:
         r"telefono|anos|cuanto|cuesta|pesos|dolares|gratis|tengo|tienes|numero|"
         r"numeros|carro|jugo|departamento|despierto|trabajo|camino|gusta|gustan|"
         r"quiero|cuenta|cerca|lejos|derecha|izquierda|recto|centro|metro|llego|comi|"
-        r"hable|ayer|hoy|fui|hice|tuve|dije|voy|vas|gustaria|parece)\b",
+        r"hable|ayer|hoy|fui|hice|tuve|dije|voy|vas|gustaria|parece|levanto|levantas|ducho|duchas|desayuno|estudio|limpio|cocina|fin|semana|descanso|temprano|manana|preparo|lavo|oficina|escuela|tarea|ropa|platos|dormir|duermo)\b",
         norm,
     ):
         return True
@@ -278,6 +280,13 @@ def harvest_content_phrases() -> list[str]:
         for m in re.finditer(r"\b(?:left|right):\s*'([^']+)'", text):
             if looks_spanish(m.group(1)):
                 add(m.group(1))
+        # Story-listen lines and other Spanish text: fields
+        for m in re.finditer(r'\btext:\s*"([^"]+)"', text):
+            if looks_spanish(m.group(1)):
+                add(m.group(1))
+        for m in re.finditer(r"\btext:\s*'([^']+)'", text):
+            if looks_spanish(m.group(1)):
+                add(m.group(1))
     return found
 
 
@@ -320,8 +329,8 @@ def main() -> None:
     parser.add_argument("--list-phrases", action="store_true")
     parser.add_argument(
         "--voices",
-        default="f,m",
-        help="Comma list of voice keys: f,m",
+        default="f,m,c",
+        help="Comma list of voice keys: f,m,c",
     )
     args = parser.parse_args()
 

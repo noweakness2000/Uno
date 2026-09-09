@@ -3,7 +3,7 @@
  * Later: replace with Postgres on Unraid :5433
  */
 import type { DemoUser, Lesson, Unit, WordCard } from "./types";
-import { audioSrcFor } from "./audio";
+import { audioSrcFor, voiceForIndex } from "./audio";
 import {
   INTERMEDIATE_LESSONS,
   INTERMEDIATE_UNITS_META,
@@ -908,7 +908,7 @@ function listen(
   wordCardIds: string[],
   xp = 3
 ): import("./types").ListeningChooseExercise {
-  const voice = listenVoiceIndex % 2 === 0 ? "f" : "m";
+  const voice = voiceForIndex(listenVoiceIndex);
   listenVoiceIndex += 1;
   return {
     id,
