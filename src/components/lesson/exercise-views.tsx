@@ -383,6 +383,17 @@ export function ListeningChooseView({
       >
         Check
       </Button>
+      <button
+        type="button"
+        disabled={disabled}
+        onClick={() => {
+          stopSpanishAudio();
+          onSubmit(true);
+        }}
+        className="min-h-11 w-full touch-manipulation text-center text-sm font-semibold text-slate-500 hover:text-emerald-700 disabled:opacity-50"
+      >
+        Can&apos;t listen now? Skip
+      </button>
     </div>
   );
 }
@@ -727,6 +738,21 @@ export function StoryListenView({
             </p>
           ))}
         </div>
+
+        <button
+          type="button"
+          disabled={disabled || done}
+          onClick={() => {
+            stopSpanishAudio();
+            setPlaying(false);
+            setActiveLine(-1);
+            setDone(true);
+            onSubmit(true);
+          }}
+          className="mt-4 min-h-11 w-full touch-manipulation text-center text-sm font-semibold text-slate-500 hover:text-emerald-700 disabled:opacity-50"
+        >
+          Can&apos;t listen now? Skip
+        </button>
       </div>
 
       {question && !done ? (
@@ -788,6 +814,7 @@ export function StoryListenView({
           )}
         </div>
       ) : null}
+
     </div>
   );
 }
