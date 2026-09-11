@@ -47,7 +47,7 @@ export function NavRail() {
   return (
     <nav
       aria-label="Main"
-      className="sticky top-6 hidden flex-col gap-1 lg:flex"
+      className="sticky top-6 hidden flex-col gap-1 lg:flex lg:col-start-1 lg:row-start-1 lg:row-span-5"
     >
       <div className="mb-3 flex items-center gap-2.5 px-2">
         <Image

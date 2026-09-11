@@ -36,7 +36,7 @@ export default function HomePage() {
         "mx-auto flex min-h-dvh w-full max-w-lg flex-col gap-4 overflow-x-hidden",
         "px-3 pb-[max(4rem,env(safe-area-inset-bottom))] pt-[max(1.25rem,env(safe-area-inset-top))]",
         "sm:max-w-2xl sm:px-4",
-        "lg:grid lg:max-w-6xl lg:grid-cols-[13rem_minmax(0,1fr)_21rem]",
+        "lg:grid lg:max-w-5xl lg:grid-cols-[13rem_minmax(0,1fr)]",
         "lg:items-start lg:gap-x-6 lg:gap-y-4 lg:px-6",
       ].join(" ")}
     >
@@ -121,7 +121,7 @@ export default function HomePage() {
       </header>
 
       {/* The anchor */}
-      <div className="lg:col-start-2 lg:row-start-2">
+      <div className="lg:col-start-2 lg:row-start-3">
         <ContinueHero />
       </div>
 
@@ -131,17 +131,17 @@ export default function HomePage() {
       </div>
 
       {/* Optional extras: stacked on phone, paired on tablet, sidebar at lg */}
-      <div className="flex flex-col gap-4 sm:grid sm:grid-cols-2 sm:items-start lg:col-start-3 lg:row-start-1 lg:row-span-2 lg:flex lg:flex-col">
+      <div className="flex flex-col gap-4 sm:grid sm:grid-cols-2 sm:items-start lg:col-start-2 lg:row-start-2">
         <WordOfTheDayCard />
         <AudioWorkoutCard />
       </div>
 
-      <section className="lg:col-start-2 lg:row-start-3">
+      <section className="lg:col-start-2 lg:row-start-4">
         <h2 className="mb-4 text-lg font-bold text-slate-800">Your path</h2>
         <UnitPath />
       </section>
 
-      <footer className="flex flex-col items-center gap-3 pt-2 lg:col-start-2 lg:row-start-4 lg:items-start">
+      <footer className="flex flex-col items-center gap-3 pt-2 lg:col-start-2 lg:row-start-5 lg:items-start">
         <button
           type="button"
           onClick={() => {
