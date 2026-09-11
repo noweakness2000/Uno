@@ -4,7 +4,6 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { BookMarked, Layers, Pencil, Play, RotateCcw, SkipForward, Trophy } from "lucide-react";
-import { StatsBar } from "@/components/home/stats-bar";
 import { WordOfTheDayCard } from "@/components/home/word-of-the-day-card";
 import { AudioWorkoutCard } from "@/components/home/audio-workout-card";
 import { StreakPanel } from "@/components/home/streak-panel";
@@ -108,10 +107,6 @@ export default function HomePage() {
         </div>
       </header>
 
-      <WordOfTheDayCard />
-
-      <AudioWorkoutCard />
-
       {editing && (
         <div className="mb-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
           <label className="text-xs font-bold uppercase tracking-wide text-slate-500">
@@ -139,10 +134,6 @@ export default function HomePage() {
           </div>
         </div>
       )}
-
-      <StatsBar />
-
-      <StreakPanel />
 
       {banner && (
         <div className="mt-4 rounded-2xl border border-teal-200 bg-teal-50 px-4 py-3 text-sm text-teal-900">
@@ -198,6 +189,12 @@ export default function HomePage() {
           )}
         </div>
       )}
+
+      <WordOfTheDayCard />
+
+      <AudioWorkoutCard />
+
+      <StreakPanel />
 
       <div className="my-8">
         <h2 className="mb-4 text-lg font-bold text-slate-800">Your path</h2>

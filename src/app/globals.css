@@ -34,6 +34,12 @@ body {
   animation: fade-in 0.25s ease-out;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .animate-in {
+    animation: none;
+  }
+}
+
 
 html {
   overflow-x: hidden;

@@ -15,6 +15,7 @@ import { getCorrectAnswerDisplay } from "@/lib/correct-answer";
 import { enrichWrongExplanation } from "@/lib/feedback-coach";
 import { useLessonStore } from "@/store/lesson-store";
 import { useUserStore } from "@/store/user-store";
+import { exerciseLabel } from "@/lib/exercise-labels";
 import type { TeachExercise, WordCard } from "@/lib/types";
 
 export function LessonPlayer({ lessonId }: { lessonId: string }) {
@@ -140,7 +141,7 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
         <>
           <div className="mb-6">
             <p className="mb-1 text-xs font-bold uppercase tracking-wide text-emerald-600">
-              {exercise.type.replace("-", " ")}
+              {exerciseLabel(exercise.type)}
             </p>
             <h1 className="text-xl font-bold leading-snug text-slate-900 sm:text-2xl">
               {exercise.prompt}

@@ -1,24 +1,27 @@
 "use client";
 
-import Link from "next/link";
-import { Flame, Sparkles, Target } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Flame, Sparkles, Star, Target } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
-import { getLesson } from "@/lib/mock-data";
-import { getRecommendedLessonId } from "@/lib/placement";
+import {
+  dailyGoalPercent,
+  isDailyGoalMet,
+  xpToDailyGoal,
+} from "@/lib/daily-goal";
 import { useUserStore } from "@/store/user-store";
 import { cn } from "@/lib/utils";
 
-/** Duo-like streak celebration — motivational only, never blocks lessons. */
+/**
+ * Streak, total XP and today's goal — motivational only, never blocks lessons.
+ *
+ * Deliberately has no button of its own: the lesson CTA lives on the home
+ * page's Continue card, and a second button pointing at the same lesson only
+ * split the learner's attention.
+ */
 export function StreakPanel() {
   const user = useUserStore((s) => s.user);
-  const goalMet = user.dailyXp >= user.dailyGoal;
-  const goalPct = Math.min(
-    100,
-    Math.round((user.dailyXp / Math.max(user.dailyGoal, 1)) * 100)
-  );
-  const recommendedId = getRecommendedLessonId(user);
-  const recommended = getLesson(recommendedId);
+  const goalMet = isDailyGoalMet(user);
+  const goalPct = dailyGoalPercent(user);
+  const remaining = xpToDailyGoal(user);
   const hot = user.streak >= 3;
 
   return (
@@ -56,10 +59,18 @@ export function StreakPanel() {
             </p>
           ) : (
             <p className="mt-1 text-sm text-slate-600">
-              Keep your streak alive — {user.dailyGoal - user.dailyXp} XP to
-              today&apos;s goal.
+              Keep your streak alive — {remaining} XP to today&apos;s goal.
             </p>
           )}
+        </div>
+        <div className="shrink-0 text-right">
+          <p className="flex items-center justify-end gap-1 text-[11px] font-bold uppercase tracking-wider text-amber-600">
+            <Star className="h-3.5 w-3.5" />
+            Total XP
+          </p>
+          <p className="text-2xl font-extrabold tabular-nums text-slate-900">
+            {user.xp}
+          </p>
         </div>
       </div>
 
@@ -73,15 +84,6 @@ export function StreakPanel() {
         </div>
         <Progress value={goalPct} />
       </div>
-
-      {!goalMet && recommended && (
-        <Link href={`/lesson/${recommended.id}`} className="mt-3 block">
-          <Button className="w-full min-h-11" size="lg">
-            <Flame className="h-4 w-4" />
-            Keep your streak alive
-          </Button>
-        </Link>
-      )}
 
       <p className="mt-3 text-center text-[11px] text-slate-400">
         Motivational only — lessons never lock. No streak freeze needed.

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Flame, Star, Target, BookMarked } from "lucide-react";
+import { dailyGoalPercent, isDailyGoalMet } from "@/lib/daily-goal";
 import { useUserStore } from "@/store/user-store";
 
 interface Props {
@@ -28,11 +29,8 @@ export function PostLessonSummary({
   const user = useUserStore((s) => s.user);
   const total = correctCount + wrongCount;
   const accuracy = total ? Math.round((correctCount / total) * 100) : 0;
-  const goalPct = Math.min(
-    100,
-    Math.round((user.dailyXp / Math.max(user.dailyGoal, 1)) * 100)
-  );
-  const goalMet = user.dailyXp >= user.dailyGoal;
+  const goalPct = dailyGoalPercent(user);
+  const goalMet = isDailyGoalMet(user);
 
   return (
     <div className="mx-auto flex min-h-dvh max-w-lg flex-col justify-center gap-6 px-4 py-10">

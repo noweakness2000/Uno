@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Headphones, Pause, Play, RotateCcw, Volume2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { HintReveal } from "@/components/lesson/hint-reveal";
 import { SpeakButton } from "@/components/speak-button";
 import { cn } from "@/lib/utils";
 import { hasSpanishVoice } from "@/lib/tts";
@@ -265,9 +266,7 @@ export function TranslateView({
 
   return (
     <div className="space-y-4">
-      {exercise.hint && (
-        <p className="text-sm text-slate-500">Hint: {exercise.hint}</p>
-      )}
+      <HintReveal hint={exercise.hint} />
       <input
         type="text"
         value={value}
@@ -632,9 +631,7 @@ export function FillBlankView({
         </span>
         {parts.slice(1).join("___")}
       </div>
-      {exercise.hint && (
-        <p className="text-xs text-slate-500">Hint: {exercise.hint}</p>
-      )}
+      <HintReveal hint={exercise.hint} />
       <input
         type="text"
         value={value}
@@ -725,9 +722,7 @@ export function DictationView({
         </Button>
         <p className="text-xs text-violet-700/80">Spanish practice audio — type exactly what you hear</p>
       </div>
-      {exercise.hint && (
-        <p className="text-sm text-slate-500">Hint: {exercise.hint}</p>
-      )}
+      <HintReveal hint={exercise.hint} />
       <input
         type="text"
         value={value}
@@ -810,9 +805,7 @@ export function ConjugateView({
           Type the conjugated form for this person.
         </p>
       </div>
-      {exercise.hint && (
-        <p className="text-sm text-slate-500">Hint: {exercise.hint}</p>
-      )}
+      <HintReveal hint={exercise.hint} />
       <input
         type="text"
         value={value}
