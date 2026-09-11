@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { isGoogleAuthConfigured } from "@/auth";
-import { GoogleSignInButton } from "./google-sign-in-button";
+import { GoogleSignInButton } from "@/components/auth/google-sign-in-button";
 
 export const dynamic = "force-dynamic";
 
