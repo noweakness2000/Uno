@@ -235,6 +235,8 @@ export interface DemoUser {
   streak: number;
   dailyGoal: number;
   dailyXp: number;
+  /** Local calendar day (YYYY-MM-DD) of the last lesson that counted for streak. */
+  lastStreakDate?: string | null;
   completedLessonIds: string[];
   weakWordIds: string[];
   /** Lightweight SRS schedule keyed by wordCardId. */

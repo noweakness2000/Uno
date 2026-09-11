@@ -6,6 +6,7 @@ import { getDb, hasDatabase } from "@/db";
 import { users } from "@/db/schema";
 import { isPlaceholderName } from "@/lib/display-name";
 import { mergeSrsCards } from "@/lib/srs";
+import { mergeStreakFields } from "@/lib/streak";
 
 const progressSchema = z.object({
   displayName: z.string().min(1).max(64).optional(),
@@ -13,6 +14,11 @@ const progressSchema = z.object({
   streak: z.number().int().min(0).optional(),
   dailyGoal: z.number().int().min(1).max(500).optional(),
   dailyXp: z.number().int().min(0).optional(),
+  lastStreakDate: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/)
+    .nullable()
+    .optional(),
   startingLevel: z
     .enum(["absolute_beginner", "some_words", "conversational_basics"])
     .optional(),
@@ -155,6 +161,7 @@ export async function GET() {
         streak: updated.streak,
         dailyGoal: updated.dailyGoal,
         dailyXp: updated.dailyXp,
+        lastStreakDate: updated.lastStreakDate,
         startingLevel: updated.startingLevel,
         onboardingComplete: updated.onboardingComplete,
         completedLessonIds: updated.completedLessonIds ?? [],
@@ -174,6 +181,7 @@ export async function GET() {
       streak: row.streak,
       dailyGoal: row.dailyGoal,
       dailyXp: row.dailyXp,
+      lastStreakDate: row.lastStreakDate,
       startingLevel: row.startingLevel,
       onboardingComplete: row.onboardingComplete,
       completedLessonIds: row.completedLessonIds ?? [],
@@ -232,9 +240,22 @@ export async function PUT(req: Request) {
     displayName,
     name,
     xp: Math.max(existing.xp, incoming.xp ?? 0),
-    streak: Math.max(existing.streak, incoming.streak ?? 0),
     dailyGoal: incoming.dailyGoal ?? existing.dailyGoal,
-    dailyXp: Math.max(existing.dailyXp, incoming.dailyXp ?? 0),
+    ...mergeStreakFields(
+      {
+        streak: existing.streak,
+        dailyXp: existing.dailyXp,
+        lastStreakDate: existing.lastStreakDate,
+      },
+      {
+        streak: incoming.streak ?? existing.streak,
+        dailyXp: incoming.dailyXp ?? existing.dailyXp,
+        lastStreakDate:
+          incoming.lastStreakDate !== undefined
+            ? incoming.lastStreakDate
+            : existing.lastStreakDate,
+      }
+    ),
     startingLevel: incoming.startingLevel ?? existing.startingLevel,
     onboardingComplete:
       existing.onboardingComplete || Boolean(incoming.onboardingComplete),
@@ -275,6 +296,7 @@ export async function PUT(req: Request) {
       streak: updated.streak,
       dailyGoal: updated.dailyGoal,
       dailyXp: updated.dailyXp,
+      lastStreakDate: updated.lastStreakDate,
       startingLevel: updated.startingLevel,
       onboardingComplete: updated.onboardingComplete,
       completedLessonIds: updated.completedLessonIds ?? [],

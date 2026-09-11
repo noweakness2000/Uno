@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import { preferRealName, isPlaceholderName } from "@/lib/display-name";
 import { useUserStore } from "@/store/user-store";
 import type { DemoUser, StartingLevel } from "@/lib/types";
+import { mergeStreakFields } from "@/lib/streak";
 
 const DEBOUNCE_MS = 750;
 
@@ -22,6 +23,7 @@ type ProgressPayload = {
   streak: number;
   dailyGoal: number;
   dailyXp: number;
+  lastStreakDate: string | null;
   startingLevel: StartingLevel;
   onboardingComplete: boolean;
   completedLessonIds: string[];
@@ -41,6 +43,7 @@ function buildProgressPayload(
     streak: user.streak,
     dailyGoal: user.dailyGoal,
     dailyXp: user.dailyXp,
+    lastStreakDate: user.lastStreakDate ?? null,
     startingLevel: user.startingLevel,
     onboardingComplete: user.onboardingComplete,
     completedLessonIds: user.completedLessonIds,
@@ -58,6 +61,7 @@ function progressFingerprint(user: DemoUser): string {
     xp: user.xp,
     streak: user.streak,
     dailyXp: user.dailyXp,
+    lastStreakDate: user.lastStreakDate ?? null,
     dailyGoal: user.dailyGoal,
     startingLevel: user.startingLevel,
     onboardingComplete: user.onboardingComplete,
@@ -88,16 +92,16 @@ function applyMergedProgress(
         name: preferRealName(p.name, sessionName) || s.user.name,
         // Never clobber newer local XP/streak/dailyXp with a stale response.
         xp: typeof p.xp === "number" ? Math.max(p.xp, s.user.xp) : s.user.xp,
-        streak:
-          typeof p.streak === "number"
-            ? Math.max(p.streak, s.user.streak)
-            : s.user.streak,
         dailyGoal:
           typeof p.dailyGoal === "number" ? p.dailyGoal : s.user.dailyGoal,
-        dailyXp:
-          typeof p.dailyXp === "number"
-            ? Math.max(p.dailyXp, s.user.dailyXp)
-            : s.user.dailyXp,
+        ...mergeStreakFields(s.user, {
+          streak: typeof p.streak === "number" ? p.streak : s.user.streak,
+          dailyXp: typeof p.dailyXp === "number" ? p.dailyXp : s.user.dailyXp,
+          lastStreakDate:
+            p.lastStreakDate !== undefined
+              ? p.lastStreakDate
+              : s.user.lastStreakDate,
+        }),
         startingLevel: isStartingLevel(p.startingLevel)
           ? p.startingLevel
           : s.user.startingLevel,

@@ -24,6 +24,7 @@ export const users = pgTable("users", {
   streak: integer("streak").notNull().default(0),
   dailyGoal: integer("dailyGoal").notNull().default(20),
   dailyXp: integer("dailyXp").notNull().default(0),
+  lastStreakDate: text("lastStreakDate"),
   startingLevel: text("startingLevel").notNull().default("absolute_beginner"),
   onboardingComplete: boolean("onboardingComplete").notNull().default(false),
   completedLessonIds: jsonb("completedLessonIds")

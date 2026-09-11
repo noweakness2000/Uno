@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type PointerEvent } from "react";
 import { Headphones, Pause, Play, RotateCcw, Volume2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { HintReveal } from "@/components/lesson/hint-reveal";
@@ -128,6 +128,14 @@ export function TapChipsView({
 }: CommonProps & { exercise: TapChipsExercise }) {
   const [built, setBuilt] = useState<string[]>([]);
   const [nearMissUsed, setNearMissUsed] = useState(false);
+  const [dragIndex, setDragIndex] = useState<number | null>(null);
+  const rowRef = useRef<HTMLDivElement>(null);
+  const dragRef = useRef<{
+    from: number;
+    startX: number;
+    startY: number;
+    dragging: boolean;
+  } | null>(null);
   const remaining = useMemo(() => {
     const used = [...built];
     return exercise.chips.filter((chip) => {
@@ -141,10 +149,78 @@ export function TapChipsView({
   useEffect(() => {
     setBuilt([]);
     setNearMissUsed(false);
+    setDragIndex(null);
+    dragRef.current = null;
   }, [exercise.id]);
 
   const phrase = exercise.correctOrder.join(" ");
   const builtPhrase = built.join(" ");
+
+  const nearestBuiltIndex = (clientX: number, clientY: number): number => {
+    const row = rowRef.current;
+    if (!row) return 0;
+    const chips = [
+      ...row.querySelectorAll("[data-chip-index]"),
+    ] as HTMLElement[];
+    let best = 0;
+    let bestDist = Infinity;
+    chips.forEach((el, i) => {
+      const r = el.getBoundingClientRect();
+      const dx = clientX - (r.left + r.width / 2);
+      const dy = clientY - (r.top + r.height / 2);
+      const dist = dx * dx + dy * dy;
+      if (dist < bestDist) {
+        bestDist = dist;
+        best = i;
+      }
+    });
+    return best;
+  };
+
+  const onBuiltPointerDown = (
+    e: PointerEvent<HTMLButtonElement>,
+    i: number
+  ) => {
+    if (disabled) return;
+    e.currentTarget.setPointerCapture(e.pointerId);
+    dragRef.current = {
+      from: i,
+      startX: e.clientX,
+      startY: e.clientY,
+      dragging: false,
+    };
+  };
+
+  const onBuiltPointerMove = (e: PointerEvent<HTMLButtonElement>) => {
+    const d = dragRef.current;
+    if (!d || disabled) return;
+    const dist = Math.hypot(e.clientX - d.startX, e.clientY - d.startY);
+    if (!d.dragging && dist > 10) {
+      d.dragging = true;
+      setDragIndex(d.from);
+    }
+    if (!d.dragging) return;
+    const to = nearestBuiltIndex(e.clientX, e.clientY);
+    if (to === d.from) return;
+    setBuilt((b) => {
+      const next = [...b];
+      const [item] = next.splice(d.from, 1);
+      next.splice(to, 0, item);
+      d.from = to;
+      return next;
+    });
+    setDragIndex(to);
+  };
+
+  const onBuiltPointerUp = () => {
+    const d = dragRef.current;
+    dragRef.current = null;
+    setDragIndex(null);
+    if (!d || disabled) return;
+    if (!d.dragging) {
+      setBuilt((b) => b.filter((_, idx) => idx !== d.from));
+    }
+  };
 
   const check = () => {
     const ok = chipSequencesMatch(built, exercise.correctOrder);
@@ -167,24 +243,36 @@ export function TapChipsView({
         <SpeakButton text={phrase} label={`Play: ${phrase}`} />
       </div>
       <div className="min-h-[64px] rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50 p-3">
-        <div className="flex flex-wrap gap-2">
+        <div ref={rowRef} className="flex flex-wrap gap-2">
           {built.length === 0 && (
-            <span className="text-sm text-slate-400">Tap chips to build…</span>
+            <span className="text-sm text-slate-400">
+              Tap chips to build — drag to rearrange
+            </span>
           )}
           {built.map((chip, i) => (
             <button
               key={`${chip}-${i}`}
               type="button"
+              data-chip-index={i}
               disabled={disabled}
-              onClick={() =>
-                setBuilt((b) => b.filter((_, idx) => idx !== i))
-              }
-              className="min-h-11 touch-manipulation rounded-xl border-2 border-emerald-300 bg-white px-3 py-2.5 text-sm font-bold text-emerald-800"
+              onPointerDown={(e) => onBuiltPointerDown(e, i)}
+              onPointerMove={onBuiltPointerMove}
+              onPointerUp={onBuiltPointerUp}
+              onPointerCancel={onBuiltPointerUp}
+              className={cn(
+                "min-h-11 touch-none select-none rounded-xl border-2 border-emerald-300 bg-white px-3 py-2.5 text-sm font-bold text-emerald-800",
+                dragIndex === i && "opacity-60 ring-2 ring-emerald-400"
+              )}
             >
               {chip}
             </button>
           ))}
         </div>
+        {built.length > 0 ? (
+          <p className="mt-2 text-[11px] text-slate-400">
+            Drag to rearrange · tap to remove
+          </p>
+        ) : null}
         {built.length > 0 && looksSpanish(builtPhrase) && (
           <div className="mt-2 flex justify-end">
             <SpeakButton text={builtPhrase} label={`Play: ${builtPhrase}`} />

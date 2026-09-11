@@ -21,6 +21,7 @@ import {
   UNIT_2_ID,
   unit1LessonIds,
 } from "@/lib/placement";
+import { applyLessonDay, localDateKey } from "@/lib/streak";
 
 interface UserState {
   user: DemoUser;
@@ -51,6 +52,7 @@ function withPlacementDefaults(user: DemoUser): DemoUser {
     ...user,
     skippedUnitIds: user.skippedUnitIds ?? [],
     srsCards: user.srsCards ?? {},
+    lastStreakDate: user.lastStreakDate ?? null,
     recommendedUnitId:
       user.recommendedUnitId ??
       recommendedUnitForLevel(user.startingLevel ?? "absolute_beginner"),
@@ -80,6 +82,7 @@ export const useUserStore = create<UserState>()(
               startingLevel,
               onboardingComplete: true,
               streak: Math.max(s.user.streak, 1),
+              lastStreakDate: s.user.lastStreakDate || localDateKey(),
               skippedUnitIds,
               recommendedUnitId,
               completedLessonIds: Array.from(completed),
@@ -102,12 +105,14 @@ export const useUserStore = create<UserState>()(
       completeLesson: (lessonId, earnedXp) => {
         const { user } = get();
         const already = user.completedLessonIds.includes(lessonId);
+        const day = applyLessonDay(user, earnedXp);
         set({
           user: {
             ...user,
             xp: user.xp + earnedXp,
-            dailyXp: user.dailyXp + earnedXp,
-            streak: user.streak || 1,
+            dailyXp: day.dailyXp,
+            streak: day.streak,
+            lastStreakDate: day.lastStreakDate,
             completedLessonIds: already
               ? user.completedLessonIds
               : [...user.completedLessonIds, lessonId],

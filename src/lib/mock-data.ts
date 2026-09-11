@@ -20,6 +20,7 @@ export const DEMO_USER: DemoUser = {
   streak: 0,
   dailyGoal: 20,
   dailyXp: 0,
+  lastStreakDate: null,
   completedLessonIds: [],
   weakWordIds: [],
   srsCards: {},

@@ -144,7 +144,7 @@ export function UnitPath() {
                   Intermediate — jump here if ready
                 </div>
                 <p className="max-w-xs text-center text-xs text-violet-400/80">
-                  Finish beginner units, or use Jump to Intermediate on Home if you are around Duolingo ~unit 24.
+                  Finish beginner units, or use Jump to Intermediate on Home if they already feel easy.
                 </p>
               </div>
             )}

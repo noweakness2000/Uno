@@ -16,6 +16,7 @@ import { enrichWrongExplanation } from "@/lib/feedback-coach";
 import { useLessonStore } from "@/store/lesson-store";
 import { useUserStore } from "@/store/user-store";
 import { exerciseLabel } from "@/lib/exercise-labels";
+import { playCorrectChime } from "@/lib/sfx";
 import type { TeachExercise, WordCard } from "@/lib/types";
 
 export function LessonPlayer({ lessonId }: { lessonId: string }) {
@@ -153,6 +154,7 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
             exercise={exercise}
             disabled={showFeedback}
             onSubmit={(correct) => {
+              if (correct) playCorrectChime();
               const correctAnswer = getCorrectAnswerDisplay(exercise);
               const explanation = correct
                 ? exercise.explanation
