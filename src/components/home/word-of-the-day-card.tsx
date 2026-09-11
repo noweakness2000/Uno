@@ -17,7 +17,7 @@ export function WordOfTheDayCard() {
   return (
     <>
       <section
-        className="mt-4 rounded-3xl border border-amber-200/80 bg-gradient-to-br from-amber-50 via-white to-emerald-50 p-4 shadow-sm"
+        className="rounded-3xl border border-amber-200/80 bg-gradient-to-br from-amber-50 via-white to-emerald-50 p-4 shadow-sm"
         aria-label="Word of the Day"
       >
         <div className="flex items-center justify-between gap-2">

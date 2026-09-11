@@ -3,39 +3,27 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { BookMarked, Layers, Pencil, Play, RotateCcw, SkipForward, Trophy } from "lucide-react";
-import { WordOfTheDayCard } from "@/components/home/word-of-the-day-card";
+import { Pencil, RotateCcw } from "lucide-react";
 import { AudioWorkoutCard } from "@/components/home/audio-workout-card";
-import { StreakPanel } from "@/components/home/streak-panel";
+import { ContinueHero } from "@/components/home/continue-hero";
+import { NavRail } from "@/components/home/nav-rail";
+import { QuickActions } from "@/components/home/quick-actions";
+import { StatusRibbon } from "@/components/home/status-ribbon";
 import { UnitPath } from "@/components/home/unit-path";
+import { WordOfTheDayCard } from "@/components/home/word-of-the-day-card";
 import { AuthControls } from "@/components/auth/auth-controls";
 import { Button } from "@/components/ui/button";
-import { getLesson } from "@/lib/mock-data";
-import {
-  canJumpToIntermediate,
-  canSkipAhead,
-  getPlacementBanner,
-  getRecommendedLessonId,
-} from "@/lib/placement";
-import { countDue } from "@/lib/srs";
+import { getPlacementBanner } from "@/lib/placement";
 import { useUserStore } from "@/store/user-store";
 
 export default function HomePage() {
   const user = useUserStore((s) => s.user);
   const resetDemo = useUserStore((s) => s.resetDemo);
   const updateName = useUserStore((s) => s.updateName);
-  const skipUnit1 = useUserStore((s) => s.skipUnit1);
-  const jumpToIntermediate = useUserStore((s) => s.jumpToIntermediate);
-  const weakCount = user.weakWordIds.length;
-  const dueCount = countDue(user.srsCards);
   const [editing, setEditing] = useState(false);
   const [draftName, setDraftName] = useState(user.name);
 
-  const recommendedId = getRecommendedLessonId(user);
-  const recommended = getLesson(recommendedId);
   const banner = getPlacementBanner(user);
-  const showSkip = canSkipAhead(user);
-  const showJumpIntermediate = canJumpToIntermediate(user);
 
   const saveName = () => {
     updateName(draftName);
@@ -43,22 +31,33 @@ export default function HomePage() {
   };
 
   return (
-    <div className="mx-auto min-h-dvh w-full max-w-lg overflow-x-hidden px-3 pb-[max(4rem,env(safe-area-inset-bottom))] pt-[max(1.5rem,env(safe-area-inset-top))] sm:px-4">
-      <header className="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex min-w-0 items-center gap-3">
+    <div
+      className={[
+        "mx-auto flex min-h-dvh w-full max-w-lg flex-col gap-4 overflow-x-hidden",
+        "px-3 pb-[max(4rem,env(safe-area-inset-bottom))] pt-[max(1.25rem,env(safe-area-inset-top))]",
+        "sm:max-w-2xl sm:px-4",
+        "lg:grid lg:max-w-6xl lg:grid-cols-[13rem_minmax(0,1fr)_21rem]",
+        "lg:items-start lg:gap-x-6 lg:gap-y-4 lg:px-6",
+      ].join(" ")}
+    >
+      <NavRail />
+
+      {/* Identity + today's status */}
+      <header className="flex flex-col gap-3 rounded-3xl border-2 border-slate-200 bg-white p-4 shadow-sm lg:col-start-2 lg:row-start-1 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none">
+        <div className="flex items-center gap-3">
           <Image
-            src="/images/mascot.png"
+            src="/images/mascot-square.png"
             alt="Uno mascot"
             width={72}
             height={72}
-            className="h-16 w-16 shrink-0 rounded-2xl object-cover sm:h-20 sm:w-20"
+            className="h-14 w-14 shrink-0 rounded-2xl object-cover sm:h-16 sm:w-16"
             priority
           />
-          <div className="min-w-0">
-            <p className="text-xs font-bold uppercase tracking-widest text-emerald-600">
+          <div className="min-w-0 flex-1">
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-emerald-600 lg:hidden">
               Uno
             </p>
-            <h1 className="truncate text-2xl font-extrabold text-slate-900">
+            <h1 className="truncate text-2xl font-extrabold text-slate-900 sm:text-[26px] lg:text-3xl">
               Hola, {user.name || "Learner"}
             </h1>
             <button
@@ -67,157 +66,99 @@ export default function HomePage() {
                 setDraftName(user.name);
                 setEditing((v) => !v);
               }}
-              className="mt-1 inline-flex items-center gap-1 text-xs font-medium text-slate-400 hover:text-emerald-600"
+              className="mt-0.5 inline-flex items-center gap-1 text-xs font-medium text-slate-400 hover:text-emerald-600"
             >
               <Pencil className="h-3 w-3" />
               Edit profile
             </button>
           </div>
+          <div className="shrink-0 lg:hidden">
+            <AuthControls />
+          </div>
         </div>
-        <div className="flex flex-wrap items-center justify-end gap-2">
-          <AuthControls />
-          <Link href="/leaderboard">
-            <Button variant="soft" size="sm">
-              <Trophy className="h-4 w-4" />
-              Leaderboard
-            </Button>
-          </Link>
-          <Link href="/flashcards">
-            <Button variant="soft" size="sm">
-              <Layers className="h-4 w-4" />
-              Cards
-              {dueCount > 0 && (
-                <span className="ml-1 rounded-full bg-emerald-600 px-1.5 py-0.5 text-[10px] text-white">
-                  {dueCount} due
-                </span>
-              )}
-            </Button>
-          </Link>
-          <Link href="/review">
-            <Button variant="soft" size="sm">
-              <BookMarked className="h-4 w-4" />
-              Review
-              {weakCount > 0 && (
-                <span className="ml-1 rounded-full bg-rose-500 px-1.5 py-0.5 text-[10px] text-white">
-                  {weakCount}
-                </span>
-              )}
-            </Button>
-          </Link>
+
+        <div className="lg:rounded-2xl lg:border-2 lg:border-slate-200 lg:bg-white lg:p-4 lg:shadow-sm">
+          <StatusRibbon />
         </div>
+
+        {editing && (
+          <div className="rounded-2xl border-2 border-slate-200 bg-white p-4">
+            <label
+              htmlFor="display-name"
+              className="text-xs font-bold uppercase tracking-wide text-slate-500"
+            >
+              Display name
+            </label>
+            <input
+              id="display-name"
+              type="text"
+              value={draftName}
+              onChange={(e) => setDraftName(e.target.value)}
+              className="mt-2 h-11 w-full rounded-xl border-2 border-slate-200 px-3 text-base outline-none focus:border-emerald-400"
+              maxLength={40}
+              autoFocus
+            />
+            <div className="mt-3 flex gap-2">
+              <Button
+                variant="secondary"
+                className="flex-1"
+                onClick={() => setEditing(false)}
+              >
+                Cancel
+              </Button>
+              <Button className="flex-1" onClick={saveName}>
+                Save
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {banner && (
+          <div className="rounded-2xl border border-teal-200 bg-teal-50 px-4 py-3 text-sm text-teal-900">
+            {banner}
+          </div>
+        )}
       </header>
 
-      {editing && (
-        <div className="mb-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-          <label className="text-xs font-bold uppercase tracking-wide text-slate-500">
-            Display name
-          </label>
-          <input
-            type="text"
-            value={draftName}
-            onChange={(e) => setDraftName(e.target.value)}
-            className="mt-2 h-11 w-full rounded-xl border-2 border-slate-200 px-3 text-base outline-none focus:border-emerald-400"
-            maxLength={40}
-            autoFocus
-          />
-          <div className="mt-3 flex gap-2">
-            <Button
-              variant="secondary"
-              className="flex-1"
-              onClick={() => setEditing(false)}
-            >
-              Cancel
-            </Button>
-            <Button className="flex-1" onClick={saveName}>
-              Save
-            </Button>
-          </div>
-        </div>
-      )}
-
-      {banner && (
-        <div className="mt-4 rounded-2xl border border-teal-200 bg-teal-50 px-4 py-3 text-sm text-teal-900">
-          {banner}
-        </div>
-      )}
-
-      {recommended && (
-        <div className="mt-4 rounded-3xl border-2 border-emerald-200 bg-gradient-to-br from-emerald-50 to-white p-4 shadow-sm">
-          <p className="text-[11px] font-bold uppercase tracking-wider text-emerald-600">
-            Continue
-          </p>
-          <h2 className="mt-1 text-lg font-extrabold text-slate-900">
-            {recommended.title}
-          </h2>
-          <p className="mt-0.5 text-sm text-slate-500">
-            {recommended.description}
-          </p>
-          <div className="mt-3 flex flex-col gap-2 sm:flex-row">
-            <Link href={`/lesson/${recommended.id}`} className="flex-1">
-              <Button className="w-full min-h-11" size="lg">
-                <Play className="h-4 w-4 fill-current" />
-                Continue
-              </Button>
-            </Link>
-            {user.startingLevel === "conversational_basics" && (
-              <Link href="/lesson/u4-l1" className="flex-1">
-                <Button variant="secondary" className="w-full min-h-11" size="lg">
-                  Intermediate — Unit 4
-                </Button>
-              </Link>
-            )}
-          </div>
-          {showSkip && (
-            <button
-              type="button"
-              onClick={() => skipUnit1()}
-              className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-dashed border-slate-300 bg-white px-3 py-2.5 text-sm font-semibold text-slate-600 hover:border-emerald-400 hover:text-emerald-700"
-            >
-              <SkipForward className="h-4 w-4" />
-              Skip ahead — start Unit 2
-            </button>
-          )}
-          {showJumpIntermediate && (
-            <button
-              type="button"
-              onClick={() => jumpToIntermediate()}
-              className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-dashed border-violet-300 bg-violet-50 px-3 py-2.5 text-sm font-semibold text-violet-700 hover:border-violet-500"
-            >
-              <SkipForward className="h-4 w-4" />
-              Intermediate — jump here if ready (Unit 4)
-            </button>
-          )}
-        </div>
-      )}
-
-      <WordOfTheDayCard />
-
-      <AudioWorkoutCard />
-
-      <StreakPanel />
-
-      <div className="my-8">
-        <h2 className="mb-4 text-lg font-bold text-slate-800">Your path</h2>
-        <UnitPath />
+      {/* The anchor */}
+      <div className="lg:col-start-2 lg:row-start-2">
+        <ContinueHero />
       </div>
 
-      <button
-        type="button"
-        onClick={() => {
-          resetDemo();
-          window.location.href = "/onboarding";
-        }}
-        className="mx-auto flex items-center gap-2 text-xs text-slate-400 hover:text-slate-600"
-      >
-        <RotateCcw className="h-3 w-3" />
-        Reset demo progress
-      </button>
+      {/* Shortcuts — the rail replaces these at lg */}
+      <div className="lg:hidden">
+        <QuickActions />
+      </div>
 
-      <p className="mt-4 text-center text-xs text-slate-400">
-        <Link href="/privacy" className="hover:text-emerald-700 hover:underline">
-          Privacy Policy
-        </Link>
-      </p>
+      {/* Optional extras: stacked on phone, paired on tablet, sidebar at lg */}
+      <div className="flex flex-col gap-4 sm:grid sm:grid-cols-2 sm:items-start lg:col-start-3 lg:row-start-1 lg:row-span-2 lg:flex lg:flex-col">
+        <WordOfTheDayCard />
+        <AudioWorkoutCard />
+      </div>
+
+      <section className="lg:col-start-2 lg:row-start-3">
+        <h2 className="mb-4 text-lg font-bold text-slate-800">Your path</h2>
+        <UnitPath />
+      </section>
+
+      <footer className="flex flex-col items-center gap-3 pt-2 lg:col-start-2 lg:row-start-4 lg:items-start">
+        <button
+          type="button"
+          onClick={() => {
+            resetDemo();
+            window.location.href = "/onboarding";
+          }}
+          className="flex items-center gap-2 text-xs text-slate-400 hover:text-slate-600"
+        >
+          <RotateCcw className="h-3 w-3" />
+          Reset demo progress
+        </button>
+        <p className="text-xs text-slate-400">
+          <Link href="/privacy" className="hover:text-emerald-700 hover:underline">
+            Privacy Policy
+          </Link>
+        </p>
+      </footer>
     </div>
   );
 }
