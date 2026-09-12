@@ -8,6 +8,8 @@ FROM node:22-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+ARG NEXT_PUBLIC_GIT_SHA=
+ENV NEXT_PUBLIC_GIT_SHA=$NEXT_PUBLIC_GIT_SHA
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN npm run build
 

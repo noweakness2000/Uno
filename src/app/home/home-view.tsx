@@ -11,6 +11,7 @@ import { StatusRibbon } from "@/components/home/status-ribbon";
 import { UnitPath } from "@/components/home/unit-path";
 import { WordOfTheDayCard } from "@/components/home/word-of-the-day-card";
 import { AuthControls } from "@/components/auth/auth-controls";
+import { SiteFooter } from "@/components/site-footer";
 import { getPlacementBanner } from "@/lib/placement";
 import { useUserStore } from "@/store/user-store";
 
@@ -107,11 +108,7 @@ export function HomeView({ unitImageIds }: HomeViewProps) {
       </section>
 
       <footer className="flex flex-col items-center gap-3 pt-2 lg:col-start-2 lg:row-start-5 lg:items-start">
-        <p className="text-xs text-slate-400">
-          <Link href="/privacy" className="hover:text-emerald-700 hover:underline">
-            Privacy Policy
-          </Link>
-        </p>
+        <SiteFooter />
       </footer>
     </div>
   );

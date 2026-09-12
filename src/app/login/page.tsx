@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { isGoogleAuthConfigured } from "@/auth";
 import { GoogleSignInButton } from "@/components/auth/google-sign-in-button";
+import { SiteFooter } from "@/components/site-footer";
 
 export const dynamic = "force-dynamic";
 
@@ -59,11 +60,7 @@ export default function LoginPage() {
         </Link>
       </div>
 
-      <p className="mt-6 text-center text-xs text-slate-400">
-        <Link href="/privacy" className="hover:text-emerald-700 hover:underline">
-          Privacy Policy
-        </Link>
-      </p>
+      <SiteFooter className="mt-6 text-center" />
     </div>
   );
 }

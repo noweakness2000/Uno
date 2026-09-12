@@ -1,6 +1,12 @@
 node_modules
 .next
-.git
+.git/objects
+.git/logs
+.git/hooks
+.git/info
+.git/modules
+.git/worktrees
+.git/rr-cache
 bun.lock
 .env*
 

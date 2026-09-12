@@ -6,6 +6,7 @@ import Image from "next/image";
 import { ArrowLeft, Check, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AuthControls } from "@/components/auth/auth-controls";
+import { SiteFooter } from "@/components/site-footer";
 import { DailyGoalPicker } from "@/components/settings/daily-goal-picker";
 import { UNITS } from "@/lib/mock-data";
 import {
@@ -208,11 +209,7 @@ export default function SettingsPage() {
             <RotateCcw className="h-3 w-3" />
             Reset demo progress
           </button>
-          <p className="text-xs text-slate-400">
-            <Link href="/privacy" className="hover:text-emerald-700 hover:underline">
-              Privacy Policy
-            </Link>
-          </p>
+          <SiteFooter />
         </footer>
       </div>
     </div>
