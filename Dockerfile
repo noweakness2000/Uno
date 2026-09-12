@@ -6,10 +6,13 @@ RUN if [ -f package-lock.json ]; then npm ci; else npm install; fi
 
 FROM node:22-alpine AS builder
 WORKDIR /app
+RUN apk add --no-cache git
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ARG NEXT_PUBLIC_GIT_SHA=
+ARG NEXT_PUBLIC_APP_VERSION=
 ENV NEXT_PUBLIC_GIT_SHA=$NEXT_PUBLIC_GIT_SHA
+ENV NEXT_PUBLIC_APP_VERSION=$NEXT_PUBLIC_APP_VERSION
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN npm run build
 

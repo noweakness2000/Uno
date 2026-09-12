@@ -3,15 +3,24 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import type { NextConfig } from "next";
 
-/** Product version — bump by hand when you want a new 0.x. Git SHA is appended at build. */
-const APP_RELEASE = "0.4";
+function git(cmd: string): string | null {
+  try {
+    const out = execSync(cmd, {
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "ignore"],
+    }).trim();
+    return out || null;
+  } catch {
+    return null;
+  }
+}
 
 function shortSha(full: string): string {
   const hex = full.trim().replace(/[^0-9a-fA-F]/g, "");
   return hex.slice(0, 7).toLowerCase();
 }
 
-/** Read HEAD from a partial .git copy (Docker omits objects). Never throws. */
+/** Read HEAD from a partial .git copy. Never throws. */
 function shaFromGitDir(root: string): string | null {
   const gitDir = join(root, ".git");
   const headPath = join(gitDir, "HEAD");
@@ -41,25 +50,26 @@ function shaFromGitDir(root: string): string | null {
 function resolveGitSha(): string {
   const fromEnv = process.env.NEXT_PUBLIC_GIT_SHA?.trim();
   if (fromEnv) return fromEnv;
-  try {
-    const sha = execSync("git rev-parse --short HEAD", {
-      encoding: "utf8",
-      stdio: ["ignore", "pipe", "ignore"],
-    }).trim();
-    if (sha) return sha;
-  } catch {
-    // No git binary, shallow/missing history, or not a repo.
-  }
-  return shaFromGitDir(process.cwd()) ?? "dev";
+  return git("git rev-parse --short HEAD") ?? shaFromGitDir(process.cwd()) ?? "dev";
 }
 
-const gitSha = resolveGitSha();
+/** v0.XXX from commit count; "dev" if git history is missing or shallow. */
+function resolveAppVersion(): string {
+  const fromEnv = process.env.NEXT_PUBLIC_APP_VERSION?.trim();
+  if (fromEnv) return fromEnv;
+  if (existsSync(join(process.cwd(), ".git", "shallow"))) return "dev";
+  const raw = git("git rev-list --count HEAD");
+  if (!raw) return "dev";
+  const count = Number.parseInt(raw, 10);
+  if (!Number.isFinite(count) || count < 0) return "dev";
+  return `0.${String(count).padStart(3, "0")}`;
+}
 
 const nextConfig: NextConfig = {
   output: "standalone",
   env: {
-    NEXT_PUBLIC_APP_VERSION: APP_RELEASE,
-    NEXT_PUBLIC_GIT_SHA: gitSha,
+    NEXT_PUBLIC_APP_VERSION: resolveAppVersion(),
+    NEXT_PUBLIC_GIT_SHA: resolveGitSha(),
   },
   async headers() {
     return [
