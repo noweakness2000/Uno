@@ -127,6 +127,13 @@ export interface SituationalChooseExercise extends ExerciseBase {
 /** Match Spanish ↔ English pairs (order shuffled in UI). */
 export interface MatchPairsExercise extends ExerciseBase {
   type: "match-pairs";
+  /**
+   * How the left column reads. Omitted behaves as "es-en", which is what
+   * every existing match-pairs exercise expects.
+   * - "es-en":    left Spanish (with audio), right English
+   * - "emoji-es": left emoji picture, right Spanish (with audio)
+   */
+  pairMode?: "es-en" | "emoji-es";
   pairs: { left: string; right: string }[];
 }
 

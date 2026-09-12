@@ -1561,6 +1561,36 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
         "No queda muy lejos caminando.",
         ["lejos", "caminar"]
       ),
+      {
+        id: "u6l10-m1",
+        type: "match-pairs",
+        prompt: "Match each place to its Spanish word.",
+        pairMode: "emoji-es",
+        pairs: [
+          { left: "🚇", right: "el metro" },
+          { left: "💊", right: "la farmacia" },
+          { left: "🏨", right: "el hotel" },
+          { left: "🚉", right: "la estación" },
+          { left: "🚻", right: "el baño" },
+        ],
+        explanation: "Places you will need to find.",
+        wordCardIds: ["metro", "farmacia", "hotel", "estacion", "bano"],
+        xp: 3,
+      },
+      {
+        id: "u6l10-m2",
+        type: "match-pairs",
+        prompt: "Match the Spanish to its English.",
+        pairs: [
+          { left: "la parada", right: "the stop" },
+          { left: "el centro", right: "downtown" },
+          { left: "el carro", right: "the car" },
+          { left: "la estación", right: "the station" },
+        ],
+        explanation: "Getting-around vocabulary.",
+        wordCardIds: ["parada", "el-centro", "carro", "estacion"],
+        xp: 3,
+      },
     ],
   },
 

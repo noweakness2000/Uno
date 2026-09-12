@@ -565,6 +565,9 @@ export function MatchPairsView({
   const [selectedLeft, setSelectedLeft] = useState<number | null>(null);
   const [matched, setMatched] = useState<Set<number>>(new Set());
   const [wrongFlash, setWrongFlash] = useState<number | null>(null);
+  // Emoji pairs put the picture on the left and the Spanish on the right, so
+  // the speaker button follows the Spanish rather than the column.
+  const emojiMode = exercise.pairMode === "emoji-es";
 
   useEffect(() => {
     const ids = exercise.pairs.map((_, i) => i);
@@ -601,7 +604,9 @@ export function MatchPairsView({
   return (
     <div className="space-y-4">
       <p className="text-sm text-slate-500">
-        Tap a Spanish word, then its English match.
+        {emojiMode
+          ? "Tap a picture, then the Spanish word for it."
+          : "Tap a Spanish word, then its English match."}
       </p>
       <div className="grid grid-cols-2 gap-3">
         <div className="space-y-2">
@@ -622,8 +627,15 @@ export function MatchPairsView({
                       : "border-slate-200 bg-white text-slate-800"
                 )}
               >
-                <span className="min-w-0 break-words">{item.text}</span>
-                {looksSpanish(item.text) && (
+                <span
+                  className={cn(
+                    "min-w-0 break-words",
+                    emojiMode && "w-full text-center text-3xl leading-none"
+                  )}
+                >
+                  {item.text}
+                </span>
+                {!emojiMode && looksSpanish(item.text) && (
                   <SpeakButton text={item.text} label={`Play: ${item.text}`} />
                 )}
               </button>
@@ -641,7 +653,7 @@ export function MatchPairsView({
                 disabled={disabled || done || selectedLeft === null}
                 onClick={() => tryMatch(id)}
                 className={cn(
-                  "min-h-12 w-full touch-manipulation rounded-2xl border-2 px-3 py-3 text-left text-sm font-semibold",
+                  "flex min-h-12 w-full touch-manipulation items-center justify-between gap-2 rounded-2xl border-2 px-3 py-3 text-left text-sm font-semibold",
                   done
                     ? "border-emerald-300 bg-emerald-50 text-emerald-800"
                     : wrongFlash === id
@@ -649,7 +661,10 @@ export function MatchPairsView({
                       : "border-slate-200 bg-white text-slate-800"
                 )}
               >
-                {item.text}
+                <span className="min-w-0 break-words">{item.text}</span>
+                {emojiMode && looksSpanish(item.text) && (
+                  <SpeakButton text={item.text} label={`Play: ${item.text}`} />
+                )}
               </button>
             );
           })}
