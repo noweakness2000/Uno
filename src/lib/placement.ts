@@ -5,9 +5,37 @@ export const UNIT_1_ID = "unit-1";
 export const UNIT_2_ID = "unit-2";
 export const UNIT_3_ID = "unit-3";
 export const UNIT_4_ID = "unit-4";
+export const UNIT_7_ID = "unit-7";
 
 export const BEGINNER_UNIT_IDS = [UNIT_1_ID, UNIT_2_ID, UNIT_3_ID];
 export const FIRST_INTERMEDIATE_UNIT_ID = UNIT_4_ID;
+/** Units 4–6 are present tense; the preterite starts here. */
+export const PAST_TENSE_UNIT_ID = UNIT_7_ID;
+
+/** Where Continue starts for each self-claimed level. */
+export const LEVEL_START_UNIT: Record<StartingLevel, string> = {
+  absolute_beginner: UNIT_1_ID,
+  some_words: UNIT_2_ID,
+  conversational_basics: FIRST_INTERMEDIATE_UNIT_ID,
+  past_tense: PAST_TENSE_UNIT_ID,
+};
+
+/** Levels that land inside the intermediate track. */
+export function levelStartsIntermediate(level: StartingLevel): boolean {
+  return level === "conversational_basics" || level === "past_tense";
+}
+
+/** Every unit id in path order, beginner first. */
+export function allUnitIdsInOrder(): string[] {
+  return UNITS.map((u) => u.id);
+}
+
+/** Unit ids that come before `unitId` on the path. */
+export function unitIdsBefore(unitId: string): string[] {
+  const ids = allUnitIdsInOrder();
+  const idx = ids.indexOf(unitId);
+  return idx <= 0 ? [] : ids.slice(0, idx);
+}
 
 export function unitLessonIds(unitId: string): string[] {
   return UNITS.find((u) => u.id === unitId)?.lessonIds ?? [];
@@ -35,20 +63,22 @@ export function intermediateUnitIds(): string[] {
 
 /** Default recommended unit after onboarding by self-claimed level. */
 export function recommendedUnitForLevel(level: StartingLevel): string {
-  if (level === "absolute_beginner") return UNIT_1_ID;
-  if (level === "conversational_basics") return FIRST_INTERMEDIATE_UNIT_ID;
-  return UNIT_2_ID;
+  return LEVEL_START_UNIT[level] ?? UNIT_1_ID;
+}
+
+/**
+ * Units treated as skipped (optional review) for a level. `some_words` keeps
+ * Unit 1 as a quick review rather than a skip, so only intermediate starts
+ * skip anything.
+ */
+export function skippedUnitsForLevel(level: StartingLevel): string[] {
+  if (!levelStartsIntermediate(level)) return [];
+  return unitIdsBefore(recommendedUnitForLevel(level));
 }
 
 /** Lessons auto-marked complete when stronger learners skip early units. */
 export function skippedLessonsForLevel(level: StartingLevel): string[] {
-  if (level === "conversational_basics") return beginnerLessonIds();
-  return [];
-}
-
-export function skippedUnitsForLevel(level: StartingLevel): string[] {
-  if (level === "conversational_basics") return [...BEGINNER_UNIT_IDS];
-  return [];
+  return skippedUnitsForLevel(level).flatMap((id) => unitLessonIds(id));
 }
 
 export function isUnitSkipped(user: DemoUser, unitId: string): boolean {
@@ -59,18 +89,26 @@ export function isUnitSkipped(user: DemoUser, unitId: string): boolean {
 export function isUnit1QuickReview(user: DemoUser): boolean {
   return (
     user.startingLevel === "some_words" ||
-    user.startingLevel === "conversational_basics" ||
+    levelStartsIntermediate(user.startingLevel) ||
     isUnitSkipped(user, UNIT_1_ID)
   );
 }
 
-/** Beginner units marked optional review for conversational_basics. */
+/** Beginner units marked optional review for intermediate starts. */
 export function isBeginnerOptionalReview(user: DemoUser, unitId: string): boolean {
   if (!BEGINNER_UNIT_IDS.includes(unitId)) return false;
   return (
-    user.startingLevel === "conversational_basics" ||
+    levelStartsIntermediate(user.startingLevel) ||
     isUnitSkipped(user, unitId)
   );
+}
+
+/**
+ * Any unit the learner has been placed past — beginner units for an
+ * intermediate start, plus Units 4–6 for `past_tense`.
+ */
+export function isOptionalReviewUnit(user: DemoUser, unitId: string): boolean {
+  return isBeginnerOptionalReview(user, unitId) || isUnitSkipped(user, unitId);
 }
 
 export function isIntermediateUnit(unit: Unit): boolean {
@@ -86,7 +124,7 @@ export function isIntermediateUnit(unit: Unit): boolean {
 export function isIntermediateUnlockedFor(user: DemoUser): boolean {
   if (
     user.startingLevel === "some_words" ||
-    user.startingLevel === "conversational_basics"
+    levelStartsIntermediate(user.startingLevel)
   ) {
     return true;
   }
@@ -121,7 +159,8 @@ function firstIncompleteAlong(unitIds: string[], completed: string[]): string | 
  * Home Continue / recommended lesson:
  * - absolute_beginner → U1→U2→U3→intermediate
  * - some_words → U2 first (U1 optional), then U3→intermediate; U1 fallback
- * - conversational_basics → first intermediate (beginner optional review)
+ * - conversational_basics / past_tense → their start unit onward, then any
+ *   earlier intermediate unit, then beginner (all optional review)
  */
 export function getRecommendedLessonId(user: DemoUser): string {
   const completed = user.completedLessonIds;
@@ -130,11 +169,18 @@ export function getRecommendedLessonId(user: DemoUser): string {
   const intermediateIds = intermediateUnitIds();
   const allIds = [...BEGINNER_UNIT_IDS, ...intermediateIds];
 
-  if (preferred === FIRST_INTERMEDIATE_UNIT_ID || user.startingLevel === "conversational_basics") {
-    const mid = firstIncompleteAlong(intermediateIds, completed);
-    if (mid) return mid;
-    const beg = firstIncompleteAlong(BEGINNER_UNIT_IDS, completed);
-    if (beg) return beg;
+  if (
+    intermediateIds.includes(preferred) ||
+    levelStartsIntermediate(user.startingLevel)
+  ) {
+    const startIdx = Math.max(0, intermediateIds.indexOf(preferred));
+    const path = [
+      ...intermediateIds.slice(startIdx),
+      ...intermediateIds.slice(0, startIdx),
+      ...BEGINNER_UNIT_IDS,
+    ];
+    const hit = firstIncompleteAlong(path, completed);
+    if (hit) return hit;
   } else if (preferred === UNIT_2_ID || isUnitSkipped(user, UNIT_1_ID)) {
     const path = [UNIT_2_ID, UNIT_3_ID, ...intermediateIds, UNIT_1_ID];
     const hit = firstIncompleteAlong(path, completed);
@@ -149,6 +195,9 @@ export function getRecommendedLessonId(user: DemoUser): string {
 }
 
 export function getPlacementBanner(user: DemoUser): string | null {
+  if (user.startingLevel === "past_tense") {
+    return "Intermediate track unlocked — Units 1–6 are optional review. Continue starts at Unit 7.";
+  }
   if (user.startingLevel === "conversational_basics") {
     return "Intermediate track unlocked — Units 1–3 are optional review. Continue starts at Unit 4.";
   }
@@ -182,6 +231,9 @@ export function unitBadgeLabel(user: DemoUser, unit: Unit): string | null {
   if (isIntermediateUnit(unit)) {
     if (!isIntermediateUnlockedFor(user) && user.startingLevel === "absolute_beginner") {
       return "Intermediate — jump if ready";
+    }
+    if (isUnitSkipped(user, unit.id)) {
+      return "Optional review";
     }
     return "Intermediate";
   }

@@ -4,18 +4,11 @@ import { useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
 import { preferRealName, isPlaceholderName } from "@/lib/display-name";
 import { useUserStore } from "@/store/user-store";
-import type { DemoUser, StartingLevel } from "@/lib/types";
+import { isStartingLevel, type DemoUser, type StartingLevel } from "@/lib/types";
 import { mergeStreakFields } from "@/lib/streak";
 
 const DEBOUNCE_MS = 750;
 
-function isStartingLevel(v: unknown): v is StartingLevel {
-  return (
-    v === "absolute_beginner" ||
-    v === "some_words" ||
-    v === "conversational_basics"
-  );
-}
 
 type ProgressPayload = {
   displayName: string;

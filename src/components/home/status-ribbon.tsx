@@ -1,6 +1,8 @@
 "use client";
 
-import { Flame, Sparkles, Star } from "lucide-react";
+import { useState } from "react";
+import { Flame, Pencil, Sparkles, Star, X } from "lucide-react";
+import { DailyGoalPicker } from "@/components/settings/daily-goal-picker";
 import { Progress } from "@/components/ui/progress";
 import {
   dailyGoalPercent,
@@ -15,10 +17,12 @@ import { cn } from "@/lib/utils";
  * Streak, total XP and today's goal as one glanceable strip.
  *
  * Status, not an action: the only lesson CTA on Home is the Continue card, so
- * this deliberately has no button of its own.
+ * the one control here is the pencil that lets the learner change their goal.
  */
 export function StatusRibbon() {
   const user = useUserStore((s) => s.user);
+  const setDailyGoal = useUserStore((s) => s.setDailyGoal);
+  const [editingGoal, setEditingGoal] = useState(false);
   const streak = effectiveStreak(user);
   const todayXp = effectiveDailyXp(user);
   const goalMet = isDailyGoalMet(user);
@@ -68,18 +72,47 @@ export function StatusRibbon() {
       </div>
 
       <div>
-        <div className="mb-1.5 flex items-baseline justify-between gap-2">
+        <div className="mb-1.5 flex items-center justify-between gap-2">
           <span className="text-xs font-semibold text-slate-500">
             {goalMet
               ? "Today’s goal crushed"
               : `${remaining} XP to today’s goal`}
           </span>
-          <span className="text-xs font-bold tabular-nums text-slate-600">
-            <span className="text-sm text-emerald-700">{todayXp}</span>
-            <span className="text-slate-400">/{user.dailyGoal} XP</span>
+          <span className="flex items-center gap-1">
+            <span className="text-xs font-bold tabular-nums text-slate-600">
+              <span className="text-sm text-emerald-700">{todayXp}</span>
+              <span className="text-slate-400">/{user.dailyGoal} XP</span>
+            </span>
+            <button
+              type="button"
+              aria-label={editingGoal ? "Close goal editor" : "Change daily goal"}
+              aria-expanded={editingGoal}
+              onClick={() => setEditingGoal((v) => !v)}
+              className="-mr-2 flex h-11 w-11 touch-manipulation items-center justify-center rounded-full text-slate-400 hover:bg-slate-100 hover:text-slate-700"
+            >
+              {editingGoal ? (
+                <X className="h-4 w-4" />
+              ) : (
+                <Pencil className="h-4 w-4" />
+              )}
+            </button>
           </span>
         </div>
         <Progress value={goalPct} />
+        {editingGoal && (
+          <div className="mt-3 rounded-2xl border border-slate-200 bg-slate-50 p-3">
+            <p className="mb-2 text-xs font-semibold text-slate-500">
+              Daily XP goal
+            </p>
+            <DailyGoalPicker
+              value={user.dailyGoal}
+              onChange={(goal) => {
+                setDailyGoal(goal);
+                setEditingGoal(false);
+              }}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

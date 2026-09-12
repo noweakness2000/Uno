@@ -7,6 +7,7 @@ import {
   canJumpToIntermediate,
   canSkipAhead,
   getRecommendedLessonId,
+  levelStartsIntermediate,
 } from "@/lib/placement";
 import { useUserStore } from "@/store/user-store";
 import { cn } from "@/lib/utils";
@@ -29,8 +30,11 @@ export function ContinueHero() {
   const lesson = getLesson(getRecommendedLessonId(user));
   const showSkip = canSkipAhead(user);
   const showJumpIntermediate = canJumpToIntermediate(user);
-  const showIntermediateButton =
-    user.startingLevel === "conversational_basics";
+  // Intermediate starts get a direct link to their placement unit.
+  const placementUnit = levelStartsIntermediate(user.startingLevel)
+    ? UNITS.find((u) => u.id === user.recommendedUnitId)
+    : undefined;
+  const placementLessonId = placementUnit?.lessonIds[0];
 
   // Every lesson complete, or a content id that no longer resolves.
   if (!lesson) {
@@ -139,10 +143,10 @@ export function ContinueHero() {
             </span>
           </Link>
 
-          {showIntermediateButton && (
-            <Link href="/lesson/u4-l1" className="block">
+          {placementUnit && placementLessonId && (
+            <Link href={`/lesson/${placementLessonId}`} className="block">
               <span className="flex min-h-11 w-full items-center justify-center gap-2 rounded-2xl border border-white/30 bg-white/10 px-4 text-sm font-bold text-white transition-colors hover:bg-white/20">
-                Intermediate — Unit 4
+                Intermediate — Unit {placementUnit.number}
               </span>
             </Link>
           )}

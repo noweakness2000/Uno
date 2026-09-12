@@ -1,9 +1,8 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Pencil, RotateCcw } from "lucide-react";
+import { Settings } from "lucide-react";
 import { AudioWorkoutCard } from "@/components/home/audio-workout-card";
 import { ContinueHero } from "@/components/home/continue-hero";
 import { NavRail } from "@/components/home/nav-rail";
@@ -12,23 +11,13 @@ import { StatusRibbon } from "@/components/home/status-ribbon";
 import { UnitPath } from "@/components/home/unit-path";
 import { WordOfTheDayCard } from "@/components/home/word-of-the-day-card";
 import { AuthControls } from "@/components/auth/auth-controls";
-import { Button } from "@/components/ui/button";
 import { getPlacementBanner } from "@/lib/placement";
 import { useUserStore } from "@/store/user-store";
 
 export default function HomePage() {
   const user = useUserStore((s) => s.user);
-  const resetDemo = useUserStore((s) => s.resetDemo);
-  const updateName = useUserStore((s) => s.updateName);
-  const [editing, setEditing] = useState(false);
-  const [draftName, setDraftName] = useState(user.name);
 
   const banner = getPlacementBanner(user);
-
-  const saveName = () => {
-    updateName(draftName);
-    setEditing(false);
-  };
 
   return (
     <div
@@ -45,14 +34,20 @@ export default function HomePage() {
       {/* Identity + today's status */}
       <header className="flex flex-col gap-3 rounded-3xl border-2 border-slate-200 bg-white p-4 shadow-sm lg:col-start-2 lg:row-start-1 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none">
         <div className="flex items-center gap-3">
-          <Image
-            src="/images/mascot-square.png"
-            alt="Uno mascot"
-            width={72}
-            height={72}
-            className="h-14 w-14 shrink-0 rounded-2xl object-cover sm:h-16 sm:w-16"
-            priority
-          />
+          <Link
+            href="/settings"
+            aria-label="Settings"
+            className="shrink-0 rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2"
+          >
+            <Image
+              src="/images/mascot-square.png"
+              alt="Uno mascot"
+              width={72}
+              height={72}
+              className="h-14 w-14 rounded-2xl object-cover sm:h-16 sm:w-16"
+              priority
+            />
+          </Link>
           <div className="min-w-0 flex-1">
             <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-emerald-600 lg:hidden">
               Uno
@@ -60,17 +55,13 @@ export default function HomePage() {
             <h1 className="truncate text-2xl font-extrabold text-slate-900 sm:text-[26px] lg:text-3xl">
               Hola, {user.name || "Learner"}
             </h1>
-            <button
-              type="button"
-              onClick={() => {
-                setDraftName(user.name);
-                setEditing((v) => !v);
-              }}
+            <Link
+              href="/settings"
               className="mt-0.5 inline-flex items-center gap-1 text-xs font-medium text-slate-400 hover:text-emerald-600"
             >
-              <Pencil className="h-3 w-3" />
-              Edit profile
-            </button>
+              <Settings className="h-3 w-3" />
+              Settings
+            </Link>
           </div>
           <div className="shrink-0 lg:hidden">
             <AuthControls />
@@ -81,37 +72,6 @@ export default function HomePage() {
           <StatusRibbon />
         </div>
 
-        {editing && (
-          <div className="rounded-2xl border-2 border-slate-200 bg-white p-4">
-            <label
-              htmlFor="display-name"
-              className="text-xs font-bold uppercase tracking-wide text-slate-500"
-            >
-              Display name
-            </label>
-            <input
-              id="display-name"
-              type="text"
-              value={draftName}
-              onChange={(e) => setDraftName(e.target.value)}
-              className="mt-2 h-11 w-full rounded-xl border-2 border-slate-200 px-3 text-base outline-none focus:border-emerald-400"
-              maxLength={40}
-              autoFocus
-            />
-            <div className="mt-3 flex gap-2">
-              <Button
-                variant="secondary"
-                className="flex-1"
-                onClick={() => setEditing(false)}
-              >
-                Cancel
-              </Button>
-              <Button className="flex-1" onClick={saveName}>
-                Save
-              </Button>
-            </div>
-          </div>
-        )}
 
         {banner && (
           <div className="rounded-2xl border border-teal-200 bg-teal-50 px-4 py-3 text-sm text-teal-900">
@@ -142,17 +102,6 @@ export default function HomePage() {
       </section>
 
       <footer className="flex flex-col items-center gap-3 pt-2 lg:col-start-2 lg:row-start-5 lg:items-start">
-        <button
-          type="button"
-          onClick={() => {
-            resetDemo();
-            window.location.href = "/onboarding";
-          }}
-          className="flex items-center gap-2 text-xs text-slate-400 hover:text-slate-600"
-        >
-          <RotateCcw className="h-3 w-3" />
-          Reset demo progress
-        </button>
         <p className="text-xs text-slate-400">
           <Link href="/privacy" className="hover:text-emerald-700 hover:underline">
             Privacy Policy

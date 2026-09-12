@@ -32,6 +32,12 @@ interface UserState {
     startingLevel: StartingLevel
   ) => void;
   updateName: (name: string) => void;
+  /**
+   * Re-pick the self-claimed level from Settings. Re-runs the same placement
+   * as completeOnboarding (recommended unit, skipped units, auto-marked
+   * lessons) but never removes completed lessons.
+   */
+  setStartingLevel: (startingLevel: StartingLevel) => void;
   addXp: (amount: number) => void;
   completeLesson: (lessonId: string, earnedXp: number) => void;
   markWeak: (wordIds: string[]) => void;
@@ -94,6 +100,22 @@ export const useUserStore = create<UserState>()(
         set((s) => ({
           user: { ...s.user, name: name.trim() || s.user.name },
         })),
+      setStartingLevel: (startingLevel) =>
+        set((s) => {
+          const completed = new Set([
+            ...s.user.completedLessonIds,
+            ...skippedLessonsForLevel(startingLevel),
+          ]);
+          return {
+            user: {
+              ...s.user,
+              startingLevel,
+              skippedUnitIds: skippedUnitsForLevel(startingLevel),
+              recommendedUnitId: recommendedUnitForLevel(startingLevel),
+              completedLessonIds: Array.from(completed),
+            },
+          };
+        }),
       addXp: (amount) =>
         set((s) => ({
           user: {

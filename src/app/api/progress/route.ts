@@ -20,7 +20,7 @@ const progressSchema = z.object({
     .nullable()
     .optional(),
   startingLevel: z
-    .enum(["absolute_beginner", "some_words", "conversational_basics"])
+    .enum(["absolute_beginner", "some_words", "conversational_basics", "past_tense"])
     .optional(),
   onboardingComplete: z.boolean().optional(),
   completedLessonIds: z.array(z.string()).optional(),
@@ -271,10 +271,12 @@ export async function PUT(req: Request) {
       (existing.srsCards as Record<string, { intervalDays: number; ease: number; dueAt: string; reps: number }> | null) ?? {},
       incoming.srsCards ?? {}
     ),
-    skippedUnitIds: mergeIds(
-      existing.skippedUnitIds ?? [],
-      incoming.skippedUnitIds ?? []
-    ),
+    // Placement can be re-picked from Settings, so like recommendedUnitId
+    // the client's latest choice wins rather than a union that can only grow.
+    skippedUnitIds:
+      incoming.skippedUnitIds !== undefined
+        ? incoming.skippedUnitIds
+        : (existing.skippedUnitIds ?? []),
     recommendedUnitId:
       incoming.recommendedUnitId !== undefined
         ? incoming.recommendedUnitId

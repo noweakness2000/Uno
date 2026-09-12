@@ -16,7 +16,20 @@ export type CEFR = "A1" | "A2" | "B1" | "B2" | "C1" | "C2";
 export type StartingLevel =
   | "absolute_beginner"
   | "some_words"
-  | "conversational_basics";
+  | "conversational_basics"
+  /** Comfortable with present tense and the past — starts at Unit 7. */
+  | "past_tense";
+
+export const STARTING_LEVELS: readonly StartingLevel[] = [
+  "absolute_beginner",
+  "some_words",
+  "conversational_basics",
+  "past_tense",
+];
+
+export function isStartingLevel(v: unknown): v is StartingLevel {
+  return (STARTING_LEVELS as readonly unknown[]).includes(v);
+}
 
 export type UnitTrack = "beginner" | "intermediate";
 

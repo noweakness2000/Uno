@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { BookMarked, Home, Layers, Trophy } from "lucide-react";
+import { BookMarked, Home, Layers, Settings, Trophy } from "lucide-react";
 import { AuthControls } from "@/components/auth/auth-controls";
 import { countDue } from "@/lib/srs";
 import { useUserStore } from "@/store/user-store";
@@ -42,6 +42,13 @@ export function NavRail() {
       badge: null,
       badgeTint: "bg-violet-100 text-violet-700",
     },
+    {
+      href: "/settings",
+      label: "Settings",
+      icon: Settings,
+      badge: null,
+      badgeTint: "",
+    },
   ];
 
   return (
@@ -49,7 +56,11 @@ export function NavRail() {
       aria-label="Main"
       className="sticky top-6 hidden flex-col gap-1 lg:flex lg:col-start-1 lg:row-start-1 lg:row-span-5"
     >
-      <div className="mb-3 flex items-center gap-2.5 px-2">
+      <Link
+        href="/settings"
+        aria-label="Settings"
+        className="mb-3 flex items-center gap-2.5 rounded-xl px-2 py-1 hover:bg-slate-100"
+      >
         <Image
           src="/images/mascot-square.png"
           alt=""
@@ -60,7 +71,7 @@ export function NavRail() {
         <span className="text-lg font-extrabold tracking-tight text-slate-900">
           Uno
         </span>
-      </div>
+      </Link>
 
       {items.map(({ href, label, icon: Icon, badge, badgeTint }) => (
         <Link

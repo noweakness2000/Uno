@@ -18,7 +18,7 @@ export const DEMO_USER: DemoUser = {
   name: "",
   xp: 0,
   streak: 0,
-  dailyGoal: 20,
+  dailyGoal: 60,
   dailyXp: 0,
   lastStreakDate: null,
   completedLessonIds: [],
@@ -2387,7 +2387,17 @@ export const UNITS: Unit[] = [
   ...INTERMEDIATE_UNITS_META,
 ];
 
-export const DAILY_GOAL_OPTIONS = [10, 20, 30, 50] as const;
+/**
+ * Daily XP goal choices. A perfect lesson credits ~21–43 XP (exercise sum,
+ * median 32), so these read as roughly 1 / 2 / 3 / 5 lessons a day.
+ */
+export const DAILY_GOAL_OPTIONS = [30, 60, 100, 150] as const;
+export const DEFAULT_DAILY_GOAL: (typeof DAILY_GOAL_OPTIONS)[number] = 60;
+
+/** XP a lesson actually credits on completion (sum of exercise xp, all correct). */
+export function lessonCreditedXp(lesson: Lesson): number {
+  return lesson.exercises.reduce((sum, e) => sum + (e.xp ?? 0), 0);
+}
 
 export function getWordCard(id: string): WordCard | undefined {
   return WORD_CARDS[id];

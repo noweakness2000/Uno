@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ArrowRight, Sparkles, Target, User } from "lucide-react";
 import { GoogleSignInButton } from "@/components/auth/google-sign-in-button";
-import { DAILY_GOAL_OPTIONS } from "@/lib/mock-data";
+import { DAILY_GOAL_OPTIONS, DEFAULT_DAILY_GOAL } from "@/lib/mock-data";
 import { useUserStore } from "@/store/user-store";
 import { cn } from "@/lib/utils";
 import type { StartingLevel } from "@/lib/types";
@@ -31,7 +31,13 @@ const LEVEL_OPTIONS: {
     id: "conversational_basics",
     title: "I've been practicing",
     blurb:
-      "I've studied for a while (apps, class, or travel). Skip the beginner path and put me in the harder practice units.",
+      "I've studied for a while (apps, class, or travel). I can handle the present tense and everyday phrases. Skip the beginner path.",
+  },
+  {
+    id: "past_tense",
+    title: "I can talk about the past",
+    blurb:
+      "I can say what I did yesterday and get around in Spanish. Start me at the past-tense units (Unit 7).",
   },
 ];
 
@@ -41,7 +47,7 @@ const CARD = "rounded-3xl border-2 border-slate-200 bg-white p-4 shadow-sm sm:p-
 export function OnboardingFlow({ googleReady }: { googleReady: boolean }) {
   const router = useRouter();
   const completeOnboarding = useUserStore((s) => s.completeOnboarding);
-  const [goal, setGoal] = useState<number>(20);
+  const [goal, setGoal] = useState<number>(DEFAULT_DAILY_GOAL);
   const [name, setName] = useState("");
   const [startingLevel, setStartingLevel] =
     useState<StartingLevel>("absolute_beginner");

@@ -3,9 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Check, Lock, Play, RotateCcw } from "lucide-react";
-import { UNITS, getLesson } from "@/lib/mock-data";
+import { UNITS, getLesson, lessonCreditedXp } from "@/lib/mock-data";
 import {
-  isBeginnerOptionalReview,
+  isOptionalReviewUnit,
   isIntermediateUnit,
   isIntermediateUnlockedFor,
   isUnit1QuickReview,
@@ -51,7 +51,7 @@ export function UnitPath() {
         const badge = unitBadgeLabel(user, unit);
         const quickReview =
           (unit.id === "unit-1" && isUnit1QuickReview(user)) ||
-          isBeginnerOptionalReview(user, unit.id);
+          isOptionalReviewUnit(user, unit.id);
         const intermediate = isIntermediateUnit(unit);
         const track = intermediate ? "intermediate" : "beginner";
         const showTrackDivider = track !== lastTrack;
@@ -230,7 +230,7 @@ export function UnitPath() {
                             <p className="mt-2 text-xs font-semibold text-slate-400">
                               {lesson.exercises.filter((e) => e.type !== "teach")
                                 .length}{" "}
-                              practice · {lesson.xpReward} XP
+                              practice · {lessonCreditedXp(lesson)} XP
                             </p>
                           </div>
                           <div className="flex shrink-0 items-center text-slate-300 group-hover:text-emerald-500">
