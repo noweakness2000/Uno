@@ -72,7 +72,8 @@ export type ExerciseType =
   | "cloze"
   | "story-listen"
   | "dictation"
-  | "conjugate";
+  | "conjugate"
+  | "dialogue";
 
 export interface ExerciseBase {
   id: string;
@@ -194,6 +195,50 @@ export interface ConjugateExercise extends ExerciseBase {
   hint?: string;
 }
 
+/** One learner choice inside a dialogue turn, with the NPC's reply to it. */
+export interface DialogueOption {
+  /** What the learner says, in Spanish. */
+  es: string;
+  en?: string;
+  /** A natural, situation-appropriate reply. Wrong picks still continue. */
+  correct: boolean;
+  /** How the NPC answers this specific choice. */
+  reply: string;
+  replyEn?: string;
+  /** Baked clip for the reply; omitted when no clip exists. */
+  replyAudioSrc?: string;
+  /** Shown after a wrong pick — short, never scolding. */
+  explanation?: string;
+}
+
+/** NPC line plus the replies the learner can choose from. */
+export interface DialogueTurn {
+  /** The NPC's opening line for this turn, in Spanish. */
+  npc: string;
+  npcEn?: string;
+  /** Baked clip under /audio/es-mx/; omitted when no clip exists. */
+  audioSrc?: string;
+  options: DialogueOption[];
+}
+
+/**
+ * Scripted multi-turn conversation. Fully local: no AI, no microphone.
+ *
+ * Graded like situational-choose — the learner picks a valid reply rather
+ * than typing. A wrong pick still gets an in-character answer, marks the
+ * words weak and moves on; the conversation never dead-ends.
+ */
+export interface DialogueExercise extends ExerciseBase {
+  type: "dialogue";
+  /** Sets the scene in English, e.g. "You're ordering at a cafe". */
+  scenario: string;
+  /** What counts as success, e.g. "Order a coffee and ask for the bill". */
+  goal?: string;
+  /** Who the learner is talking to, e.g. "Mesero". */
+  npcName?: string;
+  turns: DialogueTurn[];
+}
+
 export type Exercise =
   | TeachExercise
   | SelectExercise
@@ -206,7 +251,8 @@ export type Exercise =
   | ClozeExercise
   | StoryListenExercise
   | DictationExercise
-  | ConjugateExercise;
+  | ConjugateExercise
+  | DialogueExercise;
 
 export interface Lesson {
   id: string;

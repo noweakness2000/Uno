@@ -40,6 +40,8 @@ export function enrichWrongExplanation(
       return `${base || "Compare each option to the prompt and pick the one that fits the situation."}${answerBit} Eliminate anything that changes the meaning.`;
     case "match-pairs":
       return `${base || "Match each Spanish item to its English meaning — look for roots you already know."}${answerBit}`;
+    case "dialogue":
+      return `${base || "One of your replies did not fit the situation."} Replay the conversation and watch how the other person answers each choice.`;
     case "story-listen":
       return `${base || "Replay the story and listen for the line that answers the question."}${answerBit}`;
     default:

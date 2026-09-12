@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState, type PointerEvent } from "react";
 import { Headphones, Pause, Play, RotateCcw, Volume2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { HintReveal } from "@/components/lesson/hint-reveal";
+import { DialogueView } from "@/components/lesson/dialogue-view";
 import { SpeakButton } from "@/components/speak-button";
 import { cn } from "@/lib/utils";
 import { hasSpanishVoice } from "@/lib/tts";
@@ -1360,6 +1361,14 @@ export function ExerciseRenderer({
     case "dictation":
       return (
         <DictationView
+          exercise={exercise}
+          disabled={disabled}
+          onSubmit={onSubmit}
+        />
+      );
+    case "dialogue":
+      return (
+        <DialogueView
           exercise={exercise}
           disabled={disabled}
           onSubmit={onSubmit}

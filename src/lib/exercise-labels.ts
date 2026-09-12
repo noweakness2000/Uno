@@ -14,6 +14,7 @@ export const EXERCISE_LABELS: Record<ExerciseType, string> = {
   "story-listen": "Story",
   dictation: "Write what you hear",
   conjugate: "Conjugate",
+  dialogue: "Conversation",
 };
 
 export function exerciseLabel(type: ExerciseType): string {

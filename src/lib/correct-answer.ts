@@ -17,6 +17,12 @@ export function getCorrectAnswerDisplay(exercise: Exercise): string {
     case "dictation":
     case "conjugate":
       return exercise.acceptedAnswers[0] ?? "";
+    case "dialogue":
+      // The ideal path: the best reply for each turn, in order.
+      return exercise.turns
+        .map((t) => t.options.find((o) => o.correct)?.es ?? "")
+        .filter(Boolean)
+        .join(" → ");
     case "match-pairs":
       return exercise.pairs.map((p) => `${p.left} → ${p.right}`).join(" · ");
     case "story-listen": {
