@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, type PointerEvent } from "react";
-import { Headphones, HelpCircle, Pause, Play, RotateCcw, Volume2 } from "lucide-react";
+import { Headphones, Pause, Play, RotateCcw, Volume2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { HintReveal } from "@/components/lesson/hint-reveal";
 import { playBakedClip, playPhraseOrWords } from "@/lib/audio";
@@ -47,42 +47,6 @@ interface CommonProps {
 
 type AnswerResult = "correct" | "wrong" | null;
 
-/**
- * Check plus an optional "Not sure". Not sure submits the same answer; the
- * only difference is a softer SRS credit if it turns out right.
- */
-function CheckRow({
-  disabled,
-  onCheck,
-}: {
-  disabled: boolean;
-  onCheck: (confidence: AnswerConfidence) => void;
-}) {
-  return (
-    <div className="flex gap-2">
-      <Button
-        variant="outline"
-        className="min-h-12 shrink-0 touch-manipulation px-4 text-slate-600"
-        size="lg"
-        disabled={disabled}
-        onClick={() => onCheck("unsure")}
-        aria-label="Check — I'm not sure"
-      >
-        <HelpCircle className="h-4 w-4" />
-        Not sure
-      </Button>
-      <Button
-        className="min-h-12 flex-1 touch-manipulation"
-        size="lg"
-        disabled={disabled}
-        onClick={() => onCheck("certain")}
-      >
-        Check
-      </Button>
-    </div>
-  );
-}
-
 /** Option styling once Check has been pressed: pop + glow, or a soft shake. */
 function resultOptionClass(result: AnswerResult): string | null {
   if (result === "correct")
@@ -99,6 +63,8 @@ export function SelectView({
 }: CommonProps & { exercise: SelectExercise | SituationalChooseExercise }) {
   const [selected, setSelected] = useState<number | null>(null);
   const [result, setResult] = useState<AnswerResult>(null);
+  // Opened the hint this attempt → a correct answer counts as "unsure" for SRS.
+  const [hintUsed, setHintUsed] = useState(false);
   const [displayOptions, setDisplayOptions] = useState<
     { text: string; originalIndex: number }[]
   >([]);
@@ -116,6 +82,7 @@ export function SelectView({
     setDisplayOptions(items);
     setSelected(null);
     setResult(null);
+    setHintUsed(false);
   }, [exercise.id, exercise.options]);
 
   return (
@@ -157,16 +124,26 @@ export function SelectView({
           );
         })}
       </div>
-      <CheckRow
-        disabled={selected === null || Boolean(disabled)}
-        onCheck={(confidence) => {
+      <HintReveal
+        key={exercise.id}
+        hint={exercise.hint}
+        label="Not sure? Get a hint"
+        onReveal={() => setHintUsed(true)}
+      />
+      <Button
+        className="min-h-12 w-full touch-manipulation"
+        size="lg"
+        disabled={selected === null || disabled}
+        onClick={() => {
           if (selected === null) return;
           const correct =
             displayOptions[selected]?.originalIndex === exercise.correctIndex;
           setResult(correct ? "correct" : "wrong");
-          onSubmit(correct, confidence);
+          onSubmit(correct, hintUsed ? "unsure" : "certain");
         }}
-      />
+      >
+        Check
+      </Button>
     </div>
   );
 }
@@ -470,6 +447,7 @@ export function ListeningChooseView({
 }: CommonProps & { exercise: ListeningChooseExercise }) {
   const [selected, setSelected] = useState<number | null>(null);
   const [result, setResult] = useState<AnswerResult>(null);
+  const [hintUsed, setHintUsed] = useState(false);
   const [showVoiceTip, setShowVoiceTip] = useState(false);
   const [displayOptions, setDisplayOptions] = useState<
     { text: string; originalIndex: number }[]
@@ -488,6 +466,7 @@ export function ListeningChooseView({
     setDisplayOptions(items);
     setSelected(null);
     setResult(null);
+    setHintUsed(false);
   }, [exercise.id, exercise.options]);
 
   useEffect(() => {
@@ -569,16 +548,26 @@ export function ListeningChooseView({
           );
         })}
       </div>
-      <CheckRow
-        disabled={selected === null || Boolean(disabled)}
-        onCheck={(confidence) => {
+      <HintReveal
+        key={exercise.id}
+        hint={exercise.hint}
+        label="Not sure? Get a hint"
+        onReveal={() => setHintUsed(true)}
+      />
+      <Button
+        className="min-h-12 w-full touch-manipulation"
+        size="lg"
+        disabled={selected === null || disabled}
+        onClick={() => {
           if (selected === null) return;
           const correct =
             displayOptions[selected]?.originalIndex === exercise.correctIndex;
           setResult(correct ? "correct" : "wrong");
-          onSubmit(correct, confidence);
+          onSubmit(correct, hintUsed ? "unsure" : "certain");
         }}
-      />
+      >
+        Check
+      </Button>
       <button
         type="button"
         disabled={disabled}

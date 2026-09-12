@@ -107,6 +107,8 @@ export interface SelectExercise extends ExerciseBase {
   type: "select";
   options: string[];
   correctIndex: number;
+  /** Nudge shown on "Not sure? Get a hint" — never the answer itself. */
+  hint?: string;
 }
 
 export interface TapChipsExercise extends ExerciseBase {
@@ -128,6 +130,8 @@ export interface ListeningChooseExercise extends ExerciseBase {
   audioSrc?: string;
   options: string[];
   correctIndex: number;
+  /** Nudge shown on "Not sure? Get a hint" — never the answer itself. */
+  hint?: string;
 }
 
 export interface SituationalChooseExercise extends ExerciseBase {
@@ -135,6 +139,8 @@ export interface SituationalChooseExercise extends ExerciseBase {
   situation: string;
   options: string[];
   correctIndex: number;
+  /** Nudge shown on "Not sure? Get a hint" — never the answer itself. */
+  hint?: string;
 }
 
 /** Match Spanish ↔ English pairs (order shuffled in UI). */

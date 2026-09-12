@@ -3,6 +3,7 @@
  * Later: replace with Postgres on Unraid :5433
  */
 import type { DemoUser, Lesson, Unit, WordCard } from "./types";
+import { EXERCISE_HINTS } from "./content/hints-beginner";
 import { audioSrcFor, voiceForIndex } from "./audio";
 import {
   INTERMEDIATE_LESSONS,
@@ -932,7 +933,7 @@ function listen(
   };
 }
 
-export const LESSONS: Record<string, Lesson> = {
+const LESSONS_RAW: Record<string, Lesson> = {
   "u1-l1": {
     id: "u1-l1",
     unitId: "unit-1",
@@ -2357,6 +2358,33 @@ export const LESSONS: Record<string, Lesson> = {
   ...UNIT3_LESSONS,
   ...INTERMEDIATE_LESSONS,
 };
+
+/**
+ * Hints for select / situational-choose / listening-choose live in a map
+ * keyed by exercise id (see hints-beginner.ts) so listening items built by
+ * `listen()` can carry one without touching their voice-index order.
+ */
+export const LESSONS: Record<string, Lesson> = Object.fromEntries(
+  Object.entries(LESSONS_RAW).map(([id, lesson]) => [
+    id,
+    {
+      ...lesson,
+      exercises: lesson.exercises.map((e) => {
+        const hint = EXERCISE_HINTS[e.id];
+        if (
+          !hint ||
+          (e.type !== "select" &&
+            e.type !== "situational-choose" &&
+            e.type !== "listening-choose") ||
+          e.hint
+        ) {
+          return e;
+        }
+        return { ...e, hint };
+      }),
+    },
+  ])
+);
 
 export const UNITS: Unit[] = [
   {
