@@ -44,12 +44,24 @@ interface CommonProps {
   onSubmit: (correct: boolean) => void;
 }
 
+type AnswerResult = "correct" | "wrong" | null;
+
+/** Option styling once Check has been pressed: pop + glow, or a soft shake. */
+function resultOptionClass(result: AnswerResult): string | null {
+  if (result === "correct")
+    return "border-emerald-500 bg-emerald-50 text-emerald-900 animate-pop-glow";
+  if (result === "wrong")
+    return "border-rose-400 bg-rose-50 text-rose-900 animate-shake";
+  return null;
+}
+
 export function SelectView({
   exercise,
   disabled,
   onSubmit,
 }: CommonProps & { exercise: SelectExercise | SituationalChooseExercise }) {
   const [selected, setSelected] = useState<number | null>(null);
+  const [result, setResult] = useState<AnswerResult>(null);
   const [displayOptions, setDisplayOptions] = useState<
     { text: string; originalIndex: number }[]
   >([]);
@@ -66,6 +78,7 @@ export function SelectView({
     }
     setDisplayOptions(items);
     setSelected(null);
+    setResult(null);
   }, [exercise.id, exercise.options]);
 
   return (
@@ -83,9 +96,10 @@ export function SelectView({
             <div
               key={`${opt.text}-${opt.originalIndex}`}
               className={cn(
-                "flex min-h-12 items-stretch gap-1 rounded-2xl border-2 transition-all",
+                "flex min-h-12 items-stretch gap-1 rounded-2xl border-2 transition-all motion-reduce:transition-none",
                 selected === i
-                  ? "border-emerald-500 bg-emerald-50 text-emerald-900 shadow-sm"
+                  ? (resultOptionClass(result) ??
+                    "border-emerald-500 bg-emerald-50 text-emerald-900 shadow-sm")
                   : "border-slate-200 bg-white text-slate-800"
               )}
             >
@@ -110,12 +124,13 @@ export function SelectView({
         className="min-h-12 w-full touch-manipulation"
         size="lg"
         disabled={selected === null || disabled}
-        onClick={() =>
-          selected !== null &&
-          onSubmit(
-            displayOptions[selected]?.originalIndex === exercise.correctIndex
-          )
-        }
+        onClick={() => {
+          if (selected === null) return;
+          const correct =
+            displayOptions[selected]?.originalIndex === exercise.correctIndex;
+          setResult(correct ? "correct" : "wrong");
+          onSubmit(correct);
+        }}
       >
         Check
       </Button>
@@ -421,6 +436,7 @@ export function ListeningChooseView({
   onSubmit,
 }: CommonProps & { exercise: ListeningChooseExercise }) {
   const [selected, setSelected] = useState<number | null>(null);
+  const [result, setResult] = useState<AnswerResult>(null);
   const [showVoiceTip, setShowVoiceTip] = useState(false);
   const [displayOptions, setDisplayOptions] = useState<
     { text: string; originalIndex: number }[]
@@ -438,6 +454,7 @@ export function ListeningChooseView({
     }
     setDisplayOptions(items);
     setSelected(null);
+    setResult(null);
   }, [exercise.id, exercise.options]);
 
   useEffect(() => {
@@ -495,9 +512,10 @@ export function ListeningChooseView({
             <div
               key={`${opt.text}-${opt.originalIndex}`}
               className={cn(
-                "flex min-h-12 items-stretch gap-1 rounded-2xl border-2 transition-all",
+                "flex min-h-12 items-stretch gap-1 rounded-2xl border-2 transition-all motion-reduce:transition-none",
                 selected === i
-                  ? "border-violet-500 bg-violet-50 text-violet-900"
+                  ? (resultOptionClass(result) ??
+                    "border-violet-500 bg-violet-50 text-violet-900")
                   : "border-slate-200 bg-white text-slate-800"
               )}
             >
@@ -522,12 +540,13 @@ export function ListeningChooseView({
         className="min-h-12 w-full touch-manipulation"
         size="lg"
         disabled={selected === null || disabled}
-        onClick={() =>
-          selected !== null &&
-          onSubmit(
-            displayOptions[selected]?.originalIndex === exercise.correctIndex
-          )
-        }
+        onClick={() => {
+          if (selected === null) return;
+          const correct =
+            displayOptions[selected]?.originalIndex === exercise.correctIndex;
+          setResult(correct ? "correct" : "wrong");
+          onSubmit(correct);
+        }}
       >
         Check
       </Button>
@@ -565,6 +584,8 @@ export function MatchPairsView({
   const [selectedLeft, setSelectedLeft] = useState<number | null>(null);
   const [matched, setMatched] = useState<Set<number>>(new Set());
   const [wrongFlash, setWrongFlash] = useState<number | null>(null);
+  // Which pair landed most recently, so only that pair pops (not every done tile).
+  const [justMatched, setJustMatched] = useState<number | null>(null);
   // Emoji pairs put the picture on the left and the Spanish on the right, so
   // the speaker button follows the Spanish rather than the column.
   const emojiMode = exercise.pairMode === "emoji-es";
@@ -581,6 +602,7 @@ export function MatchPairsView({
     }
     setRightOrder(arr);
     setMatched(new Set());
+    setJustMatched(null);
     setSelectedLeft(null);
   }, [exercise.id, exercise.pairs]);
 
@@ -590,6 +612,7 @@ export function MatchPairsView({
       const next = new Set(matched);
       next.add(rightId);
       setMatched(next);
+      setJustMatched(rightId);
       setSelectedLeft(null);
       if (next.size === exercise.pairs.length) {
         onSubmit(true);
@@ -619,12 +642,13 @@ export function MatchPairsView({
                 disabled={disabled || done}
                 onClick={() => !done && setSelectedLeft(item.id)}
                 className={cn(
-                  "flex min-h-12 w-full touch-manipulation items-center justify-between gap-2 rounded-2xl border-2 px-3 py-3 text-left text-sm font-semibold",
+                  "flex min-h-12 w-full touch-manipulation items-center justify-between gap-2 rounded-2xl border-2 px-3 py-3 text-left text-sm font-semibold transition-colors motion-reduce:transition-none",
                   done
                     ? "border-emerald-300 bg-emerald-50 text-emerald-800"
                     : selectedLeft === item.id
                       ? "border-emerald-500 bg-emerald-50 text-emerald-900"
-                      : "border-slate-200 bg-white text-slate-800"
+                      : "border-slate-200 bg-white text-slate-800",
+                  done && justMatched === item.id && "animate-pop"
                 )}
               >
                 <span
@@ -653,12 +677,13 @@ export function MatchPairsView({
                 disabled={disabled || done || selectedLeft === null}
                 onClick={() => tryMatch(id)}
                 className={cn(
-                  "flex min-h-12 w-full touch-manipulation items-center justify-between gap-2 rounded-2xl border-2 px-3 py-3 text-left text-sm font-semibold",
+                  "flex min-h-12 w-full touch-manipulation items-center justify-between gap-2 rounded-2xl border-2 px-3 py-3 text-left text-sm font-semibold transition-colors motion-reduce:transition-none",
                   done
                     ? "border-emerald-300 bg-emerald-50 text-emerald-800"
                     : wrongFlash === id
-                      ? "border-rose-400 bg-rose-50 text-rose-800"
-                      : "border-slate-200 bg-white text-slate-800"
+                      ? "border-rose-400 bg-rose-50 text-rose-800 animate-flash"
+                      : "border-slate-200 bg-white text-slate-800",
+                  done && justMatched === id && "animate-pop"
                 )}
               >
                 <span className="min-w-0 break-words">{item.text}</span>
@@ -1266,9 +1291,15 @@ export function StoryListenView({
                 disabled={disabled || Boolean(localFeedback)}
                 onClick={() => setSelected(i)}
                 className={cn(
-                  "min-h-12 w-full touch-manipulation rounded-2xl border-2 px-4 py-3.5 text-left text-base font-semibold",
+                  "min-h-12 w-full touch-manipulation rounded-2xl border-2 px-4 py-3.5 text-left text-base font-semibold transition-colors motion-reduce:transition-none",
                   selected === i
-                    ? "border-violet-500 bg-violet-50 text-violet-900"
+                    ? (resultOptionClass(
+                        localFeedback
+                          ? localFeedback.correct
+                            ? "correct"
+                            : "wrong"
+                          : null
+                      ) ?? "border-violet-500 bg-violet-50 text-violet-900")
                     : "border-slate-200 bg-white text-slate-800"
                 )}
               >
@@ -1280,7 +1311,7 @@ export function StoryListenView({
           {localFeedback ? (
             <div
               className={cn(
-                "rounded-2xl border px-4 py-3 text-sm",
+                "rounded-2xl border px-4 py-3 text-sm animate-slide-up",
                 localFeedback.correct
                   ? "border-emerald-200 bg-emerald-50 text-emerald-900"
                   : "border-rose-200 bg-rose-50 text-rose-900"

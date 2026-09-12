@@ -79,7 +79,7 @@ export function StatusRibbon() {
             <span className="text-slate-400">/{user.dailyGoal} XP</span>
           </span>
         </div>
-        <Progress value={goalPct} />
+        <Progress value={goalPct} fillIn />
       </div>
     </div>
   );

@@ -133,45 +133,51 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
       </div>
 
       {isTeach && teachCard ? (
-        <TeachView
-          exercise={exercise as TeachExercise}
-          card={teachCard}
-          onContinue={() => continueTeach(lesson.exercises.length)}
-        />
+        // Keyed so each new card slides in (enter only; no exit choreography).
+        <div key={exercise.id} className="animate-slide-in">
+          <TeachView
+            exercise={exercise as TeachExercise}
+            card={teachCard}
+            onContinue={() => continueTeach(lesson.exercises.length)}
+          />
+        </div>
       ) : (
         <>
-          <div className="mb-6">
-            <p className="mb-1 text-xs font-bold uppercase tracking-wide text-emerald-600">
-              {exerciseLabel(exercise.type)}
-            </p>
-            <h1 className="text-xl font-bold leading-snug text-slate-900 sm:text-2xl">
-              {exercise.prompt}
-            </h1>
-          </div>
+          {/* Keyed wrapper slides each exercise in. The feedback sheet stays
+              outside it: a transformed ancestor would re-anchor `fixed`. */}
+          <div key={exercise.id} className="animate-slide-in">
+            <div className="mb-6">
+              <p className="mb-1 text-xs font-bold uppercase tracking-wide text-emerald-600">
+                {exerciseLabel(exercise.type)}
+              </p>
+              <h1 className="text-xl font-bold leading-snug text-slate-900 sm:text-2xl">
+                {exercise.prompt}
+              </h1>
+            </div>
 
-          <ExerciseRenderer
-            key={exercise.id}
-            exercise={exercise}
-            disabled={showFeedback}
-            onSubmit={(correct) => {
-              if (correct) playCorrectChime();
-              const correctAnswer = getCorrectAnswerDisplay(exercise);
-              const explanation = correct
-                ? exercise.explanation
-                : enrichWrongExplanation(
-                    exercise,
-                    exercise.explanation,
-                    correctAnswer
-                  );
-              recordAnswer({
-                correct,
-                explanation,
-                xp: exercise.xp,
-                wordCardIds: exercise.wordCardIds,
-                correctAnswer,
-              });
-            }}
-          />
+            <ExerciseRenderer
+              exercise={exercise}
+              disabled={showFeedback}
+              onSubmit={(correct) => {
+                if (correct) playCorrectChime();
+                const correctAnswer = getCorrectAnswerDisplay(exercise);
+                const explanation = correct
+                  ? exercise.explanation
+                  : enrichWrongExplanation(
+                      exercise,
+                      exercise.explanation,
+                      correctAnswer,
+                    );
+                recordAnswer({
+                  correct,
+                  explanation,
+                  xp: exercise.xp,
+                  wordCardIds: exercise.wordCardIds,
+                  correctAnswer,
+                });
+              }}
+            />
+          </div>
 
           {showFeedback && lastCorrect !== null && (
             <FeedbackPanel

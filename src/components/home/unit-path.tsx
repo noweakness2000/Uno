@@ -2,8 +2,19 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Check, Lock, Play, RotateCcw } from "lucide-react";
+import {
+  BookOpen,
+  Check,
+  HeartPulse,
+  Lock,
+  PartyPopper,
+  Plane,
+  Play,
+  RotateCcw,
+  type LucideIcon,
+} from "lucide-react";
 import { UNITS, getLesson } from "@/lib/mock-data";
+import { Progress } from "@/components/ui/progress";
 import {
   isBeginnerOptionalReview,
   isIntermediateUnit,
@@ -16,20 +27,16 @@ import { cn } from "@/lib/utils";
 import type { Unit } from "@/lib/types";
 
 
-const UNIT_IMAGE_IDS = new Set([
-  "unit-1",
-  "unit-2",
-  "unit-3",
-  "unit-4",
-  "unit-5",
-  "unit-6",
-  "unit-7",
-  "unit-8",
-]);
-
-function unitImageSrc(unitId: string): string | null {
-  return UNIT_IMAGE_IDS.has(unitId) ? `/images/units/${unitId}.png` : null;
-}
+/**
+ * Placeholder tiles for units that have no illustration yet. Themed to the
+ * unit so the intermediate path doesn't look unfinished; real art replaces
+ * them by dropping `unit-N.png` into public/images/units.
+ */
+const UNIT_FALLBACK_ICONS: Record<string, LucideIcon> = {
+  "unit-9": Plane, // Opinions & travel stories
+  "unit-10": HeartPulse, // Plans, work & wellbeing
+  "unit-11": PartyPopper, // Stories & social life
+};
 
 function isUnitUnlocked(unit: Unit, intermediateOpen: boolean): boolean {
   if (!unit.unlocked) return false;
@@ -38,7 +45,12 @@ function isUnitUnlocked(unit: Unit, intermediateOpen: boolean): boolean {
   return false;
 }
 
-export function UnitPath() {
+interface UnitPathProps {
+  /** Unit ids that have `/images/units/{id}.png`. */
+  unitImageIds?: string[];
+}
+
+export function UnitPath({ unitImageIds = [] }: UnitPathProps) {
   const user = useUserStore((s) => s.user);
   const completed = user.completedLessonIds;
   const intermediateOpen = isIntermediateUnlockedFor(user);
@@ -56,7 +68,16 @@ export function UnitPath() {
         const track = intermediate ? "intermediate" : "beginner";
         const showTrackDivider = track !== lastTrack;
         lastTrack = track;
-        const imgSrc = unitImageSrc(unit.id);
+        const imgSrc = unitImageIds.includes(unit.id)
+          ? `/images/units/${unit.id}.png`
+          : null;
+        const FallbackIcon = UNIT_FALLBACK_ICONS[unit.id] ?? BookOpen;
+        const doneCount = unit.lessonIds.filter((id) =>
+          completed.includes(id)
+        ).length;
+        const unitPct = unit.lessonIds.length
+          ? Math.round((doneCount / unit.lessonIds.length) * 100)
+          : 0;
         return (
           <section key={unit.id} className="relative">
             {showTrackDivider && (
@@ -95,12 +116,12 @@ export function UnitPath() {
                 ) : (
                   <div
                     className={cn(
-                      "flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl text-lg font-extrabold shadow-md ring-2 ring-white/30 sm:h-[72px] sm:w-[72px]",
+                      "flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl shadow-md ring-2 ring-white/30 sm:h-[72px] sm:w-[72px]",
                       unlocked ? "bg-white/20 text-white" : "bg-slate-200 text-slate-400"
                     )}
                     aria-hidden
                   >
-                    {unit.number}
+                    <FallbackIcon className="h-7 w-7 sm:h-9 sm:w-9" strokeWidth={2.25} />
                   </div>
                 )}
                 <div className="min-w-0 flex-1">
@@ -151,13 +172,17 @@ export function UnitPath() {
 
             {unlocked && (
               <div className="space-y-3">
-                <div className="mb-1 flex items-center gap-2 px-1">
-                  <div className="h-1 flex-1 rounded-full bg-emerald-100" />
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-500">
-                    {unit.lessonIds.length} lesson
+                <div className="mb-1 flex items-center gap-3 px-1">
+                  <Progress
+                    value={unitPct}
+                    fillIn
+                    aria-label={`Unit ${unit.number} progress`}
+                    className="h-1.5 flex-1 bg-emerald-100"
+                  />
+                  <span className="shrink-0 text-[10px] font-bold uppercase tracking-wider text-emerald-500 tabular-nums">
+                    {doneCount}/{unit.lessonIds.length} lesson
                     {unit.lessonIds.length === 1 ? "" : "s"}
                   </span>
-                  <div className="h-1 flex-1 rounded-full bg-emerald-100" />
                 </div>
 
                 <ul className="grid gap-3">

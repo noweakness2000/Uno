@@ -205,31 +205,43 @@ export default function FlashcardsPage() {
         </div>
       ) : card ? (
         <>
+          {/* Both faces stay mounted; the inner wrapper rotates in 3D. */}
           <button
             type="button"
             onClick={() => setFlipped((f) => !f)}
-            className={cn(
-              "relative flex min-h-[240px] w-full touch-manipulation flex-col items-center justify-center gap-3 rounded-3xl border-2 p-6 text-center shadow-md transition active:scale-[0.99] sm:min-h-[280px]",
-              flipped
-                ? "border-teal-300 bg-gradient-to-b from-teal-50 to-white"
-                : "border-emerald-200 bg-gradient-to-b from-emerald-50 to-white"
-            )}
+            className="flip-card w-full touch-manipulation text-center transition active:scale-[0.99] motion-reduce:transition-none"
           >
-            <Badge variant="soft">{flipped ? "Answer" : "Tap to flip"}</Badge>
-            <p className="text-3xl font-extrabold leading-tight text-slate-900 sm:text-4xl">
-              {flipped ? back : front}
-            </p>
-            {flipped && mode === "es-en" && (
-              <p className="max-w-sm text-sm text-slate-500">
-                {card.meaningSummary.slice(0, 120)}
-                {card.meaningSummary.length > 120 ? "…" : ""}
-              </p>
-            )}
-            {flipped && mode === "en-es" && card.examples[0] && (
-              <p className="max-w-sm text-sm text-slate-500">
-                {card.examples[0].es}
-              </p>
-            )}
+            <div className={cn("flip-card-inner", flipped && "is-flipped")}>
+              <div
+                aria-hidden={flipped}
+                className="flip-face flex min-h-[240px] w-full flex-col items-center justify-center gap-3 rounded-3xl border-2 border-emerald-200 bg-gradient-to-b from-emerald-50 to-white p-6 shadow-md sm:min-h-[280px]"
+              >
+                <Badge variant="soft">Tap to flip</Badge>
+                <p className="text-3xl font-extrabold leading-tight text-slate-900 sm:text-4xl">
+                  {front}
+                </p>
+              </div>
+              <div
+                aria-hidden={!flipped}
+                className="flip-face flip-face-back flex min-h-[240px] w-full flex-col items-center justify-center gap-3 rounded-3xl border-2 border-teal-300 bg-gradient-to-b from-teal-50 to-white p-6 shadow-md sm:min-h-[280px]"
+              >
+                <Badge variant="soft">Answer</Badge>
+                <p className="text-3xl font-extrabold leading-tight text-slate-900 sm:text-4xl">
+                  {back}
+                </p>
+                {mode === "es-en" && (
+                  <p className="max-w-sm text-sm text-slate-500">
+                    {card.meaningSummary.slice(0, 120)}
+                    {card.meaningSummary.length > 120 ? "…" : ""}
+                  </p>
+                )}
+                {mode === "en-es" && card.examples[0] && (
+                  <p className="max-w-sm text-sm text-slate-500">
+                    {card.examples[0].es}
+                  </p>
+                )}
+              </div>
+            </div>
           </button>
 
           <div className="mt-4 flex items-center justify-center gap-3">

@@ -29,16 +29,24 @@ export function FeedbackPanel({
     <div
       className={cn(
         "fixed inset-x-0 bottom-0 z-40 border-t px-4 pt-4 shadow-[0_-8px_30px_rgba(0,0,0,0.08)]",
-        "pb-[max(1.5rem,env(safe-area-inset-bottom))]",
+        "pb-[max(1.5rem,env(safe-area-inset-bottom))] animate-slide-up",
         correct
           ? "border-emerald-200 bg-emerald-50"
           : "border-rose-200 bg-rose-50"
       )}
     >
       <div className="mx-auto flex w-full max-w-xl flex-col gap-3">
-        <div className="flex items-start gap-3">
+        <div
+          className={cn(
+            "flex items-start gap-3",
+            // Wrong: a soft wobble on the header only, so the tip stays readable.
+            !correct && "animate-shake"
+          )}
+        >
           {correct ? (
-            <CheckCircle2 className="mt-0.5 h-7 w-7 shrink-0 text-emerald-600" />
+            <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full animate-pop-glow">
+              <CheckCircle2 className="h-7 w-7 text-emerald-600" />
+            </span>
           ) : (
             <XCircle className="mt-0.5 h-7 w-7 shrink-0 text-rose-600" />
           )}
