@@ -4,6 +4,7 @@
  */
 import type { Lesson, WordCard } from "../types";
 import { audioSrcFor, voiceForIndex, type AudioVoice } from "../audio";
+import { dlg } from "./dialogues";
 
 function teach(
   id: string,
@@ -522,6 +523,8 @@ export const UNIT1_LESSONS: Record<string, Lesson> = {
         wordCardIds: ["como-te-llamas", "me-llamo", "mucho-gusto", "nos-vemos"],
         xp: 4,
       },
+      dlg("dlg-u1-greet-morning"),
+      dlg("dlg-u1-goodbye-night"),
     ],
   },
 
@@ -613,6 +616,41 @@ export const UNIT1_LESSONS: Record<string, Lesson> = {
         explanation: "Buenas noches works as evening hello or good-night goodbye.",
         wordCardIds: ["buenas-noches"],
         xp: 3,
+      },
+      dlg("dlg-u1-meet-name"),
+      {
+        id: "u1l8-p1",
+        type: "select",
+        prompt: "Which reply fits “Mucho gusto”?",
+        options: [
+          "Igualmente.",
+          "Cuesta diez pesos.",
+          "Tengo veinte años.",
+          "Hablo inglés.",
+        ],
+        correctIndex: 0,
+        explanation: "Igualmente returns the sentiment — nice to meet you too.",
+        wordCardIds: ["mucho-gusto"],
+        xp: 3,
+      },
+      {
+        id: "u1l8-p2",
+        type: "tap-chips",
+        prompt: "Build: “My name is Ana. Nice to meet you.”",
+        chips: ["Me", "llamo", "Ana.", "Mucho", "gusto.", "Tengo", "Soy"],
+        correctOrder: ["Me", "llamo", "Ana.", "Mucho", "gusto."],
+        explanation: "Me llamo + name, then mucho gusto.",
+        wordCardIds: ["me-llamo", "mucho-gusto"],
+        xp: 3,
+      },
+      {
+        id: "u1l8-p3",
+        type: "translate",
+        prompt: "Say in Spanish: “Good morning. How are you?”",
+        acceptedAnswers: ["Buenos dias. Como estas?", "Buenos dias, como estas?", "Buenos dias. Como esta?", "Buenos dias, como esta usted?"],
+        explanation: "Buenos días pairs naturally with ¿cómo estás?",
+        wordCardIds: ["buenos-dias", "como-estas"],
+        xp: 4,
       },
     ],
   },

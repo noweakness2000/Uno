@@ -4,6 +4,7 @@
  */
 import type { Lesson, WordCard } from "../types";
 import { audioSrcFor, voiceForIndex, type AudioVoice } from "../audio";
+import { dlg } from "./dialogues";
 
 function teach(
   id: string,
@@ -438,6 +439,34 @@ export const UNIT2_LESSONS: Record<string, Lesson> = {
         wordCardIds: ["de-donde-eres", "soy-de", "estados-unidos", "pais"],
         xp: 4,
       },
+      dlg("dlg-u2-origin"),
+      {
+        id: "u2l5-p1",
+        type: "fill-blank",
+        prompt: "Complete the sentence.",
+        template: "___ de Estados Unidos.",
+        englishPrompt: "I am from the United States.",
+        acceptedAnswers: ["Soy", "soy"],
+        explanation: "Origin uses ser: soy de.",
+        wordCardIds: ["soy-de"],
+        xp: 3,
+      },
+      {
+        id: "u2l5-p2",
+        type: "situational-choose",
+        prompt: "Pick the best line.",
+        situation: "Someone asks where you are from.",
+        options: [
+          "Soy de Chicago.",
+          "Tengo de Chicago.",
+          "Estoy de Chicago.",
+          "Vivo de Chicago.",
+        ],
+        correctIndex: 0,
+        explanation: "Origin takes ser: soy de Chicago.",
+        wordCardIds: ["soy-de", "de-donde-eres"],
+        xp: 4,
+      },
     ],
   },
 
@@ -662,6 +691,31 @@ export const UNIT2_LESSONS: Record<string, Lesson> = {
         explanation: "¿Y tú? bounces it back.",
         wordCardIds: ["y-tu"],
         xp: 3,
+      },
+      dlg("dlg-u2-languages"),
+      {
+        id: "u2l7-p1",
+        type: "select",
+        prompt: "Which sentence says you speak a little Spanish?",
+        options: [
+          "Hablo un poco de español.",
+          "Soy un poco español.",
+          "Tengo un poco español.",
+          "Vivo un poco español.",
+        ],
+        correctIndex: 0,
+        explanation: "Languages go with hablar: hablo un poco de español.",
+        wordCardIds: ["hablar", "espanol"],
+        xp: 3,
+      },
+      {
+        id: "u2l7-p2",
+        type: "translate",
+        prompt: "Say in Spanish: “Do you speak English?”",
+        acceptedAnswers: ["Hablas ingles?", "Hablas ingles", "Habla ingles?", "Usted habla ingles?"],
+        explanation: "Hablar + the language. Use habla usted for the formal version.",
+        wordCardIds: ["hablar", "ingles"],
+        xp: 4,
       },
     ],
   },

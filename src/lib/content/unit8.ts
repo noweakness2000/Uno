@@ -4,6 +4,7 @@
  */
 import type { Lesson, WordCard } from "../types";
 import { audioSrcFor, voiceForIndex, type AudioVoice } from "../audio";
+import { dlg } from "./dialogues";
 
 function teach(
   id: string,
@@ -1392,6 +1393,8 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         wordCardIds: ["el-sabado", "me-parece"],
         xp: 3,
       },
+      dlg("dlg-u8-invite"),
+      dlg("dlg-u8-decline"),
     ],
   },
 

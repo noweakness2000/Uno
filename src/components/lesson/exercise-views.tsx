@@ -128,6 +128,7 @@ export function TapChipsView({
   onSubmit,
 }: CommonProps & { exercise: TapChipsExercise }) {
   const [built, setBuilt] = useState<string[]>([]);
+  const [bank, setBank] = useState<string[]>([]);
   const [nearMissUsed, setNearMissUsed] = useState(false);
   const [dragIndex, setDragIndex] = useState<number | null>(null);
   const rowRef = useRef<HTMLDivElement>(null);
@@ -139,20 +140,27 @@ export function TapChipsView({
   } | null>(null);
   const remaining = useMemo(() => {
     const used = [...built];
-    return exercise.chips.filter((chip) => {
+    return bank.filter((chip) => {
       const idx = used.indexOf(chip);
       if (idx === -1) return true;
       used.splice(idx, 1);
       return false;
     });
-  }, [built, exercise.chips]);
+  }, [built, bank]);
 
   useEffect(() => {
+    // Content authors chips as correctOrder + distractors. Shuffle on every load.
+    const items = [...exercise.chips];
+    for (let i = items.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [items[i], items[j]] = [items[j], items[i]];
+    }
+    setBank(items);
     setBuilt([]);
     setNearMissUsed(false);
     setDragIndex(null);
     dragRef.current = null;
-  }, [exercise.id]);
+  }, [exercise.id, exercise.chips]);
 
   const phrase = exercise.correctOrder.join(" ");
   const builtPhrase = built.join(" ");

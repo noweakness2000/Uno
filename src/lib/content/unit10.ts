@@ -4,6 +4,7 @@
  */
 import type { Lesson, WordCard } from "../types";
 import { audioSrcFor, voiceForIndex, type AudioVoice } from "../audio";
+import { dlg } from "./dialogues";
 
 const LATAM_PRESENT = (forms: [string, string, string, string, string]) => [
   {
@@ -842,6 +843,7 @@ export const UNIT10_LESSONS: Record<string, Lesson> = {
       { id: "u10l8-6", type: "match-pairs", prompt: "Match appointment phrases.", pairs: [{ left: "la cita", right: "the appointment" }, { left: "el médico", right: "the doctor" }, { left: "la farmacia", right: "the pharmacy" }, { left: "la medicina", right: "the medicine" }], explanation: "Clinic toolkit.", wordCardIds: ["cita", "medico", "farmacia", "medicina"], xp: 4 },
       { id: "u10l8-7", type: "translate", prompt: "Translate: ‘You should take the medicine.’ (tú)", acceptedAnswers: ["Deberías tomar la medicina.", "Deberias tomar la medicina.", "Debes tomar la medicina."], hint: "Deberías tomar…", explanation: "Deberías tomar la medicina.", wordCardIds: ["deberia", "medicina"], xp: 4 },
       listen("u10l8-8", "La farmacia está cerca.", ["The pharmacy is nearby.", "The meeting is nearby.", "I have a fever nearby.", "I will work nearby."], 0, "La farmacia está cerca.", ["farmacia", "cerca"]),
+      dlg("dlg-u10-appt"),
     ],
   },
   "u10-l9": {

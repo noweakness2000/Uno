@@ -4,6 +4,7 @@
  */
 import type { Lesson, WordCard } from "../types";
 import { audioSrcFor, voiceForIndex, type AudioVoice } from "../audio";
+import { dlg } from "./dialogues";
 
 function teach(
   id: string,
@@ -921,6 +922,8 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
         "Disculpe, ¿dónde está la farmacia?",
         ["disculpe", "farmacia"]
       ),
+      dlg("dlg-u6-metro"),
+      dlg("dlg-u6-repeat"),
     ],
   },
 
@@ -1194,6 +1197,8 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
         wordCardIds: ["mapa", "parada", "gira", "el-centro"],
         xp: 4,
       },
+      dlg("dlg-u6-howto"),
+      dlg("dlg-u6-lost"),
     ],
   },
 

@@ -4,6 +4,7 @@
  */
 import type { Lesson, WordCard } from "../types";
 import { audioSrcFor, voiceForIndex, type AudioVoice } from "../audio";
+import { dlg } from "./dialogues";
 
 function teach(
   id: string,
@@ -682,6 +683,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         wordCardIds: ["la-cuenta", "usted-server"],
         xp: 3,
       },
+      dlg("dlg-u5-order"),
     ],
   },
 
@@ -1287,6 +1289,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         "¿Para llevar o para comer aquí?",
         ["para-llevar"]
       ),
+      dlg("dlg-u5-problem"),
     ],
   },
   "u5-l8": {
