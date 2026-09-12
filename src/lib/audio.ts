@@ -259,6 +259,85 @@ export function playSpanishAudioAsync(
   });
 }
 
+/**
+ * Play a baked clip and report whether one actually existed.
+ *
+ * Unlike playSpanishAudio this never falls back to browser TTS — callers that
+ * need "baked audio or nothing" (tap-chips tiles, scrambled arrangements) use
+ * the boolean to decide what to do next.
+ */
+export function playBakedClip(
+  text: string,
+  voice: AudioVoice = "f"
+): Promise<boolean> {
+  if (typeof window === "undefined") return Promise.resolve(false);
+  const urls = [audioSrcFor(text, voice), audioSrcLegacy(text)];
+
+  return new Promise((resolve) => {
+    try {
+      if (current) {
+        current.pause();
+        current = null;
+      }
+    } catch {
+      /* ignore */
+    }
+
+    const tryUrl = (i: number) => {
+      if (i >= urls.length) {
+        resolve(false);
+        return;
+      }
+      const audio = new Audio();
+      current = audio;
+      let settled = false;
+      const fail = () => {
+        if (settled) return;
+        settled = true;
+        tryUrl(i + 1);
+      };
+      const onEnded = () => {
+        if (settled) return;
+        settled = true;
+        resolve(true);
+      };
+      audio.addEventListener("error", fail);
+      audio.addEventListener("ended", onEnded);
+      audio.addEventListener("canplaythrough", () => {
+        void audio.play().catch(fail);
+      });
+      audio.preload = "auto";
+      audio.src = urls[i];
+      void audio.load();
+    };
+    tryUrl(0);
+  });
+}
+
+/**
+ * Speak a learner-built phrase using clips that already exist.
+ *
+ * Tries the whole phrase first, which sounds natural when the words happen to
+ * be in the order a baked clip was recorded in. Any other order has no clip,
+ * so it falls back to playing each word's own clip in sequence rather than
+ * going silent.
+ */
+export async function playPhraseOrWords(
+  words: string[],
+  voice: AudioVoice = "f",
+  gapMs = 90
+): Promise<void> {
+  if (typeof window === "undefined" || words.length === 0) return;
+  const phrase = words.join(" ");
+  if (await playBakedClip(phrase, voice)) return;
+  for (const word of words) {
+    await playBakedClip(word, voice);
+    if (gapMs > 0) {
+      await new Promise<void>((r) => window.setTimeout(r, gapMs));
+    }
+  }
+}
+
 export type StoryPlayOptions = {
   onLine?: (index: number) => void;
   /** Gap between lines in ms (podcast breathing room). Default 550. */

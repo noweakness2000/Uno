@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState, type PointerEvent } from "react";
 import { Headphones, Pause, Play, RotateCcw, Volume2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { HintReveal } from "@/components/lesson/hint-reveal";
+import { playBakedClip, playPhraseOrWords } from "@/lib/audio";
 import { DialogueView } from "@/components/lesson/dialogue-view";
 import { SpeakButton } from "@/components/speak-button";
 import { cn } from "@/lib/utils";
@@ -282,9 +283,16 @@ export function TapChipsView({
             Drag to rearrange · tap to remove
           </p>
         ) : null}
-        {built.length > 0 && looksSpanish(builtPhrase) && (
+        {built.length > 0 && (
           <div className="mt-2 flex justify-end">
-            <SpeakButton text={builtPhrase} label={`Play: ${builtPhrase}`} />
+            <button
+              type="button"
+              aria-label={`Play: ${builtPhrase}`}
+              onClick={() => void playPhraseOrWords(built)}
+              className="flex h-11 w-11 touch-manipulation items-center justify-center rounded-full text-emerald-700 hover:bg-emerald-50"
+            >
+              <Volume2 className="h-4 w-4" />
+            </button>
           </div>
         )}
       </div>
@@ -294,7 +302,11 @@ export function TapChipsView({
             key={`${chip}-r-${i}`}
             type="button"
             disabled={disabled}
-            onClick={() => setBuilt((b) => [...b, chip])}
+            onClick={() => {
+              setBuilt((b) => [...b, chip]);
+              // Hear each word as it lands. Baked clips only — never TTS.
+              void playBakedClip(chip);
+            }}
             className="min-h-11 touch-manipulation rounded-xl border-2 border-slate-200 bg-white px-3 py-2.5 text-sm font-bold text-slate-800 hover:border-emerald-300"
           >
             {chip}
