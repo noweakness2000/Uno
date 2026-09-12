@@ -22,7 +22,7 @@ export const users = pgTable("users", {
   displayName: text("displayName"),
   xp: integer("xp").notNull().default(0),
   streak: integer("streak").notNull().default(0),
-  dailyGoal: integer("dailyGoal").notNull().default(20),
+  dailyGoal: integer("dailyGoal").notNull().default(60),
   dailyXp: integer("dailyXp").notNull().default(0),
   lastStreakDate: text("lastStreakDate"),
   startingLevel: text("startingLevel").notNull().default("absolute_beginner"),
