@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, BookOpen, Check, Layers } from "lucide-react";
+import { ArrowLeft, Award, BookOpen, Check, Layers, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { WordCardDrawer } from "@/components/word-card-drawer";
@@ -13,8 +13,11 @@ import type { WordCard } from "@/lib/types";
 
 export default function ReviewPage() {
   const weakWordIds = useUserStore((s) => s.user.weakWordIds);
+  const archivedWordIds = useUserStore((s) => s.user.archivedWordIds);
+  const gotItAt = useUserStore((s) => s.user.gotItAt);
   const srsCards = useUserStore((s) => s.user.srsCards);
-  const clearWeak = useUserStore((s) => s.clearWeak);
+  const archiveWeak = useUserStore((s) => s.archiveWeak);
+  const markWeak = useUserStore((s) => s.markWeak);
   const dueCount = countDue(srsCards);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState<WordCard | null>(null);
@@ -26,6 +29,21 @@ export default function ReviewPage() {
         .filter((c): c is WordCard => Boolean(c)),
     [weakWordIds]
   );
+  const mastered = useMemo(
+    () =>
+      (archivedWordIds ?? [])
+        .map((id) => getWordCard(id))
+        .filter((c): c is WordCard => Boolean(c)),
+    [archivedWordIds]
+  );
+  /** Second "Got it" within a week graduates the word. */
+  const willGraduate = (id: string) => {
+    const last = gotItAt?.[id];
+    return (
+      last !== undefined &&
+      Date.now() - new Date(last).getTime() <= 7 * 24 * 60 * 60 * 1000
+    );
+  };
 
   return (
     <div className="mx-auto min-h-dvh max-w-lg px-4 pb-16 pt-6">
@@ -109,8 +127,16 @@ export default function ReviewPage() {
                   <Button
                     variant="soft"
                     size="sm"
-                    onClick={() => clearWeak(card.id)}
+                    onClick={() => archiveWeak(card.id)}
+                    title={
+                      willGraduate(card.id)
+                        ? "Got it again this week — moves to Mastered"
+                        : "Clear from review"
+                    }
                   >
+                    {willGraduate(card.id) ? (
+                      <Award className="h-4 w-4" />
+                    ) : null}
                     Got it
                   </Button>
                 </CardContent>
@@ -119,6 +145,51 @@ export default function ReviewPage() {
           ))}
         </ul>
         </>
+      )}
+
+      {mastered.length > 0 && (
+        <section className="mt-8">
+          <div className="mb-3 flex items-center gap-2">
+            <Award className="h-4 w-4 text-amber-500" />
+            <h2 className="text-sm font-bold uppercase tracking-wide text-slate-500">
+              Mastered
+            </h2>
+            <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-bold text-amber-800">
+              {mastered.length}
+            </span>
+          </div>
+          <p className="mb-3 text-xs text-slate-400">
+            Got it twice in one week. Missing one in a lesson brings it back.
+          </p>
+          <ul className="space-y-2">
+            {mastered.map((card) => (
+              <li key={card.id}>
+                <div className="flex items-center gap-3 rounded-2xl border border-amber-100 bg-amber-50/50 px-4 py-3">
+                  <button
+                    type="button"
+                    className="min-w-0 flex-1 text-left"
+                    onClick={() => {
+                      setActive(card);
+                      setOpen(true);
+                    }}
+                  >
+                    <p className="font-bold text-slate-800">{card.lemma}</p>
+                    <p className="text-xs text-slate-500">{card.gloss}</p>
+                  </button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-slate-500"
+                    onClick={() => markWeak([card.id])}
+                  >
+                    <RotateCcw className="h-4 w-4" />
+                    Review again
+                  </Button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
       )}
 
       <WordCardDrawer card={active} open={open} onOpenChange={setOpen} />

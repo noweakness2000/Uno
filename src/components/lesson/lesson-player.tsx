@@ -33,6 +33,8 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
     wrongCount,
     earnedXp,
     weakWordIds,
+    reinforcedWordIds,
+    unsureWordIds,
     startLesson,
     recordAnswer,
     continueTeach,
@@ -41,6 +43,7 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
   } = useLessonStore();
   const completeLesson = useUserStore((s) => s.completeLesson);
   const markWeak = useUserStore((s) => s.markWeak);
+  const reinforceWords = useUserStore((s) => s.reinforceWords);
 
   const [wordOpen, setWordOpen] = useState(false);
   const [activeCard, setActiveCard] = useState<WordCard | null>(null);
@@ -55,6 +58,9 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
     if (finished && !persisted && lesson) {
       completeLesson(lesson.id, earnedXp);
       if (weakWordIds.length) markWeak(weakWordIds);
+      // Only words that already carry an SRS card get credit (see store).
+      if (reinforcedWordIds.length) reinforceWords(reinforcedWordIds, "certain");
+      if (unsureWordIds.length) reinforceWords(unsureWordIds, "unsure");
       setPersisted(true);
     }
   }, [
@@ -63,8 +69,11 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
     lesson,
     earnedXp,
     weakWordIds,
+    reinforcedWordIds,
+    unsureWordIds,
     completeLesson,
     markWeak,
+    reinforceWords,
   ]);
 
   const exercise = lesson?.exercises[index];
@@ -158,7 +167,7 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
             <ExerciseRenderer
               exercise={exercise}
               disabled={showFeedback}
-              onSubmit={(correct) => {
+              onSubmit={(correct, confidence) => {
                 if (correct) playCorrectChime();
                 const correctAnswer = getCorrectAnswerDisplay(exercise);
                 const explanation = correct
@@ -174,6 +183,7 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
                   xp: exercise.xp,
                   wordCardIds: exercise.wordCardIds,
                   correctAnswer,
+                  confidence,
                 });
               }}
             />

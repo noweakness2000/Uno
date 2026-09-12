@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, type PointerEvent } from "react";
-import { Headphones, Pause, Play, RotateCcw, Volume2 } from "lucide-react";
+import { Headphones, HelpCircle, Pause, Play, RotateCcw, Volume2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { HintReveal } from "@/components/lesson/hint-reveal";
 import { playBakedClip, playPhraseOrWords } from "@/lib/audio";
@@ -25,10 +25,11 @@ import {
   isNearMiss,
 } from "@/lib/grading";
 import type {
-  Exercise,
+  AnswerConfidence,
   ClozeExercise,
   ConjugateExercise,
   DictationExercise,
+  Exercise,
   FillBlankExercise,
   ListeningChooseExercise,
   MatchPairsExercise,
@@ -41,10 +42,46 @@ import type {
 
 interface CommonProps {
   disabled?: boolean;
-  onSubmit: (correct: boolean) => void;
+  onSubmit: (correct: boolean, confidence?: AnswerConfidence) => void;
 }
 
 type AnswerResult = "correct" | "wrong" | null;
+
+/**
+ * Check plus an optional "Not sure". Not sure submits the same answer; the
+ * only difference is a softer SRS credit if it turns out right.
+ */
+function CheckRow({
+  disabled,
+  onCheck,
+}: {
+  disabled: boolean;
+  onCheck: (confidence: AnswerConfidence) => void;
+}) {
+  return (
+    <div className="flex gap-2">
+      <Button
+        variant="outline"
+        className="min-h-12 shrink-0 touch-manipulation px-4 text-slate-600"
+        size="lg"
+        disabled={disabled}
+        onClick={() => onCheck("unsure")}
+        aria-label="Check — I'm not sure"
+      >
+        <HelpCircle className="h-4 w-4" />
+        Not sure
+      </Button>
+      <Button
+        className="min-h-12 flex-1 touch-manipulation"
+        size="lg"
+        disabled={disabled}
+        onClick={() => onCheck("certain")}
+      >
+        Check
+      </Button>
+    </div>
+  );
+}
 
 /** Option styling once Check has been pressed: pop + glow, or a soft shake. */
 function resultOptionClass(result: AnswerResult): string | null {
@@ -120,20 +157,16 @@ export function SelectView({
           );
         })}
       </div>
-      <Button
-        className="min-h-12 w-full touch-manipulation"
-        size="lg"
-        disabled={selected === null || disabled}
-        onClick={() => {
+      <CheckRow
+        disabled={selected === null || Boolean(disabled)}
+        onCheck={(confidence) => {
           if (selected === null) return;
           const correct =
             displayOptions[selected]?.originalIndex === exercise.correctIndex;
           setResult(correct ? "correct" : "wrong");
-          onSubmit(correct);
+          onSubmit(correct, confidence);
         }}
-      >
-        Check
-      </Button>
+      />
     </div>
   );
 }
@@ -536,20 +569,16 @@ export function ListeningChooseView({
           );
         })}
       </div>
-      <Button
-        className="min-h-12 w-full touch-manipulation"
-        size="lg"
-        disabled={selected === null || disabled}
-        onClick={() => {
+      <CheckRow
+        disabled={selected === null || Boolean(disabled)}
+        onCheck={(confidence) => {
           if (selected === null) return;
           const correct =
             displayOptions[selected]?.originalIndex === exercise.correctIndex;
           setResult(correct ? "correct" : "wrong");
-          onSubmit(correct);
+          onSubmit(correct, confidence);
         }}
-      >
-        Check
-      </Button>
+      />
       <button
         type="button"
         disabled={disabled}
@@ -1354,7 +1383,7 @@ export function ExerciseRenderer({
 }: {
   exercise: Exercise;
   disabled?: boolean;
-  onSubmit: (correct: boolean) => void;
+  onSubmit: (correct: boolean, confidence?: AnswerConfidence) => void;
 }) {
   switch (exercise.type) {
     case "teach":

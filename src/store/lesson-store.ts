@@ -1,6 +1,7 @@
 "use client";
 
 import { create } from "zustand";
+import type { AnswerConfidence } from "@/lib/types";
 import type { Exercise } from "@/lib/types";
 
 interface LessonSessionState {
@@ -10,6 +11,8 @@ interface LessonSessionState {
   wrongCount: number;
   earnedXp: number;
   weakWordIds: string[];
+  reinforcedWordIds: string[];
+  unsureWordIds: string[];
   showFeedback: boolean;
   lastCorrect: boolean | null;
   lastExplanation: string;
@@ -22,6 +25,8 @@ interface LessonSessionState {
     xp: number;
     wordCardIds?: string[];
     correctAnswer?: string;
+    /** "unsure" = the learner pressed Not sure; defaults to "certain". */
+    confidence?: AnswerConfidence;
   }) => void;
   /** Advance past a Teach step — 0 XP, no wrong count, no feedback panel. */
   continueTeach: (totalExercises: number) => void;
@@ -36,6 +41,10 @@ const initial = {
   wrongCount: 0,
   earnedXp: 0,
   weakWordIds: [] as string[],
+  /** Word cards answered correctly with confidence — SRS "good" at the end. */
+  reinforcedWordIds: [] as string[],
+  /** Word cards answered correctly but flagged Not sure — softer SRS credit. */
+  unsureWordIds: [] as string[],
   showFeedback: false,
   lastCorrect: null as boolean | null,
   lastExplanation: "",
@@ -46,8 +55,16 @@ const initial = {
 export const useLessonStore = create<LessonSessionState>((set, get) => ({
   ...initial,
   startLesson: (lessonId) => set({ ...initial, lessonId }),
-  recordAnswer: ({ correct, explanation, xp, wordCardIds, correctAnswer }) => {
-    const weak = wordCardIds ?? [];
+  recordAnswer: ({
+    correct,
+    explanation,
+    xp,
+    wordCardIds,
+    correctAnswer,
+    confidence = "certain",
+  }) => {
+    const ids = wordCardIds ?? [];
+    const union = (a: string[], b: string[]) => Array.from(new Set([...a, ...b]));
     set((s) => ({
       showFeedback: true,
       lastCorrect: correct,
@@ -56,9 +73,15 @@ export const useLessonStore = create<LessonSessionState>((set, get) => ({
       correctCount: s.correctCount + (correct ? 1 : 0),
       wrongCount: s.wrongCount + (correct ? 0 : 1),
       earnedXp: s.earnedXp + (correct ? xp : Math.max(1, Math.floor(xp / 2))),
-      weakWordIds: correct
-        ? s.weakWordIds
-        : Array.from(new Set([...s.weakWordIds, ...weak])),
+      weakWordIds: correct ? s.weakWordIds : union(s.weakWordIds, ids),
+      reinforcedWordIds:
+        correct && confidence === "certain"
+          ? union(s.reinforcedWordIds, ids)
+          : s.reinforcedWordIds,
+      unsureWordIds:
+        correct && confidence === "unsure"
+          ? union(s.unsureWordIds, ids)
+          : s.unsureWordIds,
     }));
   },
   continueTeach: (totalExercises) => {

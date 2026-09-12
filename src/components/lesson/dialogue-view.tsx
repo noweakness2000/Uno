@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { ArrowRight, MessageCircle, Target } from "lucide-react";
+import { useMemo, useState } from "react";
+import { ArrowRight, MessageCircle, Sparkles, Target } from "lucide-react";
 import { SpeakButton } from "@/components/speak-button";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -39,6 +39,17 @@ export function DialogueView({ exercise, disabled, onSubmit }: Props) {
 
   const turn = exercise.turns[step];
   const isLastTurn = step === exercise.turns.length - 1;
+  // Fresh order per turn so position can't be pattern-matched. Content files
+  // stay in authored order; `correct` rides along with each option.
+  const options = useMemo(() => {
+    const arr = [...(turn?.options ?? [])];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [exercise.id, step]);
 
   const choose = (option: DialogueOption) => {
     if (disabled || pending) return;
@@ -65,6 +76,12 @@ export function DialogueView({ exercise, disabled, onSubmit }: Props) {
     <div className="space-y-4">
       {/* Scene */}
       <div className="rounded-2xl border-2 border-sky-100 bg-sky-50/70 p-4">
+        {exercise.pattern && (
+          <p className="mb-2 inline-flex items-center gap-1.5 rounded-full bg-white/80 px-2.5 py-1 text-[11px] font-semibold text-sky-800 ring-1 ring-sky-200">
+            <Sparkles className="h-3 w-3" />
+            Practices: {exercise.pattern}
+          </p>
+        )}
         <p className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-sky-700">
           <MessageCircle className="h-3.5 w-3.5" />
           {exercise.npcName ? `Talking with ${exercise.npcName}` : "Conversation"}
@@ -120,7 +137,7 @@ export function DialogueView({ exercise, disabled, onSubmit }: Props) {
           <p className="px-1 text-xs font-semibold uppercase tracking-wide text-slate-400">
             Your reply
           </p>
-          {turn.options.map((option, i) => (
+          {options.map((option, i) => (
             <button
               key={`${option.es}-${i}`}
               type="button"

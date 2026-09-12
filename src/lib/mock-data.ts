@@ -23,6 +23,8 @@ export const DEMO_USER: DemoUser = {
   lastStreakDate: null,
   completedLessonIds: [],
   weakWordIds: [],
+  archivedWordIds: [],
+  gotItAt: {},
   srsCards: {},
   onboardingComplete: false,
   startingLevel: "absolute_beginner",

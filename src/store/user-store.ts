@@ -2,12 +2,13 @@
 
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { DemoUser, StartingLevel } from "@/lib/types";
+import type { AnswerConfidence, DemoUser, StartingLevel } from "@/lib/types";
 import { DEMO_USER as DEFAULT_USER } from "@/lib/mock-data";
 import {
   ensureDueSoon,
   gradeAgain,
   gradeGood,
+  gradeGoodUnsure,
   type SrsCards,
 } from "@/lib/srs";
 import {
@@ -42,6 +43,16 @@ interface UserState {
   completeLesson: (lessonId: string, earnedXp: number) => void;
   markWeak: (wordIds: string[]) => void;
   clearWeak: (wordId: string) => void;
+  /**
+   * Review "Got it": first click within 7 days clears the word; the second
+   * graduates it to archivedWordIds ("Mastered").
+   */
+  archiveWeak: (wordId: string) => void;
+  /**
+   * Lesson result for words that already have an SRS card (i.e. were weak
+   * once). Never creates cards, so lessons don't flood the flashcard queue.
+   */
+  reinforceWords: (wordIds: string[], confidence: AnswerConfidence) => void;
   /** Flashcard Again — short interval + stay weak. */
   srsAgain: (wordId: string) => void;
   /** Flashcard Good — grow interval + clear weak. */
@@ -55,11 +66,16 @@ interface UserState {
   rolloverStreak: () => void;
 }
 
+/** Two "Got it" clicks this close together graduate a word. */
+const GOT_IT_WINDOW_MS = 7 * 24 * 60 * 60 * 1000;
+
 function withPlacementDefaults(user: DemoUser): DemoUser {
   return applyStreakRollover({
     ...user,
     skippedUnitIds: user.skippedUnitIds ?? [],
     srsCards: user.srsCards ?? {},
+    archivedWordIds: user.archivedWordIds ?? [],
+    gotItAt: user.gotItAt ?? {},
     lastStreakDate: user.lastStreakDate ?? null,
     recommendedUnitId:
       user.recommendedUnitId ??
@@ -149,13 +165,64 @@ export const useUserStore = create<UserState>()(
           for (const id of wordIds) {
             srsCards[id] = ensureDueSoon(srsCards[id], now);
           }
+          // Wrong again → no longer mastered.
+          const wrong = new Set(wordIds);
           return {
             user: {
               ...s.user,
               weakWordIds: Array.from(setIds),
+              archivedWordIds: (s.user.archivedWordIds ?? []).filter(
+                (id) => !wrong.has(id)
+              ),
               srsCards,
             },
           };
+        }),
+      archiveWeak: (wordId) =>
+        set((s) => {
+          const now = new Date();
+          const last = s.user.gotItAt?.[wordId];
+          const recent =
+            last !== undefined &&
+            now.getTime() - new Date(last).getTime() <= GOT_IT_WINDOW_MS;
+          const weakWordIds = s.user.weakWordIds.filter((id) => id !== wordId);
+          if (recent) {
+            const { [wordId]: _spent, ...gotItAt } = s.user.gotItAt ?? {};
+            void _spent;
+            return {
+              user: {
+                ...s.user,
+                weakWordIds,
+                archivedWordIds: Array.from(
+                  new Set([...(s.user.archivedWordIds ?? []), wordId])
+                ),
+                gotItAt,
+              },
+            };
+          }
+          return {
+            user: {
+              ...s.user,
+              weakWordIds,
+              gotItAt: { ...(s.user.gotItAt ?? {}), [wordId]: now.toISOString() },
+            },
+          };
+        }),
+      reinforceWords: (wordIds, confidence) =>
+        set((s) => {
+          const now = new Date();
+          const srsCards: SrsCards = { ...(s.user.srsCards ?? {}) };
+          let touched = false;
+          for (const id of wordIds) {
+            const prev = srsCards[id];
+            if (!prev) continue;
+            srsCards[id] =
+              confidence === "unsure"
+                ? gradeGoodUnsure(prev, now)
+                : gradeGood(prev, now);
+            touched = true;
+          }
+          return touched ? { user: { ...s.user, srsCards } } : {};
         }),
       clearWeak: (wordId) =>
         set((s) => ({

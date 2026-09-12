@@ -103,7 +103,8 @@ function dialogue(
   goal: string,
   npcName: string,
   turns: DialogueTurn[],
-  wordCardIds?: string[]
+  wordCardIds?: string[],
+  pattern?: string
 ): DialogueExercise {
   return {
     id,
@@ -113,6 +114,7 @@ function dialogue(
     scenario,
     goal,
     npcName,
+    pattern,
     turns,
     wordCardIds,
     xp: 5,
@@ -154,7 +156,8 @@ const u1GreetMorning = dialogue(
         "De nada answers a thank-you. To return a good wish, use igualmente."),
     ]),
   ],
-  ["buenos-dias", "como-estas", "hasta-luego"]
+  ["buenos-dias", "como-estas", "hasta-luego"],
+  "buenos días + ¿cómo estás?"
 );
 
 const u1GoodbyeNight = dialogue(
@@ -181,7 +184,8 @@ const u1GoodbyeNight = dialogue(
         "Clock times take a las, not soy."),
     ]),
   ],
-  ["buenas-noches", "hasta-luego"]
+  ["buenas-noches", "hasta-luego"],
+  "goodbyes + hasta mañana"
 );
 
 const u1MeetName = dialogue(
@@ -215,7 +219,8 @@ const u1MeetName = dialogue(
         "The question was about español — answer about Spanish, not inglés."),
     ]),
   ],
-  ["me-llamo", "mucho-gusto", "de-donde-eres"]
+  ["me-llamo", "mucho-gusto", "de-donde-eres"],
+  "me llamo + mucho gusto"
 );
 
 /* ================================================================== */
@@ -253,7 +258,8 @@ const u2Origin = dialogue(
         "One singular thing takes me gusta; me gustan is for plurals."),
     ]),
   ],
-  ["de-donde-eres", "soy-de", "vivo-en"]
+  ["de-donde-eres", "soy-de", "vivo-en"],
+  "ser for origin (soy de…)"
 );
 
 const u2Languages = dialogue(
@@ -283,7 +289,8 @@ const u2Languages = dialogue(
         "Todos los años means yearly. And they asked about the station, not Spanish."),
     ]),
   ],
-  ["hablar", "ingles", "espanol"]
+  ["hablar", "ingles", "espanol"],
+  "hablar + languages"
 );
 
 /* ================================================================== */
@@ -314,7 +321,8 @@ const u3Age = dialogue(
         "For giving a number, es el… sounds more natural than tengo el…"),
     ]),
   ],
-  ["tener", "numeros", "telefono"]
+  ["tener", "numeros", "telefono"],
+  "tener for age + phone numbers"
 );
 
 const u3Market = dialogue(
@@ -348,7 +356,8 @@ const u3Market = dialogue(
         "Say gracias when handing over payment; de nada is the reply to it."),
     ]),
   ],
-  ["cuanto-cuesta", "pesos", "numeros"]
+  ["cuanto-cuesta", "pesos", "numeros"],
+  "¿cuánto cuesta? + prices"
 );
 
 /* ================================================================== */
@@ -386,7 +395,8 @@ const u5Order = dialogue(
         "Requests end with por favor; de nada answers a thank-you."),
     ]),
   ],
-  ["quisiera", "cafe", "la-cuenta"]
+  ["quisiera", "cafe", "la-cuenta"],
+  "usted orders + quisiera"
 );
 
 const u5Problem = dialogue(
@@ -420,7 +430,8 @@ const u5Problem = dialogue(
         "How food tastes right now uses estar: está delicioso."),
     ]),
   ],
-  ["disculpe", "la-cuenta", "pedir"]
+  ["disculpe", "la-cuenta", "pedir"],
+  "disculpe + polite complaints"
 );
 
 /* ================================================================== */
@@ -458,7 +469,8 @@ const u6Metro = dialogue(
         "You are the one receiving help — say gracias, not de nada."),
     ]),
   ],
-  ["disculpe", "donde-esta", "derecha"]
+  ["disculpe", "donde-esta", "derecha"],
+  "¿dónde está? + directions"
 );
 
 const u6Repeat = dialogue(
@@ -485,7 +497,8 @@ const u6Repeat = dialogue(
         "Derecho means straight ahead; a la derecha means to the right."),
     ]),
   ],
-  ["farmacia", "derecho", "izquierda"]
+  ["farmacia", "derecho", "izquierda"],
+  "asking to slow down / repeat"
 );
 
 const u6HowTo = dialogue(
@@ -519,7 +532,8 @@ const u6HowTo = dialogue(
         "Tengo says you already have one, which contradicts saying yes."),
     ]),
   ],
-  ["como-llego", "metro", "cerca"]
+  ["como-llego", "metro", "cerca"],
+  "¿cómo llego? + transport"
 );
 
 const u6Lost = dialogue(
@@ -546,7 +560,8 @@ const u6Lost = dialogue(
         "Repeat it back in the same order — derecho first, then izquierda."),
     ]),
   ],
-  ["perdido", "hotel", "izquierda"]
+  ["perdido", "hotel", "izquierda"],
+  "estar perdido + directions"
 );
 
 /* ================================================================== */
@@ -577,7 +592,8 @@ const u8Invite = dialogue(
         "For arranging a time, use nos vemos a las…, not soy."),
     ]),
   ],
-  ["te-gustaria", "nos-vemos", "sabado"]
+  ["te-gustaria", "nos-vemos", "sabado"],
+  "invitations + agreeing on a time"
 );
 
 const u8Decline = dialogue(
@@ -611,7 +627,8 @@ const u8Decline = dialogue(
         "For an evening coffee, de la tarde fits better than de la mañana."),
     ]),
   ],
-  ["quieres", "no-puedo", "sabado"]
+  ["quieres", "no-puedo", "sabado"],
+  "soft no + suggesting another day"
 );
 
 /* ================================================================== */
@@ -649,7 +666,8 @@ const u10Appointment = dialogue(
         "La semana pasada needs the preterite: me dio."),
     ]),
   ],
-  ["me-duele", "cita", "receta"]
+  ["me-duele", "cita", "receta"],
+  "me duele + rescheduling"
 );
 
 /* ================================================================== */

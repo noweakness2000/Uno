@@ -25,6 +25,8 @@ const progressSchema = z.object({
   onboardingComplete: z.boolean().optional(),
   completedLessonIds: z.array(z.string()).optional(),
   weakWordIds: z.array(z.string()).optional(),
+  archivedWordIds: z.array(z.string()).optional(),
+  gotItAt: z.record(z.string(), z.string()).optional(),
   srsCards: z
     .record(
       z.string(),
@@ -166,6 +168,8 @@ export async function GET() {
         onboardingComplete: updated.onboardingComplete,
         completedLessonIds: updated.completedLessonIds ?? [],
         weakWordIds: updated.weakWordIds ?? [],
+        archivedWordIds: updated.archivedWordIds ?? [],
+        gotItAt: updated.gotItAt ?? {},
         srsCards: updated.srsCards ?? {},
         skippedUnitIds: updated.skippedUnitIds ?? [],
         recommendedUnitId: updated.recommendedUnitId,
@@ -186,6 +190,8 @@ export async function GET() {
       onboardingComplete: row.onboardingComplete,
       completedLessonIds: row.completedLessonIds ?? [],
       weakWordIds: row.weakWordIds ?? [],
+      archivedWordIds: row.archivedWordIds ?? [],
+      gotItAt: row.gotItAt ?? {},
       srsCards: row.srsCards ?? {},
       skippedUnitIds: row.skippedUnitIds ?? [],
       recommendedUnitId: row.recommendedUnitId,
@@ -263,10 +269,12 @@ export async function PUT(req: Request) {
       existing.completedLessonIds ?? [],
       incoming.completedLessonIds ?? []
     ),
-    weakWordIds: mergeIds(
-      existing.weakWordIds ?? [],
-      incoming.weakWordIds ?? []
-    ),
+    // The review lists are curated on the client ("Got it", mastered), so
+    // the latest client state wins; a union could only ever grow them.
+    weakWordIds: incoming.weakWordIds ?? existing.weakWordIds ?? [],
+    archivedWordIds:
+      incoming.archivedWordIds ?? existing.archivedWordIds ?? [],
+    gotItAt: incoming.gotItAt ?? existing.gotItAt ?? {},
     srsCards: mergeSrsCards(
       (existing.srsCards as Record<string, { intervalDays: number; ease: number; dueAt: string; reps: number }> | null) ?? {},
       incoming.srsCards ?? {}
@@ -303,6 +311,8 @@ export async function PUT(req: Request) {
       onboardingComplete: updated.onboardingComplete,
       completedLessonIds: updated.completedLessonIds ?? [],
       weakWordIds: updated.weakWordIds ?? [],
+      archivedWordIds: updated.archivedWordIds ?? [],
+      gotItAt: updated.gotItAt ?? {},
       srsCards: updated.srsCards ?? {},
       skippedUnitIds: updated.skippedUnitIds ?? [],
       recommendedUnitId: updated.recommendedUnitId,

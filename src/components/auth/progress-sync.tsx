@@ -21,6 +21,8 @@ type ProgressPayload = {
   onboardingComplete: boolean;
   completedLessonIds: string[];
   weakWordIds: string[];
+  archivedWordIds: string[];
+  gotItAt: Record<string, string>;
   srsCards: DemoUser["srsCards"];
   skippedUnitIds: string[];
   recommendedUnitId: string | null;
@@ -41,6 +43,8 @@ function buildProgressPayload(
     onboardingComplete: user.onboardingComplete,
     completedLessonIds: user.completedLessonIds,
     weakWordIds: user.weakWordIds,
+    archivedWordIds: user.archivedWordIds ?? [],
+    gotItAt: user.gotItAt ?? {},
     srsCards: user.srsCards ?? {},
     skippedUnitIds: user.skippedUnitIds ?? [],
     recommendedUnitId: user.recommendedUnitId ?? null,
@@ -60,6 +64,8 @@ function progressFingerprint(user: DemoUser): string {
     onboardingComplete: user.onboardingComplete,
     completedLessonIds: user.completedLessonIds,
     weakWordIds: user.weakWordIds,
+    archivedWordIds: user.archivedWordIds ?? [],
+    gotItAt: user.gotItAt ?? {},
     srsCards: user.srsCards ?? {},
     skippedUnitIds: user.skippedUnitIds ?? [],
     recommendedUnitId: user.recommendedUnitId ?? null,
@@ -68,6 +74,29 @@ function progressFingerprint(user: DemoUser): string {
 
 function progressFieldsChanged(a: DemoUser, b: DemoUser): boolean {
   return progressFingerprint(a) !== progressFingerprint(b);
+}
+
+/**
+ * Weak vs mastered are exclusive: union both, then mastered wins over weak,
+ * except that a word the remote side marked weak again is un-mastered.
+ */
+function mergeReviewLists(
+  local: DemoUser,
+  remote: Partial<DemoUser>
+): Pick<DemoUser, "weakWordIds" | "archivedWordIds" | "gotItAt"> {
+  const remoteWeak = new Set(remote.weakWordIds ?? []);
+  const archived = Array.from(
+    new Set([...(remote.archivedWordIds ?? []), ...(local.archivedWordIds ?? [])])
+  ).filter((id) => !remoteWeak.has(id));
+  const archivedSet = new Set(archived);
+  const weak = Array.from(
+    new Set([...(remote.weakWordIds ?? []), ...local.weakWordIds])
+  ).filter((id) => !archivedSet.has(id));
+  const gotItAt: Record<string, string> = { ...(local.gotItAt ?? {}) };
+  for (const [id, iso] of Object.entries(remote.gotItAt ?? {})) {
+    if (!gotItAt[id] || new Date(iso) > new Date(gotItAt[id])) gotItAt[id] = iso;
+  }
+  return { weakWordIds: weak, archivedWordIds: archived, gotItAt };
 }
 
 function applyMergedProgress(
@@ -105,7 +134,7 @@ function applyMergedProgress(
           s.user.completedLessonIds,
           p.completedLessonIds
         ),
-        weakWordIds: mergeIds(s.user.weakWordIds, p.weakWordIds),
+        ...mergeReviewLists(s.user, p),
         // Server PUT already merged SRS; prefer that, fall back to local.
         srsCards:
           (p as { srsCards?: DemoUser["srsCards"] }).srsCards ??

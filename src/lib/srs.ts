@@ -75,6 +75,26 @@ export function gradeGood(
   };
 }
 
+/**
+ * Correct in a lesson but flagged "Not sure" → the interval still steps up
+ * the ladder, but no ease bump and reps stay put, so a run of shaky wins
+ * doesn't accelerate the card the way confident ones do.
+ */
+export function gradeGoodUnsure(
+  prev: SrsCardState | undefined,
+  now: Date = new Date()
+): SrsCardState {
+  const ease = prev?.ease ?? DEFAULT_EASE;
+  const reps = prev?.reps ?? 0;
+  const intervalDays = nextGoodInterval(prev?.intervalDays ?? 0, reps);
+  return {
+    intervalDays,
+    ease,
+    dueAt: addDays(now, intervalDays),
+    reps,
+  };
+}
+
 /** Lesson miss → ensure card is due today (do not wipe progress). */
 export function ensureDueSoon(
   prev: SrsCardState | undefined,

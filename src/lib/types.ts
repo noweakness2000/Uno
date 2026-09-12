@@ -256,6 +256,8 @@ export interface DialogueExercise extends ExerciseBase {
   goal?: string;
   /** Who the learner is talking to, e.g. "Mesero". */
   npcName?: string;
+  /** What this conversation drills, e.g. "tener for age". Shown as a badge. */
+  pattern?: string;
   turns: DialogueTurn[];
 }
 
@@ -294,6 +296,9 @@ export interface Unit {
   track?: UnitTrack;
 }
 
+/** How sure the learner said they were when answering. */
+export type AnswerConfidence = "certain" | "unsure";
+
 export interface DemoUser {
   id: string;
   name: string;
@@ -305,6 +310,13 @@ export interface DemoUser {
   lastStreakDate?: string | null;
   completedLessonIds: string[];
   weakWordIds: string[];
+  /**
+   * Words graduated out of review: "Got it" twice within 7 days. Getting one
+   * wrong again moves it back to weak.
+   */
+  archivedWordIds: string[];
+  /** Last "Got it" ISO timestamp per wordCardId, to spot the second click. */
+  gotItAt: Record<string, string>;
   /** Lightweight SRS schedule keyed by wordCardId. */
   srsCards: SrsCards;
   onboardingComplete: boolean;
