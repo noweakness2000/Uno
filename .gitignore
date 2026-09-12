@@ -41,8 +41,11 @@ yarn-error.log*
 next-env.d.ts
 
 # secrets / local TTS credentials (never commit)
+jp-home-148300-120b6b246ab8.json
 credentials*.json
 **/credentials*.json
+*service-account*.json
+*-credentials.json
 .config/
 **/.config/
 uno-tts/
