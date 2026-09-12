@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Flame, Star, Target, BookMarked } from "lucide-react";
 import { dailyGoalPercent, isDailyGoalMet } from "@/lib/daily-goal";
+import { effectiveDailyXp, effectiveStreak } from "@/lib/streak";
 import { useUserStore } from "@/store/user-store";
 
 interface Props {
@@ -27,6 +28,8 @@ export function PostLessonSummary({
   onReview,
 }: Props) {
   const user = useUserStore((s) => s.user);
+  const streak = effectiveStreak(user);
+  const todayXp = effectiveDailyXp(user);
   const total = correctCount + wrongCount;
   const accuracy = total ? Math.round((correctCount / total) * 100) : 0;
   const goalPct = dailyGoalPercent(user);
@@ -50,12 +53,12 @@ export function PostLessonSummary({
           Streak
         </p>
         <p className="text-3xl font-extrabold text-slate-900">
-          {user.streak} day{user.streak === 1 ? "" : "s"}
+          {streak} day{streak === 1 ? "" : "s"}
         </p>
         <p className="mt-1 text-sm text-slate-600">
           {goalMet
             ? "Daily goal met — nice work keeping the flame lit."
-            : `Today ${user.dailyXp}/${user.dailyGoal} XP — a little more keeps your streak happy.`}
+            : `Today ${todayXp}/${user.dailyGoal} XP — a little more keeps your streak happy.`}
         </p>
         <div className="mx-auto mt-3 max-w-xs">
           <Progress value={goalPct} />

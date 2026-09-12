@@ -21,7 +21,7 @@ import {
   UNIT_2_ID,
   unit1LessonIds,
 } from "@/lib/placement";
-import { applyLessonDay, localDateKey } from "@/lib/streak";
+import { applyLessonDay, applyStreakRollover } from "@/lib/streak";
 
 interface UserState {
   user: DemoUser;
@@ -45,10 +45,12 @@ interface UserState {
   /** Jump absolute beginners to Intermediate (Unit 4+). */
   jumpToIntermediate: () => void;
   resetDemo: () => void;
+  /** Break stale streaks / zero yesterday's daily XP after midnight. */
+  rolloverStreak: () => void;
 }
 
 function withPlacementDefaults(user: DemoUser): DemoUser {
-  return {
+  return applyStreakRollover({
     ...user,
     skippedUnitIds: user.skippedUnitIds ?? [],
     srsCards: user.srsCards ?? {},
@@ -56,7 +58,7 @@ function withPlacementDefaults(user: DemoUser): DemoUser {
     recommendedUnitId:
       user.recommendedUnitId ??
       recommendedUnitForLevel(user.startingLevel ?? "absolute_beginner"),
-  };
+  });
 }
 
 export const useUserStore = create<UserState>()(
@@ -81,8 +83,6 @@ export const useUserStore = create<UserState>()(
               name: name.trim() || "Learner",
               startingLevel,
               onboardingComplete: true,
-              streak: Math.max(s.user.streak, 1),
-              lastStreakDate: s.user.lastStreakDate || localDateKey(),
               skippedUnitIds,
               recommendedUnitId,
               completedLessonIds: Array.from(completed),
@@ -212,6 +212,17 @@ export const useUserStore = create<UserState>()(
           };
         }),
       resetDemo: () => set({ user: withPlacementDefaults({ ...DEFAULT_USER }) }),
+      rolloverStreak: () =>
+        set((s) => {
+          const next = applyStreakRollover(s.user);
+          if (
+            next.streak === s.user.streak &&
+            next.dailyXp === s.user.dailyXp
+          ) {
+            return s;
+          }
+          return { user: next };
+        }),
     }),
     {
       name: "uno-demo-user",

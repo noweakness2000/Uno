@@ -32,6 +32,10 @@ if (isGoogleAuthConfigured()) {
   );
 }
 
+/** 1 year — keep Google logins across browser restarts and app reloads. */
+const SESSION_MAX_AGE = 60 * 60 * 24 * 365;
+const useSecureCookies = (process.env.AUTH_URL ?? "").startsWith("https://");
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
   trustHost: true,
   secret: process.env.AUTH_SECRET,
@@ -43,8 +47,24 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         verificationTokensTable: verificationTokens,
       })
     : undefined,
+  // JWT in the session cookie (adapter still stores the Google account).
+  // Database sessions vanish if the cookie is treated as session-only or the
+  // sessions row expires; a signed cookie with Max-Age survives reloads.
   session: {
-    strategy: hasDatabase() ? "database" : "jwt",
+    strategy: "jwt",
+    maxAge: SESSION_MAX_AGE,
+    updateAge: 60 * 60 * 24,
+  },
+  cookies: {
+    sessionToken: {
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: useSecureCookies,
+        maxAge: SESSION_MAX_AGE,
+      },
+    },
   },
   pages: {
     signIn: "/login",
@@ -94,9 +114,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
   },
   callbacks: {
-    async session({ session, user, token }) {
+    async jwt({ token, user }) {
+      if (user?.id) token.sub = user.id;
+      return token;
+    },
+    async session({ session, token }) {
       if (session.user) {
-        session.user.id = user?.id ?? token?.sub ?? "";
+        session.user.id = (token.sub as string | undefined) ?? "";
       }
       return session;
     },

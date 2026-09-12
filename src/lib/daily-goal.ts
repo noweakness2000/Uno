@@ -5,24 +5,25 @@
  * Motivational only: the goal never gates a lesson.
  */
 import type { DemoUser } from "./types";
+import { effectiveDailyXp } from "./streak";
 
-/** Just the XP fields the goal maths needs. */
-type DailyGoalFields = Pick<DemoUser, "dailyXp" | "dailyGoal">;
+/** XP + goal + last practice day so "today" resets after midnight. */
+type DailyGoalFields = Pick<DemoUser, "dailyXp" | "dailyGoal" | "lastStreakDate">;
 
 /** Percent of today's XP goal reached, clamped to 0–100. */
 export function dailyGoalPercent(user: DailyGoalFields): number {
   return Math.min(
     100,
-    Math.round((user.dailyXp / Math.max(user.dailyGoal, 1)) * 100)
+    Math.round((effectiveDailyXp(user) / Math.max(user.dailyGoal, 1)) * 100)
   );
 }
 
 /** True once today's XP goal is reached. */
 export function isDailyGoalMet(user: DailyGoalFields): boolean {
-  return user.dailyXp >= user.dailyGoal;
+  return effectiveDailyXp(user) >= user.dailyGoal;
 }
 
 /** XP still needed today — never negative once the goal is passed. */
 export function xpToDailyGoal(user: DailyGoalFields): number {
-  return Math.max(0, user.dailyGoal - user.dailyXp);
+  return Math.max(0, user.dailyGoal - effectiveDailyXp(user));
 }

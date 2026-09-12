@@ -8,6 +8,7 @@ import {
   xpToDailyGoal,
 } from "@/lib/daily-goal";
 import { useUserStore } from "@/store/user-store";
+import { effectiveDailyXp, effectiveStreak } from "@/lib/streak";
 import { cn } from "@/lib/utils";
 
 /**
@@ -18,10 +19,12 @@ import { cn } from "@/lib/utils";
  */
 export function StatusRibbon() {
   const user = useUserStore((s) => s.user);
+  const streak = effectiveStreak(user);
+  const todayXp = effectiveDailyXp(user);
   const goalMet = isDailyGoalMet(user);
   const goalPct = dailyGoalPercent(user);
   const remaining = xpToDailyGoal(user);
-  const hot = user.streak >= 3;
+  const hot = streak >= 3;
 
   return (
     <div className="flex flex-col gap-3 border-t-2 border-slate-100 pt-3">
@@ -39,10 +42,10 @@ export function StatusRibbon() {
             strokeWidth={2.5}
           />
           <span className="text-base font-extrabold leading-none tabular-nums text-orange-700">
-            {user.streak}
+            {streak}
           </span>
           <span className="text-[11px] font-semibold leading-none text-orange-600">
-            day{user.streak === 1 ? "" : "s"}
+            day{streak === 1 ? "" : "s"}
           </span>
         </span>
 
@@ -72,7 +75,7 @@ export function StatusRibbon() {
               : `${remaining} XP to today’s goal`}
           </span>
           <span className="text-xs font-bold tabular-nums text-slate-600">
-            <span className="text-sm text-emerald-700">{user.dailyXp}</span>
+            <span className="text-sm text-emerald-700">{todayXp}</span>
             <span className="text-slate-400">/{user.dailyGoal} XP</span>
           </span>
         </div>

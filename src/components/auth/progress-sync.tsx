@@ -183,6 +183,16 @@ export function ProgressSync() {
   const syncedFor = useRef<string | null>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const applyingRef = useRef(false);
+  const rolloverStreak = useUserStore((s) => s.rolloverStreak);
+
+  useEffect(() => {
+    rolloverStreak();
+    const onVisible = () => {
+      if (document.visibilityState === "visible") rolloverStreak();
+    };
+    document.addEventListener("visibilitychange", onVisible);
+    return () => document.removeEventListener("visibilitychange", onVisible);
+  }, [rolloverStreak]);
 
   useEffect(() => {
     if (status !== "authenticated" || !session?.user?.id) return;
