@@ -1606,6 +1606,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
         "Al hotel a pie",
         [
           { text: "Disculpe, ¿tiene un mapa?", en: "Excuse me, do you have a map?" },
+          { text: "¿Cómo llego al hotel?", en: "How do I get to the hotel?" },
           { text: "Sí. Su hotel está cerca del centro.", en: "Yes. Your hotel is near downtown." },
           { text: "Puede ir a pie. No está lejos.", en: "You can go on foot. It isn't far." },
           { text: "Todo recto una cuadra y luego a la izquierda.", en: "Straight one block and then left." },

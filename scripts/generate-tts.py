@@ -279,6 +279,11 @@ def harvest_content_phrases() -> list[str]:
             ]
             if parts:
                 add(" ".join(parts))
+        # Tap-chips tiles play their own clip as each one lands, so every
+        # chip (distractors included) needs a per-word MP3, not just the phrase.
+        for m in re.finditer(r"chips:\s*\[([^\]]+)\]", text, re.S):
+            for a, b in re.findall(r'"([^"]*)"|\'([^\']*)\'', m.group(1)):
+                add(a or b)
         for m in re.finditer(r"options:\s*\[([^\]]+)\]", text, re.S):
             for a, b in re.findall(r'"([^"]*)"|\'([^\']*)\'', m.group(1)):
                 opt = a or b

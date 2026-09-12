@@ -777,6 +777,7 @@ export const UNIT9_LESSONS: Record<string, Lesson> = {
         [
           { text: "Antes, yo iba al aeropuerto en taxi.", en: "Before, I used to go to the airport by taxi." },
           { text: "Ahora creo que el metro es mejor.", en: "Now I think the metro is better." },
+          { text: "El hotel está cerca del centro.", en: "The hotel is near downtown." },
           { text: "Ana dice: ¿Qué opinas del hotel?", en: "Ana says: What do you think of the hotel?" },
           { text: "Me parece bien. Tiene una habitación grande.", en: "Sounds good to me. It has a big room." },
           { text: "De acuerdo. Reservamos hoy y llegamos temprano al vuelo.", en: "Agreed. We'll book today and arrive early for the flight." },

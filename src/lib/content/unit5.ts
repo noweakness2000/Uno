@@ -1727,7 +1727,8 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
           { text: "Sí, me gusta el café con leche.", en: "Yes, I like coffee with milk." },
           { text: "Yo quiero un té, por favor.", en: "I want a tea, please." },
           { text: "También pedimos pan. La comida es simple.", en: "We also order bread. The food is simple." },
-          { text: "Para llevar el jugo de mi amigo.", en: "To go — my friend's juice." },
+          { text: "También quiero un jugo de naranja.", en: "I also want an orange juice." },
+          { text: "Para llevar el jugo de mi amigo.", en: "My friend's juice is to go." },
           { text: "Pagamos la cuenta y dejamos propina. ¡Hasta luego!", en: "We pay the bill and leave a tip. See you later!" },
         ],
         [

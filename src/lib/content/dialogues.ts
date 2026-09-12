@@ -38,6 +38,8 @@ export const BAKED_DIALOGUE_SLUGS = [
   "disculpe-como-llego-al-centro",
   "disculpe-tiene-un-mapa",
   "como-llego-al-hotel",
+  "todo-recto-dos-cuadras-y-luego-a-la-izquierda",
+  "la-estacion-esta-lejos",
   "te-recomiendo-ir-en-metro",
   "para-llevar-o-para-comer-aqui",
   "que-quieres-comer",
@@ -257,7 +259,7 @@ const u2Origin = dialogue(
 const u2Languages = dialogue(
   "dlg-u2-languages",
   "A tourist at the bus stop is struggling and turns to you.",
-  "Say which languages you speak and offer help.",
+  "Say which languages you speak and help them find the station.",
   "Turista",
   [
     turn("Disculpe, ¿habla inglés?", "Excuse me, do you speak English?", "m", [
@@ -270,12 +272,15 @@ const u2Languages = dialogue(
         "Se dice hablo inglés.", "We say hablo inglés.", "m",
         "Languages go with hablar, not tener."),
     ]),
-    turn("¿Y usted habla español también?", "And do you speak Spanish too?", "m", [
-      opt("Sí, estoy aprendiendo español.", "Yes, I am learning Spanish.", true,
-        "Habla muy bien para estar aprendiendo.", "You speak very well for someone still learning.", "m"),
+    turn("¿La estación está lejos?", "Is the station far?", "m", [
+      opt("No, está cerca.", "No, it is close.", true,
+        "Perfecto, muchas gracias.", "Perfect, thank you very much.", "m"),
+      opt("Sí, estoy aprendiendo español.", "Yes, I am learning Spanish.", false,
+        "Te pregunté por la estación, no por el idioma.", "I asked about the station, not the language.", "m",
+        "They are looking for the station — answer how far it is."),
       opt("Sí, hablo español todos los años.", "Yes, I speak Spanish every year.", false,
-        "¿Cada año nada más?", "Only once a year?", "m",
-        "Todos los años means yearly. For daily practice, say todos los días."),
+        "¿Cada año nada más? Yo busco la estación.", "Only once a year? I am looking for the station.", "m",
+        "Todos los años means yearly. And they asked about the station, not Spanish."),
     ]),
   ],
   ["hablar", "ingles", "espanol"]
@@ -407,7 +412,7 @@ const u5Problem = dialogue(
         "Entonces, ¿sopa o ensalada?", "So, soup or salad?", "f",
         "You just explained you ordered the salad — stay consistent."),
     ]),
-    turn("La comida está muy buena.", "The food is very good.", "f", [
+    turn("Aquí tiene la ensalada. ¿Se le ofrece algo más?", "Here is the salad. Would you like anything else?", "f", [
       opt("Sí, todo está delicioso. La cuenta, por favor.", "Yes, everything is delicious. The bill, please.", true,
         "Enseguida se la traigo.", "I will bring it right away.", "f"),
       opt("Sí, todo es delicioso.", "Yes, everything is delicious.", false,
@@ -458,20 +463,23 @@ const u6Metro = dialogue(
 
 const u6Repeat = dialogue(
   "dlg-u6-repeat",
-  "Someone gives you directions far too quickly.",
-  "Ask them to slow down and confirm what you heard.",
+  "A woman on the street rattles off directions to the pharmacy too quickly.",
+  "Ask her to slow down and confirm what you heard.",
   "Señora",
   [
-    turn("Disculpe, ¿me puede ayudar?", "Excuse me, can you help me?", "f", [
-      opt("Claro, dígame.", "Of course, tell me.", true,
-        "Busco la farmacia, pero no sé si es a la izquierda.", "I am looking for the pharmacy, but I do not know if it is to the left.", "f"),
+    turn("Todo recto dos cuadras y luego a la izquierda.", "Straight two blocks and then left.", "f", [
+      opt("¿Puede repetirlo, por favor?", "Could you repeat that, please?", true,
+        "Todo recto dos cuadras y luego a la izquierda.", "Straight two blocks and then left.", "f"),
+      opt("Claro, dígame.", "Of course, tell me.", false,
+        "No, yo le estoy diciendo el camino.", "No, I am the one giving you the way.", "f",
+        "She is giving you directions. Ask her to repeat them more slowly."),
       opt("Claro, me llamo Ana.", "Of course, my name is Ana.", false,
-        "Mucho gusto, pero necesito una dirección.", "Nice to meet you, but I need directions.", "f",
-        "She asked for help, not your name."),
+        "Mucho gusto, pero esto es la dirección.", "Nice to meet you, but this is the direction.", "f",
+        "She is giving you the way, not asking your name."),
     ]),
-    turn("¿Sabe dónde está la farmacia?", "Do you know where the pharmacy is?", "f", [
-      opt("Sí, siga derecho dos cuadras.", "Yes, go straight for two blocks.", true,
-        "Perfecto, muchas gracias.", "Perfect, thank you very much.", "f"),
+    turn("¿Quedó claro?", "Is that clear?", "f", [
+      opt("Sí, todo recto y luego a la izquierda. Gracias.", "Yes, straight and then left. Thank you.", true,
+        "De nada, con gusto.", "You are welcome, my pleasure.", "f"),
       opt("Sí, está a la derecha derecho.", "Yes, it is to the right straight.", false,
         "¿A la derecha o derecho? No es lo mismo.", "To the right or straight ahead? They are not the same.", "f",
         "Derecho means straight ahead; a la derecha means to the right."),
@@ -627,13 +635,13 @@ const u10Appointment = dialogue(
         "Tener does not work here. Use estar for how you feel."),
     ]),
     turn("¿Quiere cambiar su cita?", "Would you like to change your appointment?", "f", [
-      opt("Sí, ¿sería posible el jueves?", "Yes, would Thursday be possible?", true,
-        "El doctor llega mañana.", "The doctor arrives tomorrow.", "f"),
+      opt("Sí, ¿sería posible mañana?", "Yes, would tomorrow be possible?", true,
+        "El doctor llega mañana.", "The doctor is in tomorrow.", "f"),
       opt("Sí, cambié mi cita el jueves.", "Yes, I changed my appointment on Thursday.", false,
         "¿Ya la cambió? Yo no veo el cambio.", "You already changed it? I do not see the change.", "f",
         "Cambié is past. You are asking to change it now — use the question form."),
     ]),
-    turn("¿Necesita algo más? ¿Una receta, quizá?", "Do you need anything else? A prescription, perhaps?", "f", [
+    turn("Queda para mañana. ¿Trae su receta?", "It is set for tomorrow. Will you bring your prescription?", "f", [
       opt("El médico me dio una receta la semana pasada.", "The doctor gave me a prescription last week.", true,
         "Perfecto, la tengo aquí en el sistema.", "Perfect, I have it here in the system.", "f"),
       opt("El médico me da una receta la semana pasada.", "The doctor gives me a prescription last week.", false,
