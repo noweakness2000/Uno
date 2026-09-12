@@ -1,8 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { ConfettiBurst } from "@/components/confetti-burst";
 import { Flame, Star, Target, BookMarked } from "lucide-react";
 import { dailyGoalPercent, isDailyGoalMet } from "@/lib/daily-goal";
 import { effectiveDailyXp, effectiveStreak } from "@/lib/streak";
@@ -37,11 +39,27 @@ export function PostLessonSummary({
 
   return (
     <div className="mx-auto flex min-h-dvh max-w-lg flex-col justify-center gap-6 px-4 py-10">
+      <ConfettiBurst />
       <div className="text-center">
-        <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 text-4xl shadow-lg shadow-emerald-500/30">
-          🎉
+        <div className="relative mx-auto mb-4 h-24 w-24 animate-bounce-in">
+          <Image
+            src="/images/mascot-square.png"
+            alt=""
+            width={96}
+            height={96}
+            priority
+            className="h-24 w-24 rounded-full object-cover shadow-lg shadow-emerald-500/30 ring-4 ring-emerald-100"
+          />
+          <span
+            aria-hidden
+            className="absolute -right-1 -bottom-1 flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 text-lg shadow-md ring-2 ring-white"
+          >
+            🎉
+          </span>
         </div>
-        <h1 className="text-3xl font-extrabold text-slate-900">Lesson complete</h1>
+        <h1 className="text-3xl font-extrabold text-slate-900 animate-slide-up">
+          Lesson complete
+        </h1>
         <p className="mt-2 text-slate-500">{lessonTitle}</p>
       </div>
 
@@ -61,7 +79,7 @@ export function PostLessonSummary({
             : `Today ${todayXp}/${user.dailyGoal} XP — a little more keeps your streak happy.`}
         </p>
         <div className="mx-auto mt-3 max-w-xs">
-          <Progress value={goalPct} />
+          <Progress value={goalPct} fillIn />
         </div>
       </div>
 

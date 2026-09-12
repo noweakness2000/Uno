@@ -98,7 +98,7 @@ export function StatusRibbon() {
             </button>
           </span>
         </div>
-        <Progress value={goalPct} />
+        <Progress value={goalPct} fillIn />
         {editingGoal && (
           <div className="mt-3 rounded-2xl border border-slate-200 bg-slate-50 p-3">
             <p className="mb-2 text-xs font-semibold text-slate-500">
