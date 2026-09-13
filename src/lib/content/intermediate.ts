@@ -27,7 +27,7 @@ const LATAM_PRESENT = (forms: [string, string, string, string, string]) => [
 
 const LATAM_PRETERITE = (forms: [string, string, string, string, string]) => [
   {
-    label: "Preterite",
+    label: "Past tense",
     forms: [
       { person: "yo", form: forms[0] },
       { person: "tú", form: forms[1] },
@@ -613,7 +613,7 @@ export const INTERMEDIATE_WORD_CARDS: Record<string, WordCard> = {
     gender: "n/a",
     gloss: "to eat",
     meaningSummary:
-      "Core -er verb. Present: como… Preterite: comí, comiste, comió… Comí tacos hoy is natural past talk.",
+      "Core -er verb. Present: como… Past tense: comí, comiste, comió… Comí tacos hoy is natural past talk.",
     conjugations: [
       ...LATAM_PRESENT(["como", "comes", "come", "comemos", "comen"]),
       ...LATAM_PRETERITE(["comí", "comiste", "comió", "comimos", "comieron"]),
@@ -629,12 +629,12 @@ export const INTERMEDIATE_WORD_CARDS: Record<string, WordCard> = {
   },
   "hablar-preterite": {
     id: "hablar-preterite",
-    lemma: "hablar (preterite)",
+    lemma: "hablar (past tense)",
     pos: "verb",
     gender: "n/a",
     gloss: "to speak (past)",
     meaningSummary:
-      "Regular -ar preterite: hablé, hablaste, habló, hablamos, hablaron.",
+      "Regular -ar past tense: hablé, hablaste, habló, hablamos, hablaron.",
     conjugations: LATAM_PRETERITE([
       "hablé",
       "hablaste",
@@ -647,7 +647,7 @@ export const INTERMEDIATE_WORD_CARDS: Record<string, WordCard> = {
       { es: "¿Hablaste con el mesero?", en: "Did you speak with the waiter?" },
     ],
     useWhen: "Completed conversations in the past.",
-    dontUseWhen: "For ongoing past 'I was talking' use imperfect later (hablaba).",
+    dontUseWhen: "For ongoing past 'I was talking' use past (ongoing) later (hablaba).",
     formality: "neutral",
     cefr: "A2",
   },
@@ -657,7 +657,7 @@ export const INTERMEDIATE_WORD_CARDS: Record<string, WordCard> = {
     pos: "adverb",
     gender: "n/a",
     gloss: "yesterday",
-    meaningSummary: "Time anchor for preterite stories. Ayer comí… / Ayer fui al centro.",
+    meaningSummary: "Time anchor for past tense stories. Ayer comí… / Ayer fui al centro.",
     examples: [
       { es: "Ayer trabajé hasta tarde.", en: "Yesterday I worked until late." },
       { es: "¿Qué hiciste ayer?", en: "What did you do yesterday?" },
@@ -675,7 +675,7 @@ export const INTERMEDIATE_WORD_CARDS: Record<string, WordCard> = {
     gender: "n/a",
     gloss: "today",
     meaningSummary:
-      "Today — present or preterite depending on whether the action is done: Hoy como… vs Hoy comí…",
+      "Today — present or past tense depending on whether the action is done: Hoy como… vs Hoy comí…",
     examples: [
       { es: "Hoy comí temprano.", en: "Today I ate early." },
       { es: "Hoy voy al centro.", en: "Today I'm going downtown." },
@@ -693,7 +693,7 @@ export const INTERMEDIATE_WORD_CARDS: Record<string, WordCard> = {
     gender: "n/a",
     gloss: "to go",
     meaningSummary:
-      "Irregular essential. Present: voy… Preterite: fui, fuiste, fue… Same preterite as ser — context tells you. Also ir a + infinitive: Voy a comer.",
+      "Irregular essential. Present: voy… Past tense: fui, fuiste, fue… Same past tense as ser — context tells you. Also ir a + infinitive: Voy a comer.",
     conjugations: [
       ...LATAM_PRESENT(["voy", "vas", "va", "vamos", "van"]),
       ...LATAM_PRETERITE(["fui", "fuiste", "fue", "fuimos", "fueron"]),
@@ -715,7 +715,7 @@ export const INTERMEDIATE_WORD_CARDS: Record<string, WordCard> = {
     gender: "n/a",
     gloss: "to do / to make",
     meaningSummary:
-      "High-frequency irregular. Present: hago… Preterite: hice, hiciste, hizo, hicimos, hicieron.",
+      "High-frequency irregular. Present: hago… Past tense: hice, hiciste, hizo, hicimos, hicieron.",
     conjugations: [
       ...LATAM_PRESENT(["hago", "haces", "hace", "hacemos", "hacen"]),
       ...LATAM_PRETERITE(["hice", "hiciste", "hizo", "hicimos", "hicieron"]),
@@ -731,11 +731,11 @@ export const INTERMEDIATE_WORD_CARDS: Record<string, WordCard> = {
   },
   "tener-preterite": {
     id: "tener-preterite",
-    lemma: "tener (preterite)",
+    lemma: "tener (past tense)",
     pos: "verb",
     gender: "n/a",
     gloss: "to have (past)",
-    meaningSummary: "Preterite of tener: tuve, tuviste, tuvo, tuvimos, tuvieron.",
+    meaningSummary: "Past tense of tener: tuve, tuviste, tuvo, tuvimos, tuvieron.",
     conjugations: LATAM_PRETERITE([
       "tuve",
       "tuviste",
@@ -748,7 +748,7 @@ export const INTERMEDIATE_WORD_CARDS: Record<string, WordCard> = {
       { es: "No tuve tiempo ayer.", en: "I didn't have time yesterday." },
     ],
     useWhen: "Completed possession / experiences in the past.",
-    dontUseWhen: "For age in the past you'll often still hear tenía (imperfect) later.",
+    dontUseWhen: "For age in the past you'll often still hear tenía (past, ongoing) later.",
     formality: "neutral",
     cefr: "A2",
   },
@@ -759,7 +759,7 @@ export const INTERMEDIATE_WORD_CARDS: Record<string, WordCard> = {
     gender: "n/a",
     gloss: "to say / to tell",
     meaningSummary:
-      "Irregular: digo… Preterite: dije, dijiste, dijo, dijimos, dijeron.",
+      "Irregular: digo… Past tense: dije, dijiste, dijo, dijimos, dijeron.",
     conjugations: [
       ...LATAM_PRESENT(["digo", "dices", "dice", "decimos", "dicen"]),
       ...LATAM_PRETERITE(["dije", "dijiste", "dijo", "dijimos", "dijeron"]),
@@ -2430,7 +2430,7 @@ export const INTERMEDIATE_UNITS_META = [
     id: "unit-7",
     number: 7,
     title: "What I did",
-    description: "Preterite / past for daily life + story listening — ~12 lessons.",
+    description: "Past tense / past for daily life + story listening — ~12 lessons.",
     lessonIds: ["u7-l1", "u7-l2", "u7-l3", "u7-l4", "u7-l5", "u7-l6", "u7-l7", "u7-l8", "u7-l9", "u7-l10", "u7-l11", "u7-l12"],
     unlocked: true,
     track: "intermediate" as const,
@@ -2448,7 +2448,7 @@ export const INTERMEDIATE_UNITS_META = [
     id: "unit-9",
     number: 9,
     title: "Opinions & travel stories",
-    description: "Opinions, imperfect habits/descriptions, airport and lodging — ~12 lessons.",
+    description: "Opinions, past (ongoing) habits/descriptions, airport and lodging — ~12 lessons.",
     lessonIds: ["u9-l1", "u9-l2", "u9-l3", "u9-l4", "u9-l5", "u9-l6", "u9-l7", "u9-l8", "u9-l9", "u9-l10", "u9-l11", "u9-l12"],
     unlocked: true,
     track: "intermediate" as const,
@@ -2466,7 +2466,7 @@ export const INTERMEDIATE_UNITS_META = [
     id: "unit-11",
     number: 11,
     title: "Stories & social life",
-    description: "Friends, parties, weekend stories, light pretérito vs imperfecto — ~12 lessons.",
+    description: "Friends, parties, weekend stories, light past tense vs past (ongoing) — ~12 lessons.",
     lessonIds: ["u11-l1", "u11-l2", "u11-l3", "u11-l4", "u11-l5", "u11-l6", "u11-l7", "u11-l8", "u11-l9", "u11-l10", "u11-l11", "u11-l12"],
     unlocked: true,
     track: "intermediate" as const,

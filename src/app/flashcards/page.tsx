@@ -136,7 +136,7 @@ export default function FlashcardsPage() {
           <h1 className="text-2xl font-extrabold text-slate-900">Flashcards</h1>
           <p className="text-sm text-slate-500">
             {dueToday > 0
-              ? `${dueToday} due today · optional practice`
+              ? `${dueToday} ${dueToday === 1 ? "word" : "words"} ready for review · optional`
               : "Due cards first · tap to flip"}
           </p>
         </div>
@@ -179,7 +179,7 @@ export default function FlashcardsPage() {
             {done ? deck.length : index + 1} / {deck.length}
           </span>
           <span>
-            ✓ {known} · ? {unknown}
+            Good {known} · Revisit {unknown}
           </span>
         </div>
         <Progress value={Math.min(100, progress)} />
@@ -190,7 +190,7 @@ export default function FlashcardsPage() {
           <p className="text-3xl">✨</p>
           <h2 className="text-xl font-extrabold text-slate-900">Deck complete</h2>
           <p className="text-sm text-slate-500">
-            Knew {known} · Still learning {unknown}. Due cards resurface when
+            Good {known} · Revisit {unknown}. Due cards resurface when
             it&apos;s time — lessons stay open.
           </p>
           <Button size="lg" className="w-full" onClick={resetDeck}>
@@ -281,7 +281,7 @@ export default function FlashcardsPage() {
                 onClick={() => grade(false)}
               >
                 <ThumbsDown className="h-5 w-5" />
-                Again
+                Revisit
               </Button>
               <Button
                 size="lg"

@@ -663,7 +663,7 @@ const u10Appointment = dialogue(
         "Perfecto, la tengo aquí en el sistema.", "Perfect, I have it here in the system.", "f"),
       opt("El médico me da una receta la semana pasada.", "The doctor gives me a prescription last week.", false,
         "Si fue la semana pasada, decimos me dio.", "If it was last week, we say me dio.", "f",
-        "La semana pasada needs the preterite: me dio."),
+        "La semana pasada needs the past tense: me dio."),
     ]),
   ],
   ["me-duele", "cita", "receta"],

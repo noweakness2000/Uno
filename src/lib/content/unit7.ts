@@ -1,5 +1,5 @@
 /**
- * Unit 7 — What I did (~12 lessons). Preterite / past focus. Spanish.
+ * Unit 7 — What I did (~12 lessons). Past tense / past focus. Spanish.
  * Merged via intermediate.ts into mock-data.
  */
 import type { Lesson, WordCard } from "../types";
@@ -7,7 +7,7 @@ import { audioSrcFor, voiceForIndex, type AudioVoice } from "../audio";
 
 const LATAM_PRETERITE = (forms: [string, string, string, string, string]) => [
   {
-    label: "Preterite",
+    label: "Past tense",
     forms: [
       { person: "yo", form: forms[0] },
       { person: "tú", form: forms[1] },
@@ -180,7 +180,7 @@ export const UNIT7_WORD_CARDS: Record<string, WordCard> = {
     gender: "n/a",
     gloss: "last night",
     meaningSummary:
-      "Time anchor for last night — pairs naturally with preterite: Anoche comí / Anoche fui al cine.",
+      "Time anchor for last night — pairs naturally with past tense: Anoche comí / Anoche fui al cine.",
     examples: [
       { es: "Anoche comí tacos.", en: "Last night I ate tacos." },
       { es: "¿Qué hiciste anoche?", en: "What did you do last night?" },
@@ -211,12 +211,12 @@ export const UNIT7_WORD_CARDS: Record<string, WordCard> = {
   },
   "trabajar-preterite": {
     id: "trabajar-preterite",
-    lemma: "trabajar (preterite)",
+    lemma: "trabajar (past tense)",
     pos: "verb",
     gender: "n/a",
     gloss: "to work (past)",
     meaningSummary:
-      "Regular -ar preterite: trabajé, trabajaste, trabajó, trabajamos, trabajaron.",
+      "Regular -ar past tense: trabajé, trabajaste, trabajó, trabajamos, trabajaron.",
     conjugations: LATAM_PRETERITE([
       "trabajé",
       "trabajaste",
@@ -229,18 +229,18 @@ export const UNIT7_WORD_CARDS: Record<string, WordCard> = {
       { es: "¿Trabajaste hoy?", en: "Did you work today?" },
     ],
     useWhen: "Completed work days in the past.",
-    dontUseWhen: "For habits over time you'll later use imperfect (trabajaba).",
+    dontUseWhen: "For habits over time you'll later use past (ongoing) (trabajaba).",
     formality: "neutral",
     cefr: "A2",
   },
   "vivir-preterite": {
     id: "vivir-preterite",
-    lemma: "vivir (preterite)",
+    lemma: "vivir (past tense)",
     pos: "verb",
     gender: "n/a",
     gloss: "to live (past)",
     meaningSummary:
-      "Regular -ir preterite: viví, viviste, vivió, vivimos, vivieron. Useful for 'I lived in…' stories.",
+      "Regular -ir past tense: viví, viviste, vivió, vivimos, vivieron. Useful for 'I lived in…' stories.",
     conjugations: LATAM_PRETERITE([
       "viví",
       "viviste",
@@ -259,12 +259,12 @@ export const UNIT7_WORD_CARDS: Record<string, WordCard> = {
   },
   "estudiar-preterite": {
     id: "estudiar-preterite",
-    lemma: "estudiar (preterite)",
+    lemma: "estudiar (past tense)",
     pos: "verb",
     gender: "n/a",
     gloss: "to study (past)",
     meaningSummary:
-      "Regular -ar preterite: estudié, estudiaste, estudió, estudiamos, estudiaron.",
+      "Regular -ar past tense: estudié, estudiaste, estudió, estudiamos, estudiaron.",
     conjugations: LATAM_PRETERITE([
       "estudié",
       "estudiaste",
@@ -283,7 +283,7 @@ export const UNIT7_WORD_CARDS: Record<string, WordCard> = {
   },
   "venir-preterite": {
     id: "venir-preterite",
-    lemma: "venir (preterite)",
+    lemma: "venir (past tense)",
     pos: "verb",
     gender: "n/a",
     gloss: "to come (past)",
@@ -308,12 +308,12 @@ export const UNIT7_WORD_CARDS: Record<string, WordCard> = {
   },
   "limpiar-preterite": {
     id: "limpiar-preterite",
-    lemma: "limpiar (preterite)",
+    lemma: "limpiar (past tense)",
     pos: "verb",
     gender: "n/a",
     gloss: "to clean (past)",
     meaningSummary:
-      "Regular -ar preterite for chores: limpié, limpiaste, limpió… Limpie el departamento ayer.",
+      "Regular -ar past tense for chores: limpié, limpiaste, limpió… Limpie el departamento ayer.",
     conjugations: LATAM_PRETERITE([
       "limpié",
       "limpiaste",
@@ -332,12 +332,12 @@ export const UNIT7_WORD_CARDS: Record<string, WordCard> = {
   },
   "desayunar-preterite": {
     id: "desayunar-preterite",
-    lemma: "desayunar (preterite)",
+    lemma: "desayunar (past tense)",
     pos: "verb",
     gender: "n/a",
     gloss: "to eat breakfast (past)",
     meaningSummary:
-      "Regular -ar preterite: desayuné, desayunaste, desayunó… Common with esta mañana / ayer.",
+      "Regular -ar past tense: desayuné, desayunaste, desayunó… Common with esta mañana / ayer.",
     conjugations: LATAM_PRETERITE([
       "desayuné",
       "desayunaste",
@@ -361,17 +361,17 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
     id: "u7-l1",
     unitId: "unit-7",
     title: "I ate… today",
-    description: "Preterite stories with comer, hablar, ayer, hoy.",
+    description: "Past tense stories with comer, hablar, ayer, hoy.",
     xpReward: 44,
     exercises: [
       teach("teach-u7l1-comer", "comer"),
       {
         id: "u7l1-1",
         type: "select",
-        prompt: "“I ate” (yo, preterite) is…",
+        prompt: "“I ate” (yo, past tense) is…",
         options: ["Comí", "Como", "Comer", "Comía always"],
         correctIndex: 0,
-        explanation: "Preterite yo of comer → comí.",
+        explanation: "Past tense yo of comer → comí.",
         wordCardIds: ["comer"],
         xp: 3,
       },
@@ -382,7 +382,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         prompt: "“I spoke / I talked” (yo) is…",
         options: ["Hablo", "Hablaba only", "Hablé", "Hacer"],
         correctIndex: 2,
-        explanation: "Regular -ar preterite: hablé.",
+        explanation: "Regular -ar past tense: hablé.",
         wordCardIds: ["hablar-preterite"],
         xp: 3,
       },
@@ -444,7 +444,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         englishPrompt: "Yesterday I talked with Ana.",
         template: "Ayer ___ con Ana.",
         acceptedAnswers: ["hablé", "hable", "Hablé"],
-        hint: "I talked (preterite)",
+        hint: "I talked (past tense)",
         explanation: "Ayer hablé con Ana.",
         wordCardIds: ["hablar-preterite", "ayer"],
         xp: 3,
@@ -452,14 +452,14 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
       {
         id: "u7l1-8",
         type: "match-pairs",
-        prompt: "Match preterite forms.",
+        prompt: "Match past tense forms.",
         pairs: [
           { left: "comí", right: "I ate" },
           { left: "hablé", right: "I spoke" },
           { left: "ayer", right: "yesterday" },
           { left: "hoy", right: "today" },
         ],
-        explanation: "Regular preterite storytelling anchors.",
+        explanation: "Regular past tense storytelling anchors.",
         wordCardIds: ["comer", "hablar-preterite", "ayer", "hoy"],
         xp: 4,
       },
@@ -488,9 +488,9 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         "u7l1-conj-1",
         "comer",
         "yo",
-        "Preterite",
+        "Past tense",
         ["comí", "comi", "Comí", "Comi"],
-        "yo + comer (preterite) → comí.",
+        "yo + comer (past tense) → comí.",
         ["comer"],
         { hint: "comí", xp: 3 }
       ),
@@ -498,9 +498,9 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         "u7l1-conj-2",
         "hablar",
         "tú",
-        "Preterite",
+        "Past tense",
         ["hablaste", "Hablaste"],
-        "tú + hablar (preterite) → hablaste.",
+        "tú + hablar (past tense) → hablaste.",
         ["hablar"],
         { hint: "hablaste", xp: 3 }
       ),
@@ -511,7 +511,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
     id: "u7-l2",
     unitId: "unit-7",
     title: "Irregular past hits",
-    description: "Fui, hice, tuve, dije — high-frequency preterite irregulars.",
+    description: "Fui, hice, tuve, dije — high-frequency past tense irregulars.",
     xpReward: 46,
     exercises: [
       teach("teach-u7l2-ir", "ir"),
@@ -521,7 +521,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         prompt: "“I went” (yo) is…",
         options: ["Voy", "Ir", "Fui", "Comí"],
         correctIndex: 2,
-        explanation: "Ir preterite yo → fui (same form as ser — context decides).",
+        explanation: "Ir past tense yo → fui (same form as ser — context decides).",
         wordCardIds: ["ir"],
         xp: 3,
       },
@@ -532,7 +532,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         prompt: "“I did / I made” (yo) is…",
         options: ["Hice", "Hago", "Hacer", "Hablé"],
         correctIndex: 0,
-        explanation: "Hacer preterite yo → hice.",
+        explanation: "Hacer past tense yo → hice.",
         wordCardIds: ["hacer"],
         xp: 3,
       },
@@ -602,14 +602,14 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
       {
         id: "u7l2-8",
         type: "match-pairs",
-        prompt: "Match irregular preterites.",
+        prompt: "Match irregular past-tense forms.",
         pairs: [
           { left: "fui", right: "I went" },
           { left: "hice", right: "I did / I made" },
           { left: "tuve", right: "I had" },
           { left: "dije", right: "I said" },
         ],
-        explanation: "High-frequency irregular preterites.",
+        explanation: "High-frequency irregular past-tense forms.",
         wordCardIds: ["ir", "hacer", "tener-preterite", "decir"],
         xp: 4,
       },
@@ -731,7 +731,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
           { left: "viví", right: "-ir → -í" },
           { left: "estudié", right: "I studied" },
         ],
-        explanation: "Regular preterite yo patterns.",
+        explanation: "Regular past tense yo patterns.",
         wordCardIds: ["hablar-preterite", "comer", "vivir-preterite", "estudiar-preterite"],
         xp: 4,
       },
@@ -774,9 +774,9 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         "u7l3-conj-1",
         "ir",
         "yo",
-        "Preterite",
+        "Past tense",
         ["fui", "Fui"],
-        "yo + ir (preterite) → fui.",
+        "yo + ir (past tense) → fui.",
         ["ir"],
         { hint: "fui", xp: 3 }
       ),
@@ -784,7 +784,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         "u7l3-conj-2",
         "hacer",
         "él/ella/usted",
-        "Preterite",
+        "Past tense",
         ["hizo", "Hizo"],
         "él/ella/usted + hacer → hizo.",
         ["hacer"],
@@ -807,7 +807,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         prompt: "“I came” (yo) is…",
         options: ["Voy", "Vengo", "Vine", "Fui always only"],
         correctIndex: 2,
-        explanation: "venir preterite yo → vine.",
+        explanation: "venir past tense yo → vine.",
         wordCardIds: ["venir-preterite"],
         xp: 3,
       },
@@ -877,7 +877,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
           { left: "dije", right: "I said" },
           { left: "vine", right: "I came" },
         ],
-        explanation: "Core irregular preterites.",
+        explanation: "Core irregular past-tense forms.",
         wordCardIds: ["ir", "hacer", "tener-preterite", "decir", "venir-preterite"],
         xp: 5,
       },
@@ -1002,7 +1002,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
           { left: "esta mañana", right: "this morning" },
           { left: "hoy", right: "today" },
         ],
-        explanation: "Preterite timeline anchors.",
+        explanation: "Past tense timeline anchors.",
         wordCardIds: ["ayer", "anoche", "esta-manana", "hoy"],
         xp: 4,
       },
@@ -1050,9 +1050,9 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         "u7l5-conj-1",
         "tener",
         "yo",
-        "Preterite",
+        "Past tense",
         ["tuve", "Tuve"],
-        "yo + tener (preterite) → tuve.",
+        "yo + tener (past tense) → tuve.",
         ["tener"],
         { hint: "tuve", xp: 3 }
       ),
@@ -1060,9 +1060,9 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         "u7l5-conj-2",
         "decir",
         "yo",
-        "Preterite",
+        "Past tense",
         ["dije", "Dije"],
-        "yo + decir (preterite) → dije.",
+        "yo + decir (past tense) → dije.",
         ["decir"],
         { hint: "dije", xp: 3 }
       ),
@@ -1073,7 +1073,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
     id: "u7-l6",
     unitId: "unit-7",
     title: "Food & home in the past",
-    description: "Reuse Unit 4–5 vocab with preterite: meals, chores, home.",
+    description: "Reuse Unit 4–5 vocab with past tense: meals, chores, home.",
     xpReward: 45,
     exercises: [
       teach("teach-u7l6-desayunar", "desayunar-preterite"),
@@ -1159,7 +1159,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
           { left: "comí", right: "I ate" },
           { left: "hablé", right: "I talked" },
         ],
-        explanation: "Unit 4–5 reuse in preterite.",
+        explanation: "Unit 4–5 reuse in past tense.",
         wordCardIds: ["desayunar-preterite", "limpiar-preterite", "comer", "hablar-preterite"],
         xp: 4,
       },
@@ -1306,7 +1306,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
           { left: "¿Fuiste al centro?", right: "Sí, fui. / No, no fui." },
           { left: "¿Viniste?", right: "Sí, vine temprano." },
         ],
-        explanation: "Question → preterite answer.",
+        explanation: "Question → past tense answer.",
         wordCardIds: ["hacer", "comer", "ir", "venir-preterite"],
         xp: 4,
       },
@@ -1824,7 +1824,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
     id: "u7-l12",
     unitId: "unit-7",
     title: "Unit 7 check",
-    description: "Final check — preterite, timeline, stories, reuse.",
+    description: "Final check — past tense, timeline, stories, reuse.",
     xpReward: 50,
     exercises: [
       {

@@ -64,7 +64,9 @@ export default function ReviewPage() {
       {dueCount > 0 && (
         <Link href="/flashcards" className="mb-4 block">
           <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
-            <span className="font-bold">{dueCount} due today</span>
+            <span className="font-bold">
+              {dueCount} {dueCount === 1 ? "word" : "words"} ready for review
+            </span>
             {" — "}optional flashcard practice. Lessons stay open.
           </div>
         </Link>

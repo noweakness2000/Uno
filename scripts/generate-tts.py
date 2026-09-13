@@ -213,17 +213,24 @@ def looks_spanish(text: str) -> bool:
         return True
     norm = unicodedata.normalize("NFD", t.lower())
     norm = "".join(c for c in norm if not unicodedata.combining(c))
-    norm = re.sub(r"[¿?¡!,.]", "", norm)
+    norm = re.sub(r"[¿?¡!,.…]", "", norm)
     if re.search(
         r"\b(hola|adios|gracias|perdon|disculpe|buenos|buenas|dias|tardes|noches|"
-        r"mucho|gusto|llamo|llamas|llamarse|soy|eres|es|somos|son|hablo|hablas|habla|"
-        r"hablan|ingles|espanol|mexico|estados|unidos|vivo|viven|tambien|pero|nada|"
-        r"favor|luego|hasta|usted|ustedes|como|donde|de|un|poco|si|no|me|te|se|nos|"
-        r"uno|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez|veinte|cien|celular|"
-        r"telefono|anos|cuanto|cuesta|pesos|dolares|gratis|tengo|tienes|numero|"
-        r"numeros|carro|jugo|departamento|despierto|trabajo|camino|gusta|gustan|"
-        r"quiero|cuenta|cerca|lejos|derecha|izquierda|recto|centro|metro|llego|comi|"
-        r"hable|ayer|hoy|fui|hice|tuve|dije|voy|vas|gustaria|parece|levanto|levantas|ducho|duchas|desayuno|estudio|limpio|cocina|fin|semana|descanso|temprano|manana|preparo|lavo|oficina|escuela|tarea|ropa|platos|dormir|duermo|tacos|pollo|arroz|pan|comida|menu|agua|leche|te|restaurante|mesero|propina|almuerzo|cena|llevar|gustaria|recomienda|traiga|trae|natural|naranja)\b",
+        r"mucho|gusto|llamo|llamas|llamarse|soy|eres|es|somos|son|estoy|estas|esta|"
+        r"estamos|estan|hablo|hablas|habla|hablan|hablaba|ingles|espanol|mexico|"
+        r"estados|unidos|vivo|viven|tambien|pero|nada|favor|luego|hasta|usted|"
+        r"ustedes|como|donde|que|de|el|la|los|las|un|una|unas|al|del|yo|tu|su|mi|"
+        r"mis|tus|sus|poco|si|no|me|te|se|nos|nosotros|ellos|ellas|uno|dos|tres|"
+        r"cuatro|cinco|seis|siete|ocho|nueve|diez|veinte|cien|celular|telefono|"
+        r"anos|cuanto|cuesta|pesos|dolares|gratis|tengo|tienes|numero|numeros|carro|"
+        r"jugo|departamento|despierto|trabajo|camino|gusta|gustan|quiero|cuenta|"
+        r"cerca|lejos|derecha|izquierda|recto|centro|metro|llego|comi|hable|ayer|"
+        r"anoche|ahora|antes|hoy|fui|fue|hice|tuve|dije|voy|vas|vi|vimos|era|iba|"
+        r"estaba|estaban|limpia|limpiar|farmacia|pan|tacos|pollo|arroz|comida|"
+        r"menu|agua|leche|te|restaurante|mesero|propina|almuerzo|cena|llevar|"
+        r"gustaria|parece|levanto|levantas|ducho|duchas|desayuno|estudio|limpio|"
+        r"cocina|fin|semana|descanso|temprano|manana|preparo|lavo|oficina|escuela|"
+        r"tarea|ropa|platos|dormir|duermo|recomienda|traiga|trae|natural|naranja)\b",
         norm,
     ):
         return True
@@ -340,6 +347,12 @@ def main() -> None:
         default=ROOT / "public" / "audio" / "es-mx",
     )
     parser.add_argument("--only-missing", action="store_true")
+    parser.add_argument(
+        "--phrase",
+        action="append",
+        default=[],
+        help="Generate only these phrases (repeatable). Skips content harvest.",
+    )
     parser.add_argument("--list-voices", action="store_true")
     parser.add_argument("--list-phrases", action="store_true")
     parser.add_argument(
@@ -349,7 +362,7 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    phrases = all_phrases()
+    phrases = args.phrase if args.phrase else all_phrases()
     if args.list_phrases:
         for p in phrases:
             print(f"{slugify(p)}\t{p}")

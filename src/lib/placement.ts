@@ -9,7 +9,7 @@ export const UNIT_7_ID = "unit-7";
 
 export const BEGINNER_UNIT_IDS = [UNIT_1_ID, UNIT_2_ID, UNIT_3_ID];
 export const FIRST_INTERMEDIATE_UNIT_ID = UNIT_4_ID;
-/** Units 4–6 are present tense; the preterite starts here. */
+/** Units 4–6 are present tense; the past tense starts here. */
 export const PAST_TENSE_UNIT_ID = UNIT_7_ID;
 
 /** Where Continue starts for each self-claimed level. */

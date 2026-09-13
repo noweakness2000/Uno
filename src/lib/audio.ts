@@ -32,18 +32,23 @@ export function audioSrcLegacy(text: string): string {
   return `/audio/es-mx/${slugifyAudio(text)}.mp3`;
 }
 
+/** Whole strings that are English labels, not Spanish to play. */
+const ENGLISH_LABEL =
+  /^(today|tomorrow|morning|plan|saturday|sunday|music|sister|finished event|background description|sudden event|ongoing background)$/i;
+
 /** Heuristic: option/chip looks like Spanish worth playing. */
 export function looksSpanish(text: string): boolean {
   const t = text.trim();
   if (!t) return false;
+  if (ENGLISH_LABEL.test(t.replace(/[.…]/g, "").trim())) return false;
   if (/[áéíóúüñ¿¡]/i.test(t)) return true;
   const norm = t
     .toLowerCase()
     .normalize("NFD")
     .replace(/\p{M}/gu, "")
-    .replace(/[¿?¡!,.]/g, "");
+    .replace(/[¿?¡!,.…]/g, "");
   if (
-    /\b(hola|adios|gracias|perdon|disculpe|buenos|buenas|dias|tardes|noches|mucho|gusto|llamo|llamas|llamarse|soy|eres|es|somos|son|hablo|hablas|habla|hablan|ingles|espanol|mexico|estados|unidos|vivo|viven|tambien|pero|nada|favor|luego|hasta|usted|ustedes|como|donde|de|un|poco|si|no|me|te|se|nos|uno|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez|veinte|cien|celular|telefono|anos|cuanto|cuesta|pesos|dolares|gratis|tengo|tienes|numero|numeros|carro|jugo|departamento|despierto|trabajo|camino|gusta|gustan|quiero|cuenta|cerca|lejos|derecha|izquierda|recto|centro|metro|llego|comi|hable|ayer|hoy|fui|hice|tuve|dije|voy|vas|gustaria|parece|levanto|levantas|ducho|duchas|desayuno|estudio|limpio|cocina|fin|semana|descanso|temprano|manana|preparo|lavo|oficina|escuela|tarea|ropa|platos|dormir|duermo)\b/.test(
+    /\b(hola|adios|gracias|perdon|disculpe|buenos|buenas|dias|tardes|noches|mucho|gusto|llamo|llamas|llamarse|soy|eres|es|somos|son|estoy|estas|esta|estamos|estan|hablo|hablas|habla|hablan|hablaba|ingles|espanol|mexico|estados|unidos|vivo|viven|tambien|pero|nada|favor|luego|hasta|usted|ustedes|como|donde|que|de|el|la|los|las|un|una|unas|al|del|yo|tu|su|mi|mis|tus|sus|poco|si|no|me|te|se|nos|nosotros|ellos|ellas|uno|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez|once|doce|catorce|quince|dieciocho|diecinueve|veinte|cien|celular|telefono|anos|cuanto|cuesta|cuestan|pesos|dolares|gratis|tengo|tienes|tiene|numero|numeros|carro|jugo|departamento|despierto|trabajo|camino|caminar|gusta|gustan|quiero|cuenta|cerca|lejos|derecha|izquierda|recto|centro|metro|llego|comi|hable|ayer|anoche|ahora|antes|hoy|fui|fue|fueron|hice|tuve|dije|voy|vas|vi|viste|vio|vimos|era|eras|eran|iba|ibas|iban|estaba|estabas|estaban|limpia|limpiar|lavar|estudiar|trabajar|bailar|invitar|conocer|divertido|divertida|amigo|amiga|familia|hermana|hermano|colega|correo|casa|cuadra|tal|vez|cine|fiesta|farmacia|hotel|mapa|banco|parada|aeropuerto|vuelo|pasaporte|universidad|carrera|entrevista|proyecto|medicina|cita|juntos|mientras|creo|pienso|desde|en|con|para|por|sin|y|o|pie|ciudad|descansar|pasar|tiempo|vine|bailamos|gustaria|parece|levanto|levantas|ducho|duchas|desayuno|estudio|limpio|cocina|fin|semana|descanso|temprano|manana|preparo|lavo|oficina|escuela|tarea|ropa|platos|dormir|duermo|tacos|pollo|arroz|pan|comida|menu|agua|leche|te|restaurante|mesero|propina|almuerzo|cena|llevar|recomienda|traiga|trae|natural|naranja|estadounidense|giro|gira|vamos|hablaremos|reservamos)\b/.test(
       norm
     )
   ) {
