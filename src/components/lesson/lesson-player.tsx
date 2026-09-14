@@ -13,10 +13,12 @@ import { TeachView } from "@/components/lesson/teach-view";
 import { getLesson, getWordCard } from "@/lib/mock-data";
 import { getCorrectAnswerDisplay } from "@/lib/correct-answer";
 import { enrichWrongExplanation } from "@/lib/feedback-coach";
-import { useLessonStore } from "@/store/lesson-store";
+import { useLessonStore, withInjected } from "@/store/lesson-store";
 import { useUserStore } from "@/store/user-store";
 import { exerciseLabel } from "@/lib/exercise-labels";
 import { playCorrectChime } from "@/lib/sfx";
+import { getDueSrsCardIds } from "@/lib/srs";
+import { buildStoryReinforcement } from "@/lib/story-reinforcement";
 import type { TeachExercise, WordCard } from "@/lib/types";
 
 export function LessonPlayer({ lessonId }: { lessonId: string }) {
@@ -35,10 +37,12 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
     weakWordIds,
     reinforcedWordIds,
     unsureWordIds,
+    injected,
     startLesson,
     recordAnswer,
     continueTeach,
     continueAfterFeedback,
+    injectExercise,
     reset,
   } = useLessonStore();
   const completeLesson = useUserStore((s) => s.completeLesson);
@@ -48,6 +52,9 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
   const [wordOpen, setWordOpen] = useState(false);
   const [activeCard, setActiveCard] = useState<WordCard | null>(null);
   const [persisted, setPersisted] = useState(false);
+  // Due words for the summary's quick review, picked after this lesson's
+  // weak/SRS writes land so the list reflects them.
+  const [reviewCardIds, setReviewCardIds] = useState<string[]>([]);
 
   useEffect(() => {
     startLesson(lessonId);
@@ -61,6 +68,9 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
       // Only words that already carry an SRS card get credit (see store).
       if (reinforcedWordIds.length) reinforceWords(reinforcedWordIds, "certain");
       if (unsureWordIds.length) reinforceWords(unsureWordIds, "unsure");
+      setReviewCardIds(
+        getDueSrsCardIds(useUserStore.getState().user.srsCards).slice(0, 2)
+      );
       setPersisted(true);
     }
   }, [
@@ -76,11 +86,16 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
     reinforceWords,
   ]);
 
-  const exercise = lesson?.exercises[index];
+  // Lesson content plus anything generated mid-session (story follow-ups).
+  const exercises = useMemo(
+    () => withInjected(lesson?.exercises ?? [], injected),
+    [lesson, injected]
+  );
+  const exercise = exercises[index];
   const progress = useMemo(() => {
-    if (!lesson) return 0;
-    return Math.min(100, (index / lesson.exercises.length) * 100);
-  }, [index, lesson]);
+    if (!exercises.length) return 0;
+    return Math.min(100, (index / exercises.length) * 100);
+  }, [index, exercises.length]);
 
   if (!lesson) {
     return (
@@ -101,6 +116,7 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
         wrongCount={wrongCount}
         earnedXp={earnedXp}
         weakCount={weakWordIds.length}
+        reviewCardIds={reviewCardIds}
         onContinue={() => router.push("/home")}
         onReview={() => router.push("/review")}
       />
@@ -137,7 +153,7 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
         </button>
         <Progress value={progress} className="flex-1" />
         <span className="text-xs font-bold tabular-nums text-slate-400">
-          {index + 1}/{lesson.exercises.length}
+          {index + 1}/{exercises.length}
         </span>
       </div>
 
@@ -147,7 +163,7 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
           <TeachView
             exercise={exercise as TeachExercise}
             card={teachCard}
-            onContinue={() => continueTeach(lesson.exercises.length)}
+            onContinue={() => continueTeach(exercises.length)}
           />
         </div>
       ) : (
@@ -167,8 +183,18 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
             <ExerciseRenderer
               exercise={exercise}
               disabled={showFeedback}
-              onSubmit={(correct, confidence) => {
+              onSubmit={(correct, confidence, detail) => {
                 if (correct) playCorrectChime();
+                // Missed the story → one cloze from its own transcript, right
+                // after, for a word that just went weak. Skipped when no line
+                // holds a usable word.
+                if (!correct && exercise.type === "story-listen") {
+                  const followUp = buildStoryReinforcement(
+                    exercise,
+                    detail?.missedLineIndices
+                  );
+                  if (followUp) injectExercise(index + 1, followUp);
+                }
                 const correctAnswer = getCorrectAnswerDisplay(exercise);
                 const explanation = correct
                   ? exercise.explanation
@@ -196,7 +222,7 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
               correctAnswer={lastCorrectAnswer}
               hasWordCard={Boolean(exercise.wordCardIds?.length)}
               onOpenWordCard={openWord}
-              onContinue={() => continueAfterFeedback(lesson.exercises.length)}
+              onContinue={() => continueAfterFeedback(exercises.length)}
             />
           )}
         </>

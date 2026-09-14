@@ -1,26 +1,17 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import {
-  ArrowLeft,
-  Layers,
-  RotateCcw,
-  ThumbsDown,
-  ThumbsUp,
-  Volume2,
-} from "lucide-react";
+import { ArrowLeft, Layers, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { Flashcard, type FlashcardMode } from "@/components/flashcard";
 import { getAllWordCards, getWordCard } from "@/lib/mock-data";
-import { audioSrcFor, playSpanishAudio } from "@/lib/audio";
 import { countDue, getDueSrsCardIds, type SrsCards } from "@/lib/srs";
 import { useUserStore } from "@/store/user-store";
-import { cn } from "@/lib/utils";
 import type { WordCard } from "@/lib/types";
 
-type Mode = "es-en" | "en-es";
+type Mode = FlashcardMode;
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -88,19 +79,6 @@ export default function FlashcardsPage() {
     ? Math.round(((index + (flipped ? 0.5 : 0)) / deck.length) * 100)
     : 0;
   const done = index >= deck.length;
-
-  const front = useMemo(() => {
-    if (!card) return "";
-    return mode === "es-en" ? card.lemma : card.gloss;
-  }, [card, mode]);
-
-  const back = useMemo(() => {
-    if (!card) return "";
-    return mode === "es-en" ? card.gloss : card.lemma;
-  }, [card, mode]);
-
-  const spanishSideShowing =
-    (mode === "es-en" && !flipped) || (mode === "en-es" && flipped);
 
   const resetDeck = () => {
     const u = useUserStore.getState().user;
@@ -204,96 +182,13 @@ export default function FlashcardsPage() {
           </Link>
         </div>
       ) : card ? (
-        <>
-          {/* Both faces stay mounted; the inner wrapper rotates in 3D. */}
-          <button
-            type="button"
-            onClick={() => setFlipped((f) => !f)}
-            className="flip-card w-full touch-manipulation text-center transition active:scale-[0.99] motion-reduce:transition-none"
-          >
-            <div className={cn("flip-card-inner", flipped && "is-flipped")}>
-              <div
-                aria-hidden={flipped}
-                className="flip-face flex min-h-[240px] w-full flex-col items-center justify-center gap-3 rounded-3xl border-2 border-emerald-200 bg-gradient-to-b from-emerald-50 to-white p-6 shadow-md sm:min-h-[280px]"
-              >
-                <Badge variant="soft">Tap to flip</Badge>
-                <p className="text-3xl font-extrabold leading-tight text-slate-900 sm:text-4xl">
-                  {front}
-                </p>
-              </div>
-              <div
-                aria-hidden={!flipped}
-                className="flip-face flip-face-back flex min-h-[240px] w-full flex-col items-center justify-center gap-3 rounded-3xl border-2 border-teal-300 bg-gradient-to-b from-teal-50 to-white p-6 shadow-md sm:min-h-[280px]"
-              >
-                <Badge variant="soft">Answer</Badge>
-                <p className="text-3xl font-extrabold leading-tight text-slate-900 sm:text-4xl">
-                  {back}
-                </p>
-                {mode === "es-en" && (
-                  <p className="max-w-sm text-sm text-slate-500">
-                    {card.meaningSummary.slice(0, 120)}
-                    {card.meaningSummary.length > 120 ? "…" : ""}
-                  </p>
-                )}
-                {mode === "en-es" && card.examples[0] && (
-                  <p className="max-w-sm text-sm text-slate-500">
-                    {card.examples[0].es}
-                  </p>
-                )}
-              </div>
-            </div>
-          </button>
-
-          <div className="mt-4 flex items-center justify-center gap-3">
-            {spanishSideShowing && (
-              <Button
-                variant="soft"
-                size="lg"
-                className="min-h-12 flex-1"
-                onClick={() =>
-                  playSpanishAudio(
-                    card.lemma,
-                    audioSrcFor(card.lemma, "f")
-                  )
-                }
-              >
-                <Volume2 className="h-5 w-5" />
-                Hear Spanish
-              </Button>
-            )}
-            {!flipped && (
-              <Button
-                className="min-h-12 flex-1"
-                size="lg"
-                onClick={() => setFlipped(true)}
-              >
-                Reveal
-              </Button>
-            )}
-          </div>
-
-          {flipped && (
-            <div className="mt-4 grid grid-cols-2 gap-3">
-              <Button
-                variant="secondary"
-                size="lg"
-                className="min-h-14 border-2 border-rose-200 bg-rose-50 text-rose-800 hover:bg-rose-100"
-                onClick={() => grade(false)}
-              >
-                <ThumbsDown className="h-5 w-5" />
-                Revisit
-              </Button>
-              <Button
-                size="lg"
-                className="min-h-14"
-                onClick={() => grade(true)}
-              >
-                <ThumbsUp className="h-5 w-5" />
-                Good
-              </Button>
-            </div>
-          )}
-        </>
+        <Flashcard
+          card={card}
+          mode={mode}
+          flipped={flipped}
+          onFlip={setFlipped}
+          onGrade={grade}
+        />
       ) : (
         <p className="text-center text-slate-500">No cards available.</p>
       )}

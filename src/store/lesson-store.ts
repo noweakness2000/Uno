@@ -18,6 +18,11 @@ interface LessonSessionState {
   lastExplanation: string;
   lastCorrectAnswer: string;
   finished: boolean;
+  /**
+   * Exercises generated during this session (e.g. a story follow-up),
+   * spliced into the lesson at `at` in the combined list. Never persisted.
+   */
+  injected: { at: number; exercise: Exercise }[];
   startLesson: (lessonId: string) => void;
   recordAnswer: (opts: {
     correct: boolean;
@@ -31,7 +36,22 @@ interface LessonSessionState {
   /** Advance past a Teach step — 0 XP, no wrong count, no feedback panel. */
   continueTeach: (totalExercises: number) => void;
   continueAfterFeedback: (totalExercises: number) => void;
+  /** Queue a runtime exercise at position `at` of the combined list. */
+  injectExercise: (at: number, exercise: Exercise) => void;
   reset: () => void;
+}
+
+/** Lesson exercises with this session's injected ones spliced in. */
+export function withInjected(
+  base: Exercise[],
+  injected: { at: number; exercise: Exercise }[]
+): Exercise[] {
+  if (!injected.length) return base;
+  const out = [...base];
+  for (const { at, exercise } of [...injected].sort((a, b) => a.at - b.at)) {
+    out.splice(Math.min(at, out.length), 0, exercise);
+  }
+  return out;
 }
 
 const initial = {
@@ -50,6 +70,7 @@ const initial = {
   lastExplanation: "",
   lastCorrectAnswer: "",
   finished: false,
+  injected: [] as { at: number; exercise: Exercise }[],
 };
 
 export const useLessonStore = create<LessonSessionState>((set, get) => ({
@@ -112,6 +133,12 @@ export const useLessonStore = create<LessonSessionState>((set, get) => ({
       });
     }
   },
+  injectExercise: (at, exercise) =>
+    set((s) =>
+      s.injected.some((i) => i.exercise.id === exercise.id)
+        ? {}
+        : { injected: [...s.injected, { at, exercise }] }
+    ),
   reset: () => set({ ...initial }),
 }));
 

@@ -121,3 +121,68 @@ export function isChipNearMiss(
   }
   return differing === 1;
 }
+
+/** One conjugated form from a word card's table, e.g. { "Past tense", "tú", "hablaste" }. */
+export interface VerbForm {
+  tense: string;
+  person: string;
+  form: string;
+}
+
+/** Which part of a valid-but-wrong conjugation missed the target. */
+export type ConjugateMissKind = "tense" | "person" | "both";
+
+export interface ConjugateMiss {
+  kind: ConjugateMissKind;
+  /** What the learner actually typed, as the table labels it. */
+  tense: string;
+  person: string;
+}
+
+/** "ellos/ustedes" and "ustedes" share a token, so they count as the same person. */
+function personsOverlap(a: string, b: string): boolean {
+  const tokens = (s: string) =>
+    normalizeAnswer(s)
+      .split(/[\s/]+/)
+      .filter(Boolean);
+  const bt = new Set(tokens(b));
+  return tokens(a).some((t) => bt.has(t));
+}
+
+/**
+ * For conjugate exercises: the answer isn't accepted, but it is a listed form
+ * of the same verb — just the wrong tense and/or person. Returns null when the
+ * answer is accepted or isn't any known form, so the caller can fall back to
+ * the typo near-miss.
+ */
+export function isConjugateNearMiss(
+  user: string,
+  expected: { tense: string; pronoun: string; acceptedAnswers: string[] },
+  forms: VerbForm[]
+): ConjugateMiss | null {
+  const userNorm = normalizeAnswer(user);
+  if (!userNorm) return null;
+  if (expected.acceptedAnswers.some((a) => normalizeAnswer(a) === userNorm)) {
+    return null;
+  }
+
+  const hits = forms.filter((f) => normalizeAnswer(f.form) === userNorm);
+  if (!hits.length) return null;
+
+  const wantTense = normalizeAnswer(expected.tense);
+  const scored = hits.map((f) => ({
+    f,
+    sameTense: normalizeAnswer(f.tense) === wantTense,
+    samePerson: personsOverlap(f.person, expected.pronoun),
+  }));
+
+  // A form that matches both but isn't accepted means the content disagrees
+  // with itself — say nothing rather than something wrong.
+  if (scored.some((s) => s.sameTense && s.samePerson)) return null;
+
+  const person = scored.find((s) => s.sameTense);
+  if (person) return { kind: "person", tense: person.f.tense, person: person.f.person };
+  const tense = scored.find((s) => s.samePerson);
+  if (tense) return { kind: "tense", tense: tense.f.tense, person: tense.f.person };
+  return { kind: "both", tense: scored[0].f.tense, person: scored[0].f.person };
+}

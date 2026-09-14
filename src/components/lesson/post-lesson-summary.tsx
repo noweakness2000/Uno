@@ -1,14 +1,18 @@
 "use client";
 
+import { useMemo, useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { ConfettiBurst } from "@/components/confetti-burst";
-import { Flame, Star, Target, BookMarked } from "lucide-react";
+import { Flashcard } from "@/components/flashcard";
+import { Flame, Star, Target, BookMarked, Layers } from "lucide-react";
 import { dailyGoalPercent, isDailyGoalMet } from "@/lib/daily-goal";
 import { effectiveDailyXp, effectiveStreak } from "@/lib/streak";
+import { getWordCard } from "@/lib/mock-data";
 import { useUserStore } from "@/store/user-store";
+import type { WordCard } from "@/lib/types";
 
 interface Props {
   lessonTitle: string;
@@ -16,8 +20,58 @@ interface Props {
   wrongCount: number;
   earnedXp: number;
   weakCount: number;
+  /** Due SRS words to flip through before moving on; empty hides the block. */
+  reviewCardIds?: string[];
   onContinue: () => void;
   onReview: () => void;
+}
+
+/**
+ * One or two due words as flip cards, right on the summary. Same card and
+ * grading as the Flashcards page — just a shorter deck.
+ */
+function QuickReview({ cards }: { cards: WordCard[] }) {
+  const srsAgain = useUserStore((s) => s.srsAgain);
+  const srsGood = useUserStore((s) => s.srsGood);
+  const [index, setIndex] = useState(0);
+  const [flipped, setFlipped] = useState(false);
+  const card = cards[index];
+  const done = index >= cards.length;
+
+  const grade = (know: boolean) => {
+    if (!card) return;
+    if (know) srsGood(card.id);
+    else srsAgain(card.id);
+    setFlipped(false);
+    setIndex((i) => i + 1);
+  };
+
+  return (
+    <div className="rounded-3xl border-2 border-teal-200 bg-gradient-to-br from-teal-50 to-white p-4 shadow-sm">
+      <div className="mb-3 flex items-center justify-between gap-2">
+        <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-teal-700">
+          <Layers className="h-4 w-4" /> Quick review
+        </p>
+        <span className="text-xs font-semibold tabular-nums text-slate-500">
+          {done ? cards.length : index + 1} / {cards.length}
+        </span>
+      </div>
+      {done ? (
+        <p className="py-6 text-center text-sm text-slate-600">
+          Nice — {cards.length === 1 ? "that word is" : "those words are"} back
+          on schedule.
+        </p>
+      ) : (
+        <Flashcard
+          card={card}
+          mode="es-en"
+          flipped={flipped}
+          onFlip={setFlipped}
+          onGrade={grade}
+        />
+      )}
+    </div>
+  );
 }
 
 export function PostLessonSummary({
@@ -26,10 +80,20 @@ export function PostLessonSummary({
   wrongCount,
   earnedXp,
   weakCount,
+  reviewCardIds = [],
   onContinue,
   onReview,
 }: Props) {
   const user = useUserStore((s) => s.user);
+  // The player sets this once after its SRS writes land, so grading a card
+  // here never reshuffles the deck under you.
+  const reviewCards = useMemo(
+    () =>
+      reviewCardIds
+        .map((id) => getWordCard(id))
+        .filter((c): c is WordCard => Boolean(c)),
+    [reviewCardIds]
+  );
   const streak = effectiveStreak(user);
   const todayXp = effectiveDailyXp(user);
   const total = correctCount + wrongCount;
@@ -131,6 +195,8 @@ export function PostLessonSummary({
       <p className="text-center text-sm text-slate-500">
         XP, streak, and daily goal are motivational only — no hearts or lockouts.
       </p>
+
+      {reviewCards.length > 0 && <QuickReview cards={reviewCards} />}
 
       <div className="flex flex-col gap-2">
         {weakCount > 0 && (

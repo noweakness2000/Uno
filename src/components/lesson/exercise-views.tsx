@@ -22,8 +22,14 @@ import {
   answersMatch,
   chipSequencesMatch,
   isChipNearMiss,
+  isConjugateNearMiss,
   isNearMiss,
+  normalizeAnswer,
+  type ConjugateMiss,
 } from "@/lib/grading";
+import { verbFormsFor } from "@/lib/verb-forms";
+import { useLessonStore } from "@/store/lesson-store";
+import { useUserStore } from "@/store/user-store";
 import type {
   AnswerConfidence,
   ClozeExercise,
@@ -40,9 +46,19 @@ import type {
   TranslateExercise,
 } from "@/lib/types";
 
+/** Extra context some views attach to a submit. */
+export interface SubmitDetail {
+  /** Story lines the missed questions pointed at (by line index). */
+  missedLineIndices?: number[];
+}
+
 interface CommonProps {
   disabled?: boolean;
-  onSubmit: (correct: boolean, confidence?: AnswerConfidence) => void;
+  onSubmit: (
+    correct: boolean,
+    confidence?: AnswerConfidence,
+    detail?: SubmitDetail
+  ) => void;
 }
 
 type AnswerResult = "correct" | "wrong" | null;
@@ -598,6 +614,7 @@ export function MatchPairsView({
     // Stable shuffle by pairing text length hash so SSR/client match less critical — shuffle once on mount
     return items;
   }, [exercise.pairs]);
+  const [leftOrder, setLeftOrder] = useState<number[]>([]);
   const [rightOrder, setRightOrder] = useState<number[]>([]);
   const [selectedLeft, setSelectedLeft] = useState<number | null>(null);
   const [matched, setMatched] = useState<Set<number>>(new Set());
@@ -607,22 +624,32 @@ export function MatchPairsView({
   // Emoji pairs put the picture on the left and the Spanish on the right, so
   // the speaker button follows the Spanish rather than the column.
   const emojiMode = exercise.pairMode === "emoji-es";
+  // Replaying a finished lesson: the seeded layout below would come back
+  // identical, so positions get a fresh shuffle instead of being memorable.
+  const lessonId = useLessonStore((s) => s.lessonId);
+  const replay = useUserStore((s) =>
+    lessonId ? s.user.completedLessonIds.includes(lessonId) : false
+  );
 
   useEffect(() => {
     const ids = exercise.pairs.map((_, i) => i);
     // Fisher–Yates with seeded-ish shuffle from pair texts for variety
     let seed = exercise.pairs.reduce((a, p) => a + p.left.length * 7 + p.right.length, exercise.id.length);
-    const arr = [...ids];
-    for (let i = arr.length - 1; i > 0; i--) {
-      seed = (seed * 1103515245 + 12345) & 0x7fffffff;
-      const j = seed % (i + 1);
-      [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-    setRightOrder(arr);
+    const shuffle = (source: number[]) => {
+      const arr = [...source];
+      for (let i = arr.length - 1; i > 0; i--) {
+        seed = (seed * 1103515245 + 12345) & 0x7fffffff;
+        const j = replay ? Math.floor(Math.random() * (i + 1)) : seed % (i + 1);
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    };
+    setRightOrder(shuffle(ids));
+    setLeftOrder(replay ? shuffle(ids) : ids);
     setMatched(new Set());
     setJustMatched(null);
     setSelectedLeft(null);
-  }, [exercise.id, exercise.pairs]);
+  }, [exercise.id, exercise.pairs, replay]);
 
   const tryMatch = (rightId: number) => {
     if (disabled || matched.has(rightId) || selectedLeft === null) return;
@@ -651,7 +678,8 @@ export function MatchPairsView({
       </p>
       <div className="grid grid-cols-2 gap-3">
         <div className="space-y-2">
-          {leftItems.map((item) => {
+          {leftOrder.map((id) => {
+            const item = leftItems.find((l) => l.id === id)!;
             const done = matched.has(item.id);
             return (
               <button
@@ -937,10 +965,18 @@ export function ConjugateView({
 }: CommonProps & { exercise: ConjugateExercise }) {
   const [value, setValue] = useState("");
   const [nearMissUsed, setNearMissUsed] = useState(false);
+  // Set when the soft retry was a real form of the verb (wrong tense/person)
+  // rather than a typo, so the message can say which.
+  const [conjugateMiss, setConjugateMiss] = useState<ConjugateMiss | null>(null);
+  const forms = useMemo(
+    () => verbFormsFor(exercise.infinitive, exercise.wordCardIds),
+    [exercise.infinitive, exercise.wordCardIds]
+  );
 
   useEffect(() => {
     setValue("");
     setNearMissUsed(false);
+    setConjugateMiss(null);
   }, [exercise.id]);
 
   const check = () => {
@@ -950,12 +986,35 @@ export function ConjugateView({
       onSubmit(true);
       return;
     }
-    if (!nearMissUsed && isNearMiss(value, exercise.acceptedAnswers)) {
-      setNearMissUsed(true);
-      return;
+    if (!nearMissUsed) {
+      const miss = isConjugateNearMiss(value, exercise, forms);
+      if (miss) {
+        setConjugateMiss(miss);
+        setNearMissUsed(true);
+        return;
+      }
+      if (isNearMiss(value, exercise.acceptedAnswers)) {
+        setNearMissUsed(true);
+        return;
+      }
     }
     onSubmit(false);
   };
+
+  const missTitle = conjugateMiss
+    ? conjugateMiss.kind === "tense"
+      ? "Close — right verb, wrong tense."
+      : conjugateMiss.kind === "person"
+        ? "Close — right verb and tense, wrong person."
+        : "Close — right verb, but a different tense and person."
+    : "Close, but not quite.";
+  const missDetail = conjugateMiss
+    ? conjugateMiss.kind === "tense"
+      ? `That's the ${conjugateMiss.tense.toLowerCase()} form — try the ${exercise.tense.toLowerCase()}.`
+      : conjugateMiss.kind === "person"
+        ? `That's the ${conjugateMiss.person} form — try ${exercise.pronoun}.`
+        : `That's ${conjugateMiss.person} in the ${conjugateMiss.tense.toLowerCase()} — try ${exercise.pronoun} in the ${exercise.tense.toLowerCase()}.`
+    : "Check the ending, then try again.";
 
   return (
     <div className="space-y-4">
@@ -993,10 +1052,8 @@ export function ConjugateView({
           role="status"
           className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900"
         >
-          <p className="font-semibold">Close, but not quite.</p>
-          <p className="mt-0.5 text-amber-800/90">
-            Check the ending, then try again.
-          </p>
+          <p className="font-semibold">{missTitle}</p>
+          <p className="mt-0.5 text-amber-800/90">{missDetail}</p>
         </div>
       )}
       <Button
@@ -1028,6 +1085,9 @@ export function StoryListenView({
     explanation: string;
   } | null>(null);
   const [correctCount, setCorrectCount] = useState(0);
+  // Lines a missed question was about (its explanation quotes the line), so
+  // the follow-up cloze can come from the part they didn't catch.
+  const [missedLines, setMissedLines] = useState<number[]>([]);
   const [done, setDone] = useState(false);
   const [displayOptions, setDisplayOptions] = useState<
     { text: string; originalIndex: number }[]
@@ -1052,6 +1112,7 @@ export function StoryListenView({
     setSelected(null);
     setLocalFeedback(null);
     setCorrectCount(0);
+    setMissedLines([]);
     setDone(false);
     setActiveLine(-1);
     setResumeFrom(0);
@@ -1159,7 +1220,19 @@ export function StoryListenView({
         ? "Nice — that matches the story."
         : `The answer is: ${question.options[question.correctIndex]}`);
     setLocalFeedback({ correct, explanation });
-    if (correct) setCorrectCount((c) => c + 1);
+    if (correct) {
+      setCorrectCount((c) => c + 1);
+      return;
+    }
+    const quoted = normalizeAnswer(question.explanation ?? "");
+    if (!quoted) return;
+    const lineIndex = lines.findIndex((l) => {
+      const text = normalizeAnswer(l.text);
+      return text.includes(quoted) || quoted.includes(text);
+    });
+    if (lineIndex >= 0) {
+      setMissedLines((m) => (m.includes(lineIndex) ? m : [...m, lineIndex]));
+    }
   };
 
   const advance = () => {
@@ -1168,7 +1241,9 @@ export function StoryListenView({
     if (next >= questions.length) {
       const totalCorrect = correctCount;
       setDone(true);
-      onSubmit(totalCorrect === questions.length);
+      onSubmit(totalCorrect === questions.length, undefined, {
+        missedLineIndices: missedLines,
+      });
       return;
     }
     setQIndex(next);
@@ -1372,7 +1447,11 @@ export function ExerciseRenderer({
 }: {
   exercise: Exercise;
   disabled?: boolean;
-  onSubmit: (correct: boolean, confidence?: AnswerConfidence) => void;
+  onSubmit: (
+    correct: boolean,
+    confidence?: AnswerConfidence,
+    detail?: SubmitDetail
+  ) => void;
 }) {
   switch (exercise.type) {
     case "teach":
