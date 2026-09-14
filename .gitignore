@@ -60,3 +60,6 @@ android/.idea/
 android/*.iml
 android/captures/
 android/.kotlin/
+
+# Abacus.AI agent local permissions
+.abacusai/
