@@ -625,7 +625,7 @@ export const UNIT9_WORD_CARDS: Record<string, WordCard> = {
 export const UNIT9_LESSONS: Record<string, Lesson> = {
   "u9-l1": {
     id: "u9-l1", unitId: "unit-9", title: "Opinions: creo / pienso / me parece",
-    description: "Word Cards first — saying what you think.", xpReward: 44,
+    description: "Say what you think with creo que, pienso que, and me parece.", xpReward: 44,
     exercises: [
       teach("teach-u9l1-creo", "creo-que"),
       { id: "u9l1-1", type: "select", prompt: "‘I think it is a good idea’ starts with…", options: ["Creo que…", "Fui que…", "Comí que…", "La cuenta que…"], correctIndex: 0, explanation: "Creo que es una buena idea.", wordCardIds: ["creo-que"], xp: 3 },
@@ -642,7 +642,7 @@ export const UNIT9_LESSONS: Record<string, Lesson> = {
   },
   "u9-l2": {
     id: "u9-l2", unitId: "unit-9", title: "Agree & disagree",
-    description: "De acuerdo, no estoy de acuerdo, en mi opinión.", xpReward: 44,
+    description: "Agree or disagree politely: de acuerdo, no estoy de acuerdo, en mi opinión.", xpReward: 44,
     exercises: [
       teach("teach-u9l2-acuerdo", "de-acuerdo"),
       { id: "u9l2-1", type: "select", prompt: "‘I agree with you’ is…", options: ["Estoy de acuerdo contigo.", "Estoy de aeropuerto contigo.", "Comí de acuerdo.", "Reservé contigo."], correctIndex: 0, explanation: "Estoy de acuerdo contigo.", wordCardIds: ["de-acuerdo"], xp: 3 },
@@ -659,7 +659,7 @@ export const UNIT9_LESSONS: Record<string, Lesson> = {
   },
   "u9-l3": {
     id: "u9-l3", unitId: "unit-9", title: "Asking opinions",
-    description: "¿Qué opinas?, mixes, and soft replies.", xpReward: 44,
+    description: "Ask ¿Qué opinas? and answer with a soft creo que or me parece.", xpReward: 44,
     exercises: [
       teach("teach-u9l3-opinas", "que-opinas"),
       { id: "u9l3-1", type: "select", prompt: "Ask a friend: ‘What do you think of the restaurant?’", options: ["¿Qué opinas del restaurante?", "¿Qué reservaste del restaurante?", "¿Dónde está el pasaporte?", "Fui del restaurante."], correctIndex: 0, explanation: "¿Qué opinas del restaurante?", wordCardIds: ["que-opinas"], xp: 3 },
@@ -694,8 +694,8 @@ export const UNIT9_LESSONS: Record<string, Lesson> = {
     ],
   },
   "u9-l5": {
-    id: "u9-l5", unitId: "unit-9", title: "Past (ongoing) drills: -aba / -ía",
-    description: "Hablar & comer habits + more ser/tener/ir.", xpReward: 46,
+    id: "u9-l5", unitId: "unit-9", title: "Past (ongoing): -aba / -ía",
+    description: "Describe old habits with hablaba, comía, and antes — plus era, tenía, iba.", xpReward: 46,
     exercises: [
       teach("teach-u9l5-hablar", "hablar-imperfect"),
       { id: "u9l5-1", type: "select", prompt: "yo + hablar (past, ongoing) is…", options: ["hablaba", "hablé", "hablo ayer", "hablaré"], correctIndex: 0, explanation: "hablaba — regular -ar past (ongoing).", wordCardIds: ["hablar-imperfect"], xp: 3 },
@@ -712,7 +712,7 @@ export const UNIT9_LESSONS: Record<string, Lesson> = {
   },
   "u9-l6": {
     id: "u9-l6", unitId: "unit-9", title: "Past (ongoing) conjugations",
-    description: "Drill ser, tener, ir, hablar, comer in past (ongoing).", xpReward: 48,
+    description: "Conjugate ser, tener, ir, hablar, and comer in the ongoing past.", xpReward: 48,
     exercises: [
       conjugate("u9l6-1", "ser", "yo", "Past (ongoing)", ["era", "Era"], "yo + ser → era.", ["ser-imperfect"], { hint: "era" }),
       conjugate("u9l6-2", "ser", "tú", "Past (ongoing)", ["eras", "Eras"], "tú + ser → eras.", ["ser-imperfect"], { hint: "eras" }),
@@ -730,7 +730,7 @@ export const UNIT9_LESSONS: Record<string, Lesson> = {
 
   "u9-l7": {
     id: "u9-l7", unitId: "unit-9", title: "Airport & flights",
-    description: "Aeropuerto, vuelo, pasaporte, equipaje.", xpReward: 44,
+    description: "Get through the airport: aeropuerto, vuelo, pasaporte, equipaje.", xpReward: 44,
     exercises: [
       teach("teach-u9l7-aero", "aeropuerto"),
       { id: "u9l7-1", type: "select", prompt: "‘How do I get to the airport?’", options: ["¿Cómo llego al aeropuerto?", "¿Cómo como el aeropuerto?", "¿Estoy de acuerdo al aeropuerto?", "Hablaba el aeropuerto."], correctIndex: 0, explanation: "¿Cómo llego al aeropuerto?", wordCardIds: ["aeropuerto", "como-llego"], xp: 3 },
@@ -749,7 +749,7 @@ export const UNIT9_LESSONS: Record<string, Lesson> = {
   },
   "u9-l8": {
     id: "u9-l8", unitId: "unit-9", title: "Lodging & recommendations",
-    description: "Habitación, reserva, recepción, te recomiendo + directions reuse.", xpReward: 44,
+    description: "Check in and ask for tips: habitación, reserva, recepción, te recomiendo.", xpReward: 44,
     exercises: [
       teach("teach-u9l8-hab", "habitacion"),
       { id: "u9l8-1", type: "select", prompt: "‘I want a room for two’ is…", options: ["Quiero una habitación para dos.", "Quiero un vuelo para dos.", "Era una habitación para jugo.", "Estoy de acuerdo una habitación."], correctIndex: 0, explanation: "Quiero una habitación para dos.", wordCardIds: ["habitacion"], xp: 3 },
@@ -770,7 +770,7 @@ export const UNIT9_LESSONS: Record<string, Lesson> = {
 
   "u9-l9": {
     id: "u9-l9", unitId: "unit-9", title: "Story: Trip opinions",
-    description: "Story-listen + comprehension — opinions, past (ongoing), travel.", xpReward: 48,
+    description: "Listen to a trip story and answer — opinions, the ongoing past, and travel.", xpReward: 48,
     exercises: [
       storyListen(
         "u9l9-story", "Opiniones del viaje",
@@ -815,7 +815,7 @@ export const UNIT9_LESSONS: Record<string, Lesson> = {
 
   "u9-l11": {
     id: "u9-l11", unitId: "unit-9", title: "Situations: travel talk",
-    description: "Dialogue-style practice — opinions + airport + hotel.", xpReward: 46,
+    description: "Pick the right reply in travel scenes — opinions, the airport, and the hotel.", xpReward: 46,
     exercises: [
       { id: "u9l11-1", type: "situational-choose", prompt: "Pick the best line.", situation: "The hotel near downtown costs a lot.", options: ["Creo que es caro, pero me parece bien si está cerca.", "Creo que el pasaporte come jugo.", "Íbamos de acuerdo el equipaje.", "Hablaba la recepción mañana."], correctIndex: 0, explanation: "Opinion + soft judgment.", wordCardIds: ["creo-que", "me-parece", "cerca", "el-centro"], xp: 4 },
       { id: "u9l11-2", type: "situational-choose", prompt: "Pick the best line.", situation: "You need directions to baggage claim.", options: ["Disculpe, ¿dónde recojo el equipaje?", "Disculpe, ¿dónde como el imperfecto?", "Estoy de acuerdo el equipaje izquierda.", "Cuando era niño el equipaje."], correctIndex: 0, explanation: "Disculpe, ¿dónde recojo el equipaje?", wordCardIds: ["disculpe", "equipaje"], xp: 3 },

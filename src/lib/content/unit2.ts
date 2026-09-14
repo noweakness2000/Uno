@@ -218,7 +218,7 @@ export const UNIT2_LESSONS: Record<string, Lesson> = {
     id: "u2-l4",
     unitId: "unit-2",
     title: "Soy vs me llamo",
-    description: "Identity lines: soy + name/occupation feel vs me llamo.",
+    description: "Say who you are: me llamo for your name, soy for what you are.",
     xpReward: 30,
     exercises: [
       teach("teach-u2l4-yo", "yo"),
@@ -596,7 +596,7 @@ export const UNIT2_LESSONS: Record<string, Lesson> = {
     id: "u2-l7",
     unitId: "unit-2",
     title: "Languages deepen",
-    description: "Hablo…, un poco de, también, and pero.",
+    description: "Say which languages you speak with hablo, un poco de, también, and pero.",
     xpReward: 32,
     exercises: [
       {

@@ -1727,7 +1727,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
     id: "u4-l7",
     unitId: "unit-4",
     title: "Daily life review",
-    description: "Mix Unit 1–3 high-frequency words with Unit 4 routines.",
+    description: "Bring greetings and basics into your daily routine: trabajar, caminar, limpiar.",
     xpReward: 44,
     exercises: [
       {
@@ -1967,7 +1967,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
     id: "u4-l9",
     unitId: "unit-4",
     title: "More daily practice",
-    description: "New mixes — routines, chores, and weak-word reuse.",
+    description: "Fresh practice on routines and chores, plus words you've missed.",
     xpReward: 40,
     exercises: [
       {
@@ -2074,7 +2074,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
     id: "u4-l10",
     unitId: "unit-4",
     title: "Story: Weekend at home",
-    description: "A second story with different voices — answer, then fill in lines from it.",
+    description: "A second story about a weekend at home — answer, then fill in lines from it.",
     xpReward: 45,
     exercises: [
       storyListen(
@@ -2186,8 +2186,8 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
   "u4-l11": {
     id: "u4-l11",
     unitId: "unit-4",
-    title: "Situations & weak words",
-    description: "Real-life choices reusing Unit 4 + earlier lemmas.",
+    title: "Daily life situations",
+    description: "Pick the right line in everyday scenes — work, weekend, and getting around.",
     xpReward: 42,
     exercises: [
       {

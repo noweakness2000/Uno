@@ -1206,7 +1206,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
     id: "u6-l8",
     unitId: "unit-6",
     title: "Directions review",
-    description: "Reuse Unit 6 + weak words from daily life and food.",
+    description: "Ask and follow directions again, mixed with daily-life and food words.",
     xpReward: 42,
     exercises: [
       {
@@ -1451,7 +1451,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
     id: "u6-l10",
     unitId: "unit-6",
     title: "More getting-around practice",
-    description: "New mixes — transport, places, polite asks, weak reuse.",
+    description: "More practice on transport, places, and polite asks with Disculpe.",
     xpReward: 42,
     exercises: [
       {

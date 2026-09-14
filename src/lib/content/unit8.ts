@@ -1118,7 +1118,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
     id: "u8-l5",
     unitId: "unit-8",
     title: "Inviting someone",
-    description: "¿Quieres…?, ¿te gustaría…?, ¿qué tal si…?, vamos a…",
+    description: "Invite someone out with ¿Quieres…?, ¿Te gustaría…?, and ¿Qué tal si…?",
     xpReward: 46,
     exercises: [
       teach("teach-u8l5-quieres", "quieres-inf"),
@@ -1402,7 +1402,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
     id: "u8-l7",
     unitId: "unit-8",
     title: "Weekend & time phrases",
-    description: "mañana, el sábado, a las…, fin de semana plans.",
+    description: "Pin down when: mañana, el sábado, a las…, and el fin de semana.",
     xpReward: 46,
     exercises: [
       teach("teach-u8l7-sabado", "el-sabado"),
@@ -1536,8 +1536,8 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
   "u8-l8": {
     id: "u8-l8",
     unitId: "unit-8",
-    title: "Review + reuse",
-    description: "Mix ir a, wants, invites, soft no — plus U4–U7 vocab.",
+    title: "Plans review",
+    description: "Make plans, invite, and say a soft no — voy a, me gustaría, otro día.",
     xpReward: 48,
     exercises: [
       {
@@ -1784,7 +1784,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
     id: "u8-l10",
     unitId: "unit-8",
     title: "More plans practice",
-    description: "New mixes — time, invites, soft no, U4–U7 reuse.",
+    description: "More practice with times, invites, and a soft no — ¿qué tal si…?, otro día.",
     xpReward: 44,
     exercises: [
       {

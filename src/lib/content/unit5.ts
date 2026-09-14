@@ -1203,7 +1203,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
     id: "u5-l7",
     unitId: "unit-5",
     title: "Restaurant situations",
-    description: "Restaurante, para llevar, propina, almuerzo, and cena.",
+    description: "Handle a restaurant visit: para llevar, la cuenta, propina, almuerzo, cena.",
     xpReward: 44,
     exercises: [
       teach("teach-u5l7-restaurante", "restaurante"),
@@ -1325,8 +1325,8 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
   "u5-l8": {
     id: "u5-l8",
     unitId: "unit-5",
-    title: "Food review + weak reuse",
-    description: "Mix Unit 5 food Spanish with Unit 4 and earlier lemmas.",
+    title: "Food review",
+    description: "Put café and food Spanish next to your daily routine, plus words you've missed.",
     xpReward: 42,
     exercises: [
       {
@@ -1569,7 +1569,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
     id: "u5-l10",
     unitId: "unit-5",
     title: "More food practice",
-    description: "New mixes — drinks, plates, usted, and weak-word reuse.",
+    description: "More ordering practice: drinks, plates, and polite usted with servers.",
     xpReward: 42,
     exercises: [
       {
@@ -1716,7 +1716,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
     id: "u5-l11",
     unitId: "unit-5",
     title: "Story: Café with a friend",
-    description: "A second eating-out story with different voices, then fill in the blanks.",
+    description: "A second eating-out story with a friend — answer, then fill in the blanks.",
     xpReward: 45,
     exercises: [
       storyListen(

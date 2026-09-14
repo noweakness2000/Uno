@@ -797,7 +797,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
     id: "u7-l4",
     unitId: "unit-7",
     title: "More irregulars + vine",
-    description: "Fui, hice, tuve, dije, vine — drill the big five.",
+    description: "Nail the big five irregular past forms: fui, hice, tuve, dije, vine.",
     xpReward: 45,
     exercises: [
       teach("teach-u7l4-venir", "venir-preterite"),
@@ -1073,7 +1073,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
     id: "u7-l6",
     unitId: "unit-7",
     title: "Food & home in the past",
-    description: "Reuse Unit 4–5 vocab with past tense: meals, chores, home.",
+    description: "Put meals, chores, and home life into the past: desayuné, limpié, comí.",
     xpReward: 45,
     exercises: [
       teach("teach-u7l6-desayunar", "desayunar-preterite"),
@@ -1339,8 +1339,8 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
   "u7-l8": {
     id: "u7-l8",
     unitId: "unit-7",
-    title: "Past review + reuse",
-    description: "Mix regulars, irregulars, time words, and older vocab.",
+    title: "Past tense review",
+    description: "Tell what happened with regular and irregular past forms plus ayer and anoche.",
     xpReward: 44,
     exercises: [
       {
@@ -1581,7 +1581,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
     id: "u7-l10",
     unitId: "unit-7",
     title: "More past practice",
-    description: "New mixes — irregulars, timeline, food/home reuse.",
+    description: "More past-tense practice: hice, vine, tuve, plus meals and chores at home.",
     xpReward: 44,
     exercises: [
       {
@@ -1824,7 +1824,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
     id: "u7-l12",
     unitId: "unit-7",
     title: "Unit 7 check",
-    description: "Final check — past tense, timeline, stories, reuse.",
+    description: "Final check — past tense, the day's timeline, and story lines.",
     xpReward: 50,
     exercises: [
       {

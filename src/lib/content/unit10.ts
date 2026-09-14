@@ -707,7 +707,7 @@ export const UNIT10_WORD_CARDS: Record<string, WordCard> = {
 export const UNIT10_LESSONS: Record<string, Lesson> = {
   "u10-l1": {
     id: "u10-l1", unitId: "unit-10", title: "Work & studies: meetings and projects",
-    description: "Word Cards first — reunión, proyecto, colega, universidad.", xpReward: 44,
+    description: "Talk about work and school: reunión, proyecto, colega, universidad.", xpReward: 44,
     exercises: [
       teach("teach-u10l1-reunion", "reunion"),
       { id: "u10l1-1", type: "select", prompt: "‘I have a meeting at ten’ is…", options: ["Tengo una reunión a las diez.", "Tengo un resfriado a las diez.", "Me duele una reunión.", "Iré un proyecto."], correctIndex: 0, explanation: "Tengo una reunión a las diez.", wordCardIds: ["reunion", "a-las"], xp: 3 },
@@ -724,7 +724,7 @@ export const UNIT10_LESSONS: Record<string, Lesson> = {
   },
   "u10-l2": {
     id: "u10-l2", unitId: "unit-10", title: "Career talk & email",
-    description: "Carrera, entrevista, correo, desde casa.", xpReward: 44,
+    description: "Talk careers and email: carrera, entrevista, correo, desde casa.", xpReward: 44,
     exercises: [
       teach("teach-u10l2-carrera", "carrera"),
       { id: "u10l2-1", type: "select", prompt: "Ask: ‘What major are you studying?’", options: ["¿Qué carrera estudias?", "¿Qué fiebre estudias?", "¿Qué farmacia comes?", "¿Qué dolor trabajas?"], correctIndex: 0, explanation: "¿Qué carrera estudias?", wordCardIds: ["carrera", "estudiar"], xp: 3 },
@@ -793,7 +793,7 @@ export const UNIT10_LESSONS: Record<string, Lesson> = {
   },
   "u10-l6": {
     id: "u10-l6", unitId: "unit-10", title: "Future conjugations",
-    description: "Drill hablar, trabajar, ir, tener in simple future.", xpReward: 48,
+    description: "Conjugate hablar, trabajar, ir, and tener in the simple future.", xpReward: 48,
     exercises: [
       conjugate("u10l6-1", "hablar", "yo", "Simple future", ["hablaré", "hablare", "Hablaré"], "yo + hablar → hablaré.", ["hablar-future"], { hint: "hablaré" }),
       conjugate("u10l6-2", "hablar", "tú", "Simple future", ["hablarás", "hablaras", "Hablarás"], "tú + hablar → hablarás.", ["hablar-future"], { hint: "hablarás" }),
@@ -810,7 +810,7 @@ export const UNIT10_LESSONS: Record<string, Lesson> = {
   },
   "u10-l7": {
     id: "u10-l7", unitId: "unit-10", title: "Health: feeling well or ill",
-    description: "Me duele, enfermo, estoy bien/mal, resfriado, fiebre.", xpReward: 44,
+    description: "Say how you feel: me duele, estoy bien / mal, resfriado, fiebre.", xpReward: 44,
     exercises: [
       teach("teach-u10l7-duele", "me-duele"),
       { id: "u10l7-1", type: "select", prompt: "‘My head hurts’ is…", options: ["Me duele la cabeza.", "Mi cabeza duele yo.", "Tengo reunión la cabeza.", "Iré la cabeza."], correctIndex: 0, explanation: "Me duele la cabeza.", wordCardIds: ["me-duele", "dolor"], xp: 3 },
@@ -829,7 +829,7 @@ export const UNIT10_LESSONS: Record<string, Lesson> = {
   },
   "u10-l8": {
     id: "u10-l8", unitId: "unit-10", title: "Appointments & pharmacy",
-    description: "Cita, médico, farmacia, medicina + soft advice.", xpReward: 44,
+    description: "Book a cita, find the farmacia, and give soft advice with debería.", xpReward: 44,
     exercises: [
       teach("teach-u10l8-cita", "cita"),
       { id: "u10l8-1", type: "select", prompt: "‘I have an appointment at three’ is…", options: ["Tengo una cita a las tres.", "Tengo un colega a las tres solo.", "Me duele una cita.", "Voy a la universidad de fiebre."], correctIndex: 0, explanation: "Tengo una cita a las tres.", wordCardIds: ["cita", "a-las"], xp: 3 },
@@ -848,7 +848,7 @@ export const UNIT10_LESSONS: Record<string, Lesson> = {
   },
   "u10-l9": {
     id: "u10-l9", unitId: "unit-10", title: "Story: Work, plans & feeling better",
-    description: "Story-listen + comprehension — work, future, health.", xpReward: 48,
+    description: "Listen to a story about work and feeling ill, then answer.", xpReward: 48,
     exercises: [
       storyListen(
         "u10l9-story", "Planes y bienestar",
@@ -891,7 +891,7 @@ export const UNIT10_LESSONS: Record<string, Lesson> = {
   },
   "u10-l11": {
     id: "u10-l11", unitId: "unit-10", title: "Situations: work & wellbeing",
-    description: "Dialogue-style practice — office, plans, health.", xpReward: 46,
+    description: "Pick the right reply at the office, for future plans, and at the doctor.", xpReward: 46,
     exercises: [
       { id: "u10l11-1", type: "situational-choose", prompt: "Pick the best line.", situation: "You need to cancel a meeting because you are sick.", options: ["No puedo ir a la reunión — estoy enfermo.", "No puedo ir a la reunión — soy metro.", "No puedo ir — comí el imperfecto.", "No puedo ir — el pasaporte tiene fiebre."], correctIndex: 0, explanation: "No puedo ir a la reunión — estoy enfermo.", wordCardIds: ["reunion", "enfermo"], xp: 4 },
       { id: "u10l11-2", type: "situational-choose", prompt: "Pick the best line.", situation: "A coworker asks about next week's plan.", options: ["Voy a terminar el proyecto la próxima semana.", "Voy a terminar el resfriado ayer.", "Íbamos el proyecto de jugo.", "Me duele la próxima semana el correo."], correctIndex: 0, explanation: "Voy a terminar el proyecto la próxima semana.", wordCardIds: ["ir-a-deep", "proyecto", "la-proxima-semana"], xp: 3 },

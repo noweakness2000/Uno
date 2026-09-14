@@ -649,7 +649,7 @@ export const UNIT11_WORD_CARDS: Record<string, WordCard> = {
 export const UNIT11_LESSONS: Record<string, Lesson> = {
   "u11-l1": {
     id: "u11-l1", unitId: "unit-11", title: "Friends & family",
-    description: "Word Cards first — amigo, familia, hermano, pasar tiempo.", xpReward: 44,
+    description: "Talk about your people: amigo, familia, hermano, pasar tiempo.", xpReward: 44,
     exercises: [
       teach("teach-u11l1-amigo", "amigo"),
       { id: "u11l1-1", type: "select", prompt: "‘I'm going with my friends’ is…", options: ["Voy con mis amigos.", "Voy con mis reuniones.", "Voy con mi fiebre.", "Voy con el imperfecto."], correctIndex: 0, explanation: "Voy con mis amigos.", wordCardIds: ["amigo"], xp: 3 },
@@ -666,7 +666,7 @@ export const UNIT11_LESSONS: Record<string, Lesson> = {
   },
   "u11-l2": {
     id: "u11-l2", unitId: "unit-11", title: "Invites & hanging out",
-    description: "Invitar, conocer, juntos — plans with people.", xpReward: 44,
+    description: "Make plans with people using invitar, conocer, and juntos.", xpReward: 44,
     exercises: [
       teach("teach-u11l2-invitar", "invitar"),
       { id: "u11l2-1", type: "select", prompt: "‘I invite you to my birthday’ is…", options: ["Te invito a mi cumpleaños.", "Te duele mi cumpleaños.", "Te envío una fiebre.", "Te iba el proyecto."], correctIndex: 0, explanation: "Te invito a mi cumpleaños.", wordCardIds: ["invitar", "cumpleanos"], xp: 3 },
@@ -683,7 +683,7 @@ export const UNIT11_LESSONS: Record<string, Lesson> = {
   },
   "u11-l3": {
     id: "u11-l3", unitId: "unit-11", title: "Parties & birthdays vocab",
-    description: "Fiesta, cumpleaños, bailar, divertido — celebration words.", xpReward: 44,
+    description: "Talk about celebrations: fiesta, cumpleaños, bailar, divertido.", xpReward: 44,
     exercises: [
       teach("teach-u11l3-fiesta", "fiesta"),
       { id: "u11l3-1", type: "select", prompt: "‘Are you going to the party tonight?’ is…", options: ["¿Vas a la fiesta esta noche?", "¿Vas a la reunión de fiebre?", "¿Ibas el pasaporte?", "¿Me duele la fiesta?"], correctIndex: 0, explanation: "¿Vas a la fiesta esta noche?", wordCardIds: ["fiesta"], xp: 3 },
@@ -700,7 +700,7 @@ export const UNIT11_LESSONS: Record<string, Lesson> = {
   },
   "u11-l4": {
     id: "u11-l4", unitId: "unit-11", title: "Past tense refresh: what happened",
-    description: "Vi, conocí, invité, bailé — finished social events.", xpReward: 46,
+    description: "Say what happened at social events: vi, conocí, invité, bailé.", xpReward: 46,
     exercises: [
       teach("teach-u11l4-ver", "ver-preterite"),
       { id: "u11l4-1", type: "select", prompt: "yo + ver (past tense) is…", options: ["vi", "veía", "veo ayer", "veré"], correctIndex: 0, explanation: "vi — I saw / watched.", wordCardIds: ["ver-preterite"], xp: 3 },
@@ -717,7 +717,7 @@ export const UNIT11_LESSONS: Record<string, Lesson> = {
   },
   "u11-l5": {
     id: "u11-l5", unitId: "unit-11", title: "Past (ongoing) backdrop: what was going on",
-    description: "Estaba, veía, mientras — background for stories.", xpReward: 46,
+    description: "Set the scene in a story with estaba, veía, and mientras.", xpReward: 46,
     exercises: [
       teach("teach-u11l5-contrast", "pret-vs-imp"),
       { id: "u11l5-1", type: "select", prompt: "Past (ongoing) is great for…", options: ["Background and habits (was / used to)", "Only one finished click", "Only future email", "Only pharmacy orders"], correctIndex: 0, explanation: "What was going on vs what happened.", wordCardIds: ["pret-vs-imp"], xp: 3 },
@@ -733,8 +733,8 @@ export const UNIT11_LESSONS: Record<string, Lesson> = {
     ],
   },
   "u11-l6": {
-    id: "u11-l6", unitId: "unit-11", title: "Past tense vs past (ongoing) drills",
-    description: "Contrast drills + conjugate — event vs background.", xpReward: 48,
+    id: "u11-l6", unitId: "unit-11", title: "Past tense vs past (ongoing)",
+    description: "Choose between what happened and what was going on: vi vs veía, de repente.", xpReward: 48,
     exercises: [
       teach("teach-u11l6-repente", "de-repente"),
       { id: "u11l6-1", type: "select", prompt: "‘Suddenly’ often pairs with…", options: ["Past tense (finished sudden event)", "Only simple future email", "Only greetings", "Only ordering juice"], correctIndex: 0, explanation: "De repente llegó… — past tense.", wordCardIds: ["de-repente", "pret-vs-imp"], xp: 3 },
@@ -752,7 +752,7 @@ export const UNIT11_LESSONS: Record<string, Lesson> = {
   },
   "u11-l7": {
     id: "u11-l7", unitId: "unit-11", title: "Party stories",
-    description: "Weekend party narratives — invites, dance, fun.", xpReward: 44,
+    description: "Tell a party story with invitar, bailar, divertido, and de repente.", xpReward: 44,
     exercises: [
       teach("teach-u11l7-contar", "contar-historia"),
       { id: "u11l7-1", type: "select", prompt: "‘I'll tell you what happened last night’ is…", options: ["Te cuento lo que pasó anoche.", "Te duele lo que pasó.", "Te envío la fiebre anoche.", "Íbamos el correo."], correctIndex: 0, explanation: "Te cuento lo que pasó anoche.", wordCardIds: ["contar-historia"], xp: 3 },
@@ -767,7 +767,7 @@ export const UNIT11_LESSONS: Record<string, Lesson> = {
   },
   "u11-l8": {
     id: "u11-l8", unitId: "unit-11", title: "Movies & weekend stories",
-    description: "Película, cine, weekend recaps with light tense contrast.", xpReward: 44,
+    description: "Recap a movie weekend: película, cine, juntos — vimos vs veíamos.", xpReward: 44,
     exercises: [
       teach("teach-u11l8-peli", "pelicula"),
       { id: "u11l8-1", type: "select", prompt: "‘We watched a movie together’ is…", options: ["Vimos una película juntos.", "Veíamos una fiebre juntos.", "Iré una película mañana ayer.", "Me duele el cine forever."], correctIndex: 0, explanation: "Vimos una película juntos.", wordCardIds: ["ver-preterite", "pelicula", "juntos"], xp: 3 },
@@ -782,7 +782,7 @@ export const UNIT11_LESSONS: Record<string, Lesson> = {
   },
   "u11-l9": {
     id: "u11-l9", unitId: "unit-11", title: "Story: A fun weekend",
-    description: "Story-listen + comprehension — friends, party, movie.", xpReward: 48,
+    description: "Listen to a story about a party and a movie night, then answer.", xpReward: 48,
     exercises: [
       storyListen(
         "u11l9-story", "Un fin de semana divertido",
@@ -825,7 +825,7 @@ export const UNIT11_LESSONS: Record<string, Lesson> = {
   },
   "u11-l11": {
     id: "u11-l11", unitId: "unit-11", title: "Situations: social life",
-    description: "Dialogue-style practice — invites, parties, stories.", xpReward: 46,
+    description: "Pick the right reply at parties, for invites, and while telling a story.", xpReward: 46,
     exercises: [
       { id: "u11l11-1", type: "situational-choose", prompt: "Pick the best line.", situation: "Invite a friend to your birthday.", options: ["Te invito a mi cumpleaños.", "Te invito a mi fiebre.", "Íbamos el pasaporte.", "Me duele el correo."], correctIndex: 0, explanation: "Te invito a mi cumpleaños.", wordCardIds: ["invitar", "cumpleanos"], xp: 4 },
       { id: "u11l11-2", type: "situational-choose", prompt: "Pick the best line.", situation: "Friend asks who you met at the party.", options: ["Conocí a la hermana de Ana.", "Conocía la farmacia forever.", "Iré el imperfecto.", "Tuve una reunión de jugo."], correctIndex: 0, explanation: "Conocí a la hermana de Ana.", wordCardIds: ["conocer-preterite", "hermano"], xp: 3 },
