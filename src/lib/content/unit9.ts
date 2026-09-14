@@ -797,8 +797,8 @@ export const UNIT9_LESSONS: Record<string, Lesson> = {
     ],
   },
   "u9-l10": {
-    id: "u9-l10", unitId: "unit-9", title: "Cloze & dictation from the trip",
-    description: "Story lines — cloze, dictation, and listen.", xpReward: 48,
+    id: "u9-l10", unitId: "unit-9", title: "Fill-in-the-blank & dictation from the trip",
+    description: "Story lines — fill in the blanks, write what you hear, and listen.", xpReward: 48,
     exercises: [
       dictation("u9l10-dict-1", "Antes, yo iba al aeropuerto en taxi.", ["Antes, yo iba al aeropuerto en taxi.", "Antes yo iba al aeropuerto en taxi.", "Antes, yo iba al aeropuerto en taxi"], "Type the line you heard.", ["antes", "ir-imperfect", "aeropuerto", "taxi"], { hint: "Replay if needed", voice: "f" }),
       cloze("u9l10-cloze-1", "Antes, yo ___ al aeropuerto en taxi.", ["iba", "Iba"], "Antes, yo iba al aeropuerto en taxi.", ["ir-imperfect", "aeropuerto", "taxi"], { hint: "ir past (ongoing)", audioText: "Antes, yo iba al aeropuerto en taxi.", voice: "f" }),

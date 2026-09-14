@@ -983,7 +983,7 @@ export const UNIT3_LESSONS: Record<string, Lesson> = {
     id: "u3-l9",
     unitId: "unit-3",
     title: "Story: Buying fruit",
-    description: "A tiny market story with numbers and prices + cloze.",
+    description: "A tiny market story with numbers and prices, then fill in the blanks.",
     xpReward: 40,
     exercises: [
       storyListen(
@@ -1183,7 +1183,7 @@ export const UNIT3_LESSONS: Record<string, Lesson> = {
     id: "u3-l11",
     unitId: "unit-3",
     title: "Story: Phone and age",
-    description: "Friends trade age and a phone number — then cloze.",
+    description: "Friends trade age and a phone number — then fill in the blanks.",
     xpReward: 40,
     exercises: [
       storyListen(

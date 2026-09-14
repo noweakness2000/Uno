@@ -808,8 +808,8 @@ export const UNIT11_LESSONS: Record<string, Lesson> = {
     ],
   },
   "u11-l10": {
-    id: "u11-l10", unitId: "unit-11", title: "Cloze & dictation from the story",
-    description: "Story lines — cloze, dictation, and listen.", xpReward: 48,
+    id: "u11-l10", unitId: "unit-11", title: "Fill-in-the-blank & dictation from the story",
+    description: "Story lines — fill in the blanks, write what you hear, and listen.", xpReward: 48,
     exercises: [
       dictation("u11l10-dict-1", "El sábado mis amigos me invitaron a una fiesta.", ["El sábado mis amigos me invitaron a una fiesta.", "El sabado mis amigos me invitaron a una fiesta."], "Type the line you heard.", ["amigo", "invitar-preterite", "fiesta"], { hint: "Replay if needed", voice: "f" }),
       cloze("u11l10-cloze-1", "El sábado mis amigos me ___ a una fiesta.", ["invitaron", "Invitaron"], "El sábado mis amigos me invitaron a una fiesta.", ["invitar-preterite", "fiesta"], { hint: "they invited", audioText: "El sábado mis amigos me invitaron a una fiesta.", voice: "f" }),

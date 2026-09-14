@@ -1672,7 +1672,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
     id: "u8-l9",
     unitId: "unit-8",
     title: "Story: Friday plans",
-    description: "Story-listen #1 + cloze — invites and near future.",
+    description: "Listen to a story and fill in its lines — invites and near future.",
     xpReward: 48,
     exercises: [
       storyListen(
@@ -1920,7 +1920,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
     id: "u8-l11",
     unitId: "unit-8",
     title: "Story: Weekend invite",
-    description: "Story-listen #2 + cloze — soft no then Saturday plan.",
+    description: "A second story to listen to and fill in — a soft no, then Saturday plans.",
     xpReward: 48,
     exercises: [
       storyListen(

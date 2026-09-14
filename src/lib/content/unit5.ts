@@ -1447,7 +1447,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
     id: "u5-l9",
     unitId: "unit-5",
     title: "Story: Ordering lunch",
-    description: "Listen to a café order story, then answer — plus story cloze drills.",
+    description: "Listen to a café order story, answer, then fill in lines from it.",
     xpReward: 45,
     exercises: [
       storyListen(
@@ -1716,7 +1716,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
     id: "u5-l11",
     unitId: "unit-5",
     title: "Story: Café with a friend",
-    description: "A second eating-out story with a different voice mix + cloze.",
+    description: "A second eating-out story with different voices, then fill in the blanks.",
     xpReward: 45,
     exercises: [
       storyListen(

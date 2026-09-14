@@ -874,8 +874,8 @@ export const UNIT10_LESSONS: Record<string, Lesson> = {
     ],
   },
   "u10-l10": {
-    id: "u10-l10", unitId: "unit-10", title: "Cloze & dictation from the story",
-    description: "Story lines — cloze, dictation, and listen.", xpReward: 48,
+    id: "u10-l10", unitId: "unit-10", title: "Fill-in-the-blank & dictation from the story",
+    description: "Story lines — fill in the blanks, write what you hear, and listen.", xpReward: 48,
     exercises: [
       dictation("u10l10-dict-1", "Mañana voy a trabajar desde casa.", ["Mañana voy a trabajar desde casa.", "Manana voy a trabajar desde casa."], "Type the line you heard.", ["manana", "ir-a-deep", "desde-casa"], { hint: "Replay if needed", voice: "f" }),
       cloze("u10l10-cloze-1", "Mañana voy a trabajar desde ___.", ["casa", "Casa"], "Mañana voy a trabajar desde casa.", ["desde-casa"], { hint: "home", audioText: "Mañana voy a trabajar desde casa.", voice: "f" }),

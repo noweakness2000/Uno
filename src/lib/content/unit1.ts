@@ -659,7 +659,7 @@ export const UNIT1_LESSONS: Record<string, Lesson> = {
     id: "u1-l9",
     unitId: "unit-1",
     title: "Story: Café hello",
-    description: "A simple first-meeting story — listen, answer, then cloze.",
+    description: "A simple first-meeting story — listen, answer, then fill in the blanks.",
     xpReward: 40,
     exercises: [
       storyListen(

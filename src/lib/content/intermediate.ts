@@ -1851,7 +1851,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
     id: "u4-l8",
     unitId: "unit-4",
     title: "Story: My morning",
-    description: "Listen to a short daily-routine story, then answer — plus story cloze drills.",
+    description: "Listen to a short daily-routine story, answer, then fill in lines from it.",
     xpReward: 45,
     exercises: [
       storyListen(
@@ -2074,7 +2074,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
     id: "u4-l10",
     unitId: "unit-4",
     title: "Story: Weekend at home",
-    description: "A second story with a different voice mix + questions — plus story cloze drills.",
+    description: "A second story with different voices — answer, then fill in lines from it.",
     xpReward: 45,
     exercises: [
       storyListen(

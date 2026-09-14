@@ -829,7 +829,7 @@ export const UNIT2_LESSONS: Record<string, Lesson> = {
     id: "u2-l9",
     unitId: "unit-2",
     title: "Story: Introducing myself",
-    description: "Listen to a simple self-intro, then cloze the key lines.",
+    description: "Listen to a simple self-intro, then fill in its key lines.",
     xpReward: 40,
     exercises: [
       storyListen(
@@ -1004,7 +1004,7 @@ export const UNIT2_LESSONS: Record<string, Lesson> = {
     id: "u2-l11",
     unitId: "unit-2",
     title: "Story: New neighbors",
-    description: "Neighbors swap names, origin, and languages — then cloze.",
+    description: "Neighbors swap names, origin, and languages — then fill in the blanks.",
     xpReward: 40,
     exercises: [
       storyListen(
