@@ -35,6 +35,7 @@ if (isGoogleAuthConfigured()) {
 /** 1 year — keep Google logins across browser restarts and app reloads. */
 const SESSION_MAX_AGE = 60 * 60 * 24 * 365;
 const useSecureCookies = (process.env.AUTH_URL ?? "").startsWith("https://");
+// AUTH_SECRET must stay stable across container recreates or every JWT session invalidates.
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   trustHost: true,
@@ -57,6 +58,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   },
   cookies: {
     sessionToken: {
+      // Auth.js v5: HTTPS uses the __Secure- prefix; keep name + Max-Age aligned.
+      name: useSecureCookies
+        ? "__Secure-authjs.session-token"
+        : "authjs.session-token",
       options: {
         httpOnly: true,
         sameSite: "lax",

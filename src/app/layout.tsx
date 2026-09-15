@@ -18,10 +18,18 @@ export const metadata: Metadata = {
   title: "Uno — Spanish",
   description:
     "Learn Latin American Spanish with explanations-first lessons. No hearts, no lockouts.",
+  applicationName: "Uno",
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    title: "Uno",
+    statusBarStyle: "default",
+  },
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
       { url: "/icon.png", type: "image/png" },
+      { url: "/icon-512.png", type: "image/png", sizes: "512x512" },
     ],
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
   },
@@ -32,6 +40,7 @@ export const viewport = {
   initialScale: 1,
   maximumScale: 5,
   viewportFit: "cover",
+  themeColor: "#059669",
 };
 
 export default function RootLayout({
