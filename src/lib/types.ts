@@ -305,6 +305,14 @@ export interface Unit {
 /** How sure the learner said they were when answering. */
 export type AnswerConfidence = "certain" | "unsure";
 
+/**
+ * Settings the learner picks by hand, tracked so a device only pushes them
+ * to the server after an edit here — never as an echo of its cache.
+ * "placement" covers startingLevel + skippedUnitIds + recommendedUnitId,
+ * which always change together.
+ */
+export type SyncDirtyField = "name" | "dailyGoal" | "placement";
+
 export interface DemoUser {
   id: string;
   name: string;
@@ -331,4 +339,9 @@ export interface DemoUser {
   skippedUnitIds: string[];
   /** Preferred unit for Continue / recommended path. */
   recommendedUnitId: string;
+  /**
+   * Hand-picked settings edited on this device and not yet confirmed by the
+   * server. Persisted so an offline edit still syncs after a reload.
+   */
+  dirtyFields: SyncDirtyField[];
 }

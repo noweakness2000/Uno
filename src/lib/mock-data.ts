@@ -20,6 +20,7 @@ export const DEMO_USER: DemoUser = {
   xp: 0,
   streak: 0,
   dailyGoal: 60,
+  dirtyFields: [],
   dailyXp: 0,
   lastStreakDate: null,
   completedLessonIds: [],

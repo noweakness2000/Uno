@@ -2,7 +2,12 @@
 
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { AnswerConfidence, DemoUser, StartingLevel } from "@/lib/types";
+import type {
+  AnswerConfidence,
+  DemoUser,
+  StartingLevel,
+  SyncDirtyField,
+} from "@/lib/types";
 import { DEMO_USER as DEFAULT_USER } from "@/lib/mock-data";
 import {
   ensureDueSoon,
@@ -64,6 +69,15 @@ interface UserState {
   resetDemo: () => void;
   /** Break stale streaks / zero yesterday's daily XP after midnight. */
   rolloverStreak: () => void;
+  /** Server confirmed these settings — stop pushing them until edited again. */
+  clearDirtyFields: (fields: SyncDirtyField[]) => void;
+}
+
+function markDirty(
+  user: DemoUser,
+  ...fields: SyncDirtyField[]
+): SyncDirtyField[] {
+  return Array.from(new Set([...(user.dirtyFields ?? []), ...fields]));
 }
 
 /** Two "Got it" clicks this close together graduate a word. */
@@ -77,6 +91,7 @@ function withPlacementDefaults(user: DemoUser): DemoUser {
     archivedWordIds: user.archivedWordIds ?? [],
     gotItAt: user.gotItAt ?? {},
     lastStreakDate: user.lastStreakDate ?? null,
+    dirtyFields: user.dirtyFields ?? [],
     recommendedUnitId:
       user.recommendedUnitId ??
       recommendedUnitForLevel(user.startingLevel ?? "absolute_beginner"),
@@ -88,7 +103,13 @@ export const useUserStore = create<UserState>()(
     (set, get) => ({
       user: withPlacementDefaults({ ...DEFAULT_USER }),
       setDailyGoal: (goal) =>
-        set((s) => ({ user: { ...s.user, dailyGoal: goal } })),
+        set((s) => ({
+          user: {
+            ...s.user,
+            dailyGoal: goal,
+            dirtyFields: markDirty(s.user, "dailyGoal"),
+          },
+        })),
       completeOnboarding: (goal, name, startingLevel) => {
         const skippedLessons = skippedLessonsForLevel(startingLevel);
         const skippedUnitIds = skippedUnitsForLevel(startingLevel);
@@ -98,6 +119,9 @@ export const useUserStore = create<UserState>()(
             ...s.user.completedLessonIds,
             ...skippedLessons,
           ]);
+          // Goal and level are always chosen here; the name only if typed.
+          const dirty: SyncDirtyField[] = ["dailyGoal", "placement"];
+          if (name.trim()) dirty.push("name");
           return {
             user: {
               ...s.user,
@@ -108,14 +132,23 @@ export const useUserStore = create<UserState>()(
               skippedUnitIds,
               recommendedUnitId,
               completedLessonIds: Array.from(completed),
+              dirtyFields: markDirty(s.user, ...dirty),
             },
           };
         });
       },
       updateName: (name) =>
-        set((s) => ({
-          user: { ...s.user, name: name.trim() || s.user.name },
-        })),
+        set((s) =>
+          name.trim()
+            ? {
+                user: {
+                  ...s.user,
+                  name: name.trim(),
+                  dirtyFields: markDirty(s.user, "name"),
+                },
+              }
+            : s
+        ),
       setStartingLevel: (startingLevel) =>
         set((s) => {
           const completed = new Set([
@@ -129,6 +162,7 @@ export const useUserStore = create<UserState>()(
               skippedUnitIds: skippedUnitsForLevel(startingLevel),
               recommendedUnitId: recommendedUnitForLevel(startingLevel),
               completedLessonIds: Array.from(completed),
+              dirtyFields: markDirty(s.user, "placement"),
             },
           };
         }),
@@ -278,6 +312,7 @@ export const useUserStore = create<UserState>()(
               completedLessonIds: Array.from(completed),
               skippedUnitIds: Array.from(skipped),
               recommendedUnitId: UNIT_2_ID,
+              dirtyFields: markDirty(s.user, "placement"),
             },
           };
         }),
@@ -297,10 +332,20 @@ export const useUserStore = create<UserState>()(
               completedLessonIds: Array.from(completed),
               skippedUnitIds: Array.from(skipped),
               recommendedUnitId: FIRST_INTERMEDIATE_UNIT_ID,
+              dirtyFields: markDirty(s.user, "placement"),
             },
           };
         }),
       resetDemo: () => set({ user: withPlacementDefaults({ ...DEFAULT_USER }) }),
+      clearDirtyFields: (fields) =>
+        set((s) => {
+          const drop = new Set(fields);
+          const dirtyFields = (s.user.dirtyFields ?? []).filter(
+            (f) => !drop.has(f)
+          );
+          if (dirtyFields.length === (s.user.dirtyFields ?? []).length) return s;
+          return { user: { ...s.user, dirtyFields } };
+        }),
       rolloverStreak: () =>
         set((s) => {
           const next = applyStreakRollover(s.user);

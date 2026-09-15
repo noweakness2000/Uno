@@ -4,54 +4,106 @@ import { useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
 import { preferRealName, isPlaceholderName } from "@/lib/display-name";
 import { useUserStore } from "@/store/user-store";
-import { isStartingLevel, type DemoUser, type StartingLevel } from "@/lib/types";
+import {
+  isStartingLevel,
+  type DemoUser,
+  type StartingLevel,
+  type SyncDirtyField,
+} from "@/lib/types";
 import { mergeStreakFields } from "@/lib/streak";
 
 const DEBOUNCE_MS = 750;
 
 
 type ProgressPayload = {
-  displayName: string;
+  /** Only when "name" is dirty — otherwise the server's value stands. */
+  displayName?: string;
   xp: number;
   streak: number;
-  dailyGoal: number;
+  /** Only when "dailyGoal" is dirty. */
+  dailyGoal?: number;
   dailyXp: number;
   lastStreakDate: string | null;
-  startingLevel: StartingLevel;
+  /** The placement trio travels together, only when "placement" is dirty. */
+  startingLevel?: StartingLevel;
+  skippedUnitIds?: string[];
+  recommendedUnitId?: string | null;
   onboardingComplete: boolean;
   completedLessonIds: string[];
   weakWordIds: string[];
   archivedWordIds: string[];
   gotItAt: Record<string, string>;
   srsCards: DemoUser["srsCards"];
-  skippedUnitIds: string[];
-  recommendedUnitId: string | null;
 };
 
+/**
+ * Progress always travels; hand-picked settings travel only when this device
+ * edited them (see DemoUser.dirtyFields). Otherwise a stale cache would win
+ * on the server and every device would just see its own value echoed back.
+ */
 function buildProgressPayload(
-  user: DemoUser,
-  displayName: string
-): ProgressPayload {
-  return {
-    displayName,
+  user: DemoUser
+): { payload: ProgressPayload; sent: SyncDirtyField[] } {
+  const dirty = new Set(user.dirtyFields ?? []);
+  const sent: SyncDirtyField[] = [];
+  const payload: ProgressPayload = {
     xp: user.xp,
     streak: user.streak,
-    dailyGoal: user.dailyGoal,
     dailyXp: user.dailyXp,
     lastStreakDate: user.lastStreakDate ?? null,
-    startingLevel: user.startingLevel,
     onboardingComplete: user.onboardingComplete,
     completedLessonIds: user.completedLessonIds,
     weakWordIds: user.weakWordIds,
     archivedWordIds: user.archivedWordIds ?? [],
     gotItAt: user.gotItAt ?? {},
     srsCards: user.srsCards ?? {},
-    skippedUnitIds: user.skippedUnitIds ?? [],
-    recommendedUnitId: user.recommendedUnitId ?? null,
   };
+  // A placeholder is never an edit worth pushing, even if flagged.
+  if (dirty.has("name") && !isPlaceholderName(user.name)) {
+    payload.displayName = user.name.trim();
+    sent.push("name");
+  }
+  if (dirty.has("dailyGoal")) {
+    payload.dailyGoal = user.dailyGoal;
+    sent.push("dailyGoal");
+  }
+  if (dirty.has("placement")) {
+    payload.startingLevel = user.startingLevel;
+    payload.skippedUnitIds = user.skippedUnitIds ?? [];
+    payload.recommendedUnitId = user.recommendedUnitId ?? null;
+    sent.push("placement");
+  }
+  return { payload, sent };
 }
 
-/** Stable fingerprint of fields that must reach Postgres for leaderboard/sync. */
+/**
+ * Dirty flags to clear after a successful PUT: only those whose value is
+ * still what went over the wire. An edit made while the request was in
+ * flight stays dirty so it gets its own PUT.
+ */
+function confirmedFields(
+  sentUser: DemoUser,
+  sent: SyncDirtyField[]
+): SyncDirtyField[] {
+  const now = useUserStore.getState().user;
+  const sameIds = (a: string[] = [], b: string[] = []) =>
+    a.length === b.length && a.every((id, i) => id === b[i]);
+  return sent.filter((f) => {
+    if (f === "name") return now.name === sentUser.name;
+    if (f === "dailyGoal") return now.dailyGoal === sentUser.dailyGoal;
+    return (
+      now.startingLevel === sentUser.startingLevel &&
+      now.recommendedUnitId === sentUser.recommendedUnitId &&
+      sameIds(now.skippedUnitIds, sentUser.skippedUnitIds)
+    );
+  });
+}
+
+/**
+ * Stable fingerprint of fields that must reach Postgres for leaderboard/sync.
+ * dirtyFields is deliberately left out: clearing a flag after a successful
+ * PUT must not itself schedule another PUT.
+ */
 function progressFingerprint(user: DemoUser): string {
   return JSON.stringify({
     name: user.name,
@@ -107,15 +159,24 @@ function applyMergedProgress(
     const mergeIds = (local: string[] = [], remote?: string[]) =>
       Array.from(new Set([...(remote ?? []), ...local]));
 
+    // Settings this device edited since the last confirmed PUT keep their
+    // local value; everything else takes the server's, which is now genuinely
+    // the server's because the request didn't echo our cache.
+    const dirty = new Set(s.user.dirtyFields ?? []);
+
     return {
       user: {
         ...s.user,
         id: typeof p.id === "string" ? p.id : s.user.id,
-        name: preferRealName(p.name, sessionName) || s.user.name,
+        name: dirty.has("name")
+          ? s.user.name
+          : preferRealName(p.name, sessionName) || s.user.name,
         // Never clobber newer local XP/streak/dailyXp with a stale response.
         xp: typeof p.xp === "number" ? Math.max(p.xp, s.user.xp) : s.user.xp,
         dailyGoal:
-          typeof p.dailyGoal === "number" ? p.dailyGoal : s.user.dailyGoal,
+          !dirty.has("dailyGoal") && typeof p.dailyGoal === "number"
+            ? p.dailyGoal
+            : s.user.dailyGoal,
         ...mergeStreakFields(s.user, {
           streak: typeof p.streak === "number" ? p.streak : s.user.streak,
           dailyXp: typeof p.dailyXp === "number" ? p.dailyXp : s.user.dailyXp,
@@ -124,9 +185,10 @@ function applyMergedProgress(
               ? p.lastStreakDate
               : s.user.lastStreakDate,
         }),
-        startingLevel: isStartingLevel(p.startingLevel)
-          ? p.startingLevel
-          : s.user.startingLevel,
+        startingLevel:
+          !dirty.has("placement") && isStartingLevel(p.startingLevel)
+            ? p.startingLevel
+            : s.user.startingLevel,
         onboardingComplete: Boolean(
           p.onboardingComplete || s.user.onboardingComplete
         ),
@@ -140,9 +202,16 @@ function applyMergedProgress(
           (p as { srsCards?: DemoUser["srsCards"] }).srsCards ??
           s.user.srsCards ??
           {},
-        skippedUnitIds: mergeIds(s.user.skippedUnitIds, p.skippedUnitIds),
+        // Replace, not union: the server holds the latest explicit choice and
+        // a union could only ever grow the skipped set back.
+        skippedUnitIds:
+          !dirty.has("placement") && Array.isArray(p.skippedUnitIds)
+            ? p.skippedUnitIds
+            : s.user.skippedUnitIds,
         recommendedUnitId:
-          p.recommendedUnitId ?? s.user.recommendedUnitId,
+          !dirty.has("placement") && p.recommendedUnitId
+            ? p.recommendedUnitId
+            : s.user.recommendedUnitId,
       },
     };
   });
@@ -161,8 +230,7 @@ export async function flushProgressToServer(opts?: {
 }): Promise<boolean> {
   const user = useUserStore.getState().user;
   const sessionName = opts?.sessionName ?? undefined;
-  const resolvedName = preferRealName(user.name, sessionName);
-  const payload = buildProgressPayload(user, resolvedName);
+  const { payload, sent } = buildProgressPayload(user);
 
   try {
     const res = await fetch("/api/progress", {
@@ -172,6 +240,11 @@ export async function flushProgressToServer(opts?: {
       keepalive: opts?.keepalive === true,
     });
     if (!res.ok) return false;
+    // Only now: a failed or offline PUT leaves the flags set so the edit is
+    // retried on the next sync instead of being silently dropped.
+    if (sent.length) {
+      useUserStore.getState().clearDirtyFields(confirmedFields(user, sent));
+    }
     if (!opts?.applyResponse) return true;
 
     const data = (await res.json()) as {
