@@ -66,7 +66,7 @@ export function FeedbackPanel({
               <div className="mt-2 flex flex-wrap items-center gap-2 text-sm text-slate-800">
                 <span>
                   Correct answer:{" "}
-                  <strong className="font-extrabold break-words">{correctAnswer}</strong>
+                  <strong className="font-extrabold break-words">{correctAnswer.replace(/\.$/, "")}</strong>
                 </span>
                 {answerIsSpanish && (
                   <SpeakButton text={correctAnswer} label={`Play: ${correctAnswer}`} />

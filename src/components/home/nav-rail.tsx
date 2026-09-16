@@ -20,7 +20,7 @@ export function NavRail() {
   const dueCount = countDue(user.srsCards);
 
   const items = [
-    { href: "/home", label: "Learn", icon: Home, badge: null as string | null, badgeTint: "" },
+    { href: "/home", label: "Home", icon: Home, badge: null as string | null, badgeTint: "" },
     {
       href: "/flashcards",
       label: "Cards",
