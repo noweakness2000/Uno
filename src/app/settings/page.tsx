@@ -80,11 +80,11 @@ export default function SettingsPage() {
           </Button>
         </Link>
         <Image
-          src="/images/mascot-square.png"
+          src="/images/broto-mascot.png"
           alt=""
-          width={40}
+          width={35}
           height={40}
-          className="h-10 w-10 rounded-xl object-cover"
+          className="h-10 w-auto object-contain"
         />
         <div className="min-w-0 flex-1">
           <h1 className="text-2xl font-extrabold text-slate-900">Settings</h1>

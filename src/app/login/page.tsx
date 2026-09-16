@@ -16,19 +16,24 @@ export default function LoginPage() {
   return (
     <div className="mx-auto flex min-h-dvh w-full max-w-md flex-col justify-center px-4 py-10">
       <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-        <div className="mb-3 flex justify-center">
+        <div className="mb-3 flex flex-col items-center gap-3">
           <Image
-            src="/images/mascot.png"
+            src="/images/broto-mascot.png"
             alt="Broto mascot"
-            width={64}
-            height={64}
-            className="h-14 w-14 rounded-2xl object-cover sm:h-16 sm:w-16"
+            width={74}
+            height={84}
+            className="h-[84px] w-auto object-contain"
+            priority
+          />
+          <Image
+            src="/images/broto-wordmark.png"
+            alt="Broto"
+            width={105}
+            height={42}
+            className="h-[42px] w-auto"
             priority
           />
         </div>
-        <p className="text-center text-xs font-bold uppercase tracking-widest text-emerald-600">
-          Broto
-        </p>
         <h1 className="mt-2 text-center text-2xl font-extrabold text-slate-900">
           Sign in
         </h1>

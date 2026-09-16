@@ -46,24 +46,30 @@ export function HomeView({ unitImageIds }: HomeViewProps) {
             className="shrink-0 rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2"
           >
             <Image
-              src="/images/mascot-square.png"
+              src="/images/broto-mascot.png"
               alt="Broto mascot"
-              width={72}
-              height={72}
-              className="h-14 w-14 rounded-2xl object-cover animate-float sm:h-16 sm:w-16"
+              width={56}
+              height={64}
+              className="h-14 w-auto object-contain animate-float sm:h-16"
               priority
             />
           </Link>
           <div className="min-w-0 flex-1">
-            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-emerald-600 lg:hidden">
-              Broto
-            </p>
-            <h1 className="truncate text-2xl font-extrabold text-slate-900 sm:text-[26px] lg:text-3xl">
+            {/* Wordmark: small above the greeting on phones, full lockup at lg where the rail carries the greeting. */}
+            <Image
+              src="/images/broto-wordmark.png"
+              alt="Broto"
+              width={110}
+              height={44}
+              className="h-5 w-auto lg:h-11"
+              priority
+            />
+            <h1 className="mt-0.5 truncate font-greeting text-2xl font-bold text-slate-900 sm:text-[26px] lg:hidden">
               Hola, {user.name || "Learner"}
             </h1>
             <Link
               href="/settings"
-              className="mt-0.5 inline-flex items-center gap-1 text-xs font-medium text-slate-400 hover:text-emerald-600"
+              className="mt-0.5 inline-flex items-center gap-1 text-xs font-medium text-slate-400 hover:text-emerald-600 lg:hidden"
             >
               <Settings className="h-3 w-3" />
               Settings

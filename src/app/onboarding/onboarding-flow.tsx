@@ -61,17 +61,22 @@ export function OnboardingFlow({ googleReady }: { googleReady: boolean }) {
     <div className="mx-auto flex min-h-dvh w-full max-w-lg flex-col gap-4 overflow-x-hidden px-3 pb-[max(3rem,env(safe-area-inset-bottom))] pt-[max(1.5rem,env(safe-area-inset-top))] sm:max-w-2xl sm:px-4">
       <header className="flex flex-col items-center gap-3 pt-4 text-center">
         <Image
-          src="/images/mascot-square.png"
+          src="/images/broto-mascot.png"
           alt="Broto mascot"
-          width={88}
-          height={88}
-          className="h-20 w-20 rounded-3xl object-cover shadow-md shadow-emerald-500/20"
+          width={84}
+          height={96}
+          className="h-24 w-auto object-contain"
+          priority
+        />
+        <Image
+          src="/images/broto-wordmark.png"
+          alt="Broto"
+          width={140}
+          height={56}
+          className="h-14 w-auto"
           priority
         />
         <div>
-          <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-emerald-600">
-            Broto
-          </p>
           <h1 className="mt-1 text-3xl font-extrabold tracking-tight text-slate-900">
             Welcome to Broto
           </h1>

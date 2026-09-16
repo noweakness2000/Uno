@@ -62,14 +62,20 @@ export function NavRail() {
         className="mb-3 flex items-center gap-2.5 rounded-xl px-2 py-1 hover:bg-slate-100"
       >
         <Image
-          src="/images/mascot-square.png"
+          src="/images/broto-mascot.png"
           alt=""
-          width={38}
-          height={38}
-          className="h-9 w-9 rounded-xl object-cover"
+          width={35}
+          height={40}
+          className="h-10 w-auto shrink-0 object-contain"
         />
-        <span className="text-lg font-extrabold tracking-tight text-slate-900">
-          Broto
+        <span className="min-w-0">
+          <span className="block truncate font-greeting text-base font-bold leading-tight text-slate-900">
+            Hola, {user.name || "Learner"}
+          </span>
+          <span className="mt-0.5 flex items-center gap-1 text-[11px] font-medium text-slate-400">
+            <Settings className="h-3 w-3" />
+            Settings
+          </span>
         </span>
       </Link>
 
