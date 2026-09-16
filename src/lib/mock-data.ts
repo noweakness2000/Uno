@@ -1,5 +1,5 @@
 /**
- * Mock content for Uno (Spanish Spanish).
+ * Mock content for Broto (Spanish Spanish).
  * Later: replace with Postgres on Unraid :5433
  */
 import type { DemoUser, Lesson, Unit, WordCard } from "./types";
@@ -549,7 +549,7 @@ export const WORD_CARDS: Record<string, WordCard> = {
     gender: "m",
     gloss: "English (language)",
     meaningSummary:
-      "The English language. ¿Hablas inglés? / Hablo inglés. Accents optional when you type answers in Uno.",
+      "The English language. ¿Hablas inglés? / Hablo inglés. Accents optional when you type answers in Broto.",
     examples: [
       { es: "¿Hablas inglés?", en: "Do you speak English?" },
       { es: "Hablo inglés y un poco de español.", en: "I speak English and a little Spanish." },
@@ -585,7 +585,7 @@ export const WORD_CARDS: Record<string, WordCard> = {
     gender: "n/a",
     gloss: "where are you from? (informal)",
     meaningSummary:
-      "The classic informal origin question. Answer with Soy de… Formal: ¿De dónde es? Keep the informal form first in Uno; use the formal form when the situation calls for it.",
+      "The classic informal origin question. Answer with Soy de… Formal: ¿De dónde es? Keep the informal form first in Broto; use the formal form when the situation calls for it.",
     examples: [
       { es: "¿De dónde eres?", en: "Where are you from?" },
       { es: "¿De dónde eres? — Soy de México.", en: "Where are you from? — I'm from Mexico." },
@@ -1785,7 +1785,7 @@ const LESSONS_RAW: Record<string, Lesson> = {
         options: ["hablan", "habláis", "hablo", "hablamos"],
         correctIndex: 0,
         explanation:
-          "Ustedes hablan… Uno uses ustedes for plural “you.”",
+          "Ustedes hablan… Broto uses ustedes for plural “you.”",
         wordCardIds: ["hablar"],
         xp: 3,
       },

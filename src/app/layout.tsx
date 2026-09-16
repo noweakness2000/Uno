@@ -15,14 +15,14 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Uno — Spanish",
+  title: "Broto — Spanish",
   description:
     "Learn Latin American Spanish with explanations-first lessons. No hearts, no lockouts.",
-  applicationName: "Uno",
+  applicationName: "Broto",
   manifest: "/manifest.webmanifest",
   appleWebApp: {
     capable: true,
-    title: "Uno",
+    title: "Broto",
     statusBarStyle: "default",
   },
   icons: {

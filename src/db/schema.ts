@@ -9,7 +9,7 @@ import {
 } from "drizzle-orm/pg-core";
 import type { AdapterAccountType } from "next-auth/adapters";
 
-/** Auth.js users + optional Uno progress fields. */
+/** Auth.js users + optional Broto progress fields. */
 export const users = pgTable("users", {
   id: text("id")
     .primaryKey()

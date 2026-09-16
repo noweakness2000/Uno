@@ -1,4 +1,4 @@
-# Uno — Spanish
+# Broto — Spanish
 
 Explanations-first Spanish learning for Latin American Spanish. No hearts, no energy, no lockouts — XP, streak, and daily goals are motivational only.
 
@@ -12,7 +12,7 @@ Explanations-first Spanish learning for Latin American Spanish. No hearts, no en
 
 ## Brand / product notes
 
-- Brand: **Uno** (not Habla)
+- Brand: **Broto** (formerly Uno; never Habla)
 - Spanish vocab: **carro**, **jugo**, **departamento**, **celular**, **computadora**
 - English prompts for exercises; Spanish chrome only when obvious
 - Wrong answers: short explanation + mark weak + continue
@@ -123,7 +123,7 @@ If `AUTH_GOOGLE_ID` / `AUTH_GOOGLE_SECRET` are missing, the app still boots; `/l
 5. Authorized redirect URIs (required):
    - `https://uno.rivertechnologies.app/api/auth/callback/google`
    - `http://192.168.11.100:3000/api/auth/callback/google`
-6. Copy the client ID and secret into the Uno container env as `AUTH_GOOGLE_ID` and `AUTH_GOOGLE_SECRET`, then recreate `uno-web`.
+6. Copy the client ID and secret into the Broto container env as `AUTH_GOOGLE_ID` and `AUTH_GOOGLE_SECRET`, then recreate `uno-web`.
 
 ### Database schema
 

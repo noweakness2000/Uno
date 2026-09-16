@@ -62,7 +62,7 @@ export function OnboardingFlow({ googleReady }: { googleReady: boolean }) {
       <header className="flex flex-col items-center gap-3 pt-4 text-center">
         <Image
           src="/images/mascot-square.png"
-          alt="Uno mascot"
+          alt="Broto mascot"
           width={88}
           height={88}
           className="h-20 w-20 rounded-3xl object-cover shadow-md shadow-emerald-500/20"
@@ -70,10 +70,10 @@ export function OnboardingFlow({ googleReady }: { googleReady: boolean }) {
         />
         <div>
           <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-emerald-600">
-            Uno
+            Broto
           </p>
           <h1 className="mt-1 text-3xl font-extrabold tracking-tight text-slate-900">
-            Welcome to Uno
+            Welcome to Broto
           </h1>
           <p className="mt-2 text-slate-500">
             Latin American Spanish, explanations first. No hearts, no lockouts.

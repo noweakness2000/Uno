@@ -69,7 +69,7 @@ export function NavRail() {
           className="h-9 w-9 rounded-xl object-cover"
         />
         <span className="text-lg font-extrabold tracking-tight text-slate-900">
-          Uno
+          Broto
         </span>
       </Link>
 

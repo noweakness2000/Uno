@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate LatAm Neural2 practice MP3s for Uno (varied Neural2 voices).
+"""Generate LatAm Neural2 practice MP3s for Broto (varied Neural2 voices).
 
 Voices (es-US Neural2 — closest LatAm Neural2; no es-MX Neural2 exists):
   f → es-US-Neural2-A (FEMALE)

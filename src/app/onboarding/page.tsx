@@ -4,7 +4,7 @@ import { OnboardingFlow } from "./onboarding-flow";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Welcome — Uno",
+  title: "Welcome — Broto",
 };
 
 export default function OnboardingPage() {

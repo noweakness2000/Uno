@@ -47,7 +47,7 @@ export function HomeView({ unitImageIds }: HomeViewProps) {
           >
             <Image
               src="/images/mascot-square.png"
-              alt="Uno mascot"
+              alt="Broto mascot"
               width={72}
               height={72}
               className="h-14 w-14 rounded-2xl object-cover animate-float sm:h-16 sm:w-16"
@@ -56,7 +56,7 @@ export function HomeView({ unitImageIds }: HomeViewProps) {
           </Link>
           <div className="min-w-0 flex-1">
             <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-emerald-600 lg:hidden">
-              Uno
+              Broto
             </p>
             <h1 className="truncate text-2xl font-extrabold text-slate-900 sm:text-[26px] lg:text-3xl">
               Hola, {user.name || "Learner"}

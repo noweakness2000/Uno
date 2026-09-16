@@ -2,16 +2,16 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy — Uno",
+  title: "Privacy Policy — Broto",
   description:
-    "How Uno handles account data, learning progress, and sign-in for our Latin American Spanish learning app.",
+    "How Broto handles account data, learning progress, and sign-in for our Latin American Spanish learning app.",
 };
 
 export default function PrivacyPage() {
   return (
     <div className="mx-auto min-h-dvh w-full max-w-lg px-4 pb-[max(3rem,env(safe-area-inset-bottom))] pt-[max(1.5rem,env(safe-area-inset-top))]">
       <p className="text-xs font-bold uppercase tracking-widest text-emerald-600">
-        Uno
+        Broto
       </p>
       <h1 className="mt-2 text-2xl font-extrabold text-slate-900">
         Privacy Policy
@@ -24,9 +24,9 @@ export default function PrivacyPage() {
 
       <div className="mt-8 space-y-6 text-sm leading-relaxed text-slate-700">
         <section>
-          <h2 className="text-base font-bold text-slate-900">What Uno is</h2>
+          <h2 className="text-base font-bold text-slate-900">What Broto is</h2>
           <p className="mt-2">
-            Uno is a Latin American Spanish learning app. You can practice in
+            Broto is a Latin American Spanish learning app. You can practice in
             demo mode without an account. Signing in is optional and mainly for
             syncing progress across devices.
           </p>
@@ -83,7 +83,7 @@ export default function PrivacyPage() {
         <section>
           <h2 className="text-base font-bold text-slate-900">Where it runs</h2>
           <p className="mt-2">
-            Uno is self-hosted on our own infrastructure (including an Unraid
+            Broto is self-hosted on our own infrastructure (including an Unraid
             home-lab style setup). Account and progress data live in our
             Postgres database for the signed-in experience.
           </p>

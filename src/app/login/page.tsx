@@ -7,7 +7,7 @@ import { SiteFooter } from "@/components/site-footer";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Sign in — Uno",
+  title: "Sign in — Broto",
 };
 
 export default function LoginPage() {
@@ -19,7 +19,7 @@ export default function LoginPage() {
         <div className="mb-3 flex justify-center">
           <Image
             src="/images/mascot.png"
-            alt="Uno mascot"
+            alt="Broto mascot"
             width={64}
             height={64}
             className="h-14 w-14 rounded-2xl object-cover sm:h-16 sm:w-16"
@@ -27,7 +27,7 @@ export default function LoginPage() {
           />
         </div>
         <p className="text-center text-xs font-bold uppercase tracking-widest text-emerald-600">
-          Uno
+          Broto
         </p>
         <h1 className="mt-2 text-center text-2xl font-extrabold text-slate-900">
           Sign in

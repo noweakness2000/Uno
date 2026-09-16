@@ -1,6 +1,6 @@
-# Uno
+# Broto
 
-Explanations-first **Latin American Spanish** learning app. Brand is **Uno**, never Habla.
+Explanations-first **Latin American Spanish** learning app. Brand is **Broto** (formerly Uno), never Habla.
 
 No hearts, energy, or lockouts. XP, streak, and daily goals are motivational only. Demo/local mode must keep working without login.
 
@@ -70,7 +70,7 @@ If Google credentials are missing, the app still boots; `/login` shows a config 
 ## Do not
 
 - Add hearts, lives, energy, paywalls, or hard lockouts
-- Rename the product to Habla
+- Rename the product away from Broto (including back to Uno or to Habla) without explicit approval
 - Default to vosotros / Spain vocab
 - Put secrets in the repo
 - Drive-by refactors, new dependencies, or audio regenerations outside the requested task
