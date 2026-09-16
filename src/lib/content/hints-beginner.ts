@@ -123,8 +123,8 @@ export const EXERCISE_HINTS: Record<string, string> = {
   "u2l12-7": "Mucho gusto — “pleasure” — is the meeting phrase.",
 
   // ---------------------------------------------------------------- Unit 3
-  "u3l1-1": "It's also the app's name.",
-  "u3l1-2": "Think of a “duo”.",
+  "u3l1-1": "The first counting number — starts with u-.",
+  "u3l1-2": "Think of a pair.",
   "u3l1-4": "Cuesta = it costs; then a number and pesos.",
   "u3l1-5": "Think of “decade” — it starts with di-.",
   "u3l1-7": "Three numbers in a row, counting up from one.",

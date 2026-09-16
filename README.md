@@ -92,7 +92,7 @@ Word-card examples are `{ es, en }` pairs — Spanish with English directly unde
 ## Future
 
 - True placement / diagnostic test
-- TODO: illustrated characters / Duo-style art for lessons and onboarding
+- TODO: illustrated characters for lessons and onboarding
 - Real TTS / recorded audio; richer Postgres-backed content
 
 
