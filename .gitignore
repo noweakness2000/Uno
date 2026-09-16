@@ -63,3 +63,6 @@ android/.kotlin/
 
 # Abacus.AI agent local permissions
 .abacusai/
+
+# Local design source images, not for commit
+/Images_Jimmy/
