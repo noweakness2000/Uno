@@ -209,8 +209,8 @@ export const UNIT8_WORD_CARDS: Record<string, WordCard> = {
       { es: "¿Te gustaría tomar un café?", en: "Would you like to get a coffee?" },
       { es: "¿Te gustaría ir al cine?", en: "Would you like to go to the movies?" },
     ],
-    useWhen: "Inviting someone politely (tú).",
-    dontUseWhen: "With formal strangers use ¿Le gustaría…? (usted).",
+    useWhen: "Inviting someone politely (informal).",
+    dontUseWhen: "With formal strangers use ¿Le gustaría…? (formal).",
     contrast: "¿quieres…? (more direct)",
     formality: "informal",
     cefr: "A2",
@@ -475,8 +475,8 @@ export const UNIT8_WORD_CARDS: Record<string, WordCard> = {
       { es: "¿Quieres salir esta noche?", en: "Do you want to go out tonight?" },
       { es: "¿Quieres ir al centro?", en: "Do you want to go downtown?" },
     ],
-    useWhen: "Casual invites with friends (tú).",
-    dontUseWhen: "With strangers, ¿te gustaría…? or usted forms feel softer.",
+    useWhen: "Casual invites with friends.",
+    dontUseWhen: "With strangers, ¿te gustaría…? or formal forms feel softer.",
     contrast: "¿te gustaría…?",
     formality: "informal",
     cefr: "A2",
@@ -583,7 +583,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
       {
         id: "u8l1-3",
         type: "translate",
-        prompt: "Translate: “Are you going to come?” (tú)",
+        prompt: "Translate: “Are you going to come?”",
         acceptedAnswers: ["¿Vas a venir?", "Vas a venir?", "¿Vas a venir", "Vas a venir"],
         hint: "vas a + venir",
         explanation: "¿Vas a venir?",
@@ -835,7 +835,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
     id: "u8-l3",
     unitId: "unit-8",
     title: "Voy a / vas a plans",
-    description: "Conjugate ir a for yo/tú/nosotros — real weekend plans.",
+    description: "Conjugate ir a for I / you / we — real weekend plans.",
     xpReward: 46,
     exercises: [
       teach("teach-u8l3-vamos-a", "vamos-a"),
@@ -868,7 +868,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
       {
         id: "u8l3-3",
         type: "tap-chips",
-        prompt: "Build: “Are you going to work tomorrow?” (tú)",
+        prompt: "Build: “Are you going to work tomorrow?”",
         chips: ["¿Vas", "a", "trabajar", "mañana?", "fui", "jugo"],
         correctOrder: ["¿Vas", "a", "trabajar", "mañana?"],
         explanation: "¿Vas a trabajar mañana?",
@@ -914,7 +914,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         id: "u8l3-7",
         type: "situational-choose",
         prompt: "Pick the best question.",
-        situation: "Ask a friend if they are going to cook tonight (tú).",
+        situation: "Ask a friend if they are going to cook tonight.",
         options: [
           "¿Vas a cocinar esta noche?",
           "¿Comiste cocinar?",
@@ -932,7 +932,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         prompt: "Match ir a forms.",
         pairs: [
           { left: "voy a", right: "I'm going to" },
-          { left: "vas a", right: "you're going to (tú)" },
+          { left: "vas a", right: "you're going to (informal)" },
           { left: "vamos a", right: "we're going to" },
           { left: "mañana", right: "tomorrow" },
         ],
@@ -1436,7 +1436,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
       {
         id: "u8l7-3",
         type: "translate",
-        prompt: "Translate: “What are you doing this weekend?” (tú)",
+        prompt: "Translate: “What are you doing this weekend?”",
         acceptedAnswers: [
           "¿Qué haces este fin de semana?",
           "Que haces este fin de semana?",
@@ -1889,7 +1889,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         id: "u8l10-9",
         type: "fill-blank",
         prompt: "Type the missing Spanish.",
-        englishPrompt: "Are you going to come on Friday? (tú)",
+        englishPrompt: "Are you going to come on Friday?",
         template: "¿Vas a venir el ___?",
         acceptedAnswers: ["viernes", "Viernes"],
         hint: "Friday",
@@ -1901,7 +1901,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         id: "u8l10-10",
         type: "situational-choose",
         prompt: "Pick the best question.",
-        situation: "Ask if they want coffee (tú, casual).",
+        situation: "Ask if they want coffee (casual).",
         options: [
           "¿Quieres un café?",
           "¿Comiste un café carro?",

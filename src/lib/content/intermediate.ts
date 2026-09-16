@@ -379,7 +379,7 @@ export const INTERMEDIATE_WORD_CARDS: Record<string, WordCard> = {
     ],
     useWhen: "Orders, wants, and quiero + infinitive plans.",
     dontUseWhen:
-      "For soft likes use me gusta. With servers, add por favor and often usted forms.",
+      "For soft likes use me gusta. With servers, add por favor and often formal forms.",
     contrast: "me gusta (I like) / me gustaría (I would like — softer)",
     formality: "neutral",
     cefr: "A2",
@@ -426,7 +426,7 @@ export const INTERMEDIATE_WORD_CARDS: Record<string, WordCard> = {
     gender: "f",
     gloss: "the check / bill",
     meaningSummary:
-      "Restaurant bill. Polite with usted: ¿Me trae la cuenta, por favor?",
+      "Restaurant bill. Polite formal: ¿Me trae la cuenta, por favor?",
     examples: [
       { es: "¿Me trae la cuenta, por favor?", en: "Could you bring me the check, please?" },
       { es: "La cuenta, por favor.", en: "The check, please." },
@@ -449,7 +449,7 @@ export const INTERMEDIATE_WORD_CARDS: Record<string, WordCard> = {
       { es: "¿Me recomienda algo, por favor?", en: "Could you recommend something, please?" },
     ],
     useWhen: "Ordering and asking staff for help.",
-    dontUseWhen: "With close friends, tú is fine — read the room.",
+    dontUseWhen: "With close friends, informal is fine — read the room.",
     contrast: "tú (informal peers)",
     formality: "formal",
     cefr: "A2",
@@ -1099,7 +1099,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         id: "u4l1-5",
         type: "situational-choose",
         prompt: "Pick the best question.",
-        situation: "You want to know what someone does for work (tú).",
+        situation: "You want to know what someone does for work.",
         options: [
           "¿En qué trabajas?",
           "¿Dónde comes carro?",
@@ -1441,7 +1441,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         id: "u4l4-5",
         type: "situational-choose",
         prompt: "Pick the best question.",
-        situation: "You want to know if someone studies or works (tú).",
+        situation: "You want to know if someone studies or works.",
         options: [
           "¿Estudias o trabajas?",
           "¿Lavas o duchas la oficina?",
@@ -1673,7 +1673,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         id: "u4l6-5",
         type: "situational-choose",
         prompt: "Pick the best question.",
-        situation: "You want to know someone's weekend plans (tú).",
+        situation: "You want to know someone's weekend plans.",
         options: [
           "¿Qué haces el fin de semana?",
           "¿Cómo te duchas la oficina?",
@@ -2018,7 +2018,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         id: "u4l9-5",
         type: "situational-choose",
         prompt: "Pick the best line.",
-        situation: "You're tired after work and want to rest (tú reply).",
+        situation: "You're tired after work and want to rest.",
         options: [
           "Necesito descansar.",
           "Necesito lavar el metro.",

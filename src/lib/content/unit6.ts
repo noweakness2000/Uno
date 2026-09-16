@@ -808,7 +808,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
     id: "u6-l5",
     unitId: "unit-6",
     title: "Asking where it is",
-    description: "Polite ¿dónde está…? with Disculpe — tú and situational usted.",
+    description: "Polite ¿dónde está…? with Disculpe — casual and formal situations.",
     xpReward: 44,
     exercises: [
       teach("teach-u6l5-donde", "donde-esta"),
@@ -832,7 +832,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
       {
         id: "u6l5-2",
         type: "select",
-        prompt: "With a close friend (tú), a natural ask is…",
+        prompt: "With a close friend, a natural ask is…",
         options: [
           "¿Dónde está la farmacia?",
           "Soy la farmacia.",
@@ -1086,7 +1086,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
           "Quiero comí mapa.",
         ],
         correctIndex: 0,
-        explanation: "Disculpe, ¿tiene un mapa? — usted with strangers.",
+        explanation: "Disculpe, ¿tiene un mapa? — formal with strangers.",
         wordCardIds: ["disculpe", "mapa"],
         xp: 4,
       },
@@ -1488,7 +1488,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
           "I study the hotel.",
         ],
         0,
-        "¿Me puede ayudar? ¿Cómo llego al hotel? — usted.",
+        "¿Me puede ayudar? ¿Cómo llego al hotel? — formal.",
         ["como-llego", "hotel", "usted-server"]
       ),
       {

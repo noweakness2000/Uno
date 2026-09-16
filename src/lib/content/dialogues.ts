@@ -366,7 +366,7 @@ const u3Market = dialogue(
 
 const u5Order = dialogue(
   "dlg-u5-order",
-  "You are at a cafe counter. The server addresses you formally with usted.",
+  "You are at a cafe counter. The server addresses you formally.",
   "Order a coffee, answer the to-go question, and ask for the bill.",
   "Mesero",
   [

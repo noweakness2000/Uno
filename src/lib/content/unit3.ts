@@ -711,7 +711,7 @@ export const UNIT3_LESSONS: Record<string, Lesson> = {
       {
         id: "u3l7-1",
         type: "select",
-        prompt: "How do you ask “How old are you?” (tú)",
+        prompt: "How do you ask “How old are you?”",
         options: [
           "¿Cuántos años tienes?",
           "¿Cuántos años eres?",

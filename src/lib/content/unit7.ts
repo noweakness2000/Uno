@@ -425,7 +425,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         id: "u7l1-6",
         type: "situational-choose",
         prompt: "Pick the best question.",
-        situation: "You want to know what a friend ate yesterday (tú).",
+        situation: "You want to know what a friend ate yesterday.",
         options: [
           "¿Qué comes carro?",
           "¿Dónde está ayer?",
@@ -551,7 +551,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
       {
         id: "u7l2-4",
         type: "translate",
-        prompt: "Translate: “What did you do today?” (tú)",
+        prompt: "Translate: “What did you do today?”",
         acceptedAnswers: [
           "¿Qué hiciste hoy?",
           "Que hiciste hoy?",
@@ -765,7 +765,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         prompt: "tú past of hablar is…",
         options: ["hablé", "hablaste", "hablo", "hablaron"],
         correctIndex: 1,
-        explanation: "tú -aste for -ar: hablaste.",
+        explanation: "Informal -aste for -ar: hablaste.",
         wordCardIds: ["hablar-preterite"],
         xp: 3,
       },
@@ -834,7 +834,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
       {
         id: "u7l4-4",
         type: "translate",
-        prompt: "Translate: “Did you come yesterday?” (tú)",
+        prompt: "Translate: “Did you come yesterday?”",
         acceptedAnswers: [
           "¿Viniste ayer?",
           "Viniste ayer?",
@@ -1010,7 +1010,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         id: "u7l5-8",
         type: "situational-choose",
         prompt: "Pick the best question.",
-        situation: "Ask what someone did last night (tú).",
+        situation: "Ask what someone did last night.",
         options: [
           "¿Qué hiciste anoche?",
           "¿Qué comes metro?",
@@ -1207,7 +1207,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         id: "u7l7-1",
         type: "situational-choose",
         prompt: "Pick the best question.",
-        situation: "Catch up with a friend (tú) about today.",
+        situation: "Catch up with a friend about today.",
         options: [
           "¿Qué hiciste hoy?",
           "¿Qué comes carro hoy?",
@@ -1248,7 +1248,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
       {
         id: "u7l7-4",
         type: "translate",
-        prompt: "Translate: “What did you do last night?” (tú)",
+        prompt: "Translate: “What did you do last night?”",
         acceptedAnswers: [
           "¿Qué hiciste anoche?",
           "Que hiciste anoche?",
@@ -1321,7 +1321,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
       {
         id: "u7l7-10",
         type: "select",
-        prompt: "Soft polite ask to a coworker (tú still fine among peers):",
+        prompt: "Soft polite ask to a coworker:",
         options: [
           "¿Qué hiciste este fin de semana?",
           "¿Qué comes el baño?",
@@ -1452,7 +1452,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         englishPrompt: "What did you eat yesterday?",
         template: "¿Qué ___ ayer?",
         acceptedAnswers: ["comiste", "Comiste"],
-        hint: "you ate (tú)",
+        hint: "you ate (informal)",
         explanation: "¿Qué comiste ayer?",
         wordCardIds: ["comer", "ayer"],
         xp: 3,
@@ -1651,7 +1651,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         prompt: "tú of decir in the past is…",
         options: ["dije", "dijiste", "digo", "dijeron"],
         correctIndex: 1,
-        explanation: "tú dijiste.",
+        explanation: "dijiste (informal you).",
         wordCardIds: ["decir"],
         xp: 3,
       },
@@ -1693,7 +1693,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         id: "u7l10-10",
         type: "situational-choose",
         prompt: "Pick the best question.",
-        situation: "Ask if they went downtown (tú).",
+        situation: "Ask if they went downtown.",
         options: [
           "¿Fuiste al centro?",
           "¿Comes el centro?",
@@ -1860,7 +1860,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
       {
         id: "u7l12-4",
         type: "translate",
-        prompt: "Translate: “What did you do yesterday?” (tú)",
+        prompt: "Translate: “What did you do yesterday?”",
         acceptedAnswers: [
           "¿Qué hiciste ayer?",
           "Que hiciste ayer?",

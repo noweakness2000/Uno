@@ -541,7 +541,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         id: "u5l1-10",
         type: "situational-choose",
         prompt: "Pick the best line.",
-        situation: "A friend asks if you like tacos (tú chat).",
+        situation: "A friend asks if you like tacos.",
         options: [
           "Sí, quiero los tacos siempre cuenta.",
           "Sí, soy los tacos.",
@@ -558,7 +558,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
   "u5-l2": {
     id: "u5-l2",
     unitId: "unit-5",
-    title: "Ordering with usted",
+    title: "Ordering politely",
     description: "Polite café Spanish — menus, recommendations, the check.",
     xpReward: 42,
     exercises: [
@@ -597,7 +597,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
           "Fui el menú.",
         ],
         correctIndex: 2,
-        explanation: "Disculpe + ¿me puede traer…? is polite usted service Spanish.",
+        explanation: "Disculpe + ¿me puede traer…? is polite formal service Spanish.",
         wordCardIds: ["usted-server", "menu"],
         xp: 4,
       },
@@ -618,7 +618,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
           "Me recomienda algo, por favor?",
           "¿Me recomienda algo por favor?",
         ],
-        hint: "me recomienda (usted)",
+        hint: "me recomienda (formal)",
         explanation: "¿Me recomienda algo, por favor?",
         wordCardIds: ["usted-server"],
         xp: 4,
@@ -664,7 +664,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         "Disculpe, ¿me puede traer un menú?",
         ["I like the menu.", "Where is the apartment?", "Excuse me, could you bring me a menu?", "I went yesterday."],
         2,
-        "Polite menu request with usted.",
+        "Polite menu request (formal).",
         ["usted-server", "menu"]
       ),
       {
@@ -746,7 +746,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         id: "u5l3-5",
         type: "situational-choose",
         prompt: "Pick the best line.",
-        situation: "Looking at the menu, you decide on tacos (tú order style).",
+        situation: "Looking at the menu, you decide on tacos.",
         options: [
           "Me gusta tacos la cuenta.",
           "Soy tacos.",
@@ -859,7 +859,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         id: "u5l4-5",
         type: "situational-choose",
         prompt: "Pick the best line.",
-        situation: "Friend asks what food you like (tú).",
+        situation: "Friend asks what food you like.",
         options: [
           "Quiero la comida la cuenta.",
           "Soy comida.",
@@ -956,7 +956,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
     id: "u5-l5",
     unitId: "unit-5",
     title: "Polite orders",
-    description: "Me gustaría, recommendations, and soft usted lines.",
+    description: "Me gustaría, recommendations, and soft polite lines.",
     xpReward: 44,
     exercises: [
       teach("teach-u5l5-me-gustaria", "me-gustaria"),
@@ -990,7 +990,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         id: "u5l5-3",
         type: "situational-choose",
         prompt: "Pick the best line.",
-        situation: "You want the server's recommendation (usted).",
+        situation: "You want the server's recommendation.",
         options: [
           "¿Me gusta el pollo ayer?",
           "¿Camino el pollo?",
@@ -998,7 +998,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
           "¿Soy el mesero pollo?",
         ],
         correctIndex: 2,
-        explanation: "¿Me recomienda…? with usted.",
+        explanation: "¿Me recomienda…? (formal).",
         wordCardIds: ["usted-server", "pollo"],
         xp: 4,
       },
@@ -1047,7 +1047,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
           { left: "mesero", right: "waiter" },
           { left: "Disculpe", right: "Excuse me (polite)" },
         ],
-        explanation: "Soft usted toolkit.",
+        explanation: "Soft formal toolkit.",
         wordCardIds: ["me-gustaria", "usted-server", "mesero", "disculpe"],
         xp: 4,
       },
@@ -1055,7 +1055,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         id: "u5l5-8",
         type: "situational-choose",
         prompt: "Pick the best line.",
-        situation: "Casual tú order with a friend at a food stall.",
+        situation: "Casual order with a friend at a food stall.",
         options: [
           "¿Me puede usted despertar tacos?",
           "Quiero tacos, por favor.",
@@ -1139,7 +1139,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         id: "u5l6-5",
         type: "situational-choose",
         prompt: "Pick the best line.",
-        situation: "You're thirsty and only want water (tú/counter).",
+        situation: "You're thirsty and only want water at the counter.",
         options: [
           "Me gusta un agua la cuenta.",
           "Soy agua.",
@@ -1299,7 +1299,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         id: "u5l7-8",
         type: "situational-choose",
         prompt: "Pick the best line.",
-        situation: "It's evening and you suggest dinner out (tú).",
+        situation: "It's evening and you suggest dinner out.",
         options: [
           "¿Quieres la oficina en el carro?",
           "¿Me despierto la propina?",
@@ -1569,7 +1569,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
     id: "u5-l10",
     unitId: "unit-5",
     title: "More food practice",
-    description: "More ordering practice: drinks, plates, and polite usted with servers.",
+    description: "More ordering practice: drinks, plates, and polite lines with servers.",
     xpReward: 42,
     exercises: [
       {

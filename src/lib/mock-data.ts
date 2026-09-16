@@ -169,7 +169,7 @@ export const WORD_CARDS: Record<string, WordCard> = {
     gender: "n/a",
     gloss: "to be called / to be named",
     meaningSummary:
-      "Reflexive verb for saying your name. Me llamo + name is the everyday introduction — never “soy llamo.” Ask someone ¿Cómo te llamas? (tú) or ¿Cómo se llama? (usted).",
+      "Reflexive verb for saying your name. Me llamo + name is the everyday introduction — never “soy llamo.” Ask someone ¿Cómo te llamas? (informal) or ¿Cómo se llama? (formal).",
     conjugations: LATAM_PRESENT([
       "me llamo",
       "te llamas",
@@ -193,16 +193,16 @@ export const WORD_CARDS: Record<string, WordCard> = {
     lemma: "¿cómo te llamas?",
     pos: "phrase",
     gender: "n/a",
-    gloss: "what's your name? (tú)",
+    gloss: "what's your name? (informal)",
     meaningSummary:
-      "The everyday tú question for someone’s name. With strangers, elders, or workplace formality, switch to ¿Cómo se llama? (usted).",
+      "The everyday informal question for someone’s name. With strangers, elders, or workplace formality, switch to ¿Cómo se llama? (formal).",
     examples: [
       { es: "Hola, ¿cómo te llamas?", en: "Hi, what's your name?" },
       { es: "¿Cómo te llamas? Yo me llamo Ana.", en: "What's your name? My name is Ana." },
     ],
-    useWhen: "Asking a peer/friend their name (tú).",
+    useWhen: "Asking a peer/friend their name.",
     dontUseWhen: "With formal usted contexts — use ¿cómo se llama?",
-    contrast: "¿cómo se llama? (usted)",
+    contrast: "¿cómo se llama? (formal)",
     formality: "informal",
     cefr: "A1",
   },
@@ -251,14 +251,14 @@ export const WORD_CARDS: Record<string, WordCard> = {
     lemma: "¿cómo estás?",
     pos: "phrase",
     gender: "n/a",
-    gloss: "how are you? (tú)",
+    gloss: "how are you? (informal)",
     meaningSummary:
-      "Informal “how are you?” with tú. For strangers, elders, or workplace formality, switch to ¿cómo está? (usted).",
+      "Informal “how are you?” For strangers, elders, or workplace formality, switch to ¿cómo está? (formal).",
     examples: [
       { es: "Hola, ¿cómo estás?", en: "Hi, how are you?" },
       { es: "¿Cómo estás hoy?", en: "How are you today?" },
     ],
-    useWhen: "Informal check-in with friends, family, peers (tú).",
+    useWhen: "Informal check-in with friends, family, peers.",
     dontUseWhen: "With strangers or formal situations — use ¿cómo está?",
     contrast: "¿cómo está? (formal usted)",
     formality: "informal",
@@ -346,16 +346,16 @@ export const WORD_CARDS: Record<string, WordCard> = {
     lemma: "disculpe",
     pos: "interjection",
     gender: "n/a",
-    gloss: "excuse me (usted)",
+    gloss: "excuse me (formal)",
     meaningSummary:
-      "Polite “excuse me” with usted — asking for attention, interrupting gently, or a light apology with strangers and formal settings. Disculpa is the tú counterpart.",
+      "Polite formal “excuse me” — asking for attention, interrupting gently, or a light apology with strangers and formal settings. Disculpa is the informal counterpart.",
     examples: [
       { es: "Disculpe, ¿habla inglés?", en: "Excuse me, do you speak English?" },
       { es: "Disculpe, ¿me puede ayudar?", en: "Excuse me, can you help me?" },
     ],
-    useWhen: "Polite attention / light apology with usted.",
+    useWhen: "Polite attention / light apology in formal settings.",
     dontUseWhen: "With close friends, perdón or disculpa is more natural.",
-    contrast: "perdón (neutral) / disculpa (tú)",
+    contrast: "perdón (neutral) / disculpa (informal)",
     formality: "formal",
     cefr: "A1",
   },
@@ -583,16 +583,16 @@ export const WORD_CARDS: Record<string, WordCard> = {
     lemma: "¿de dónde eres?",
     pos: "phrase",
     gender: "n/a",
-    gloss: "where are you from? (tú)",
+    gloss: "where are you from? (informal)",
     meaningSummary:
-      "The classic tú origin question. Answer with Soy de… For usted: ¿De dónde es? Keep tú first in Uno; use usted when the situation is formal.",
+      "The classic informal origin question. Answer with Soy de… Formal: ¿De dónde es? Keep the informal form first in Uno; use the formal form when the situation calls for it.",
     examples: [
       { es: "¿De dónde eres?", en: "Where are you from?" },
       { es: "¿De dónde eres? — Soy de México.", en: "Where are you from? — I'm from Mexico." },
     ],
-    useWhen: "Asking origin with tú.",
-    dontUseWhen: "Formal usted → ¿de dónde es?",
-    contrast: "¿de dónde es? (usted)",
+    useWhen: "Asking origin informally.",
+    dontUseWhen: "Formal situations → ¿de dónde es?",
+    contrast: "¿de dónde es? (formal)",
     formality: "informal",
     cefr: "A1",
   },
@@ -766,16 +766,16 @@ export const WORD_CARDS: Record<string, WordCard> = {
     lemma: "¿cuántos años tienes?",
     pos: "phrase",
     gender: "n/a",
-    gloss: "how old are you? (tú)",
+    gloss: "how old are you? (informal)",
     meaningSummary:
-      "The everyday age question with tú. Answer with Tengo + number + años — never “soy veinte años.” Usted: ¿Cuántos años tiene?",
+      "The everyday informal age question. Answer with Tengo + number + años — never “soy veinte años.” Formal: ¿Cuántos años tiene?",
     examples: [
       { es: "¿Cuántos años tienes?", en: "How old are you?" },
       { es: "Tengo veinticinco años.", en: "I am twenty-five years old." },
     ],
-    useWhen: "Asking someone's age (tú).",
+    useWhen: "Asking someone's age.",
     dontUseWhen: "Don't answer with soy + number — use tengo … años.",
-    contrast: "¿cuántos años tiene? (usted)",
+    contrast: "¿cuántos años tiene? (formal)",
     formality: "informal",
     cefr: "A1",
   },
@@ -1081,7 +1081,7 @@ const LESSONS_RAW: Record<string, Lesson> = {
     id: "u1-l2",
     unitId: "unit-1",
     title: "What’s your name?",
-    description: "Introduce yourself and ask names (tú first).",
+    description: "Introduce yourself and ask names — casual forms first.",
     xpReward: 28,
     exercises: [
       teach("teach-u1l2-me-llamo", "me-llamo"),
@@ -1099,7 +1099,7 @@ const LESSONS_RAW: Record<string, Lesson> = {
       {
         id: "u1l2-2",
         type: "select",
-        prompt: "How do you casually ask “What’s your name?” (tú)",
+        prompt: "How do you casually ask “What’s your name?”",
         options: [
           "¿Cómo te llamas?",
           "¿Cómo se llama?",
@@ -1194,10 +1194,10 @@ const LESSONS_RAW: Record<string, Lesson> = {
         id: "u1l2-9",
         type: "situational-choose",
         prompt: "Formal “How are you?” at work.",
-        situation: "You greet your manager in the morning (usted).",
+        situation: "You greet your manager in the morning.",
         options: ["¿Cómo estás?", "¿Cómo está?", "¿Cómo soy?", "¿Me llamo?"],
         correctIndex: 1,
-        explanation: "¿Cómo está? = usted (formal).",
+        explanation: "¿Cómo está? = formal you.",
         wordCardIds: ["como-estas"],
         xp: 3,
       },
@@ -1298,7 +1298,7 @@ const LESSONS_RAW: Record<string, Lesson> = {
         options: ["Gracias", "Perdón", "Adiós", "Buenas noches"],
         correctIndex: 1,
         explanation:
-          "Perdón covers “excuse me” and light “sorry.” Disculpe is more usted-polite.",
+          "Perdón covers “excuse me” and light “sorry.” Disculpe is more formally polite.",
         wordCardIds: ["perdon"],
         xp: 3,
       },
@@ -1307,10 +1307,10 @@ const LESSONS_RAW: Record<string, Lesson> = {
         type: "situational-choose",
         prompt: "Best polite attention-getter?",
         situation:
-          "You need to ask a stranger for directions (usted).",
+          "You need to ask a stranger for directions.",
         options: ["Disculpe", "Hola días", "De nada", "Hasta luego"],
         correctIndex: 0,
-        explanation: "Disculpe is the polite usted “excuse me.”",
+        explanation: "Disculpe is the polite formal “excuse me.”",
         wordCardIds: ["disculpe"],
         xp: 3,
       },
@@ -1336,7 +1336,7 @@ const LESSONS_RAW: Record<string, Lesson> = {
         "Disculpe",
         ["Disculpe", "Mucho gusto", "Buenos días", "Hasta luego"],
         0,
-        "Disculpe = polite usted “excuse me.”",
+        "Disculpe = polite formal “excuse me.”",
         ["disculpe"]
       ),
       {
@@ -1428,7 +1428,7 @@ const LESSONS_RAW: Record<string, Lesson> = {
       {
         id: "u1l4-5",
         type: "translate",
-        prompt: "Translate: “What’s your name?” (tú)",
+        prompt: "Translate: “What’s your name?”",
         acceptedAnswers: [
           "cómo te llamas",
           "como te llamas",
@@ -1436,7 +1436,7 @@ const LESSONS_RAW: Record<string, Lesson> = {
           "¿como te llamas?",
         ],
         hint: "Cómo + te llamas.",
-        explanation: "¿Cómo te llamas? for tú.",
+        explanation: "¿Cómo te llamas? for informal you.",
         wordCardIds: ["como-te-llamas"],
         xp: 4,
       },
@@ -1557,7 +1557,7 @@ const LESSONS_RAW: Record<string, Lesson> = {
       {
         id: "u2l1-4",
         type: "translate",
-        prompt: "Translate: “Where are you from?” (tú)",
+        prompt: "Translate: “Where are you from?”",
         acceptedAnswers: [
           "de dónde eres",
           "de donde eres",
@@ -1725,7 +1725,7 @@ const LESSONS_RAW: Record<string, Lesson> = {
       {
         id: "u2l2-4",
         type: "translate",
-        prompt: "Translate: “Do you speak English?” (tú)",
+        prompt: "Translate: “Do you speak English?”",
         acceptedAnswers: [
           "hablas inglés",
           "hablas ingles",
@@ -1775,7 +1775,7 @@ const LESSONS_RAW: Record<string, Lesson> = {
         "¿Hablas inglés?",
         ["¿Hablas inglés?", "¿Vives inglés?", "¿Eres inglés hablo?", "Mucho gusto"],
         0,
-        "¿Hablas…? = Do you speak…? (tú)",
+        "¿Hablas…? = Do you speak…? (informal)",
         ["hablar", "ingles"]
       ),
       {
@@ -1817,7 +1817,7 @@ const LESSONS_RAW: Record<string, Lesson> = {
         id: "u2l3-1",
         type: "situational-choose",
         prompt: "Small talk opener.",
-        situation: "A new classmate asks where you’re from (tú).",
+        situation: "A new classmate asks where you’re from.",
         options: [
           "¿De dónde eres?",
           "¿Cómo te llamas de?",
@@ -1915,7 +1915,7 @@ const LESSONS_RAW: Record<string, Lesson> = {
         "¿De dónde eres?",
         ["¿De dónde eres?", "¿Cómo te llamas?", "¿Hablas inglés?", "Hasta luego"],
         0,
-        "Origin question (tú).",
+        "Origin question (informal).",
         ["de-donde-eres"]
       ),
       {
@@ -2115,7 +2115,7 @@ const LESSONS_RAW: Record<string, Lesson> = {
       {
         id: "u3l2-3",
         type: "tap-chips",
-        prompt: "Build: “How old are you?” (tú)",
+        prompt: "Build: “How old are you?”",
         chips: ["¿Cuántos", "años", "tienes?", "cuesta", "celular"],
         correctOrder: ["¿Cuántos", "años", "tienes?"],
         explanation: "¿Cuántos años tienes?",
