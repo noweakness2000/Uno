@@ -31,7 +31,7 @@ export function HomeView({ unitImageIds }: HomeViewProps) {
         "mx-auto flex min-h-dvh w-full max-w-lg flex-col gap-4 overflow-x-hidden",
         "px-3 pb-[max(4rem,env(safe-area-inset-bottom))] pt-[max(1.25rem,env(safe-area-inset-top))]",
         "sm:max-w-2xl sm:px-4",
-        "lg:grid lg:max-w-5xl lg:grid-cols-[13rem_minmax(0,1fr)]",
+        "lg:grid lg:max-w-5xl lg:grid-cols-[15.5rem_minmax(0,1fr)]",
         "lg:items-start lg:gap-x-6 lg:gap-y-4 lg:px-6",
       ].join(" ")}
     >
@@ -39,7 +39,7 @@ export function HomeView({ unitImageIds }: HomeViewProps) {
 
       {/* Identity + today's status */}
       <header className="flex flex-col gap-3 rounded-3xl border-2 border-slate-200 bg-white p-4 shadow-sm lg:col-start-2 lg:row-start-1 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 lg:gap-3.5">
           <Link
             href="/settings"
             aria-label="Settings"
@@ -48,9 +48,9 @@ export function HomeView({ unitImageIds }: HomeViewProps) {
             <Image
               src="/images/broto-mascot.png"
               alt="Broto mascot"
-              width={56}
-              height={64}
-              className="h-14 w-auto object-contain animate-float sm:h-16"
+              width={65}
+              height={74}
+              className="h-14 w-auto object-contain animate-float sm:h-16 lg:h-[74px]"
               priority
             />
           </Link>
@@ -59,9 +59,9 @@ export function HomeView({ unitImageIds }: HomeViewProps) {
             <Image
               src="/images/broto-wordmark.png"
               alt="Broto"
-              width={110}
-              height={44}
-              className="h-5 w-auto lg:h-11"
+              width={128}
+              height={51}
+              className="h-5 w-auto lg:h-[51px]"
               priority
             />
             <h1 className="mt-0.5 truncate font-greeting text-2xl font-bold text-slate-900 sm:text-[26px] lg:hidden">

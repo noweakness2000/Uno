@@ -59,20 +59,20 @@ export function NavRail() {
       <Link
         href="/settings"
         aria-label="Settings"
-        className="mb-3 flex items-center gap-2.5 rounded-xl px-2 py-1 hover:bg-slate-100"
+        className="mb-3 flex items-center gap-3 rounded-xl px-2 py-1.5 hover:bg-slate-100"
       >
         <Image
           src="/images/broto-mascot.png"
           alt=""
-          width={35}
-          height={40}
-          className="h-10 w-auto shrink-0 object-contain"
+          width={40}
+          height={46}
+          className="h-[46px] w-auto shrink-0 object-contain"
         />
         <span className="min-w-0">
-          <span className="block truncate font-greeting text-base font-bold leading-tight text-slate-900">
+          <span className="block truncate font-greeting text-lg font-bold leading-tight text-slate-900">
             Hola, {user.name || "Learner"}
           </span>
-          <span className="mt-0.5 flex items-center gap-1 text-[11px] font-medium text-slate-400">
+          <span className="mt-1 flex items-center gap-1 text-[11px] font-medium text-slate-400">
             <Settings className="h-3 w-3" />
             Settings
           </span>
