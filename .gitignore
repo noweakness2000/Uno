@@ -70,3 +70,6 @@ android/.kotlin/
 # Leftovers from a Word-of-the-Day TTS run
 wotd-missing.txt
 wotd-tts-run.log
+
+# Local dev-server config for the Claude Code browser pane
+.claude/launch.json
