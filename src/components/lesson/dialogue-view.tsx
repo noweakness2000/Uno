@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { ArrowRight, MessageCircle, Sparkles, Target } from "lucide-react";
 import { SpeakButton } from "@/components/speak-button";
 import { Button } from "@/components/ui/button";
+import { playWrongTone } from "@/lib/sfx";
 import { cn } from "@/lib/utils";
 import type { DialogueExercise, DialogueOption } from "@/lib/types";
 
@@ -54,7 +55,10 @@ export function DialogueView({ exercise, disabled, onSubmit }: Props) {
   const choose = (option: DialogueOption) => {
     if (disabled || pending) return;
     setPending(option);
-    if (!option.correct) setWrongTurns((n) => n + 1);
+    if (!option.correct) {
+      playWrongTone();
+      setWrongTurns((n) => n + 1);
+    }
     setHistory((h) => [
       ...h,
       { npc: turn.npc, npcEn: turn.npcEn, npcAudio: turn.audioSrc, choice: option },

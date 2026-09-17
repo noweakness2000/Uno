@@ -9,7 +9,7 @@ import { DialogueView } from "@/components/lesson/dialogue-view";
 import { SpeakButton } from "@/components/speak-button";
 import { StoryListenView } from "@/components/lesson/story-listen-view";
 import { SpeedToggle } from "@/components/lesson/speed-toggle";
-import { playMatchChime, playWrongBonk } from "@/lib/sfx";
+import { playMatchChime, playWrongTone } from "@/lib/sfx";
 import { cn, stripTrailingPeriod } from "@/lib/utils";
 import { hasSpanishVoice } from "@/lib/tts";
 import {
@@ -675,7 +675,7 @@ export function MatchPairsView({
         onSubmit(true);
       }
     } else {
-      playWrongBonk();
+      playWrongTone();
       setWrongFlash(rightId);
       setTimeout(() => setWrongFlash(null), 450);
       setSelectedLeft(null);

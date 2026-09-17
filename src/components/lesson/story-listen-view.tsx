@@ -13,7 +13,7 @@ import {
 import { SpeedToggle } from "@/components/lesson/speed-toggle";
 import { useLessonStore } from "@/store/lesson-store";
 import { normalizeAnswer } from "@/lib/grading";
-import { playCorrectChime } from "@/lib/sfx";
+import { playCorrectChime, playWrongTone } from "@/lib/sfx";
 import { cn, stripTrailingPeriod } from "@/lib/utils";
 import type { AnswerConfidence, StoryListenExercise } from "@/lib/types";
 import type { SubmitDetail } from "@/components/lesson/exercise-views";
@@ -283,6 +283,7 @@ export function StoryListenView({ exercise, disabled, onSubmit }: Props) {
       setCorrectCount((c) => c + 1);
       return;
     }
+    playWrongTone();
     const quoted = normalizeAnswer(question.explanation ?? "");
     if (!quoted) return;
     const lineIndex = lines.findIndex((l) => {

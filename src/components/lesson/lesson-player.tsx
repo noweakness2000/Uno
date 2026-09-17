@@ -16,7 +16,7 @@ import { enrichWrongExplanation } from "@/lib/feedback-coach";
 import { useLessonStore, withInjected } from "@/store/lesson-store";
 import { useUserStore } from "@/store/user-store";
 import { exerciseLabel } from "@/lib/exercise-labels";
-import { playCorrectChime, playPerfectFanfare } from "@/lib/sfx";
+import { playCorrectChime, playPerfectFanfare, playWrongTone } from "@/lib/sfx";
 import { getDueSrsCardIds } from "@/lib/srs";
 import { buildStoryReinforcement } from "@/lib/story-reinforcement";
 import type { TeachExercise, WordCard } from "@/lib/types";
@@ -197,7 +197,10 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
               exercise={exercise}
               disabled={showFeedback}
               onSubmit={(correct, confidence, detail) => {
+                // The one place every exercise's verdict passes through, so
+                // the right/wrong sounds stay consistent across all types.
                 if (correct) playCorrectChime();
+                else playWrongTone();
                 // Missed the story → one cloze from its own transcript, right
                 // after, for a word that just went weak. Skipped when no line
                 // holds a usable word.

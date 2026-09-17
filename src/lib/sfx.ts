@@ -58,14 +58,18 @@ export function playMatchChime(): void {
   tone(c, 1046.5, now + 0.07, { type: "sine", peak: 0.1, length: 0.12 });
 }
 
-/** Wrong pick: a ~120 ms descending thud. */
-export function playWrongBonk(): void {
+/**
+ * "Gentle aw" — the one wrong-answer sound, everywhere. Two soft sine notes
+ * stepping down a minor third (E4 → C4), each ~150 ms, the second starting
+ * ~130 ms in so it overlaps the first's tail. Warm, never a buzzer.
+ */
+export function playWrongTone(): void {
   const c = getCtx();
   if (!c) return;
   void c.resume();
   const now = c.currentTime;
-  tone(c, 220, now, { type: "square", peak: 0.08, length: 0.12, slideTo: 110 });
-  tone(c, 165, now, { type: "sine", peak: 0.12, length: 0.12, slideTo: 82 });
+  tone(c, 329.63, now, { type: "sine", peak: 0.14, length: 0.15 });
+  tone(c, 261.63, now + 0.13, { type: "sine", peak: 0.14, length: 0.15 });
 }
 
 /** Mistake-free lesson: a longer, brighter fanfare with a held top chord. */
