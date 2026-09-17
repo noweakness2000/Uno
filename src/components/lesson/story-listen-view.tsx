@@ -8,7 +8,10 @@ import {
   playStoryLines,
   stopSpanishAudio,
   type AudioVoice,
+  type PlaybackRate,
 } from "@/lib/audio";
+import { SpeedToggle } from "@/components/lesson/speed-toggle";
+import { useLessonStore } from "@/store/lesson-store";
 import { normalizeAnswer } from "@/lib/grading";
 import { playCorrectChime } from "@/lib/sfx";
 import { cn, stripTrailingPeriod } from "@/lib/utils";
@@ -24,8 +27,6 @@ interface Props {
     detail?: SubmitDetail
   ) => void;
 }
-
-type Rate = 0.7 | 1;
 
 /** Where the highlight sits: a word inside a line. */
 interface WordPos {
@@ -65,7 +66,9 @@ export function StoryListenView({ exercise, disabled, onSubmit }: Props) {
   const [status, setStatus] = useState<"idle" | "playing" | "paused">("idle");
   const [active, setActive] = useState<WordPos | null>(null);
   const [resumeFrom, setResumeFrom] = useState(0);
-  const [rate, setRate] = useState<Rate>(1);
+  // Shared with the other listening exercises for the rest of the lesson.
+  const rate = useLessonStore((s) => s.playbackRate);
+  const setRate = useLessonStore((s) => s.setPlaybackRate);
   const [showEn, setShowEn] = useState(false);
   const [localFeedback, setLocalFeedback] = useState<{
     correct: boolean;
@@ -195,7 +198,7 @@ export function StoryListenView({ exercise, disabled, onSubmit }: Props) {
     rafRef.current = requestAnimationFrame(tick);
   };
 
-  const runPlayback = async (startIndex: number, playbackRate: Rate) => {
+  const runPlayback = async (startIndex: number, playbackRate: PlaybackRate) => {
     if (disabled) return;
     stopPlayback();
     const gen = ++generationRef.current;
@@ -257,8 +260,7 @@ export function StoryListenView({ exercise, disabled, onSubmit }: Props) {
     void runPlayback(0, rate);
   };
 
-  const toggleRate = () => {
-    const next: Rate = rate === 1 ? 0.7 : 1;
+  const changeRate = (next: PlaybackRate) => {
     setRate(next);
     if (status === "playing") {
       const start = active ? active.line : resumeFrom;
@@ -362,15 +364,7 @@ export function StoryListenView({ exercise, disabled, onSubmit }: Props) {
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-2">
-            <button
-              type="button"
-              disabled={disabled || done}
-              onClick={toggleRate}
-              aria-pressed={rate !== 1}
-              className="min-h-11 rounded-full border border-violet-200 bg-white px-4 text-xs font-bold text-violet-800 hover:bg-violet-50 disabled:opacity-50"
-            >
-              {rate === 1 ? "Speed 1×" : "Slow 0.7×"}
-            </button>
+            <SpeedToggle rate={rate} onChange={changeRate} disabled={disabled || done} />
             {lines.some((l) => l.en) ? (
               <button
                 type="button"

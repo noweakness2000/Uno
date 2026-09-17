@@ -1,6 +1,7 @@
 "use client";
 
 import { create } from "zustand";
+import type { PlaybackRate } from "@/lib/audio";
 import type { AnswerConfidence } from "@/lib/types";
 import type { Exercise } from "@/lib/types";
 
@@ -23,6 +24,13 @@ interface LessonSessionState {
    * spliced into the lesson at `at` in the combined list. Never persisted.
    */
   injected: { at: number; exercise: Exercise }[];
+  /**
+   * Listening speed for this lesson session. Chosen once, kept across the
+   * lesson's exercises, reset to 1× by startLesson. Never persisted or
+   * synced — it's a per-sitting convenience, not progress.
+   */
+  playbackRate: PlaybackRate;
+  setPlaybackRate: (rate: PlaybackRate) => void;
   startLesson: (lessonId: string) => void;
   recordAnswer: (opts: {
     correct: boolean;
@@ -71,11 +79,13 @@ const initial = {
   lastCorrectAnswer: "",
   finished: false,
   injected: [] as { at: number; exercise: Exercise }[],
+  playbackRate: 1 as PlaybackRate,
 };
 
 export const useLessonStore = create<LessonSessionState>((set, get) => ({
   ...initial,
   startLesson: (lessonId) => set({ ...initial, lessonId }),
+  setPlaybackRate: (rate) => set({ playbackRate: rate }),
   recordAnswer: ({
     correct,
     explanation,

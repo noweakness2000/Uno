@@ -7,6 +7,9 @@ export type AudioVoice = "f" | "m" | "c";
 
 const VOICE_ROTATION: AudioVoice[] = ["f", "m", "c"];
 
+/** Listener speeds offered in the UI. 0.7 is pitch-preserved, so still natural. */
+export type PlaybackRate = 0.7 | 1;
+
 export function voiceForIndex(index: number): AudioVoice {
   return VOICE_ROTATION[((index % VOICE_ROTATION.length) + VOICE_ROTATION.length) % VOICE_ROTATION.length];
 }
@@ -78,70 +81,30 @@ export function looksSpanish(text: string): boolean {
 let current: HTMLAudioElement | null = null;
 
 /**
- * Try baked URLs in order. Prefer Neural2 MP3s; only fall back to browser TTS
- * when every candidate fails to load/play (missing file / decode error).
- */
-function tryPlay(urls: string[], text: string, i = 0): void {
-  if (i >= urls.length) {
-    speakPracticeAudio(text);
-    return;
-  }
-  const url = urls[i];
-  const audio = new Audio();
-  current = audio;
-
-  let settled = false;
-  const fail = () => {
-    if (settled) return;
-    settled = true;
-    audio.removeEventListener("error", fail);
-    audio.removeEventListener("canplaythrough", onReady);
-    tryPlay(urls, text, i + 1);
-  };
-  const onReady = () => {
-    if (settled) return;
-    settled = true;
-    audio.removeEventListener("error", fail);
-    audio.removeEventListener("canplaythrough", onReady);
-    void audio.play().catch(fail);
-  };
-
-  audio.addEventListener("error", fail);
-  audio.addEventListener("canplaythrough", onReady);
-  audio.preload = "auto";
-  audio.src = url;
-  // Some browsers fire canplaythrough late; also kick play after a short load.
-  void audio.load();
-}
-
-/**
  * Play baked MP3 for text; prefer gendered Neural2 clip, then legacy slug,
  * then browser TTS only if generation truly failed / file is missing.
+ *
+ * Fire-and-forget wrapper over playSpanishAudioAsync so every caller gets
+ * the same WebKit-safe rate handling and rate-aware TTS fallback.
  */
 export function playSpanishAudio(
   text: string,
   src?: string,
-  voice: AudioVoice = "f"
+  voice: AudioVoice = "f",
+  rate = 1
 ): void {
   if (typeof window === "undefined") return;
+  void playSpanishAudioAsync(text, { src, voice, rate });
+}
+
+/** True while a baked clip or the TTS fallback is still sounding. */
+export function isSpanishAudioPlaying(): boolean {
+  if (typeof window === "undefined") return false;
+  if (current && !current.paused && !current.ended) return true;
   try {
-    if (current) {
-      current.pause();
-      current = null;
-    }
-    const urls = src
-      ? [src, audioSrcFor(text, voice), audioSrcLegacy(text)]
-      : [audioSrcFor(text, voice), audioSrcLegacy(text)];
-    // Dedupe while preserving order
-    const seen = new Set<string>();
-    const unique = urls.filter((u) => {
-      if (seen.has(u)) return false;
-      seen.add(u);
-      return true;
-    });
-    tryPlay(unique, text);
+    return Boolean(window.speechSynthesis?.speaking);
   } catch {
-    speakPracticeAudio(text);
+    return false;
   }
 }
 

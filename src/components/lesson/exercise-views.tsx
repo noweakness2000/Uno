@@ -8,15 +8,18 @@ import { playBakedClip, playPhraseOrWords } from "@/lib/audio";
 import { DialogueView } from "@/components/lesson/dialogue-view";
 import { SpeakButton } from "@/components/speak-button";
 import { StoryListenView } from "@/components/lesson/story-listen-view";
+import { SpeedToggle } from "@/components/lesson/speed-toggle";
 import { playMatchChime, playWrongBonk } from "@/lib/sfx";
 import { cn, stripTrailingPeriod } from "@/lib/utils";
 import { hasSpanishVoice } from "@/lib/tts";
 import {
   audioSrcFor,
+  isSpanishAudioPlaying,
   looksSpanish,
   playSpanishAudio,
   stopSpanishAudio,
   type AudioVoice,
+  type PlaybackRate,
 } from "@/lib/audio";
 import {
   answersMatch,
@@ -467,6 +470,8 @@ export function ListeningChooseView({
     { text: string; originalIndex: number }[]
   >([]);
   const hasMp3 = Boolean(exercise.audioSrc);
+  const rate = useLessonStore((s) => s.playbackRate);
+  const setRate = useLessonStore((s) => s.setPlaybackRate);
 
   useEffect(() => {
     const items = exercise.options.map((text, originalIndex) => ({
@@ -497,9 +502,15 @@ export function ListeningChooseView({
     };
   }, [hasMp3]);
 
-  const playAudio = () => {
+  const playAudio = (at: PlaybackRate = rate) => {
     // Always resolve baked Neural2 first (audioSrc / slug); browser TTS only if missing.
-    playSpanishAudio(exercise.audioText, exercise.audioSrc);
+    playSpanishAudio(exercise.audioText, exercise.audioSrc, "f", at);
+  };
+
+  // Mid-clip change restarts from the top at the new speed (no mid-stream jump).
+  const changeRate = (next: PlaybackRate) => {
+    setRate(next);
+    if (isSpanishAudioPlaying()) playAudio(next);
   };
 
   return (
@@ -513,12 +524,13 @@ export function ListeningChooseView({
           variant="soft"
           size="lg"
           disabled={disabled}
-          onClick={playAudio}
+          onClick={() => playAudio()}
           className="min-h-12 touch-manipulation bg-violet-100 text-violet-900 hover:bg-violet-200"
         >
           <Volume2 className="h-5 w-5" />
           Play practice audio
         </Button>
+        <SpeedToggle rate={rate} onChange={changeRate} disabled={disabled} />
         <p className="text-xs text-violet-700/80">
           {hasMp3
             ? "Spanish practice audio"
@@ -760,6 +772,17 @@ export function FillBlankView({
   const englishPrompt = fill?.englishPrompt ?? cloze?.englishPrompt;
   const audioText = fill?.audioText ?? cloze?.audioText;
   const audioSrc = fill?.audioSrc ?? cloze?.audioSrc;
+  const rate = useLessonStore((s) => s.playbackRate);
+  const setRate = useLessonStore((s) => s.setPlaybackRate);
+
+  const playAudio = (at: PlaybackRate = rate) => {
+    if (!audioText) return;
+    playSpanishAudio(audioText, audioSrc ?? audioSrcFor(audioText, "f"), "f", at);
+  };
+  const changeRate = (next: PlaybackRate) => {
+    setRate(next);
+    if (isSpanishAudioPlaying()) playAudio(next);
+  };
 
   useEffect(() => {
     setValue("");
@@ -795,19 +818,15 @@ export function FillBlankView({
         </p>
       ) : null}
       {audioText ? (
-        <div className="flex justify-end">
+        <div className="flex flex-wrap items-center justify-end gap-2">
+          <SpeedToggle rate={rate} onChange={changeRate} disabled={disabled} className="min-h-10" />
           <Button
             type="button"
             variant="soft"
             size="sm"
             className="min-h-10 touch-manipulation"
             disabled={disabled}
-            onClick={() =>
-              playSpanishAudio(
-                audioText,
-                audioSrc ?? audioSrcFor(audioText, "f")
-              )
-            }
+            onClick={() => playAudio()}
           >
             <Volume2 className="h-4 w-4" />
             Play practice audio
@@ -877,15 +896,21 @@ export function DictationView({
   const [nearMissUsed, setNearMissUsed] = useState(false);
   const voice: AudioVoice = "f";
   const src = exercise.audioSrc ?? audioSrcFor(exercise.audioText, voice);
+  const rate = useLessonStore((s) => s.playbackRate);
+  const setRate = useLessonStore((s) => s.setPlaybackRate);
 
   useEffect(() => {
     setValue("");
     setNearMissUsed(false);
   }, [exercise.id]);
 
-  const play = () => {
+  const play = (at: PlaybackRate = rate) => {
     if (disabled) return;
-    playSpanishAudio(exercise.audioText, src);
+    playSpanishAudio(exercise.audioText, src, voice, at);
+  };
+  const changeRate = (next: PlaybackRate) => {
+    setRate(next);
+    if (isSpanishAudioPlaying()) play(next);
   };
 
   const check = () => {
@@ -910,12 +935,13 @@ export function DictationView({
           variant="soft"
           size="lg"
           disabled={disabled}
-          onClick={play}
+          onClick={() => play()}
           className="min-h-14 w-full max-w-xs touch-manipulation bg-violet-600 text-base font-bold text-white hover:bg-violet-700"
         >
           <Volume2 className="h-6 w-6" />
           Play line
         </Button>
+        <SpeedToggle rate={rate} onChange={changeRate} disabled={disabled} />
         <p className="text-xs text-violet-700/80">Spanish practice audio — type exactly what you hear</p>
       </div>
       <HintReveal hint={exercise.hint} />
