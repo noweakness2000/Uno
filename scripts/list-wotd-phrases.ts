@@ -10,11 +10,12 @@
  *   bun run scripts/list-wotd-phrases.ts > wotd-missing.txt
  */
 import { existsSync } from "node:fs";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { audioSrcFor, audioSrcLegacy } from "../src/lib/audio";
 import { getWotdPot } from "../src/lib/word-of-the-day";
 
-const PUBLIC = join(import.meta.dir, "..", "public");
+const PUBLIC = join(dirname(fileURLToPath(import.meta.url)), "..", "public");
 const VOICES = ["f", "m", "c"] as const;
 
 function hasAllVoices(text: string): boolean {
