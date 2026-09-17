@@ -1,13 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { BookMarked, Layers, Trophy } from "lucide-react";
+import { BookMarked, Languages, Layers, Trophy } from "lucide-react";
 import { countDue } from "@/lib/srs";
 import { useUserStore } from "@/store/user-store";
 import { cn } from "@/lib/utils";
 
 /**
- * Practice shortcuts as a 3-up row.
+ * Practice shortcuts as a 4-up row.
  *
  * These live here on phone and tablet only because there is no room for
  * persistent navigation; at lg they are replaced by the sidebar rail.
@@ -45,17 +45,26 @@ export function QuickActions() {
       iconTint: "bg-rose-50 text-rose-600",
       badgeTint: "bg-rose-100 text-rose-700",
     },
+    {
+      href: "/translator",
+      label: "Translator",
+      icon: Languages,
+      badge: null,
+      tint: "hover:border-emerald-200",
+      iconTint: "bg-emerald-50 text-emerald-600",
+      badgeTint: "",
+    },
   ];
 
   return (
-    <nav aria-label="Practice shortcuts" className="grid grid-cols-3 gap-2.5">
+    <nav aria-label="Practice shortcuts" className="grid grid-cols-4 gap-2">
       {tiles.map(({ href, label, icon: Icon, badge, tint, iconTint, badgeTint }) => (
         <Link
           key={href}
           href={href}
           className={cn(
             "relative flex min-h-[5.25rem] flex-col items-center justify-center gap-2 rounded-2xl",
-            "border-2 border-slate-200 bg-white p-3 shadow-sm transition-all",
+            "border-2 border-slate-200 bg-white p-2 shadow-sm transition-all",
             "hover:-translate-y-0.5 hover:shadow-md",
             tint
           )}
@@ -76,7 +85,7 @@ export function QuickActions() {
           >
             <Icon className="h-[18px] w-[18px]" strokeWidth={2.2} />
           </span>
-          <span className="text-[11.5px] font-bold text-slate-700">{label}</span>
+          <span className="text-[11px] font-bold text-slate-700">{label}</span>
         </Link>
       ))}
     </nav>

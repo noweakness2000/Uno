@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { BookMarked, Home, Layers, Settings, Trophy } from "lucide-react";
+import { BookMarked, Home, Languages, Layers, Settings, Trophy } from "lucide-react";
 import { AuthControls } from "@/components/auth/auth-controls";
 import { countDue } from "@/lib/srs";
 import { useUserStore } from "@/store/user-store";
@@ -34,6 +34,13 @@ export function NavRail() {
       icon: BookMarked,
       badge: weakCount > 0 ? String(weakCount) : null,
       badgeTint: "bg-rose-100 text-rose-700",
+    },
+    {
+      href: "/translator",
+      label: "Word Translator",
+      icon: Languages,
+      badge: null,
+      badgeTint: "",
     },
     {
       href: "/leaderboard",

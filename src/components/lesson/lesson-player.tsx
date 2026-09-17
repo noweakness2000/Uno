@@ -2,11 +2,12 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { X } from "lucide-react";
+import { Languages, X } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { FeedbackPanel } from "@/components/wrong-answer-panel";
 import { WordCardDrawer } from "@/components/word-card-drawer";
+import { WordTranslatorSheet } from "@/components/translator/word-translator-sheet";
 import { PostLessonSummary } from "@/components/lesson/post-lesson-summary";
 import { ExerciseRenderer } from "@/components/lesson/exercise-views";
 import { TeachView } from "@/components/lesson/teach-view";
@@ -55,6 +56,10 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
   const [wordOpen, setWordOpen] = useState(false);
   const [activeCard, setActiveCard] = useState<WordCard | null>(null);
   const [persisted, setPersisted] = useState(false);
+  // Lives in the header chrome, outside ExerciseRenderer, so opening it never
+  // touches exercise state. Locked while the feedback sheet is up rather than
+  // stacking two sheets.
+  const [translatorOpen, setTranslatorOpen] = useState(false);
   // Due words for the summary's quick review, picked after this lesson's
   // weak/SRS writes land so the list reflects them.
   const [reviewCardIds, setReviewCardIds] = useState<string[]>([]);
@@ -168,6 +173,16 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
         <span className="text-xs font-bold tabular-nums text-slate-400">
           {index + 1}/{exercises.length}
         </span>
+        <button
+          type="button"
+          aria-label="Word Translator"
+          title={showFeedback ? "Continue first, then look up words" : "Word Translator"}
+          disabled={showFeedback}
+          onClick={() => setTranslatorOpen(true)}
+          className="flex h-11 w-11 touch-manipulation items-center justify-center rounded-full text-emerald-700 hover:bg-emerald-50 disabled:cursor-not-allowed disabled:opacity-40"
+        >
+          <Languages className="h-5 w-5" />
+        </button>
       </div>
 
       {isTeach && teachCard ? (
@@ -249,6 +264,7 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
         open={wordOpen}
         onOpenChange={setWordOpen}
       />
+      <WordTranslatorSheet open={translatorOpen} onOpenChange={setTranslatorOpen} />
     </div>
   );
 }

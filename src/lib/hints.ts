@@ -28,7 +28,7 @@ const TENSE_LABEL: Record<string, string> = {
   "Present with me/te/le…": "present tense with me/te/le in front",
 };
 
-function tenseLabel(label: string): string {
+export function tenseLabel(label: string): string {
   return TENSE_LABEL[label] ?? label.toLowerCase();
 }
 
