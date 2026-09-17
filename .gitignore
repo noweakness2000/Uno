@@ -66,3 +66,7 @@ android/.kotlin/
 
 # Local design source images, not for commit
 /Images_Jimmy/
+
+# Leftovers from a Word-of-the-Day TTS run
+wotd-missing.txt
+wotd-tts-run.log
