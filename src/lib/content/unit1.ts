@@ -650,6 +650,7 @@ export const UNIT1_LESSONS: Record<string, Lesson> = {
         type: "translate",
         prompt: "Say in Spanish: “Good morning. How are you?”",
         acceptedAnswers: ["Buenos dias. Como estas?", "Buenos dias, como estas?", "Buenos dias. Como esta?", "Buenos dias, como esta usted?"],
+        hint: "Two pieces: the morning greeting (plural ‘good’ + ‘days’), then the informal how-are-you check-in built on estar.",
         explanation: "Buenos días pairs naturally with ¿cómo estás?",
         wordCardIds: ["buenos-dias", "como-estas"],
         xp: 4,

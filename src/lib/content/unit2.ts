@@ -284,7 +284,7 @@ export const UNIT2_LESSONS: Record<string, Lesson> = {
         type: "translate",
         prompt: "Translate to Spanish: “My name is Sofía.”",
         acceptedAnswers: ["me llamo sofía", "me llamo sofia", "Me llamo Sofía", "Me llamo Sofia"],
-        hint: "Me llamo + name.",
+        hint: "Literally ‘I call myself Sofía’: the ‘myself’ pronoun + the yo form of llamarse + the name.",
         explanation: "Me llamo Sofía.",
         wordCardIds: ["me-llamo"],
         xp: 3,
@@ -402,7 +402,7 @@ export const UNIT2_LESSONS: Record<string, Lesson> = {
         template: "Soy ___ México.",
         englishPrompt: "I'm from Mexico.",
         acceptedAnswers: ["de", "De"],
-        hint: "from",
+        hint: "Soy is just ‘I am’; origin needs the short preposition after it — the same one that opens ¿De dónde eres?",
         explanation: "Soy de México.",
         wordCardIds: ["soy-de", "mexico"],
         xp: 3,
@@ -412,7 +412,7 @@ export const UNIT2_LESSONS: Record<string, Lesson> = {
         type: "translate",
         prompt: "Translate to Spanish: “Where are you from?”",
         acceptedAnswers: ["de dónde eres", "de donde eres", "¿de dónde eres?", "¿de donde eres?"],
-        hint: "de + dónde + eres",
+        hint: "Literally ‘From where are you?’: preposition, then the ‘where’ question word, then the tú form of ser.",
         explanation: "¿De dónde eres?",
         wordCardIds: ["de-donde-eres"],
         xp: 3,
@@ -449,6 +449,7 @@ export const UNIT2_LESSONS: Record<string, Lesson> = {
         template: "___ de Estados Unidos.",
         englishPrompt: "I am from the United States.",
         acceptedAnswers: ["Soy", "soy"],
+        hint: "Origin takes ser — its yo form, not estoy.",
         explanation: "Origin uses ser: soy de.",
         wordCardIds: ["soy-de"],
         xp: 3,
@@ -531,7 +532,7 @@ export const UNIT2_LESSONS: Record<string, Lesson> = {
         template: "Vivo ___ Bogotá.",
         englishPrompt: "I live in Bogotá.",
         acceptedAnswers: ["en", "En"],
-        hint: "in",
+        hint: "Vivir + a place needs the ‘in / at’ preposition — the same one as in ‘en casa’.",
         explanation: "Vivo en Bogotá.",
         wordCardIds: ["vivo-en"],
         xp: 3,
@@ -541,7 +542,7 @@ export const UNIT2_LESSONS: Record<string, Lesson> = {
         type: "translate",
         prompt: "Translate to Spanish: “I live in Mexico.”",
         acceptedAnswers: ["vivo en méxico", "vivo en mexico", "Vivo en México", "Vivo en Mexico"],
-        hint: "vivo en + place",
+        hint: "The yo form of vivir + the ‘in’ preposition + the country (capital M, accent on the e).",
         explanation: "Vivo en México.",
         wordCardIds: ["vivo-en", "mexico"],
         xp: 3,
@@ -677,7 +678,7 @@ export const UNIT2_LESSONS: Record<string, Lesson> = {
         type: "translate",
         prompt: "Translate to Spanish: “I speak English.”",
         acceptedAnswers: ["hablo inglés", "hablo ingles", "Hablo inglés", "Hablo ingles"],
-        hint: "hablo + language",
+        hint: "The yo form of hablar + the language name — lowercase, with an accent on the last syllable.",
         explanation: "Hablo inglés.",
         wordCardIds: ["hablar", "ingles"],
         xp: 3,
@@ -715,6 +716,7 @@ export const UNIT2_LESSONS: Record<string, Lesson> = {
         type: "translate",
         prompt: "Say in Spanish: “Do you speak English?”",
         acceptedAnswers: ["Hablas ingles?", "Hablas ingles", "Habla ingles?", "Usted habla ingles?"],
+        hint: "No helper ‘do’ in Spanish: the tú form of hablar (or the usted form, to be polite) + the language.",
         explanation: "Hablar + the language. Use formal habla for the polite version.",
         wordCardIds: ["hablar", "ingles"],
         xp: 4,
@@ -789,7 +791,7 @@ export const UNIT2_LESSONS: Record<string, Lesson> = {
           "yo vivo en la ciudad",
           "Yo vivo en la ciudad",
         ],
-        hint: "vivo en la ciudad",
+        hint: "Vivir in the yo form + ‘in’ + the feminine article + the city word — it’s a near-cognate of ‘city’.",
         explanation: "Vivo en la ciudad.",
         wordCardIds: ["vivo-en", "ciudad"],
         xp: 3,
@@ -889,7 +891,7 @@ export const UNIT2_LESSONS: Record<string, Lesson> = {
         ["ciudad", "Ciudad"],
         "Vivo en la ciudad.",
         ["vivo-en", "ciudad"],
-        { hint: "city", audioText: "Vivo en la ciudad.", voice: "m" }
+        { hint: "A feminine place noun that’s a near-cognate of the English word — starts with c.", audioText: "Vivo en la ciudad.", voice: "m" }
       ),
       cloze(
         "u2l9-cloze-3",
@@ -897,7 +899,7 @@ export const UNIT2_LESSONS: Record<string, Lesson> = {
         ["inglés", "ingles", "Inglés"],
         "Hablo un poco de inglés.",
         ["un-poco-de", "ingles"],
-        { hint: "English", audioText: "Hablo un poco de inglés.", voice: "c" }
+        { hint: "A language, lowercase, with an accent on the last syllable — the one the story character speaks a little of.", audioText: "Hablo un poco de inglés.", voice: "c" }
       ),
     ],
   },
@@ -960,7 +962,7 @@ export const UNIT2_LESSONS: Record<string, Lesson> = {
         template: "Me ___ Diego.",
         englishPrompt: "My name is Diego.",
         acceptedAnswers: ["llamo", "Llamo"],
-        hint: "my name is",
+        hint: "Me + the yo form of llamarse — literally ‘I call myself Diego’.",
         explanation: "Me llamo Diego.",
         wordCardIds: ["me-llamo"],
         xp: 3,
@@ -1056,7 +1058,7 @@ export const UNIT2_LESSONS: Record<string, Lesson> = {
         ["eres", "Eres"],
         "¿De dónde eres?",
         ["de-donde-eres"],
-        { hint: "you are", audioText: "¿De dónde eres?", voice: "f" }
+        { hint: "Origin uses ser. The question is to tú, so you need the informal ‘you’ form of ser.", audioText: "¿De dónde eres?", voice: "f" }
       ),
       cloze(
         "u2l11-cloze-2",
@@ -1064,7 +1066,7 @@ export const UNIT2_LESSONS: Record<string, Lesson> = {
         ["México", "Mexico", "méxico", "mexico"],
         "Soy de México.",
         ["soy-de", "mexico"],
-        { hint: "Mexico", audioText: "Soy de México.", voice: "m" }
+        { hint: "The country the story character is from — capital M, accent on the e.", audioText: "Soy de México.", voice: "m" }
       ),
       cloze(
         "u2l11-cloze-3",
@@ -1072,7 +1074,7 @@ export const UNIT2_LESSONS: Record<string, Lesson> = {
         ["español", "espanol", "Español"],
         "Hablo inglés y un poco de español.",
         ["hablar", "un-poco-de", "espanol"],
-        { hint: "Spanish", audioText: "Hablo inglés y un poco de español.", voice: "c" }
+        { hint: "The second language — the one this course teaches — lowercase, with an ñ.", audioText: "Hablo inglés y un poco de español.", voice: "c" }
       ),
     ],
   },
@@ -1124,7 +1126,7 @@ export const UNIT2_LESSONS: Record<string, Lesson> = {
           "Hablo un poco de español",
           "Hablo un poco de espanol",
         ],
-        hint: "hablo un poco de…",
+        hint: "The yo form of hablar, then the ‘a little (of)’ phrase, then the language — no article.",
         explanation: "Hablo un poco de español.",
         wordCardIds: ["hablar", "un-poco-de", "espanol"],
         xp: 3,
@@ -1136,7 +1138,7 @@ export const UNIT2_LESSONS: Record<string, Lesson> = {
         template: "Soy ___ México.",
         englishPrompt: "I'm from Mexico.",
         acceptedAnswers: ["de", "De"],
-        hint: "from",
+        hint: "Soy is ‘I am’; ‘from’ is the two-letter origin preposition you see in ¿De dónde eres?",
         explanation: "Soy de México.",
         wordCardIds: ["soy-de"],
         xp: 3,
