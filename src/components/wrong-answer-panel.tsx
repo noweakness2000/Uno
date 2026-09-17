@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { SpeakButton } from "@/components/speak-button";
 import { CheckCircle2, XCircle, BookOpen } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, stripTrailingPeriod } from "@/lib/utils";
 import { looksSpanish } from "@/lib/audio";
 
 interface WrongAnswerPanelProps {
@@ -66,7 +66,7 @@ export function FeedbackPanel({
               <div className="mt-2 flex flex-wrap items-center gap-2 text-sm text-slate-800">
                 <span>
                   Correct answer:{" "}
-                  <strong className="font-extrabold break-words">{correctAnswer.replace(/\.$/, "")}</strong>
+                  <strong className="font-extrabold break-words">{stripTrailingPeriod(correctAnswer)}</strong>
                 </span>
                 {answerIsSpanish && (
                   <SpeakButton text={correctAnswer} label={`Play: ${correctAnswer}`} />

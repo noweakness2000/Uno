@@ -6,6 +6,7 @@ import { ArrowLeft, Layers, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Flashcard, type FlashcardMode } from "@/components/flashcard";
+import { XpToast, type XpToastEvent } from "@/components/xp-toast";
 import { getAllWordCards, getWordCard } from "@/lib/mock-data";
 import { countDue, getDueSrsCardIds, type SrsCards } from "@/lib/srs";
 import { useUserStore } from "@/store/user-store";
@@ -57,11 +58,16 @@ function buildDeck(
   return out;
 }
 
+/** XP per card graded Good — a full lesson is ~30, so a deck stays a light top-up. */
+const FLASHCARD_GOOD_XP = 1;
+
 export default function FlashcardsPage() {
   const weakWordIds = useUserStore((s) => s.user.weakWordIds);
   const srsCards = useUserStore((s) => s.user.srsCards);
   const srsAgain = useUserStore((s) => s.srsAgain);
   const srsGood = useUserStore((s) => s.srsGood);
+  const awardActivityXp = useUserStore((s) => s.awardActivityXp);
+  const [xpToast, setXpToast] = useState<XpToastEvent | null>(null);
 
   const dueToday = countDue(srsCards);
 
@@ -94,6 +100,10 @@ export default function FlashcardsPage() {
     if (know) {
       setKnown((n) => n + 1);
       srsGood(card.id);
+      // Only a "Good" grade earns XP; "Again" stays free so honest grading
+      // never costs anything.
+      awardActivityXp(FLASHCARD_GOOD_XP);
+      setXpToast({ amount: FLASHCARD_GOOD_XP, nonce: Date.now() });
     } else {
       setUnknown((n) => n + 1);
       srsAgain(card.id);
@@ -192,6 +202,7 @@ export default function FlashcardsPage() {
       ) : (
         <p className="text-center text-slate-500">No cards available.</p>
       )}
+      <XpToast event={xpToast} />
     </div>
   );
 }

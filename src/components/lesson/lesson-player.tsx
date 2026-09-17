@@ -16,10 +16,13 @@ import { enrichWrongExplanation } from "@/lib/feedback-coach";
 import { useLessonStore, withInjected } from "@/store/lesson-store";
 import { useUserStore } from "@/store/user-store";
 import { exerciseLabel } from "@/lib/exercise-labels";
-import { playCorrectChime } from "@/lib/sfx";
+import { playCorrectChime, playPerfectFanfare } from "@/lib/sfx";
 import { getDueSrsCardIds } from "@/lib/srs";
 import { buildStoryReinforcement } from "@/lib/story-reinforcement";
 import type { TeachExercise, WordCard } from "@/lib/types";
+
+/** Flat bonus for a mistake-free lesson (~15% of a typical 30 XP lesson). */
+const PERFECT_BONUS_XP = 5;
 
 export function LessonPlayer({ lessonId }: { lessonId: string }) {
   const router = useRouter();
@@ -61,9 +64,16 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
     return () => reset();
   }, [lessonId, startLesson, reset]);
 
+  // Mistake-free run. A near-miss soft retry never records a wrong answer,
+  // so it still counts; replays count too — XP is motivational only.
+  const perfect = finished && wrongCount === 0 && correctCount > 0;
+  const bonusXp = perfect ? PERFECT_BONUS_XP : 0;
+  const totalXp = earnedXp + bonusXp;
+
   useEffect(() => {
     if (finished && !persisted && lesson) {
-      completeLesson(lesson.id, earnedXp);
+      completeLesson(lesson.id, totalXp);
+      if (perfect) playPerfectFanfare();
       if (weakWordIds.length) markWeak(weakWordIds);
       // Only words that already carry an SRS card get credit (see store).
       if (reinforcedWordIds.length) reinforceWords(reinforcedWordIds, "certain");
@@ -77,7 +87,8 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
     finished,
     persisted,
     lesson,
-    earnedXp,
+    totalXp,
+    perfect,
     weakWordIds,
     reinforcedWordIds,
     unsureWordIds,
@@ -114,7 +125,9 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
         lessonTitle={lesson.title}
         correctCount={correctCount}
         wrongCount={wrongCount}
-        earnedXp={earnedXp}
+        earnedXp={totalXp}
+        bonusXp={bonusXp}
+        perfect={perfect}
         weakCount={weakWordIds.length}
         reviewCardIds={reviewCardIds}
         onContinue={() => router.push("/home")}

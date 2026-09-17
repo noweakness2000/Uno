@@ -45,6 +45,13 @@ interface UserState {
    */
   setStartingLevel: (startingLevel: StartingLevel) => void;
   addXp: (amount: number) => void;
+  /**
+   * XP for practice outside a lesson (flashcards, review). Goes through the
+   * same day logic as a lesson so it lands on today, rolls the day over
+   * after midnight, and keeps the streak alive — unlike addXp, which does
+   * neither and must not be used for this.
+   */
+  awardActivityXp: (amount: number) => void;
   completeLesson: (lessonId: string, earnedXp: number) => void;
   markWeak: (wordIds: string[]) => void;
   clearWeak: (wordId: string) => void;
@@ -174,6 +181,20 @@ export const useUserStore = create<UserState>()(
             dailyXp: s.user.dailyXp + amount,
           },
         })),
+      awardActivityXp: (amount) => {
+        if (!(amount > 0)) return;
+        const { user } = get();
+        const day = applyLessonDay(user, amount);
+        set({
+          user: {
+            ...user,
+            xp: user.xp + amount,
+            dailyXp: day.dailyXp,
+            streak: day.streak,
+            lastStreakDate: day.lastStreakDate,
+          },
+        });
+      },
       completeLesson: (lessonId, earnedXp) => {
         const { user } = get();
         const already = user.completedLessonIds.includes(lessonId);

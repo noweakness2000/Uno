@@ -1,21 +1,21 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, type PointerEvent } from "react";
-import { Headphones, Pause, Play, RotateCcw, Volume2 } from "lucide-react";
+import { Volume2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { HintReveal } from "@/components/lesson/hint-reveal";
 import { playBakedClip, playPhraseOrWords } from "@/lib/audio";
 import { DialogueView } from "@/components/lesson/dialogue-view";
 import { SpeakButton } from "@/components/speak-button";
-import { cn } from "@/lib/utils";
+import { StoryListenView } from "@/components/lesson/story-listen-view";
+import { playMatchChime, playWrongBonk } from "@/lib/sfx";
+import { cn, stripTrailingPeriod } from "@/lib/utils";
 import { hasSpanishVoice } from "@/lib/tts";
 import {
   audioSrcFor,
   looksSpanish,
   playSpanishAudio,
-  playStoryLines,
   stopSpanishAudio,
-  voiceForIndex,
   type AudioVoice,
 } from "@/lib/audio";
 import {
@@ -24,7 +24,6 @@ import {
   isChipNearMiss,
   isConjugateNearMiss,
   isNearMiss,
-  normalizeAnswer,
   type ConjugateMiss,
 } from "@/lib/grading";
 import { verbFormsFor } from "@/lib/verb-forms";
@@ -41,7 +40,6 @@ import type {
   MatchPairsExercise,
   SelectExercise,
   SituationalChooseExercise,
-  StoryListenExercise,
   TapChipsExercise,
   TranslateExercise,
 } from "@/lib/types";
@@ -129,7 +127,7 @@ export function SelectView({
                 onClick={() => setSelected(i)}
                 className="min-h-12 min-w-0 flex-1 touch-manipulation rounded-2xl px-4 py-3.5 text-left text-base font-semibold"
               >
-                <span className="break-words">{opt.text}</span>
+                <span className="break-words">{stripTrailingPeriod(opt.text)}</span>
               </button>
               {spanish && (
                 <div className="flex items-center pr-2">
@@ -553,7 +551,7 @@ export function ListeningChooseView({
                 onClick={() => setSelected(i)}
                 className="min-h-12 min-w-0 flex-1 touch-manipulation rounded-2xl px-4 py-3.5 text-left text-base font-semibold"
               >
-                <span className="break-words">{opt.text}</span>
+                <span className="break-words">{stripTrailingPeriod(opt.text)}</span>
               </button>
               {spanish && (
                 <div className="flex items-center pr-2">
@@ -659,10 +657,13 @@ export function MatchPairsView({
       setMatched(next);
       setJustMatched(rightId);
       setSelectedLeft(null);
+      // The last pair stacks the pair tick with the lesson's correct chime.
+      playMatchChime();
       if (next.size === exercise.pairs.length) {
         onSubmit(true);
       }
     } else {
+      playWrongBonk();
       setWrongFlash(rightId);
       setTimeout(() => setWrongFlash(null), 450);
       setSelectedLeft(null);
@@ -1064,378 +1065,6 @@ export function ConjugateView({
       >
         {nearMissUsed ? "Check again" : "Check"}
       </Button>
-    </div>
-  );
-}
-
-export function StoryListenView({
-  exercise,
-  disabled,
-  onSubmit,
-}: CommonProps & { exercise: StoryListenExercise }) {
-  const [qIndex, setQIndex] = useState(0);
-  const [selected, setSelected] = useState<number | null>(null);
-  const [status, setStatus] = useState<"idle" | "playing" | "paused">("idle");
-  const [activeLine, setActiveLine] = useState<number>(-1);
-  const [resumeFrom, setResumeFrom] = useState(0);
-  const [rate, setRate] = useState<0.75 | 1>(1);
-  const [showEn, setShowEn] = useState(false);
-  const [localFeedback, setLocalFeedback] = useState<{
-    correct: boolean;
-    explanation: string;
-  } | null>(null);
-  const [correctCount, setCorrectCount] = useState(0);
-  // Lines a missed question was about (its explanation quotes the line), so
-  // the follow-up cloze can come from the part they didn't catch.
-  const [missedLines, setMissedLines] = useState<number[]>([]);
-  const [done, setDone] = useState(false);
-  const [displayOptions, setDisplayOptions] = useState<
-    { text: string; originalIndex: number }[]
-  >([]);
-  const abortRef = useRef<AbortController | null>(null);
-  const lineRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const generationRef = useRef(0);
-
-  const questions = exercise.questions;
-  const question = questions[qIndex];
-  const lines = exercise.lines;
-  const playing = status === "playing";
-
-  const stopPlayback = () => {
-    abortRef.current?.abort();
-    abortRef.current = null;
-    stopSpanishAudio();
-  };
-
-  useEffect(() => {
-    setQIndex(0);
-    setSelected(null);
-    setLocalFeedback(null);
-    setCorrectCount(0);
-    setMissedLines([]);
-    setDone(false);
-    setActiveLine(-1);
-    setResumeFrom(0);
-    setStatus("idle");
-    stopPlayback();
-    return () => stopPlayback();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [exercise.id]);
-
-  useEffect(() => {
-    if (activeLine < 0) return;
-    const el = lineRefs.current[activeLine];
-    el?.scrollIntoView({ behavior: "smooth", block: "nearest" });
-  }, [activeLine]);
-
-  useEffect(() => {
-    if (!question) {
-      setDisplayOptions([]);
-      return;
-    }
-    const items = question.options.map((text, originalIndex) => ({
-      text,
-      originalIndex,
-    }));
-    for (let i = items.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [items[i], items[j]] = [items[j], items[i]];
-    }
-    setDisplayOptions(items);
-    setSelected(null);
-  }, [exercise.id, qIndex, question]);
-
-  const runPlayback = async (startIndex: number, playbackRate: 0.75 | 1) => {
-    if (disabled) return;
-    stopPlayback();
-    const gen = ++generationRef.current;
-    const ac = new AbortController();
-    abortRef.current = ac;
-    setStatus("playing");
-    setResumeFrom(startIndex);
-    try {
-      await playStoryLines(
-        lines.map((line, i) => ({
-          text: line.text,
-          voice: (line.voice ?? voiceForIndex(i)) as AudioVoice,
-        })),
-        {
-          startIndex,
-          gapMs: 600,
-          rate: playbackRate,
-          signal: ac.signal,
-          onLine: (i) => {
-            if (generationRef.current !== gen) return;
-            setActiveLine(i);
-            setResumeFrom(i);
-          },
-        }
-      );
-      if (generationRef.current !== gen || ac.signal.aborted) return;
-      setStatus("idle");
-      setActiveLine(-1);
-      setResumeFrom(0);
-    } catch {
-      if (generationRef.current === gen) {
-        setStatus("idle");
-      }
-    }
-  };
-
-  const togglePlayPause = () => {
-    if (disabled || done) return;
-    if (status === "playing") {
-      const keep = activeLine >= 0 ? activeLine : resumeFrom;
-      stopPlayback();
-      setResumeFrom(keep);
-      setActiveLine(keep);
-      setStatus("paused");
-      return;
-    }
-    const start = status === "paused" ? resumeFrom : 0;
-    void runPlayback(start, rate);
-  };
-
-  const restart = () => {
-    if (disabled || done) return;
-    void runPlayback(0, rate);
-  };
-
-  const toggleRate = () => {
-    const next: 0.75 | 1 = rate === 1 ? 0.75 : 1;
-    setRate(next);
-    if (status === "playing") {
-      const start = activeLine >= 0 ? activeLine : resumeFrom;
-      void runPlayback(start, next);
-    }
-  };
-
-  const checkQuestion = () => {
-    if (selected === null || !question || localFeedback) return;
-    const correct =
-      displayOptions[selected]?.originalIndex === question.correctIndex;
-    const explanation =
-      question.explanation ??
-      (correct
-        ? "Nice — that matches the story."
-        : `The answer is: ${question.options[question.correctIndex]}`);
-    setLocalFeedback({ correct, explanation });
-    if (correct) {
-      setCorrectCount((c) => c + 1);
-      return;
-    }
-    const quoted = normalizeAnswer(question.explanation ?? "");
-    if (!quoted) return;
-    const lineIndex = lines.findIndex((l) => {
-      const text = normalizeAnswer(l.text);
-      return text.includes(quoted) || quoted.includes(text);
-    });
-    if (lineIndex >= 0) {
-      setMissedLines((m) => (m.includes(lineIndex) ? m : [...m, lineIndex]));
-    }
-  };
-
-  const advance = () => {
-    if (!localFeedback) return;
-    const next = qIndex + 1;
-    if (next >= questions.length) {
-      const totalCorrect = correctCount;
-      setDone(true);
-      onSubmit(totalCorrect === questions.length, undefined, {
-        missedLineIndices: missedLines,
-      });
-      return;
-    }
-    setQIndex(next);
-    setSelected(null);
-    setLocalFeedback(null);
-  };
-
-  return (
-    <div className="space-y-5">
-      {exercise.title ? (
-        <h2 className="text-lg font-bold text-violet-900">{exercise.title}</h2>
-      ) : null}
-
-      <div className="rounded-3xl border border-violet-100 bg-gradient-to-b from-violet-50 to-white px-4 py-5 shadow-sm">
-        <div className="mb-1 flex items-center justify-center gap-2 text-violet-700">
-          <Headphones className="h-4 w-4" />
-          <p className="text-[11px] font-bold uppercase tracking-wider">
-            Listen workout
-          </p>
-        </div>
-        <p className="mb-4 text-center text-xs text-violet-700/80">
-          Hands-free · press play and follow along
-        </p>
-
-        <div className="mb-4 flex flex-col items-center gap-3">
-          <div className="flex w-full max-w-sm items-stretch gap-2">
-            <Button
-              type="button"
-              variant="soft"
-              size="lg"
-              disabled={disabled || done}
-              onClick={togglePlayPause}
-              className="min-h-14 flex-1 touch-manipulation bg-violet-600 text-base font-bold text-white hover:bg-violet-700"
-            >
-              {playing ? (
-                <>
-                  <Pause className="h-6 w-6" />
-                  Pause
-                </>
-              ) : (
-                <>
-                  <Play className="h-6 w-6 fill-current" />
-                  {status === "paused" ? "Resume" : "Play"}
-                </>
-              )}
-            </Button>
-            <Button
-              type="button"
-              variant="soft"
-              size="lg"
-              disabled={disabled || done}
-              onClick={restart}
-              className="min-h-14 min-w-14 touch-manipulation border border-violet-200 bg-white px-3 text-violet-800 hover:bg-violet-50"
-              aria-label="Restart from beginning"
-            >
-              <RotateCcw className="h-5 w-5" />
-            </Button>
-          </div>
-
-          <div className="flex flex-wrap items-center justify-center gap-2">
-            <button
-              type="button"
-              disabled={disabled || done}
-              onClick={toggleRate}
-              className="min-h-11 rounded-full border border-violet-200 bg-white px-4 text-xs font-bold text-violet-800 hover:bg-violet-50 disabled:opacity-50"
-            >
-              Speed {rate === 1 ? "1×" : "0.75×"}
-            </button>
-            {lines.some((l) => l.en) ? (
-              <button
-                type="button"
-                disabled={disabled}
-                onClick={() => setShowEn((v) => !v)}
-                className="min-h-11 rounded-full border border-violet-200 bg-white px-4 text-xs font-bold text-violet-800 hover:bg-violet-50 disabled:opacity-50"
-              >
-                {showEn ? "Hide English" : "Show English"}
-              </button>
-            ) : null}
-          </div>
-        </div>
-
-        <div className="max-h-[50vh] space-y-2 overflow-y-auto overscroll-contain rounded-2xl bg-white/60 p-1 sm:max-h-none sm:overflow-visible">
-          {lines.map((line, i) => (
-            <div
-              key={`${line.text}-${i}`}
-              ref={(el) => {
-                lineRefs.current[i] = el;
-              }}
-              className={cn(
-                "rounded-2xl px-3 py-3 transition-colors",
-                activeLine === i
-                  ? "bg-violet-200/90 text-violet-950 ring-2 ring-violet-400/60"
-                  : activeLine > i
-                    ? "text-slate-500"
-                    : "text-slate-800"
-              )}
-            >
-              <p className="text-xl font-semibold leading-snug sm:text-2xl">
-                {line.text}
-              </p>
-              {showEn && line.en ? (
-                <p className="mt-1 text-sm font-medium leading-snug text-slate-600">
-                  {line.en}
-                </p>
-              ) : null}
-            </div>
-          ))}
-        </div>
-
-        <button
-          type="button"
-          disabled={disabled || done}
-          onClick={() => {
-            stopPlayback();
-            setStatus("idle");
-            setActiveLine(-1);
-            setResumeFrom(0);
-            setDone(true);
-            onSubmit(true);
-          }}
-          className="mt-4 min-h-11 w-full touch-manipulation text-center text-sm font-semibold text-slate-500 hover:text-emerald-700 disabled:opacity-50"
-        >
-          Can&apos;t listen now? Skip
-        </button>
-      </div>
-
-      {question && !done ? (
-        <div className="space-y-3">
-          <p className="text-sm font-bold uppercase tracking-wide text-violet-600">
-            Question {qIndex + 1} of {questions.length}
-          </p>
-          <p className="text-base font-semibold text-slate-900">{question.prompt}</p>
-          <div className="grid gap-3">
-            {displayOptions.map((opt, i) => (
-              <button
-                key={`${opt.text}-${opt.originalIndex}`}
-                type="button"
-                disabled={disabled || Boolean(localFeedback)}
-                onClick={() => setSelected(i)}
-                className={cn(
-                  "min-h-12 w-full touch-manipulation rounded-2xl border-2 px-4 py-3.5 text-left text-base font-semibold transition-colors motion-reduce:transition-none",
-                  selected === i
-                    ? (resultOptionClass(
-                        localFeedback
-                          ? localFeedback.correct
-                            ? "correct"
-                            : "wrong"
-                          : null
-                      ) ?? "border-violet-500 bg-violet-50 text-violet-900")
-                    : "border-slate-200 bg-white text-slate-800"
-                )}
-              >
-                {opt.text}
-              </button>
-            ))}
-          </div>
-
-          {localFeedback ? (
-            <div
-              className={cn(
-                "rounded-2xl border px-4 py-3 text-sm animate-slide-up",
-                localFeedback.correct
-                  ? "border-emerald-200 bg-emerald-50 text-emerald-900"
-                  : "border-rose-200 bg-rose-50 text-rose-900"
-              )}
-            >
-              <p className="font-bold">
-                {localFeedback.correct ? "Correct!" : "Not quite"}
-              </p>
-              <p className="mt-1">{localFeedback.explanation}</p>
-              <Button
-                className="mt-3 min-h-12 w-full touch-manipulation"
-                size="lg"
-                disabled={disabled}
-                onClick={advance}
-              >
-                {qIndex + 1 >= questions.length ? "Finish story" : "Next question"}
-              </Button>
-            </div>
-          ) : (
-            <Button
-              className="min-h-12 w-full touch-manipulation"
-              size="lg"
-              disabled={selected === null || disabled}
-              onClick={checkQuestion}
-            >
-              Check
-            </Button>
-          )}
-        </div>
-      ) : null}
-
     </div>
   );
 }

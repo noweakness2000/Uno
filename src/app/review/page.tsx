@@ -6,10 +6,14 @@ import { ArrowLeft, Award, BookOpen, Check, Layers, RotateCcw } from "lucide-rea
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { WordCardDrawer } from "@/components/word-card-drawer";
+import { XpToast, type XpToastEvent } from "@/components/xp-toast";
 import { getWordCard } from "@/lib/mock-data";
 import { countDue } from "@/lib/srs";
 import { useUserStore } from "@/store/user-store";
 import type { WordCard } from "@/lib/types";
+
+/** XP per "Got it" — small next to a ~30 XP lesson; "Review again" earns nothing. */
+const GOT_IT_XP = 2;
 
 export default function ReviewPage() {
   const weakWordIds = useUserStore((s) => s.user.weakWordIds);
@@ -18,6 +22,8 @@ export default function ReviewPage() {
   const srsCards = useUserStore((s) => s.user.srsCards);
   const archiveWeak = useUserStore((s) => s.archiveWeak);
   const markWeak = useUserStore((s) => s.markWeak);
+  const awardActivityXp = useUserStore((s) => s.awardActivityXp);
+  const [xpToast, setXpToast] = useState<XpToastEvent | null>(null);
   const dueCount = countDue(srsCards);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState<WordCard | null>(null);
@@ -129,7 +135,11 @@ export default function ReviewPage() {
                   <Button
                     variant="soft"
                     size="sm"
-                    onClick={() => archiveWeak(card.id)}
+                    onClick={() => {
+                      archiveWeak(card.id);
+                      awardActivityXp(GOT_IT_XP);
+                      setXpToast({ amount: GOT_IT_XP, nonce: Date.now() });
+                    }}
                     title={
                       willGraduate(card.id)
                         ? "Got it again this week — moves to Mastered"
@@ -195,6 +205,7 @@ export default function ReviewPage() {
       )}
 
       <WordCardDrawer card={active} open={open} onOpenChange={setOpen} />
+      <XpToast event={xpToast} />
     </div>
   );
 }

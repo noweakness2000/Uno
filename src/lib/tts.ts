@@ -52,16 +52,22 @@ export async function hasSpanishVoice(): Promise<boolean> {
 
 /**
  * Speak practice audio. Prefers es-MX / es-US / es-419 over es-ES.
+ * `rate` is the listener's playback speed (1 = normal, 0.7 = slow).
  * Always sets lang=es-MX even if no Spanish voice pack is installed.
  */
-export function speakPracticeAudio(text: string, lang = "es-MX"): void {
+export function speakPracticeAudio(
+  text: string,
+  lang = "es-MX",
+  rate = 1
+): void {
   if (typeof window === "undefined" || !window.speechSynthesis) return;
   window.speechSynthesis.cancel();
 
   const speak = (voices: SpeechSynthesisVoice[]) => {
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = lang;
-    utterance.rate = 0.88;
+    // 0.88 is the natural-sounding base; the listener's speed scales it.
+    utterance.rate = 0.88 * (rate > 0 ? rate : 1);
     const voice = pickSpanishVoice(voices);
     if (voice) {
       utterance.voice = voice;

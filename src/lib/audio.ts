@@ -11,6 +11,17 @@ export function voiceForIndex(index: number): AudioVoice {
   return VOICE_ROTATION[((index % VOICE_ROTATION.length) + VOICE_ROTATION.length) % VOICE_ROTATION.length];
 }
 
+/**
+ * One narrator per story, stable for a given story id, so a story always
+ * sounds the same while different stories still vary. Lines that set their
+ * own `voice` (a second character) override this.
+ */
+export function narratorVoiceFor(key: string): AudioVoice {
+  let h = 0;
+  for (let i = 0; i < key.length; i++) h = (h * 31 + key.charCodeAt(i)) >>> 0;
+  return voiceForIndex(h % VOICE_ROTATION.length);
+}
+
 /** Match scripts/generate-tts.py slugify for stable filenames. */
 export function slugifyAudio(text: string): string {
   const nfkd = text.normalize("NFKD");
@@ -158,6 +169,11 @@ export type PlayAudioOptions = {
   rate?: number;
   /** Abort mid-clip (pause / restart). */
   signal?: AbortSignal;
+  /**
+   * The element about to play, for callers that track progress (word
+   * highlighting). Called with null when playback fell back to browser TTS.
+   */
+  onAudioElement?: (audio: HTMLAudioElement | null) => void;
 };
 
 export function playSpanishAudioAsync(
@@ -216,7 +232,8 @@ export function playSpanishAudioAsync(
           return;
         }
         if (i >= unique.length) {
-          speakPracticeAudio(text);
+          opts.onAudioElement?.(null);
+          speakPracticeAudio(text, undefined, rate);
           // Browser TTS has no reliable ended event across engines — short pause.
           const ms = Math.min(4000, 400 + text.length * 60) / rate;
           window.setTimeout(() => resolve(), ms);
@@ -224,6 +241,9 @@ export function playSpanishAudioAsync(
         }
         const audio = new Audio();
         current = audio;
+        // WebKit drops a playbackRate set before metadata loads and can reset
+        // it on play(); set the default too and re-apply around play() below.
+        audio.defaultPlaybackRate = rate;
         audio.playbackRate = rate;
         let settled = false;
         const fail = () => {
@@ -247,18 +267,26 @@ export function playSpanishAudioAsync(
             resolve();
             return;
           }
-          void audio.play().catch(fail);
+          audio.playbackRate = rate;
+          opts.onAudioElement?.(audio);
+          void audio
+            .play()
+            .then(() => {
+              if (audio.playbackRate !== rate) audio.playbackRate = rate;
+            })
+            .catch(fail);
         };
         audio.addEventListener("error", fail);
         audio.addEventListener("ended", onEnded);
-        audio.addEventListener("canplaythrough", onReady);
+        audio.addEventListener("canplaythrough", onReady, { once: true });
         audio.preload = "auto";
         audio.src = unique[i];
         void audio.load();
       };
       tryUrl(0);
     } catch {
-      speakPracticeAudio(text);
+      opts.onAudioElement?.(null);
+      speakPracticeAudio(text, undefined, rate);
       window.setTimeout(() => resolve(), 800);
     }
   });
@@ -345,6 +373,8 @@ export async function playPhraseOrWords(
 
 export type StoryPlayOptions = {
   onLine?: (index: number) => void;
+  /** The clip element for line `index` once it starts (null = TTS fallback). */
+  onLineAudio?: (index: number, audio: HTMLAudioElement | null) => void;
   /** Gap between lines in ms (podcast breathing room). Default 550. */
   gapMs?: number;
   rate?: number;
@@ -374,6 +404,9 @@ export async function playStoryLines(
       voice,
       rate,
       signal: opts.signal,
+      onAudioElement: opts.onLineAudio
+        ? (audio) => opts.onLineAudio?.(i, audio)
+        : undefined,
     });
     if (opts.signal?.aborted) return;
     if (i < lines.length - 1 && gapMs > 0) {

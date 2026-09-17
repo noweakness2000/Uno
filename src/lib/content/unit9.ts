@@ -105,10 +105,12 @@ function storyListen(
   explanation = "Story comprehension — replay anytime.",
   xp = 10
 ): import("../types").StoryListenExercise {
-  const withVoices = lines.map((line, i) => ({
+  const withVoices = lines.map((line) => ({
     text: line.text,
     en: line.en,
-    voice: line.voice ?? voiceForIndex(i),
+    // No per-line rotation: the player picks one narrator per story
+    // (narratorVoiceFor) unless a line sets its own voice.
+    voice: line.voice,
   }));
   return {
     id,

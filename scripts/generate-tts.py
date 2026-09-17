@@ -46,6 +46,8 @@ CONTENT_FILES = [
     ROOT / "src" / "lib" / "content" / "unit10.ts",
     ROOT / "src" / "lib" / "content" / "unit11.ts",
     ROOT / "src" / "lib" / "mock-data.ts",
+    # Word of the Day padding: lemma + exampleEs pairs that never got clips.
+    ROOT / "src" / "lib" / "wotd-pad.ts",
 ]
 
 # Seed / legacy phrases (U1–U3 + extras). Harvest merges these with content.
@@ -275,6 +277,8 @@ def harvest_content_phrases() -> list[str]:
             add(m.group(1))
         for m in re.finditer(r'audioText:\s*"([^"]+)"', text):
             add(m.group(1))
+        for m in re.finditer(r'exampleEs:\s*"([^"]+)"', text):
+            add(m.group(1))
         for m in re.finditer(r'targetPhrase:\s*"([^"]+)"', text):
             add(m.group(1))
         for m in re.finditer(r"targetPhrase:\s*'([^']+)'", text):
@@ -353,6 +357,11 @@ def main() -> None:
         default=[],
         help="Generate only these phrases (repeatable). Skips content harvest.",
     )
+    parser.add_argument(
+        "--phrases-file",
+        type=Path,
+        help="Generate only the phrases in this file (one per line). Skips content harvest.",
+    )
     parser.add_argument("--list-voices", action="store_true")
     parser.add_argument("--list-phrases", action="store_true")
     parser.add_argument(
@@ -362,7 +371,14 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    phrases = args.phrase if args.phrase else all_phrases()
+    if args.phrases_file:
+        phrases = [
+            line.strip()
+            for line in args.phrases_file.read_text(encoding="utf-8").splitlines()
+            if line.strip() and not line.startswith("#")
+        ]
+    else:
+        phrases = args.phrase if args.phrase else all_phrases()
     if args.list_phrases:
         for p in phrases:
             print(f"{slugify(p)}\t{p}")

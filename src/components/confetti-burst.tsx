@@ -14,6 +14,8 @@ const COLORS = [
 interface Props {
   /** Number of particles. */
   count?: number;
+  /** LCG seed — a second burst with its own seed doesn't overlap the first. */
+  seed?: number;
 }
 
 /**
@@ -24,9 +26,9 @@ interface Props {
  * Positions come from a small LCG rather than Math.random so server and
  * client render the same markup.
  */
-export function ConfettiBurst({ count = 28 }: Props) {
+export function ConfettiBurst({ count = 28, seed: initialSeed = 7 }: Props) {
   const pieces = useMemo(() => {
-    let seed = 7;
+    let seed = initialSeed;
     const rand = () => {
       seed = (seed * 1103515245 + 12345) & 0x7fffffff;
       return seed / 0x7fffffff;
@@ -40,7 +42,7 @@ export function ConfettiBurst({ count = 28 }: Props) {
       color: COLORS[i % COLORS.length],
       round: rand() > 0.7,
     }));
-  }, [count]);
+  }, [count, initialSeed]);
 
   return (
     <div

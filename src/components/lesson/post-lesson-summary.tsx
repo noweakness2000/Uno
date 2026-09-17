@@ -7,18 +7,23 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { ConfettiBurst } from "@/components/confetti-burst";
 import { Flashcard } from "@/components/flashcard";
-import { Flame, Star, Target, BookMarked, Layers } from "lucide-react";
+import { Flame, Star, Target, BookMarked, Layers, Sparkles } from "lucide-react";
 import { dailyGoalPercent, isDailyGoalMet } from "@/lib/daily-goal";
 import { effectiveDailyXp, effectiveStreak } from "@/lib/streak";
 import { getWordCard } from "@/lib/mock-data";
 import { useUserStore } from "@/store/user-store";
+import { cn } from "@/lib/utils";
 import type { WordCard } from "@/lib/types";
 
 interface Props {
   lessonTitle: string;
   correctCount: number;
   wrongCount: number;
+  /** Includes any perfect bonus. */
   earnedXp: number;
+  /** Part of earnedXp that came from a mistake-free run. */
+  bonusXp?: number;
+  perfect?: boolean;
   weakCount: number;
   /** Due SRS words to flip through before moving on; empty hides the block. */
   reviewCardIds?: string[];
@@ -79,6 +84,8 @@ export function PostLessonSummary({
   correctCount,
   wrongCount,
   earnedXp,
+  bonusXp = 0,
+  perfect = false,
   weakCount,
   reviewCardIds = [],
   onContinue,
@@ -104,6 +111,7 @@ export function PostLessonSummary({
   return (
     <div className="mx-auto flex min-h-dvh max-w-lg flex-col justify-center gap-6 px-4 py-10">
       <ConfettiBurst />
+      {perfect && <ConfettiBurst count={40} seed={23} />}
       <div className="text-center">
         <div className="relative mx-auto mb-4 h-24 w-24 animate-bounce-in">
           <Image
@@ -112,7 +120,12 @@ export function PostLessonSummary({
             width={96}
             height={96}
             priority
-            className="h-24 w-24 rounded-full object-cover shadow-lg shadow-emerald-500/30 ring-4 ring-emerald-100"
+            className={cn(
+              "h-24 w-24 rounded-full object-cover shadow-lg",
+              perfect
+                ? "shadow-amber-400/50 ring-4 ring-amber-300"
+                : "shadow-emerald-500/30 ring-4 ring-emerald-100"
+            )}
           />
           <span
             aria-hidden
@@ -121,8 +134,14 @@ export function PostLessonSummary({
             🎉
           </span>
         </div>
+        {perfect && (
+          <p className="mb-2 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-amber-400 to-yellow-300 px-4 py-1.5 text-sm font-extrabold uppercase tracking-wider text-amber-950 shadow-md shadow-amber-400/40 ring-2 ring-white animate-pop">
+            <Sparkles className="h-4 w-4" aria-hidden />
+            Perfect!
+          </p>
+        )}
         <h1 className="text-3xl font-extrabold text-slate-900 animate-slide-up">
-          Lesson complete
+          {perfect ? "Flawless lesson" : "Lesson complete"}
         </h1>
         <p className="mt-2 text-slate-500">{lessonTitle}</p>
       </div>
@@ -156,6 +175,11 @@ export function PostLessonSummary({
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-extrabold text-slate-900">+{earnedXp}</p>
+            {bonusXp > 0 && (
+              <p className="mt-0.5 text-xs font-bold text-amber-600">
+                includes +{bonusXp} perfect bonus
+              </p>
+            )}
           </CardContent>
         </Card>
         <Card>

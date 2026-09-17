@@ -1,6 +1,6 @@
 "use client";
 
-/** Short correct-answer chime. Web Audio — no files, no lesson MP3s. */
+/** Short UI sounds. Web Audio — no files, no lesson MP3s. */
 
 let ctx: AudioContext | null = null;
 
@@ -15,25 +15,71 @@ function getCtx(): AudioContext | null {
   return ctx;
 }
 
+/** One enveloped note: quick attack, exponential release. */
+function tone(
+  c: AudioContext,
+  freq: number,
+  at: number,
+  opts: { type?: OscillatorType; peak?: number; length?: number; slideTo?: number } = {}
+): void {
+  const { type = "triangle", peak = 0.18, length = 0.18, slideTo } = opts;
+  const osc = c.createOscillator();
+  const gain = c.createGain();
+  osc.type = type;
+  osc.frequency.setValueAtTime(freq, at);
+  if (slideTo) osc.frequency.exponentialRampToValueAtTime(slideTo, at + length);
+  gain.gain.setValueAtTime(0, at);
+  gain.gain.linearRampToValueAtTime(peak, at + 0.01);
+  gain.gain.exponentialRampToValueAtTime(0.001, at + length);
+  osc.connect(gain);
+  gain.connect(c.destination);
+  osc.start(at);
+  osc.stop(at + length + 0.02);
+}
+
+/** Correct answer: bright ascending run C5 E5 G5 C6. */
 export function playCorrectChime(): void {
   const c = getCtx();
   if (!c) return;
   void c.resume();
   const now = c.currentTime;
-  // Bright ascending run: C5 E5 G5 C6, triangle for a softer, bell-like edge.
-  const notes = [523.25, 659.25, 783.99, 1046.5];
-  notes.forEach((freq, i) => {
-    const osc = c.createOscillator();
-    const gain = c.createGain();
-    osc.type = "triangle";
-    osc.frequency.value = freq;
-    const t = now + i * 0.055;
-    gain.gain.setValueAtTime(0, t);
-    gain.gain.linearRampToValueAtTime(0.18, t + 0.01);
-    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.18);
-    osc.connect(gain);
-    gain.connect(c.destination);
-    osc.start(t);
-    osc.stop(t + 0.2);
+  [523.25, 659.25, 783.99, 1046.5].forEach((freq, i) => {
+    tone(c, freq, now + i * 0.055);
+  });
+}
+
+/** One pair matched: a soft two-note tick (G5 → C6), quieter than the chime. */
+export function playMatchChime(): void {
+  const c = getCtx();
+  if (!c) return;
+  void c.resume();
+  const now = c.currentTime;
+  tone(c, 783.99, now, { type: "sine", peak: 0.1, length: 0.09 });
+  tone(c, 1046.5, now + 0.07, { type: "sine", peak: 0.1, length: 0.12 });
+}
+
+/** Wrong pick: a ~120 ms descending thud. */
+export function playWrongBonk(): void {
+  const c = getCtx();
+  if (!c) return;
+  void c.resume();
+  const now = c.currentTime;
+  tone(c, 220, now, { type: "square", peak: 0.08, length: 0.12, slideTo: 110 });
+  tone(c, 165, now, { type: "sine", peak: 0.12, length: 0.12, slideTo: 82 });
+}
+
+/** Mistake-free lesson: a longer, brighter fanfare with a held top chord. */
+export function playPerfectFanfare(): void {
+  const c = getCtx();
+  if (!c) return;
+  void c.resume();
+  const now = c.currentTime;
+  // C5 E5 G5 C6 E6, then C6+E6+G6 held.
+  [523.25, 659.25, 783.99, 1046.5, 1318.5].forEach((freq, i) => {
+    tone(c, freq, now + i * 0.07, { peak: 0.16, length: 0.16 });
+  });
+  const hold = now + 0.42;
+  [1046.5, 1318.5, 1568].forEach((freq) => {
+    tone(c, freq, hold, { peak: 0.12, length: 0.6 });
   });
 }
