@@ -29,6 +29,7 @@ import {
   isNearMiss,
   type ConjugateMiss,
 } from "@/lib/grading";
+import { hintFor } from "@/lib/hints";
 import { verbFormsFor } from "@/lib/verb-forms";
 import { useLessonStore } from "@/store/lesson-store";
 import { useUserStore } from "@/store/user-store";
@@ -846,7 +847,7 @@ export function FillBlankView({
         </span>
         {parts.slice(1).join("___")}
       </div>
-      <HintReveal hint={exercise.hint} />
+      <HintReveal hint={hintFor(exercise)} />
       <input
         type="text"
         value={value}
@@ -1058,7 +1059,7 @@ export function ConjugateView({
           Type the conjugated form for this person.
         </p>
       </div>
-      <HintReveal hint={exercise.hint} />
+      <HintReveal hint={hintFor(exercise)} />
       <input
         type="text"
         value={value}

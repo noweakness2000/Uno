@@ -681,7 +681,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         ["voy", "Voy"],
         "yo + ir → voy (also used in voy a…).",
         ["ir"],
-        { hint: "voy", xp: 3 }
+        { xp: 3 }
       ),
       conjugate(
         "u8l1-conj-2",
@@ -691,7 +691,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         ["vamos", "Vamos"],
         "nosotros + ir → vamos.",
         ["ir"],
-        { hint: "vamos", xp: 3 }
+        { xp: 3 }
       ),
     ],
   },
@@ -971,7 +971,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         ["quiero", "Quiero"],
         "yo + querer → quiero.",
         ["querer"],
-        { hint: "quiero", xp: 3 }
+        { xp: 3 }
       ),
       conjugate(
         "u8l3-conj-2",
@@ -981,7 +981,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         ["puedo", "Puedo"],
         "yo + poder → puedo.",
         ["poder"],
-        { hint: "puedo", xp: 3 }
+        { xp: 3 }
       ),
     ],
   },

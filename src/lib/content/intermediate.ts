@@ -1156,7 +1156,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         ["me despierto", "Me despierto"],
         "yo + despertarse → me despierto.",
         ["despertarse"],
-        { hint: "me despierto", xp: 3 }
+        { xp: 3 }
       ),
       conjugate(
         "u4l1-conj-2",
@@ -1166,7 +1166,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         ["trabajas", "Trabajas"],
         "tú + trabajar → trabajas.",
         ["trabajar"],
-        { hint: "trabajas", xp: 3 }
+        { xp: 3 }
       ),
     ],
   },
@@ -1500,7 +1500,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         ["me levanto", "Me levanto"],
         "yo + levantarse → me levanto.",
         ["levantarse"],
-        { hint: "me levanto", xp: 3 }
+        { xp: 3 }
       ),
       conjugate(
         "u4l4-conj-2",
@@ -1510,7 +1510,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         ["te duchas", "Te duchas"],
         "tú + ducharse → te duchas.",
         ["ducharse"],
-        { hint: "te duchas", xp: 3 }
+        { xp: 3 }
       ),
     ],
   },
@@ -1835,7 +1835,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         ["camino", "Camino"],
         "yo + caminar → camino.",
         ["caminar"],
-        { hint: "camino", xp: 3 }
+        { xp: 3 }
       ),
       conjugate(
         "u4l7-conj-2",
@@ -1845,7 +1845,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         ["limpiamos", "Limpiamos"],
         "nosotros + limpiar → limpiamos.",
         ["limpiar"],
-        { hint: "limpiamos", xp: 3 }
+        { xp: 3 }
       ),
     ],
   },

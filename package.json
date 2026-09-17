@@ -6,11 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
+    "lint": "eslint && npm run check:hints",
     "generate-tts": "python3 scripts/generate-tts.py",
     "db:generate": "drizzle-kit generate",
     "db:push": "drizzle-kit push",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "check:hints": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --import ./scripts/register-ts-alias.mjs scripts/check-hints.ts",
+    "prebuild": "npm run check:hints"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.11.3",

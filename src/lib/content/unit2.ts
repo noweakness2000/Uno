@@ -328,7 +328,7 @@ export const UNIT2_LESSONS: Record<string, Lesson> = {
         ["soy", "Soy"],
         "yo + ser → soy.",
         ["ser"],
-        { hint: "soy", xp: 3 }
+        { xp: 3 }
       ),
       conjugate(
         "u2l4-conj-2",
@@ -338,7 +338,7 @@ export const UNIT2_LESSONS: Record<string, Lesson> = {
         ["eres", "Eres"],
         "tú + ser → eres.",
         ["ser"],
-        { hint: "eres", xp: 3 }
+        { xp: 3 }
       ),
     ],
   },
@@ -579,7 +579,7 @@ export const UNIT2_LESSONS: Record<string, Lesson> = {
         ["hablo", "Hablo"],
         "yo + hablar → hablo.",
         ["hablar"],
-        { hint: "hablo", xp: 3 }
+        { xp: 3 }
       ),
       conjugate(
         "u2l6-conj-2",
@@ -589,7 +589,7 @@ export const UNIT2_LESSONS: Record<string, Lesson> = {
         ["hablamos", "Hablamos"],
         "nosotros + hablar → hablamos.",
         ["hablar"],
-        { hint: "hablamos", xp: 3 }
+        { xp: 3 }
       ),
     ],
   },

@@ -3,7 +3,7 @@ import { normalizeAnswer, type VerbForm } from "@/lib/grading";
 import type { WordCard } from "@/lib/types";
 
 /** "hablar (past tense)" → "hablar"; "gira / girar" → "gira". */
-function lemmaBase(lemma: string): string {
+export function lemmaBase(lemma: string): string {
   return normalizeAnswer(lemma.split(" (")[0].split(" / ")[0]);
 }
 

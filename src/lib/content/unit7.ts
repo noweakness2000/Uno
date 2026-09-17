@@ -494,7 +494,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         ["comí", "comi", "Comí", "Comi"],
         "yo + comer (past tense) → comí.",
         ["comer"],
-        { hint: "comí", xp: 3 }
+        { xp: 3 }
       ),
       conjugate(
         "u7l1-conj-2",
@@ -504,7 +504,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         ["hablaste", "Hablaste"],
         "tú + hablar (past tense) → hablaste.",
         ["hablar"],
-        { hint: "hablaste", xp: 3 }
+        { xp: 3 }
       ),
     ],
   },
@@ -780,7 +780,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         ["fui", "Fui"],
         "yo + ir (past tense) → fui.",
         ["ir"],
-        { hint: "fui", xp: 3 }
+        { xp: 3 }
       ),
       conjugate(
         "u7l3-conj-2",
@@ -790,7 +790,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         ["hizo", "Hizo"],
         "él/ella/usted + hacer → hizo.",
         ["hacer"],
-        { hint: "hizo", xp: 3 }
+        { xp: 3 }
       ),
     ],
   },
@@ -1056,7 +1056,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         ["tuve", "Tuve"],
         "yo + tener (past tense) → tuve.",
         ["tener"],
-        { hint: "tuve", xp: 3 }
+        { xp: 3 }
       ),
       conjugate(
         "u7l5-conj-2",
@@ -1066,7 +1066,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         ["dije", "Dije"],
         "yo + decir (past tense) → dije.",
         ["decir"],
-        { hint: "dije", xp: 3 }
+        { xp: 3 }
       ),
     ],
   },
