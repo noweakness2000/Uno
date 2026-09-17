@@ -363,7 +363,7 @@ export const UNIT1_LESSONS: Record<string, Lesson> = {
         template: "Gracias. — De ___.",
         englishPrompt: "Thank you. — You're welcome.",
         acceptedAnswers: ["nada", "Nada"],
-        hint: "you're welcome",
+        hint: "The reply to gracias literally means ‘of nothing’ — a short n- word finishes it.",
         explanation: "—Gracias. —De nada.",
         wordCardIds: ["gracias", "de-nada"],
         xp: 3,
@@ -784,7 +784,7 @@ export const UNIT1_LESSONS: Record<string, Lesson> = {
         template: "Hasta ___.",
         englishPrompt: "See you later.",
         acceptedAnswers: ["luego", "Luego"],
-        hint: "later",
+        hint: "Hasta means ‘until…’. Finish the most common farewell — not mañana (tomorrow), not pronto (soon).",
         explanation: "Hasta luego.",
         wordCardIds: ["hasta-luego"],
         xp: 3,
@@ -889,7 +889,7 @@ export const UNIT1_LESSONS: Record<string, Lesson> = {
         ["nada", "Nada"],
         "De nada.",
         ["de-nada"],
-        { hint: "you're welcome", audioText: "De nada.", voice: "m" }
+        { hint: "The polite reply to gracias — literally ‘of nothing’.", audioText: "De nada.", voice: "m" }
       ),
       cloze(
         "u1l11-cloze-3",
@@ -956,7 +956,7 @@ export const UNIT1_LESSONS: Record<string, Lesson> = {
         template: "___ gusto.",
         englishPrompt: "Nice to meet you.",
         acceptedAnswers: ["Mucho", "mucho"],
-        hint: "nice to meet you",
+        hint: "Gusto is ‘pleasure’. The missing word is the same one you say in muchas gracias — in its masculine form.",
         explanation: "Mucho gusto.",
         wordCardIds: ["mucho-gusto"],
         xp: 3,

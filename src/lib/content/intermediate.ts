@@ -62,7 +62,8 @@ function listen(
   correctIndex: number,
   explanation: string,
   wordCardIds: string[],
-  xp = 3
+  xp = 3,
+  hint?: string
 ): import("../types").ListeningChooseExercise {
   const voice = voiceForIndex(listenVoiceIndex);
   listenVoiceIndex += 1;
@@ -76,6 +77,7 @@ function listen(
     correctIndex,
     explanation,
     wordCardIds,
+    hint,
     xp,
   };
 }
@@ -1902,7 +1904,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         ["Me despierto temprano todos los días."],
         "Type the line you heard: Me despierto temprano todos los días.",
         [],
-        { hint: "Replay if needed", voice: "f", xp: 4 }
+        { hint: "Opens with a reflexive me + the wake-up verb. Then listen for temprano (early) and the ‘every day’ phrase at the end.", voice: "f", xp: 4 }
       ),
       dictation(
         "u4l8-story-dict-2",
@@ -1910,7 +1912,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         ["Me levanto y me ducho por la mañana."],
         "Type the line you heard: Me levanto y me ducho por la mañana.",
         [],
-        { hint: "Replay if needed", voice: "m", xp: 4 }
+        { hint: "Two reflexive actions joined by y — getting up, then showering — and a time-of-day phrase to finish.", voice: "m", xp: 4 }
       ),
       {
         id: "u4l8-1",
@@ -2125,7 +2127,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         ["El fin de semana no voy a la oficina."],
         "Type the line you heard: El fin de semana no voy a la oficina.",
         [],
-        { hint: "Replay if needed", voice: "f", xp: 4 }
+        { hint: "Starts with the weekend phrase. Listen for the no just before the yo form of ir, then a la + a workplace.", voice: "f", xp: 4 }
       ),
       dictation(
         "u4l10-story-dict-2",
@@ -2133,7 +2135,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         ["Me levanto tarde y desayuno sin prisa."],
         "Type the line you heard: Me levanto tarde y desayuno sin prisa.",
         [],
-        { hint: "Replay if needed", voice: "m", xp: 4 }
+        { hint: "Getting up + the opposite of temprano, then y, breakfast as a verb, and sin prisa — ‘without hurry’.", voice: "m", xp: 4 }
       ),
       {
         id: "u4l10-1",
@@ -2199,6 +2201,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         situation: "A coworker asks how you get to work; you walk.",
         options: ["Camino al trabajo.", "Me ducho al trabajo.", "Lavo al trabajo.", "Soy temprano trabajo."],
         correctIndex: 0,
+        hint: "You need the yo form of ‘to walk’ before al trabajo. Three options use verbs for showering, washing or being — none of those get you to work.",
         explanation: "Camino al trabajo.",
         wordCardIds: ["caminar", "trabajar"],
         xp: 3,
@@ -2210,6 +2213,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         situation: "You're inviting a friend to chat — start friendly.",
         options: ["Hola, ¿cómo estás?", "Lavo los platos ahora mismo siempre.", "Departamento cinco.", "Me despierto jugo."],
         correctIndex: 0,
+        hint: "A friendly opener is a greeting plus a how-are-you check-in. The other three are stray bits of daily routine, not things you say to start a chat.",
         explanation: "Hola, ¿cómo estás?",
         wordCardIds: ["hola", "como-estas"],
         xp: 3,
@@ -2226,6 +2230,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
           "El fin de semana cuesta veinte.",
         ],
         correctIndex: 0,
+        hint: "After el fin de semana you need an activity in the yo form. Only one option has a real weekend verb; the others pair the weekend with ‘am office’, a name, or a price.",
         explanation: "El fin de semana descanso en casa.",
         wordCardIds: ["fin-de-semana", "descansar"],
         xp: 3,
@@ -2236,7 +2241,9 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         ["Please, do you have a car?", "Please wash the kitchen.", "Please wake up the office.", "Please study the dishes."],
         0,
         "Por favor, ¿tienes carro?",
-        ["por", "carro", "tener"]
+        ["por", "carro", "tener"],
+        3,
+        "Listen for tienes — the tú form of tener, so it’s a ‘do you have…?’ question — and for the last word, the LatAm word for a vehicle."
       ),
       {
         id: "u4l11-5",
@@ -2282,6 +2289,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         prompt: "“Also / too” is…",
         options: ["también", "platos", "cocina", "temprano"],
         correctIndex: 0,
+        hint: "It’s the word you add to Yo ___ for ‘me too’ — a glue word, not a kitchen thing or a time of day.",
         explanation: "también — high-frequency Unit 2 glue word.",
         wordCardIds: ["tambien"],
         xp: 2,
