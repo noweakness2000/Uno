@@ -872,7 +872,7 @@ export const UNIT2_LESSONS: Record<string, Lesson> = {
           },
         ],
         ["me-llamo", "soy-de", "mexico", "vivo-en", "ciudad", "hablar", "espanol", "ingles", "mucho-gusto"],
-        "Self-intro story for Unit 2.",
+        "You followed the whole story. Replay it anytime from the lesson.",
         12
       ),
       cloze(
@@ -1047,7 +1047,7 @@ export const UNIT2_LESSONS: Record<string, Lesson> = {
           },
         ],
         ["como-te-llamas", "me-llamo", "y-tu", "de-donde-eres", "soy-de", "vivo-en", "ciudad", "hablar", "ingles", "un-poco-de", "espanol"],
-        "Neighbor intro story.",
+        "You followed the whole story. Replay it anytime from the lesson.",
         12
       ),
       cloze(

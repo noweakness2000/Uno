@@ -1495,7 +1495,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
           },
         ],
         ["restaurante", "menu", "me-gustaria", "pollo", "arroz", "jugo", "comida", "la-cuenta", "el-centro"],
-        "Ordering story — voices rotate across Neural2 A/B/C.",
+        "You followed the whole story. Replay it anytime from the lesson.",
         12
       ),
       dictation(
@@ -1765,7 +1765,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
           },
         ],
         ["cafe", "leche", "te", "pan", "comida", "jugo", "para-llevar", "la-cuenta", "propina", "hola", "como-estas"],
-        "Café story — mixed Neural2 voices.",
+        "You followed the whole story. Replay it anytime from the lesson.",
         12
       ),
       dictation(

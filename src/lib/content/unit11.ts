@@ -802,7 +802,7 @@ export const UNIT11_LESSONS: Record<string, Lesson> = {
           { prompt: "What did they do on Sunday?", options: ["Watched a movie together", "Only sent email", "Booked a hotel", "Went to the airport"], correctIndex: 0, explanation: "El domingo vimos una película juntos." },
         ],
         ["amigo", "invitar-preterite", "fiesta", "pret-vs-imp", "bailar-preterite", "de-repente", "hermano", "ver-preterite", "pelicula", "juntos", "mientras", "ver-imperfect", "divertido"],
-        "Social weekend story — Neural2 voice rotation.", 12
+        "You followed the whole story. Replay it anytime from the lesson.", 12
       ),
       { id: "u11l9-1", type: "select", prompt: "From the story — sudden event was…", options: ["De repente llegó mi hermana con un pastel.", "De repente iba siempre en 1990.", "De repente la farmacia.", "De repente el correo."], correctIndex: 0, explanation: "De repente llegó mi hermana…", wordCardIds: ["de-repente", "hermano"], xp: 3 },
       { id: "u11l9-2", type: "match-pairs", prompt: "Match story details.", pairs: [{ left: "Saturday", right: "party invite" }, { left: "music", right: "was good" }, { left: "sister", right: "arrived suddenly" }, { left: "Sunday", right: "movie together" }], explanation: "Story comprehension.", wordCardIds: ["fiesta", "hermano", "pelicula", "juntos"], xp: 4 },

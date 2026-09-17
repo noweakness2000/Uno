@@ -214,8 +214,13 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
               onSubmit={(correct, confidence, detail) => {
                 // The one place every exercise's verdict passes through, so
                 // the right/wrong sounds stay consistent across all types.
-                if (correct) playCorrectChime();
-                else playWrongTone();
+                // Story-listen plays its own sound per question (like
+                // dialogue), so its final verdict stays silent here — else
+                // the last question's chime stacks with a second one.
+                if (exercise.type !== "story-listen") {
+                  if (correct) playCorrectChime();
+                  else playWrongTone();
+                }
                 // Missed the story → one cloze from its own transcript, right
                 // after, for a word that just went weak. Skipped when no line
                 // holds a usable word.

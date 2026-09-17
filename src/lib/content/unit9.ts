@@ -791,7 +791,7 @@ export const UNIT9_LESSONS: Record<string, Lesson> = {
           { prompt: "What do they decide?", options: ["Book today and arrive early", "Wash dishes", "Cancel Spanish", "Eat the passport"], correctIndex: 0, explanation: "Reservamos hoy y llegamos temprano al vuelo." },
         ],
         ["antes", "ir-imperfect", "aeropuerto", "taxi", "creo-que", "metro", "que-opinas", "hotel", "me-parece", "habitacion", "de-acuerdo", "reservar", "vuelo", "temprano"],
-        "Trip-opinions story — Neural2 voice rotation.", 12
+        "You followed the whole story. Replay it anytime from the lesson.", 12
       ),
       { id: "u9l9-1", type: "select", prompt: "From the story — soft agreement was…", options: ["Me parece bien.", "Comí bien.", "Todo recto bien.", "La cuenta bien."], correctIndex: 0, explanation: "Me parece bien.", wordCardIds: ["me-parece"], xp: 3 },
       { id: "u9l9-2", type: "match-pairs", prompt: "Match story details.", pairs: [{ left: "antes", right: "by taxi" }, { left: "ahora", right: "the metro is better" }, { left: "hotel", right: "a big room" }, { left: "today", right: "they book" }], explanation: "Story comprehension.", wordCardIds: ["antes", "taxi", "metro", "habitacion", "reservar"], xp: 4 },

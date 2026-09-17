@@ -702,7 +702,7 @@ export const UNIT1_LESSONS: Record<string, Lesson> = {
           },
         ],
         ["hola", "buenos-dias", "como-te-llamas", "me-llamo", "mucho-gusto", "como-estas", "bien", "nos-vemos"],
-        "First-contact story — voices rotate across Neural2 A/B/C.",
+        "You followed the whole story. Replay it anytime from the lesson.",
         12
       ),
       cloze(
@@ -872,7 +872,7 @@ export const UNIT1_LESSONS: Record<string, Lesson> = {
           },
         ],
         ["buenas-tardes", "que-tal", "bien", "gracias", "de-nada", "hasta-luego"],
-        "Hello-and-goodbye story with thanks.",
+        "You followed the whole story. Replay it anytime from the lesson.",
         12
       ),
       cloze(

@@ -1376,7 +1376,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
           },
         ],
         ["disculpe", "estacion", "metro", "cerca", "todo-recto", "cuadra", "gira", "a-la-derecha", "a-pie", "el-centro"],
-        "Directions story — voices rotate across Neural2 A/B/C.",
+        "You followed the whole story. Replay it anytime from the lesson.",
         12
       ),
       dictation(
@@ -1642,7 +1642,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
           },
         ],
         ["disculpe", "mapa", "hotel", "cerca", "el-centro", "a-pie", "lejos", "todo-recto", "cuadra", "a-la-izquierda", "banco", "a-la-derecha"],
-        "Hotel walk story — Neural2 A/B/C rotation.",
+        "You followed the whole story. Replay it anytime from the lesson.",
         12
       ),
       dictation(

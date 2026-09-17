@@ -868,7 +868,7 @@ export const UNIT10_LESSONS: Record<string, Lesson> = {
           { prompt: "What does the colleague suggest?", options: ["Go to the pharmacy", "Cancel Spanish", "Eat the passport", "Skip rest forever"], correctIndex: 0, explanation: "Deberías ir a la farmacia." },
         ],
         ["manana", "ir-a-deep", "desde-casa", "tener-future", "reunion", "estoy-bien", "me-duele", "colega", "deberia", "farmacia", "de-acuerdo", "medicina", "descansar"],
-        "Work-and-wellbeing story — Neural2 voice rotation.", 12
+        "You followed the whole story. Replay it anytime from the lesson.", 12
       ),
       { id: "u10l9-1", type: "select", prompt: "From the story — soft advice was…", options: ["Deberías ir a la farmacia.", "Debes comer el proyecto.", "Íbamos al imperfecto.", "Fui la entrevista."], correctIndex: 0, explanation: "Deberías ir a la farmacia.", wordCardIds: ["deberia", "farmacia"], xp: 3 },
       { id: "u10l9-2", type: "match-pairs", prompt: "Match story details.", pairs: [{ left: "tomorrow", right: "work from home" }, { left: "morning", right: "a meeting" }, { left: "today", right: "head hurts" }, { left: "plan", right: "buy medicine and rest" }], explanation: "Story comprehension.", wordCardIds: ["desde-casa", "reunion", "me-duele", "medicina"], xp: 4 },

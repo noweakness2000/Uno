@@ -1714,7 +1714,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
           },
         ],
         ["te-gustaria", "salir", "el-viernes", "me-parece", "que-tal-si", "el-cine", "vamos-a", "cafe", "a-las", "el-centro", "ir-a", "temprano"],
-        "Friday-plans story — Neural2 voice rotation.",
+        "You followed the whole story. Replay it anytime from the lesson.",
         12
       ),
       dictation(
@@ -1962,7 +1962,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
           },
         ],
         ["quieres-inf", "salir", "esta-noche", "otra-vez", "el-sabado", "me-parece", "vamos-a", "caminar", "el-centro", "a-las", "fin-de-semana"],
-        "Weekend-invite story — Neural2 voice rotation.",
+        "You followed the whole story. Replay it anytime from the lesson.",
         12
       ),
       dictation(

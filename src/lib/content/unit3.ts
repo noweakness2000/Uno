@@ -1026,7 +1026,7 @@ export const UNIT3_LESSONS: Record<string, Lesson> = {
           },
         ],
         ["buenos-dias", "cuanto-cuesta", "quince", "pesos", "cuatro", "por-favor", "gracias"],
-        "Simple market numbers story.",
+        "You followed the whole story. Replay it anytime from the lesson.",
         12
       ),
       cloze(
@@ -1226,7 +1226,7 @@ export const UNIT3_LESSONS: Record<string, Lesson> = {
           },
         ],
         ["que-tal", "cuantos-anos", "diecinueve", "veinte", "tener", "celular", "mi-numero", "cinco", "gracias"],
-        "Age + phone story.",
+        "You followed the whole story. Replay it anytime from the lesson.",
         12
       ),
       cloze(

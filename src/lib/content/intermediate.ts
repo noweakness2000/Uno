@@ -1893,7 +1893,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
           },
         ],
         ["despertarse", "levantarse", "ducharse", "desayunar", "oficina", "departamento"],
-        "Follow the morning story — replay with mixed Neural2 voices.",
+        "You followed the whole story. Replay it anytime from the lesson.",
         12
       ),
       dictation(
@@ -2116,7 +2116,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
           },
         ],
         ["fin-de-semana", "levantarse", "limpiar", "lavar", "descansar", "departamento", "caminar"],
-        "Weekend story — voices rotate across Neural2 A/B/C.",
+        "You followed the whole story. Replay it anytime from the lesson.",
         12
       ),
       dictation(

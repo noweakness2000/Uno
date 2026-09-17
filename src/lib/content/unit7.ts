@@ -1506,7 +1506,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
           },
         ],
         ["ayer", "ir", "el-centro", "comer", "tacos", "jugo", "hablar-preterite", "anoche", "estudiar-preterite", "hoy", "trabajar-preterite", "oficina"],
-        "Past-day story — voices rotate across Neural2 A/B/C.",
+        "You followed the whole story. Replay it anytime from the lesson.",
         12
       ),
       dictation(
@@ -1754,7 +1754,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
           },
         ],
         ["esta-manana", "desayunar-preterite", "cafe", "departamento", "ir", "limpiar-preterite", "cocina", "venir-preterite", "anoche", "hacer"],
-        "Busy-day story — Neural2 voice rotation.",
+        "You followed the whole story. Replay it anytime from the lesson.",
         12
       ),
       dictation(
