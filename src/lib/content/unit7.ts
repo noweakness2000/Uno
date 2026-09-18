@@ -375,6 +375,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         prompt: "“I ate” (yo, past tense) is…",
         options: ["Comí", "Como", "Comer", "Comía always"],
         correctIndex: 0,
+        hint: "Regular -er past-tense yo ending is -í — not the present, the infinitive, or the imperfect.",
         explanation: "Past tense yo of comer → comí.",
         wordCardIds: ["comer"],
         xp: 3,
@@ -386,6 +387,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         prompt: "“I spoke / I talked” (yo) is…",
         options: ["Hablo", "Hablaba only", "Hablé", "Hacer"],
         correctIndex: 2,
+        hint: "Regular -ar past-tense yo ending is -é — not the present, the imperfect, or an unrelated verb.",
         explanation: "Regular -ar past tense: hablé.",
         wordCardIds: ["hablar-preterite"],
         xp: 3,
@@ -423,7 +425,9 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         ["I ate tacos today.", "I like tacos today.", "I want tacos today.", "Turn right today."],
         0,
         "Comí tacos hoy = I ate tacos today.",
-        ["comer", "hoy", "tacos"]
+        ["comer", "hoy", "tacos"],
+        3,
+        "Comí is the past-tense 'I ate' — not gustar or querer."
       ),
       {
         id: "u7l1-6",
@@ -437,6 +441,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
           "¿Me gusta ayer?",
         ],
         correctIndex: 2,
+        hint: "You need comiste (tú past) + ayer — the others swap in the wrong verb or tense.",
         explanation: "¿Qué comiste ayer?",
         wordCardIds: ["comer", "ayer"],
         xp: 3,
@@ -473,7 +478,9 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         ["What do you like yesterday?", "What did you eat yesterday?", "Where is yesterday?", "I want juice yesterday."],
         1,
         "¿Qué comiste ayer?",
-        ["comer", "ayer"]
+        ["comer", "ayer"],
+        3,
+        "Comiste is 'you ate'; ayer means 'yesterday'."
       ),
       {
         id: "u7l1-10",
@@ -524,6 +531,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         prompt: "“I went” (yo) is…",
         options: ["Voy", "Ir", "Fui", "Comí"],
         correctIndex: 2,
+        hint: "Ir's past yo form is irregular — not voy, the infinitive, or comí.",
         explanation: "Ir past tense yo → fui (same form as ser — context decides).",
         wordCardIds: ["ir"],
         xp: 3,
@@ -535,6 +543,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         prompt: "“I did / I made” (yo) is…",
         options: ["Hice", "Hago", "Hacer", "Hablé"],
         correctIndex: 0,
+        hint: "Hacer's past yo form is irregular, starting with hic- — not the present or the infinitive.",
         explanation: "Hacer past tense yo → hice.",
         wordCardIds: ["hacer"],
         xp: 3,
@@ -572,7 +581,9 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         ["I like the supermarket.", "I went to the supermarket yesterday.", "I want the check.", "Turn left yesterday."],
         1,
         "Fui al supermercado ayer.",
-        ["ir", "ayer"]
+        ["ir", "ayer"],
+        3,
+        "Fui is 'I went'; al supermercado ayer names where and when."
       ),
       {
         id: "u7l2-6",
@@ -586,6 +597,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
           "Todo recto reunión.",
         ],
         correctIndex: 2,
+        hint: "Tener's past yo form (tuve) plus hoy — not gustar or todo recto.",
         explanation: "Tuve una reunión hoy.",
         wordCardIds: ["tener-preterite", "hoy"],
         xp: 3,
@@ -622,7 +634,9 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         ["What do you like today?", "Where is today?", "What did you do today?", "I want coffee today."],
         2,
         "¿Qué hiciste hoy?",
-        ["hacer", "hoy"]
+        ["hacer", "hoy"],
+        3,
+        "Hiciste is 'you did'; hoy means 'today'."
       ),
       {
         id: "u7l2-10",
@@ -630,6 +644,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         prompt: "“He/she said” is…",
         options: ["dije", "digo", "dijo", "comí"],
         correctIndex: 2,
+        hint: "Decir's él/ella past form is irregular — not dije (yo) or digo (present).",
         explanation: "decir → él/ella/usted dijo.",
         wordCardIds: ["decir"],
         xp: 3,
@@ -663,6 +678,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         prompt: "Regular -ar yo past of trabajar is…",
         options: ["Trabajo", "Trabajaba always", "Trabajé", "Trabajar"],
         correctIndex: 2,
+        hint: "Regular -ar past-tense yo ending is -é, not the present or imperfect.",
         explanation: "-ar → yo -é: trabajé.",
         wordCardIds: ["trabajar-preterite"],
         xp: 3,
@@ -674,6 +690,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         prompt: "Regular -ir yo past of vivir is…",
         options: ["Vivo", "Viví", "Voy", "Fui only"],
         correctIndex: 1,
+        hint: "Regular -ir past-tense yo ending is -í, not the present or ir's irregular fui.",
         explanation: "-ir → yo -í: viví.",
         wordCardIds: ["vivir-preterite"],
         xp: 3,
@@ -710,7 +727,9 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         ["Last night I studied Spanish.", "I like Spanish tonight.", "I want Spanish juice.", "Turn left Spanish."],
         0,
         "Anoche estudié español.",
-        ["estudiar-preterite", "anoche"]
+        ["estudiar-preterite", "anoche"],
+        3,
+        "Anoche means 'last night'; estudié is the past-tense 'I studied'."
       ),
       {
         id: "u7l3-6",
@@ -750,6 +769,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
           "Sí, me gusta anoche solo.",
         ],
         correctIndex: 0,
+        hint: "You need the past-tense estudiar form plus anoche — not present tense or an unrelated verb.",
         explanation: "Sí, estudié anoche.",
         wordCardIds: ["estudiar-preterite", "anoche"],
         xp: 3,
@@ -760,7 +780,9 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         ["Did you work today?", "Do you like work today?", "Where is work?", "I want coffee work."],
         0,
         "¿Trabajaste hoy?",
-        ["trabajar-preterite", "hoy"]
+        ["trabajar-preterite", "hoy"],
+        3,
+        "Trabajaste is the tú past of trabajar; hoy means 'today'."
       ),
       {
         id: "u7l3-10",
@@ -768,6 +790,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         prompt: "tú past of hablar is…",
         options: ["hablé", "hablaste", "hablo", "hablaron"],
         correctIndex: 1,
+        hint: "Informal tú past of -ar verbs ends in -aste — not -é (yo) or -aron (they).",
         explanation: "Informal -aste for -ar: hablaste.",
         wordCardIds: ["hablar-preterite"],
         xp: 3,
@@ -810,6 +833,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         prompt: "“I came” (yo) is…",
         options: ["Voy", "Vengo", "Vine", "Fui always only"],
         correctIndex: 2,
+        hint: "Venir's past yo form is irregular — not voy, vengo, or fui.",
         explanation: "venir past tense yo → vine.",
         wordCardIds: ["venir-preterite"],
         xp: 3,
@@ -820,6 +844,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         prompt: "fui vs vine — “I went to the office” uses…",
         options: ["Vine a la oficina.", "Fui a la oficina.", "Como la oficina.", "Dije la oficina."],
         correctIndex: 1,
+        hint: "Going there uses fui (from ir); vine is for coming here.",
         explanation: "Going there → fui. Coming here → vine.",
         wordCardIds: ["ir", "venir-preterite"],
         xp: 3,
@@ -855,7 +880,9 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         ["I came to the office early.", "I went to juice early.", "I like the office.", "Turn right office."],
         0,
         "Vine a la oficina temprano.",
-        ["venir-preterite", "oficina"]
+        ["venir-preterite", "oficina"],
+        3,
+        "Vine is 'I came'; temprano means 'early'."
       ),
       {
         id: "u7l4-6",
@@ -896,6 +923,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
           "Me gusta verdad metro.",
         ],
         correctIndex: 0,
+        hint: "Decir's past yo form (dije) plus la verdad — not comer or ir.",
         explanation: "Dije la verdad — or report what you said.",
         wordCardIds: ["decir"],
         xp: 3,
@@ -906,7 +934,9 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         ["Did you come yesterday?", "Did you go juice?", "Where is yesterday?", "I want tacos."],
         0,
         "¿Viniste ayer?",
-        ["venir-preterite", "ayer"]
+        ["venir-preterite", "ayer"],
+        3,
+        "Viniste is the tú past of venir; ayer means 'yesterday'."
       ),
       {
         id: "u7l4-10",
@@ -914,6 +944,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         prompt: "él/ella of hacer in the past is…",
         options: ["hice", "hizo", "hago", "hacemos"],
         correctIndex: 1,
+        hint: "Hacer's él/ella past form is irregular — not hice (yo) or hago (present).",
         explanation: "hacer → él/ella/usted hizo.",
         wordCardIds: ["hacer"],
         xp: 3,
@@ -936,6 +967,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         prompt: "“Last night” is…",
         options: ["hoy", "anoche", "mañana", "carro"],
         correctIndex: 1,
+        hint: "Not hoy, mañana, or a car — it's the word for 'last night'.",
         explanation: "anoche = last night.",
         wordCardIds: ["anoche"],
         xp: 3,
@@ -946,6 +978,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         prompt: "“This morning” is…",
         options: ["esta mañana", "anoche", "el carro mañana", "el metro"],
         correctIndex: 0,
+        hint: "Not anoche or unrelated nouns — it's 'this morning'.",
         explanation: "esta mañana.",
         wordCardIds: ["esta-manana"],
         xp: 3,
@@ -981,7 +1014,9 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         ["Last night I did the homework.", "I like homework juice.", "Where is homework?", "Turn left task."],
         0,
         "Anoche hice la tarea.",
-        ["anoche", "hacer"]
+        ["anoche", "hacer"],
+        3,
+        "Anoche is 'last night'; hice is the past-tense 'I did'."
       ),
       {
         id: "u7l5-6",
@@ -1021,6 +1056,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
           "¿Me gusta anoche?",
         ],
         correctIndex: 0,
+        hint: "You need hiciste (past) plus anoche — the others swap in the wrong verb or tense.",
         explanation: "¿Qué hiciste anoche?",
         wordCardIds: ["hacer", "anoche"],
         xp: 3,
@@ -1031,7 +1067,9 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         ["This morning I ate breakfast early.", "I want breakfast metro.", "Last night juice.", "Turn right morning."],
         0,
         "Esta mañana desayuné temprano.",
-        ["esta-manana", "desayunar-preterite"]
+        ["esta-manana", "desayunar-preterite"],
+        3,
+        "Esta mañana is 'this morning'; desayuné is the past-tense 'I had breakfast'."
       ),
       {
         id: "u7l5-10",
@@ -1044,6 +1082,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
           "Never use hoy",
         ],
         correctIndex: 1,
+        hint: "Only one option actually orders three distinct time words rather than collapsing or dismissing them.",
         explanation: "esta mañana · ayer · anoche — clear past timeline words.",
         wordCardIds: ["esta-manana", "anoche", "ayer"],
         xp: 3,
@@ -1087,6 +1126,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         prompt: "“I ate breakfast” (yo past) is…",
         options: ["Desayuno", "Desayuné", "Quiero desayuno only", "La cuenta"],
         correctIndex: 1,
+        hint: "The past-tense yo form of desayunar ends in -é, not the present or an unrelated phrase.",
         explanation: "desayuné.",
         wordCardIds: ["desayunar-preterite"],
         xp: 3,
@@ -1122,7 +1162,9 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         ["I had coffee for breakfast this morning.", "I want coffee metro.", "Where is coffee?", "Turn left café."],
         0,
         "Desayuné café esta mañana.",
-        ["desayunar-preterite", "cafe", "esta-manana"]
+        ["desayunar-preterite", "cafe", "esta-manana"],
+        3,
+        "Desayuné is 'I had breakfast'; esta mañana names when."
       ),
       {
         id: "u7l6-5",
@@ -1147,6 +1189,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
           "Soy el menú ayer.",
         ],
         correctIndex: 0,
+        hint: "You need comí (past) plus food and drink words — not ducharse or todo recto.",
         explanation: "Comí arroz y jugo.",
         wordCardIds: ["comer", "arroz", "jugo"],
         xp: 3,
@@ -1171,7 +1214,9 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         ["Did you clean the apartment?", "Do you like the apartment?", "Where is juice?", "I want the check."],
         0,
         "¿Limpiaste el departamento?",
-        ["limpiar-preterite", "departamento"]
+        ["limpiar-preterite", "departamento"],
+        3,
+        "Limpiaste is the tú past of limpiar; el departamento is what's asked about."
       ),
       {
         id: "u7l6-9",
@@ -1179,6 +1224,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         prompt: "Unit 5 reuse: everyday word for juice?",
         options: ["oficina", "jugo", "derecha", "anoche"],
         correctIndex: 1,
+        hint: "Not an office, a direction, or 'last night' — it's the drink word.",
         explanation: "jugo.",
         wordCardIds: ["jugo"],
         xp: 3,
@@ -1217,6 +1263,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
           "¿Me gusta hoy?",
         ],
         correctIndex: 0,
+        hint: "You need hiciste (past) plus hoy — the others garble the question with the wrong verb.",
         explanation: "¿Qué hiciste hoy?",
         wordCardIds: ["hacer", "hoy"],
         xp: 3,
@@ -1233,6 +1280,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
           "Ayer soy jugo.",
         ],
         correctIndex: 0,
+        hint: "Answering with what you did uses the past tense of trabajar, not querer or gustar.",
         explanation: "Ayer trabajé.",
         wordCardIds: ["trabajar-preterite", "ayer"],
         xp: 3,
@@ -1268,7 +1316,9 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         ["I went downtown and ate tacos.", "I like downtown juice.", "Where is the check?", "Turn left tacos."],
         0,
         "Fui al centro y comí tacos.",
-        ["ir", "el-centro", "comer", "tacos"]
+        ["ir", "el-centro", "comer", "tacos"],
+        3,
+        "Fui...y comí links two past-tense actions — going and eating."
       ),
       {
         id: "u7l7-6",
@@ -1293,6 +1343,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
           "Soy tarde jugo.",
         ],
         correctIndex: 0,
+        hint: "Admitting lateness uses vine (past of venir) plus tarde — not comer or ducharse.",
         explanation: "Vine tarde.",
         wordCardIds: ["venir-preterite"],
         xp: 3,
@@ -1317,7 +1368,9 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         ["What did you do last night?", "What do you like juice?", "Where is last night?", "I want coffee."],
         0,
         "¿Qué hiciste anoche?",
-        ["hacer", "anoche"]
+        ["hacer", "anoche"],
+        3,
+        "Hiciste is 'you did'; anoche means 'last night'."
       ),
       {
         id: "u7l7-10",
@@ -1330,6 +1383,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
           "Comí tu fin.",
         ],
         correctIndex: 0,
+        hint: "Only one option pairs hiciste with a real time phrase.",
         explanation: "¿Qué hiciste este fin de semana?",
         wordCardIds: ["hacer", "fin-de-semana"],
         xp: 3,
@@ -1350,6 +1404,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         prompt: "“I went” is…",
         options: ["Voy", "Fui", "Vine only forever", "Como"],
         correctIndex: 1,
+        hint: "Ir's irregular past yo form — not voy, vine, or como.",
         explanation: "fui.",
         wordCardIds: ["ir"],
         xp: 3,
@@ -1370,7 +1425,9 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         ["I had a meeting today.", "I like meetings juice.", "Where is the meeting?", "Turn right meeting."],
         0,
         "Tuve una reunión hoy.",
-        ["tener-preterite", "hoy"]
+        ["tener-preterite", "hoy"],
+        3,
+        "Tuve is the past-tense 'I had'; hoy means 'today'."
       ),
       {
         id: "u7l8-4",
@@ -1423,6 +1480,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
           "Ayer soy la cuenta.",
         ],
         correctIndex: 0,
+        hint: "A Unit 6 reuse — fui en metro, not ducharse or querer.",
         explanation: "Ayer fui en metro.",
         wordCardIds: ["ir", "metro", "ayer"],
         xp: 3,
@@ -1433,6 +1491,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         prompt: "Unit 5 reuse: after the meal you ask for…",
         options: ["la cuenta", "el baño forever only", "el metro tip", "todo recto jugo"],
         correctIndex: 0,
+        hint: "Not a bathroom, a metro tip, or a direction — it's the check.",
         explanation: "la cuenta.",
         wordCardIds: ["la-cuenta"],
         xp: 3,
@@ -1443,7 +1502,9 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         ["Last night I ate rice and juice.", "I want rice metro.", "Where is juice?", "Turn left rice."],
         0,
         "Anoche comí arroz y jugo.",
-        ["anoche", "comer", "arroz", "jugo"]
+        ["anoche", "comer", "arroz", "jugo"],
+        3,
+        "Anoche is 'last night'; comí is the past-tense 'I ate'."
       ),
       {
         id: "u7l8-10",
@@ -1513,7 +1574,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         ["Ayer fui al centro con Ana."],
         "Type the line you heard: Ayer fui al centro con Ana.",
         [],
-        { hint: "Replay if needed", voice: "f", xp: 4 }
+        { hint: "Ayer opens it, then fui al centro (I went downtown) + con Ana.", voice: "f", xp: 4 }
       ),
       dictation(
         "u7l9-story-dict-2",
@@ -1521,7 +1582,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         ["Comimos tacos y tomamos jugo."],
         "Type the line you heard: Comimos tacos y tomamos jugo.",
         [],
-        { hint: "Replay if needed", voice: "m", xp: 4 }
+        { hint: "Two nosotros past forms: comimos (we ate) and tomamos (we drank).", voice: "m", xp: 4 }
       ),
       {
         id: "u7l9-1",
@@ -1534,6 +1595,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
           "La cuenta Ana.",
         ],
         correctIndex: 0,
+        hint: "The story's first line opens with ayer and the past-tense fui, not an unrelated verb.",
         explanation: "Ayer fui al centro con Ana.",
         wordCardIds: ["ayer", "ir", "el-centro"],
         xp: 3,
@@ -1612,7 +1674,9 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         ["Did you come to the office yesterday?", "Do you like the office?", "Where is juice?", "I want the check."],
         0,
         "¿Viniste a la oficina ayer?",
-        ["venir-preterite", "oficina", "ayer"]
+        ["venir-preterite", "oficina", "ayer"],
+        3,
+        "Viniste is 'did you come'; a la oficina ayer names where and when."
       ),
       {
         id: "u7l10-4",
@@ -1637,6 +1701,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
           "Ayer la cuenta departamento.",
         ],
         correctIndex: 0,
+        hint: "You need the past-tense limpiar form plus ayer — not gustar or ser.",
         explanation: "Ayer limpié el departamento.",
         wordCardIds: ["limpiar-preterite", "departamento", "ayer"],
         xp: 3,
@@ -1647,6 +1712,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         prompt: "tú of decir in the past is…",
         options: ["dije", "dijiste", "digo", "dijeron"],
         correctIndex: 1,
+        hint: "Informal tú past of decir ends in -iste — not dije (yo) or dijeron (they).",
         explanation: "dijiste (informal you).",
         wordCardIds: ["decir"],
         xp: 3,
@@ -1671,7 +1737,9 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         ["Yesterday I worked until late.", "I like work juice.", "Where is late?", "Turn left work."],
         0,
         "Ayer trabajé hasta tarde.",
-        ["trabajar-preterite", "ayer"]
+        ["trabajar-preterite", "ayer"],
+        3,
+        "Ayer trabajé is the past tense; hasta tarde means 'until late'."
       ),
       {
         id: "u7l10-9",
@@ -1696,6 +1764,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
           "¿Me ducho el centro?",
         ],
         correctIndex: 0,
+        hint: "You need fuiste (tú past of ir) — the others swap in the wrong verb.",
         explanation: "¿Fuiste al centro?",
         wordCardIds: ["ir", "el-centro"],
         xp: 3,
@@ -1756,7 +1825,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         ["Esta mañana desayuné café en mi departamento."],
         "Type the line you heard: Esta mañana desayuné café en mi departamento.",
         [],
-        { hint: "Replay if needed", voice: "f", xp: 4 }
+        { hint: "Esta mañana opens it, then desayuné café (I had coffee for breakfast) + en mi departamento.", voice: "f", xp: 4 }
       ),
       dictation(
         "u7l11-story-dict-2",
@@ -1764,7 +1833,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         ["Luego fui al supermercado."],
         "Type the line you heard: Luego fui al supermercado.",
         [],
-        { hint: "Replay if needed", voice: "m", xp: 4 }
+        { hint: "Luego ('then'), then fui al supermercado (I went to the supermarket).", voice: "m", xp: 4 }
       ),
       {
         id: "u7l11-1",
@@ -1772,6 +1841,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         prompt: "From the story — friend arrival used…",
         options: ["vino", "voy", "como", "la cuenta"],
         correctIndex: 0,
+        hint: "Venir's él/ella past form is irregular — not voy, como, or la cuenta.",
         explanation: "vino (él/ella of venir past).",
         wordCardIds: ["venir-preterite"],
         xp: 3,
@@ -1826,6 +1896,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         prompt: "“I ate” is…",
         options: ["Como", "Comer", "Comí", "Comía only forever"],
         correctIndex: 2,
+        hint: "Regular -er past-tense yo ending is -í, not the present or the infinitive.",
         explanation: "comí.",
         wordCardIds: ["comer"],
         xp: 3,
@@ -1836,6 +1907,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         prompt: "“I came” is…",
         options: ["Vine", "Voy", "Fui always same meaning", "Como"],
         correctIndex: 0,
+        hint: "Venir's irregular past yo form — not voy, fui, or como.",
         explanation: "vine.",
         wordCardIds: ["venir-preterite"],
         xp: 3,
@@ -1871,7 +1943,9 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         ["I went downtown and talked with Ana.", "I like Ana juice.", "Where is Ana?", "Turn left Ana."],
         0,
         "Fui al centro y hablé con Ana.",
-        ["ir", "el-centro", "hablar-preterite"]
+        ["ir", "el-centro", "hablar-preterite"],
+        3,
+        "Fui...y hablé links two past-tense actions — going and talking."
       ),
       {
         id: "u7l12-6",
@@ -1910,6 +1984,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
           "Soy el metro café.",
         ],
         correctIndex: 0,
+        hint: "You need the past-tense desayunar form plus esta mañana — not ducharse or todo recto.",
         explanation: "Desayuné café esta mañana.",
         wordCardIds: ["desayunar-preterite", "cafe", "esta-manana"],
         xp: 3,
@@ -1925,6 +2000,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
           "Ayer me gusta lejos cocina.",
         ],
         correctIndex: 0,
+        hint: "A Unit 4 reuse — the past-tense limpiar form plus ayer, not querer or gustar.",
         explanation: "Ayer limpié la cocina.",
         wordCardIds: ["limpiar-preterite", "cocina", "ayer"],
         xp: 3,
@@ -1936,6 +2012,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         situation: "Someone asks ¿Viniste ayer? You did.",
         options: ["Sí, vine.", "Sí, como.", "Sí, la cuenta.", "Sí, todo recto."],
         correctIndex: 0,
+        hint: "Confirming with vine (past of venir) — not comer, la cuenta, or todo recto.",
         explanation: "Sí, vine.",
         wordCardIds: ["venir-preterite", "ayer"],
         xp: 3,
@@ -1946,7 +2023,9 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         ["What did you do last night?", "What do you like?", "Where is last night?", "I want tacos."],
         0,
         "¿Qué hiciste anoche?",
-        ["hacer", "anoche"]
+        ["hacer", "anoche"],
+        3,
+        "Hiciste is 'you did'; anoche means 'last night'."
       ),
     ],
   },
