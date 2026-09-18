@@ -568,6 +568,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         prompt: "“I'm going to cook tonight” starts with…",
         options: ["Voy a cocinar…", "Fui a cocinar ayer only", "Me gusta a…", "Dije a…"],
         correctIndex: 0,
+        hint: "Near future is voy a + infinitive — not the past fui, gustar, or decir.",
         explanation: "Voy a + infinitive = near future.",
         wordCardIds: ["ir-a", "cocinar", "esta-noche"],
         xp: 3,
@@ -600,7 +601,9 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         ["I'm going to cook tonight.", "I cooked tonight.", "I like cooking the check.", "Turn right tonight."],
         0,
         "Voy a cocinar esta noche.",
-        ["ir-a", "cocinar", "esta-noche"]
+        ["ir-a", "cocinar", "esta-noche"],
+        3,
+        "Voy a cocinar is future ('going to cook'), not past tense."
       ),
       {
         id: "u8l1-5",
@@ -614,6 +617,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
           "La cuenta llegar.",
         ],
         correctIndex: 0,
+        hint: "You need quiero + infinitive (llegar) — not comer, estar, or la cuenta.",
         explanation: "No quiero llegar tarde.",
         wordCardIds: ["quiero-inf"],
         xp: 3,
@@ -650,7 +654,9 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         ["Did you come yesterday?", "Are you going to come?", "Do you like juice?", "Where is the metro?"],
         1,
         "¿Vas a venir?",
-        ["ir-a"]
+        ["ir-a"],
+        3,
+        "¿Vas a…? is the near-future 'are you going to', not the past viniste."
       ),
       {
         id: "u8l1-9",
@@ -670,6 +676,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         prompt: "Near future “I'm going to work” is…",
         options: ["Voy a trabajar", "Fui a trabajar only past", "Como trabajar", "La cuenta trabajar"],
         correctIndex: 0,
+        hint: "Near future is voy a + infinitive — not the past fui, comer, or la cuenta.",
         explanation: "Voy a trabajar.",
         wordCardIds: ["ir-a", "trabajar"],
         xp: 3,
@@ -717,6 +724,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
           "Fui un café.",
         ],
         correctIndex: 0,
+        hint: "The polite invite uses te gustaría (would you like), not comiste, dónde está, or fui.",
         explanation: "¿Te gustaría tomar un café?",
         wordCardIds: ["te-gustaria", "cafe"],
         xp: 3,
@@ -728,6 +736,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         prompt: "“Sounds good to me” is…",
         options: ["Me parece bien.", "Me despierto bien.", "Comí bien ayer only", "Todo recto bien"],
         correctIndex: 0,
+        hint: "Soft agreement uses me parece, not despertarse, comer, or todo recto.",
         explanation: "Me parece bien — soft agreement.",
         wordCardIds: ["me-parece"],
         xp: 3,
@@ -745,6 +754,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
           "Comí tu invitación.",
         ],
         correctIndex: 0,
+        hint: "A polite decline opens with gracias, pero — not a harsh refusal or unrelated line.",
         explanation: "Gracias, pero ahora no puedo — polite and clear.",
         wordCardIds: ["otra-vez"],
         xp: 4,
@@ -765,7 +775,9 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         ["Did you drink coffee yesterday?", "Would you like to get a coffee?", "Where is the café?", "I want the check."],
         1,
         "¿Te gustaría tomar un café?",
-        ["te-gustaria", "cafe"]
+        ["te-gustaria", "cafe"],
+        3,
+        "Te gustaría is 'would you like' — a polite invite, not a past-tense question."
       ),
       {
         id: "u8l2-6",
@@ -814,7 +826,9 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         ["Maybe another day. Thanks!", "I went another day.", "Where is another day?", "I ate thanks yesterday."],
         0,
         "Soft refusal with gratitude.",
-        ["otra-vez", "otro-dia"]
+        ["otra-vez", "otro-dia"],
+        3,
+        "Tal vez otro día is 'maybe another day' — a soft decline, not a past-tense statement."
       ),
       {
         id: "u8l2-10",
@@ -828,6 +842,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
           "Todo recto café.",
         ],
         correctIndex: 0,
+        hint: "Agreeing uses me parece bien, not ir, comer, or todo recto.",
         explanation: "Me parece bien.",
         wordCardIds: ["me-parece", "cafe"],
         xp: 3,
@@ -849,6 +864,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         prompt: "“We're going to have dinner” is…",
         options: ["Vamos a cenar", "Voy a cenar only me", "Fui a cenar forever", "Como cenar"],
         correctIndex: 0,
+        hint: "'We're going to' uses vamos a + infinitive, not voy a (just me) or a past tense.",
         explanation: "Vamos a cenar.",
         wordCardIds: ["vamos-a"],
         xp: 3,
@@ -865,6 +881,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
           "La cuenta mañana.",
         ],
         correctIndex: 0,
+        hint: "Near future needs voy a + infinitive after mañana — not anoche or a past tense.",
         explanation: "Mañana voy a estudiar.",
         wordCardIds: ["manana", "ir-a", "estudiar"],
         xp: 3,
@@ -900,7 +917,9 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         ["Yesterday I studied.", "Tomorrow I'm going to study.", "I like study juice.", "Where is tomorrow?"],
         1,
         "Mañana voy a estudiar.",
-        ["manana", "ir-a", "estudiar"]
+        ["manana", "ir-a", "estudiar"],
+        3,
+        "Mañana means 'tomorrow'; voy a estudiar is the near-future plan."
       ),
       {
         id: "u8l3-6",
@@ -926,6 +945,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
           "¿Me ducho cocinar?",
         ],
         correctIndex: 0,
+        hint: "You need vas a + infinitive — not comiste, dónde está, or ducharse.",
         explanation: "¿Vas a cocinar esta noche?",
         wordCardIds: ["ir-a", "cocinar", "esta-noche"],
         xp: 3,
@@ -950,7 +970,9 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         ["Did you work yesterday?", "Do you like work?", "Are you going to work tomorrow?", "Where is the office?"],
         2,
         "¿Vas a trabajar mañana?",
-        ["ir-a", "trabajar", "manana"]
+        ["ir-a", "trabajar", "manana"],
+        3,
+        "¿Vas a trabajar? asks about the future; mañana confirms it's not the past."
       ),
       {
         id: "u8l3-10",
@@ -1006,6 +1028,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
           "La cuenta salir.",
         ],
         correctIndex: 0,
+        hint: "The softer form uses me gustaría, not comer, fui, or la cuenta.",
         explanation: "Me gustaría salir — softer than Quiero salir.",
         wordCardIds: ["me-gustaria", "salir"],
         xp: 3,
@@ -1016,6 +1039,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         prompt: "More direct “I want to study” is…",
         options: ["Quiero estudiar.", "Me gusta estudiar only preference forever", "Fui estudiar.", "Metro estudiar."],
         correctIndex: 0,
+        hint: "The more direct want-to form is quiero + infinitive, not gustar, fui, or metro.",
         explanation: "Quiero estudiar.",
         wordCardIds: ["quiero-inf", "estudiar"],
         xp: 3,
@@ -1051,7 +1075,9 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         ["I went out Friday.", "I would like to go out on Friday.", "I ate Friday.", "Where is Friday?"],
         1,
         "Me gustaría salir el viernes.",
-        ["me-gustaria", "salir", "el-viernes"]
+        ["me-gustaria", "salir", "el-viernes"],
+        3,
+        "Me gustaría is 'I would like' — a polite future wish, not a past-tense statement."
       ),
       {
         id: "u8l4-6",
@@ -1065,6 +1091,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
           "Soy el metro café.",
         ],
         correctIndex: 0,
+        hint: "Politeness with a new coworker uses me gustaría, not a demand or unrelated line.",
         explanation: "Me gustaría un café, por favor. (U5 reuse + polite tone)",
         wordCardIds: ["me-gustaria", "cafe"],
         xp: 3,
@@ -1101,7 +1128,9 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         ["I rested last weekend.", "I want to rest this weekend.", "Where is rest?", "I like the metro weekend."],
         1,
         "Quiero descansar este fin de semana.",
-        ["quiero-inf", "descansar", "fin-de-semana"]
+        ["quiero-inf", "descansar", "fin-de-semana"],
+        3,
+        "Quiero descansar is 'I want to rest' — future intent, not a past-tense statement."
       ),
       {
         id: "u8l4-10",
@@ -1137,6 +1166,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
           "Fui salir.",
         ],
         correctIndex: 0,
+        hint: "Casual invites use quieres + infinitive, not comiste, dónde está, or fui.",
         explanation: "¿Quieres salir esta noche?",
         wordCardIds: ["quieres-inf", "salir", "esta-noche"],
         xp: 3,
@@ -1153,6 +1183,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
           "La cuenta cine.",
         ],
         correctIndex: 0,
+        hint: "Suggesting an activity uses qué tal si + vamos, not comiste or dónde está.",
         explanation: "¿Qué tal si vamos al cine?",
         wordCardIds: ["que-tal-si", "el-cine", "vamos-a"],
         xp: 3,
@@ -1191,7 +1222,9 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         ["Did you go downtown?", "Do you want to go downtown?", "Where is downtown forever?", "I want the check."],
         1,
         "¿Quieres ir al centro?",
-        ["quieres-inf", "el-centro"]
+        ["quieres-inf", "el-centro"],
+        3,
+        "¿Quieres ir…? asks about wanting to go — not a past-tense question."
       ),
       {
         id: "u8l5-6",
@@ -1205,6 +1238,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
           "Todo recto cena.",
         ],
         correctIndex: 0,
+        hint: "A gentle suggestion uses qué tal si, not a demand or unrelated line.",
         explanation: "¿Qué tal si cenamos a las ocho?",
         wordCardIds: ["que-tal-si", "a-las"],
         xp: 3,
@@ -1241,7 +1275,9 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         ["How about we go to the movies?", "I went to the movies.", "Where is the tip?", "I ate the map."],
         0,
         "¿Qué tal si vamos al cine?",
-        ["que-tal-si", "el-cine", "vamos-a"]
+        ["que-tal-si", "el-cine", "vamos-a"],
+        3,
+        "Qué tal si vamos is 'how about we go' — a suggestion, not a past-tense statement."
       ),
       {
         id: "u8l5-10",
@@ -1277,6 +1313,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
           "La cuenta otro día.",
         ],
         correctIndex: 0,
+        hint: "A soft decline names another day, not a harsh refusal or unrelated line.",
         explanation: "Otro día, gracias.",
         wordCardIds: ["otro-dia"],
         xp: 3,
@@ -1293,6 +1330,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
           "Comí tu plan.",
         ],
         correctIndex: 0,
+        hint: "A polite decline opens with gracias, pero — not a harsh no or unrelated line.",
         explanation: "Gracias, pero esta noche no puedo.",
         wordCardIds: ["otra-vez", "esta-noche"],
         xp: 4,
@@ -1330,7 +1368,9 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         ["Thanks, but I can't right now.", "I ate thanks.", "Where is now?", "I want the check now."],
         0,
         "Gracias, pero ahora no puedo.",
-        ["otra-vez"]
+        ["otra-vez"],
+        3,
+        "Gracias, pero ahora no puedo is a soft decline, not a past-tense statement."
       ),
       {
         id: "u8l6-6",
@@ -1343,6 +1383,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
           "La cuenta sábado.",
         ],
         correctIndex: 0,
+        hint: "Suggesting a new day uses qué tal, not comiste or ser.",
         explanation: "¿Qué tal el sábado?",
         wordCardIds: ["el-sabado", "que-tal-si"],
         xp: 3,
@@ -1379,7 +1420,9 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         ["Can we do another day?", "I went another day.", "Where is another day?", "Eat another day."],
         0,
         "¿Podemos otro día?",
-        ["otro-dia"]
+        ["otro-dia"],
+        3,
+        "Podemos otro día asks about rescheduling, not a past-tense statement."
       ),
       {
         id: "u8l6-10",
@@ -1393,6 +1436,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
           "Soy la cuenta.",
         ],
         correctIndex: 0,
+        hint: "Agreeing to Saturday uses me parece bien, not comer or todo recto.",
         explanation: "El sábado me parece bien.",
         wordCardIds: ["el-sabado", "me-parece"],
         xp: 3,
@@ -1423,6 +1467,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
           "La cuenta sábado.",
         ],
         correctIndex: 0,
+        hint: "The day comes first, then voy al cine — not a past tense or unrelated line.",
         explanation: "El sábado voy al cine.",
         wordCardIds: ["el-sabado", "el-cine"],
         xp: 3,
@@ -1460,7 +1505,9 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         ["I arrived at six.", "I'm going to arrive at six.", "Where is six?", "I like juice at six."],
         1,
         "Voy a llegar a las seis.",
-        ["ir-a", "a-las"]
+        ["ir-a", "a-las"],
+        3,
+        "Voy a llegar is future ('going to arrive'), not past tense."
       ),
       {
         id: "u8l7-5",
@@ -1486,6 +1533,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
           "Este fin de semana todo recto.",
         ],
         correctIndex: 0,
+        hint: "Wanting to rest uses quiero descansar, not comer or todo recto.",
         explanation: "Este fin de semana quiero descansar.",
         wordCardIds: ["fin-de-semana", "quiero-inf", "descansar"],
         xp: 3,
@@ -1510,7 +1558,9 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         ["On Saturday I'm going to the movies.", "I went Saturday.", "Where is the cinema tip?", "I want the check Saturday."],
         0,
         "El sábado voy al cine.",
-        ["el-sabado", "el-cine"]
+        ["el-sabado", "el-cine"],
+        3,
+        "El sábado voy al cine — future plan, not past tense."
       ),
       {
         id: "u8l7-9",
@@ -1530,6 +1580,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         prompt: "Unit 4 reuse: “in the morning” is…",
         options: ["por la mañana", "por el carro", "por los platos", "a las mañana wrong"],
         correctIndex: 0,
+        hint: "A Unit 4 reuse — por la mañana, not unrelated nouns or a garbled phrase.",
         explanation: "por la mañana (U4).",
         wordCardIds: ["por-la-manana"],
         xp: 3,
@@ -1555,6 +1606,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
           "La cuenta metro.",
         ],
         correctIndex: 0,
+        hint: "Near future is voy a + infinitive, not the past fui or comer.",
         explanation: "Voy a tomar el metro.",
         wordCardIds: ["ir-a", "metro"],
         xp: 3,
@@ -1590,7 +1642,9 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         ["It seems like a good idea to me.", "I ate a good idea.", "Where is the idea?", "Turn left idea."],
         0,
         "Me parece una buena idea.",
-        ["me-parece"]
+        ["me-parece"],
+        3,
+        "Me parece is 'it seems to me' — not comer or a location question."
       ),
       {
         id: "u8l8-5",
@@ -1604,6 +1658,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
           "La cuenta centro.",
         ],
         correctIndex: 0,
+        hint: "The invite uses quieres + ir — not comiste or an unrelated line.",
         explanation: "¿Quieres ir al centro a tomar un café?",
         wordCardIds: ["quieres-inf", "el-centro", "cafe"],
         xp: 3,
@@ -1640,7 +1695,9 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         ["I'm going to clean the apartment tomorrow.", "I cleaned yesterday.", "Where is the apartment?", "I want juice."],
         0,
         "Voy a limpiar el departamento mañana.",
-        ["ir-a", "limpiar", "departamento", "manana"]
+        ["ir-a", "limpiar", "departamento", "manana"],
+        3,
+        "Voy a limpiar is future ('going to clean'); mañana confirms it's not the past."
       ),
       {
         id: "u8l8-9",
@@ -1665,6 +1722,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
           "Ayer la cuenta.",
         ],
         correctIndex: 0,
+        hint: "Ayer signals the past, so you need fui (Unit 7), not the future voy a ir.",
         explanation: "Ayer fui al centro — past, not plan.",
         wordCardIds: ["el-centro"],
         xp: 3,
@@ -1725,7 +1783,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         ["Ana me dice: ¿Te gustaría salir el viernes?", "Ana me dice: Te gustaría salir el viernes"],
         "Type the line you heard: Ana me dice: ¿Te gustaría salir el viernes?",
         [],
-        { hint: "Replay if needed", voice: "f", xp: 4 }
+        { hint: "Ana me dice ('Ana tells me'), then the polite invite te gustaría salir el viernes.", voice: "f", xp: 4 }
       ),
       dictation(
         "u8l9-story-dict-2",
@@ -1733,7 +1791,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         ["Me parece bien. ¿Qué tal si vamos al cine?", "Me parece bien. Qué tal si vamos al cine"],
         "Type the line you heard: Me parece bien. ¿Qué tal si vamos al cine?",
         [],
-        { hint: "Replay if needed", voice: "m", xp: 4 }
+        { hint: "Me parece bien (soft agreement), then the suggestion qué tal si vamos al cine.", voice: "m", xp: 4 }
       ),
       {
         id: "u8l9-1",
@@ -1741,6 +1799,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         prompt: "From the story — soft agreement was…",
         options: ["Me parece bien.", "Comí bien.", "Todo recto bien.", "La cuenta bien."],
         correctIndex: 0,
+        hint: "Soft agreement from the story uses me parece, not comer or todo recto.",
         explanation: "Me parece bien.",
         wordCardIds: ["me-parece"],
         xp: 3,
@@ -1822,7 +1881,9 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         ["Do you want to cook together tonight?", "Did you cook yesterday?", "Where is tonight?", "I want the check."],
         0,
         "¿Quieres cocinar juntos esta noche?",
-        ["quieres-inf", "cocinar", "esta-noche"]
+        ["quieres-inf", "cocinar", "esta-noche"],
+        3,
+        "¿Quieres cocinar…? asks about wanting to — not a past-tense question."
       ),
       {
         id: "u8l10-4",
@@ -1848,6 +1909,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
           "Todo recto trabajar.",
         ],
         correctIndex: 0,
+        hint: "A polite decline with a reason uses gracias, pero + voy a — not a bare no.",
         explanation: "Gracias, pero voy a trabajar.",
         wordCardIds: ["otra-vez", "ir-a", "trabajar"],
         xp: 3,
@@ -1863,6 +1925,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
           "La cuenta centro.",
         ],
         correctIndex: 0,
+        hint: "Suggesting together uses vamos (we), not comimos (past) or ser.",
         explanation: "¿Vamos al centro?",
         wordCardIds: ["vamos-a", "el-centro"],
         xp: 3,
@@ -1887,7 +1950,9 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         ["Tomorrow I'm going to clean the kitchen.", "I cleaned yesterday.", "Where is the kitchen?", "I want tacos."],
         0,
         "Mañana voy a limpiar la cocina.",
-        ["manana", "ir-a", "limpiar", "cocina"]
+        ["manana", "ir-a", "limpiar", "cocina"],
+        3,
+        "Mañana voy a limpiar is future — not the past."
       ),
       {
         id: "u8l10-9",
@@ -1913,6 +1978,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
           "¿La cuenta café?",
         ],
         correctIndex: 0,
+        hint: "A casual invite uses quieres, not comiste or ser.",
         explanation: "¿Quieres un café?",
         wordCardIds: ["quieres-inf", "cafe"],
         xp: 3,
@@ -1973,7 +2039,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         ["Luis pregunta: ¿Quieres salir esta noche?", "Luis pregunta: Quieres salir esta noche"],
         "Type the line you heard: Luis pregunta: ¿Quieres salir esta noche?",
         [],
-        { hint: "Replay if needed", voice: "f", xp: 4 }
+        { hint: "Luis pregunta ('Luis asks'), then the casual invite quieres salir esta noche.", voice: "f", xp: 4 }
       ),
       dictation(
         "u8l11-story-dict-2",
@@ -1981,7 +2047,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         ["Gracias, pero ahora no puedo."],
         "Type the line you heard: Gracias, pero ahora no puedo.",
         [],
-        { hint: "Replay if needed", voice: "m", xp: 4 }
+        { hint: "The story's soft decline: gracias, pero, then ahora ('right now') plus the negated can-do verb.", voice: "m", xp: 4 }
       ),
       {
         id: "u8l11-1",
@@ -1989,6 +2055,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         prompt: "From the story — soft no used…",
         options: ["ahora no puedo", "nunca jamás", "comí tu plan", "todo recto"],
         correctIndex: 0,
+        hint: "The story's soft no uses ahora no puedo, not a harsh refusal or unrelated phrase.",
         explanation: "ahora no puedo.",
         wordCardIds: ["otra-vez"],
         xp: 3,
@@ -2045,6 +2112,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         prompt: "Near future “I'm going to…” starts with…",
         options: ["Voy a", "Fui a always past", "Como a", "La cuenta a"],
         correctIndex: 0,
+        hint: "Near future starts with voy a, not the past fui or comer.",
         explanation: "Voy a + infinitive.",
         wordCardIds: ["ir-a"],
         xp: 3,
@@ -2055,6 +2123,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         prompt: "Polite invite “Would you like…?” is…",
         options: ["¿Te gustaría…?", "¿Comiste…?", "¿Dónde está… ayer?", "Fui…"],
         correctIndex: 0,
+        hint: "The polite invite starts with te gustaría, not comiste or dónde está.",
         explanation: "¿Te gustaría…?",
         wordCardIds: ["te-gustaria"],
         xp: 3,
@@ -2090,7 +2159,9 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         ["Thanks, but I can't right now.", "I went thanks.", "Where is now?", "I want tacos."],
         0,
         "Gracias, pero ahora no puedo.",
-        ["otra-vez"]
+        ["otra-vez"],
+        3,
+        "Gracias, pero ahora no puedo is a soft decline, not a past-tense statement."
       ),
       {
         id: "u8l12-6",
@@ -2130,6 +2201,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
           "Soy el metro.",
         ],
         correctIndex: 0,
+        hint: "Answering a future plan uses voy a + infinitive, not comer or todo recto.",
         explanation: "Voy a estudiar.",
         wordCardIds: ["ir-a", "estudiar", "manana"],
         xp: 3,
@@ -2145,6 +2217,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
           "La cuenta salir.",
         ],
         correctIndex: 0,
+        hint: "The softer form uses me gustaría, not fui, comer, or la cuenta.",
         explanation: "Me gustaría salir.",
         wordCardIds: ["me-gustaria", "salir"],
         xp: 3,
@@ -2156,6 +2229,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         situation: "Someone says ¿Qué tal si cenamos a las ocho? You agree.",
         options: ["Me parece bien.", "Nunca.", "Comí ocho.", "Todo recto ocho."],
         correctIndex: 0,
+        hint: "Agreeing uses me parece bien, not nunca or unrelated numbers.",
         explanation: "Me parece bien.",
         wordCardIds: ["me-parece", "que-tal-si", "a-las"],
         xp: 3,
@@ -2166,7 +2240,9 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
         ["Would you like to go to the movies on Saturday?", "Did you go Saturday?", "Where is Saturday?", "I want the check."],
         0,
         "¿Te gustaría ir al cine el sábado?",
-        ["te-gustaria", "el-cine", "el-sabado"]
+        ["te-gustaria", "el-cine", "el-sabado"],
+        3,
+        "Te gustaría ir is a polite invite — not a past-tense question."
       ),
     ],
   },
