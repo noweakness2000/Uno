@@ -155,6 +155,19 @@ function personsOverlap(a: string, b: string): boolean {
  * answer is accepted or isn't any known form, so the caller can fall back to
  * the typo near-miss.
  */
+/**
+ * Display label for a near-miss's person: the LATAM_PRESENT/LATAM_PRETERITE
+ * tables only ever label that slot "ustedes" (never "ellos"), so an
+ * unqualified "ustedes" can misdescribe a verb form whose exercise actually
+ * treats it as "ellos/ustedes". Prefer the exercise's own authored pronoun
+ * when it's the same slot as the raw table label, and otherwise soften a
+ * bare "ustedes" table label to "ellos/ustedes" so it never surfaces alone.
+ */
+export function describeConjugatePerson(rawPerson: string, targetPronoun: string): string {
+  if (personsOverlap(rawPerson, targetPronoun)) return targetPronoun;
+  return rawPerson === "ustedes" ? "ellos/ustedes" : rawPerson;
+}
+
 export function isConjugateNearMiss(
   user: string,
   expected: { tense: string; pronoun: string; acceptedAnswers: string[] },

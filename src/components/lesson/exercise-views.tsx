@@ -24,6 +24,7 @@ import {
 import {
   answersMatch,
   chipSequencesMatch,
+  describeConjugatePerson,
   isChipNearMiss,
   isConjugateNearMiss,
   isNearMiss,
@@ -1040,8 +1041,8 @@ export function ConjugateView({
     ? conjugateMiss.kind === "tense"
       ? `That's the ${conjugateMiss.tense.toLowerCase()} form — try the ${exercise.tense.toLowerCase()}.`
       : conjugateMiss.kind === "person"
-        ? `That's the ${conjugateMiss.person} form — try ${exercise.pronoun}.`
-        : `That's ${conjugateMiss.person} in the ${conjugateMiss.tense.toLowerCase()} — try ${exercise.pronoun} in the ${exercise.tense.toLowerCase()}.`
+        ? `That's the ${describeConjugatePerson(conjugateMiss.person, exercise.pronoun)} form — try ${exercise.pronoun}.`
+        : `That's ${describeConjugatePerson(conjugateMiss.person, exercise.pronoun)} in the ${conjugateMiss.tense.toLowerCase()} — try ${exercise.pronoun} in the ${exercise.tense.toLowerCase()}.`
     : "Check the ending, then try again.";
 
   return (
