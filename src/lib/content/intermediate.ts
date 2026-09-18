@@ -1060,6 +1060,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         prompt: "“I wake up” (yo) is…",
         options: ["Me despierto", "Despierto me", "Soy despierto", "Tengo despierto"],
         correctIndex: 0,
+        hint: "Reflexives put the pronoun before the verb — the other options put it after, or swap in ser/tener.",
         explanation: "Reflexive: Me despierto.",
         wordCardIds: ["despertarse"],
         xp: 3,
@@ -1097,7 +1098,9 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         ["I wake up at seven.", "I work at seven.", "I have a car.", "I live in an apartment."],
         0,
         "Me despierto a las siete = I wake up at seven.",
-        ["despertarse"]
+        ["despertarse"],
+        3,
+        "Despierto is the wake-up verb; a las siete just gives the time."
       ),
       {
         id: "u4l1-5",
@@ -1111,6 +1114,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
           "¿Cómo te llamas oficina?",
         ],
         correctIndex: 0,
+        hint: "Only one option pairs a real question word with trabajar in a sentence that makes sense.",
         explanation: "¿En qué trabajas? is the everyday job question.",
         wordCardIds: ["trabajar"],
         xp: 3,
@@ -1147,7 +1151,9 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         ["I work every day.", "I wake up every day.", "I want juice every day.", "I went yesterday."],
         0,
         "Trabajo todos los días = I work every day.",
-        ["trabajar", "todos-los-dias"]
+        ["trabajar", "todos-los-dias"],
+        3,
+        "Trabajo is the verb; todos los días names how often, not despertarse or querer."
       ),
     
       conjugate(
@@ -1186,6 +1192,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         prompt: "Word for apartment?",
         options: ["Departamento", "Casa grande only", "Jugo", "Metro"],
         correctIndex: 0,
+        hint: "It's a near-cognate of the English word for a housing unit — not a drink or a train.",
         explanation: "Departamento is the everyday word for apartment here.",
         wordCardIds: ["departamento"],
         xp: 3,
@@ -1197,6 +1204,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         prompt: "Word for car?",
         options: ["Carro", "Autobús", "Cuenta", "Derecha"],
         correctIndex: 0,
+        hint: "Not the bus, the bill, or 'right' — it's the everyday LatAm word for a personal vehicle.",
         explanation: "Carro is the everyday word for car here.",
         wordCardIds: ["carro"],
         xp: 3,
@@ -1232,7 +1240,9 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         ["I go to work by car.", "I walk to work.", "I live in an apartment.", "I want orange juice."],
         0,
         "Voy al trabajo en carro = I go to work by car.",
-        ["carro"]
+        ["carro"],
+        3,
+        "Voy al trabajo is 'I go to work'; en carro names how."
       ),
       {
         id: "u4l2-6",
@@ -1241,6 +1251,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         situation: "A coworker asks how you get to the office; you drive.",
         options: ["Voy en carro.", "Me gusta la cuenta.", "Comí ayer.", "Gira a la izquierda."],
         correctIndex: 0,
+        hint: "You need voy (I go) plus the vehicle word — not gustar, a past tense, or a turn direction.",
         explanation: "Voy en carro.",
         wordCardIds: ["carro"],
         xp: 3,
@@ -1277,7 +1288,9 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         ["Do you have a car?", "Do you like juice?", "Where is the bathroom?", "Would you like coffee?"],
         0,
         "¿Tienes carro? = Do you have a car?",
-        ["carro"]
+        ["carro"],
+        3,
+        "Tienes is 'you have'; carro is the thing being asked about."
       ),
     ],
   },
@@ -1295,6 +1308,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         prompt: "“I get up” (yo) is…",
         options: ["Me levanto", "Levanto me", "Soy levanto", "Tengo levantar"],
         correctIndex: 0,
+        hint: "Same reflexive pattern as despertarse: pronoun first, then the conjugated verb.",
         explanation: "Reflexive: Me levanto.",
         wordCardIds: ["levantarse"],
         xp: 3,
@@ -1334,7 +1348,9 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         ["I get up early in the morning.", "I work late at night.", "I wash the car.", "I study on the weekend."],
         0,
         "Me levanto temprano por la mañana.",
-        ["levantarse", "temprano", "por-la-manana"]
+        ["levantarse", "temprano", "por-la-manana"],
+        3,
+        "Me levanto is 'I get up'; temprano means 'early', not 'late'."
       ),
       {
         id: "u4l3-5",
@@ -1374,6 +1390,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
           "Gira a la derecha.",
         ],
         correctIndex: 0,
+        hint: "You need two reflexive actions back to back — getting up, then showering.",
         explanation: "Me levanto y me ducho fits a morning sequence.",
         wordCardIds: ["levantarse", "ducharse"],
         xp: 3,
@@ -1399,6 +1416,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
           "Lavo una oficina.",
         ],
         correctIndex: 0,
+        hint: "Match the verb to 'work' (trabajar) and the place to 'office' (oficina) — the others swap in the wrong verb or place.",
         explanation: "Trabajo en una oficina.",
         wordCardIds: ["trabajar", "oficina"],
         xp: 3,
@@ -1439,7 +1457,9 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         ],
         0,
         "Estudio por la mañana y trabajo por la tarde.",
-        ["estudiar", "trabajar", "por-la-manana"]
+        ["estudiar", "trabajar", "por-la-manana"],
+        3,
+        "Two verbs, two times: estudio + mañana, then trabajo + tarde."
       ),
       {
         id: "u4l4-5",
@@ -1453,6 +1473,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
           "¿Dónde está el desayuno?",
         ],
         correctIndex: 0,
+        hint: "You need both verbs — study and work — joined by o (or), in the tú form.",
         explanation: "¿Estudias o trabajas?",
         wordCardIds: ["estudiar", "trabajar"],
         xp: 3,
@@ -1489,6 +1510,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         prompt: "Review: how do you say a friendly “hi”?",
         options: ["Hola", "Departamento", "Platos", "Fin de semana"],
         correctIndex: 0,
+        hint: "Three of these are nouns from this unit, not a greeting.",
         explanation: "Hola — keep Unit 1 greetings warm.",
         wordCardIds: ["hola"],
         xp: 2,
@@ -1530,6 +1552,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         prompt: "“I clean” (yo) is…",
         options: ["Limpio", "Limpia yo", "Soy limpio siempre", "Me limpio la mañana"],
         correctIndex: 0,
+        hint: "Regular -ar yo forms end in -o, with no pronoun and no reflexive needed here.",
         explanation: "Limpio is the yo form of limpiar.",
         wordCardIds: ["limpiar"],
         xp: 3,
@@ -1566,7 +1589,9 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         ["I wash clothes in my apartment.", "I study in the office.", "I drive to work early.", "I rest on the weekend."],
         0,
         "Lavo la ropa en mi departamento.",
-        ["lavar", "departamento"]
+        ["lavar", "departamento"],
+        3,
+        "Lavo is 'I wash'; departamento tells you where."
       ),
       {
         id: "u4l5-5",
@@ -1591,6 +1616,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
           "Mucho gusto los platos.",
         ],
         correctIndex: 0,
+        hint: "You need lavar (to wash) paired with los platos, not despertarse, ir, or a greeting.",
         explanation: "Yo lavo los platos.",
         wordCardIds: ["lavar"],
         xp: 3,
@@ -1615,6 +1641,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         prompt: "Review: “Thank you” is…",
         options: ["Gracias", "Desayuno", "Lavo", "Temprano"],
         correctIndex: 0,
+        hint: "The other three are this unit's new words, not a Unit 1 politeness word.",
         explanation: "Gracias — Unit 1 politeness still matters at home.",
         wordCardIds: ["gracias"],
         xp: 2,
@@ -1635,6 +1662,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         prompt: "“The weekend” in Spanish is…",
         options: ["El fin de semana", "La oficina", "Los platos", "El metro solamente"],
         correctIndex: 0,
+        hint: "It's the only option that's four words long, built from 'end' + 'of' + 'week'.",
         explanation: "El fin de semana.",
         wordCardIds: ["fin-de-semana"],
         xp: 3,
@@ -1670,7 +1698,9 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         ["On the weekend I clean the apartment.", "I wake up at the office.", "I order juice every morning.", "I speak English only."],
         0,
         "El fin de semana limpio el departamento.",
-        ["fin-de-semana", "limpiar", "departamento"]
+        ["fin-de-semana", "limpiar", "departamento"],
+        3,
+        "El fin de semana opens the sentence; limpio names the chore."
       ),
       {
         id: "u4l6-5",
@@ -1684,6 +1714,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
           "¿De dónde eres los platos?",
         ],
         correctIndex: 0,
+        hint: "You need qué haces ('what do you do') paired with the weekend phrase — not a cost or origin question.",
         explanation: "¿Qué haces el fin de semana?",
         wordCardIds: ["fin-de-semana"],
         xp: 3,
@@ -1719,6 +1750,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         prompt: "Review: “I live in…” starts with…",
         options: ["Vivo en", "Me ducho en siempre", "Lavo en solamente", "Temprano en"],
         correctIndex: 0,
+        hint: "Vivir is the verb for where you live — the others bolt siempre/solamente onto unrelated verbs.",
         explanation: "Vivo en — Unit 2 still sticks.",
         wordCardIds: ["vivo-en"],
         xp: 2,
@@ -1743,6 +1775,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
           "Tengo temprano.",
         ],
         correctIndex: 0,
+        hint: "You need the reflexive wake-up verb, not gustar, ser, or tener.",
         explanation: "Me despierto temprano.",
         wordCardIds: ["despertarse", "temprano"],
         xp: 3,
@@ -1777,7 +1810,9 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         ["Thanks. I live in an apartment.", "I shower in the office.", "I wash the weekend.", "I study the dishes."],
         0,
         "Gracias. Vivo en un departamento.",
-        ["gracias", "departamento", "vivo-en"]
+        ["gracias", "departamento", "vivo-en"],
+        3,
+        "Gracias opens it; vivo en names where you live."
       ),
       {
         id: "u4l7-5",
@@ -1812,6 +1847,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         situation: "Someone thanks you for helping clean.",
         options: ["De nada.", "Me despierto.", "El fin de semana.", "Soy carro."],
         correctIndex: 0,
+        hint: "This is the reply to gracias, not another chore or time phrase.",
         explanation: "De nada — polite reply to gracias.",
         wordCardIds: ["de-nada", "gracias"],
         xp: 3,
@@ -1822,6 +1858,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         prompt: "Numbers review: “five” is…",
         options: ["cinco", "oficina", "ducho", "semana"],
         correctIndex: 0,
+        hint: "The other three are nouns/verbs from this unit, not a number.",
         explanation: "cinco — Unit 3 still shows up in daily talk.",
         wordCardIds: ["cinco"],
         xp: 2,
@@ -1923,6 +1960,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
           "Tengo platos día.",
         ],
         correctIndex: 0,
+        hint: "Use gustar's me gusta pattern, not lavar, ser, or tener plus día.",
         explanation: "…pero me gusta mi día.",
         wordCardIds: ["me-gusta"],
         xp: 3,
@@ -2002,7 +2040,9 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         ["What time do you wake up?", "Where is the kitchen?", "Do you like juice?", "How much is the car?"],
         0,
         "¿A qué hora te despiertas?",
-        ["despertarse"]
+        ["despertarse"],
+        3,
+        "A qué hora asks 'what time'; te despiertas is the tú wake-up verb."
       ),
       {
         id: "u4l9-4",
@@ -2028,6 +2068,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
           "Necesito mucho gusto.",
         ],
         correctIndex: 0,
+        hint: "Necesito (I need) pairs with the rest verb here, not lavar, ser, or a greeting.",
         explanation: "Necesito descansar.",
         wordCardIds: ["descansar"],
         xp: 3,
@@ -2052,6 +2093,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         prompt: "Review: “Where are you from?” is…",
         options: ["¿De dónde eres?", "¿Qué lavas eres?", "¿Cómo cocina eres?", "¿Fin de semana eres?"],
         correctIndex: 0,
+        hint: "Only one option pairs a real question word with eres in a sentence that actually makes sense.",
         explanation: "¿De dónde eres? — Unit 2 classic.",
         wordCardIds: ["de-donde-eres"],
         xp: 2,
@@ -2306,6 +2348,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         prompt: "Word for apartment?",
         options: ["Departamento", "Casa only forever", "Jugo", "Cinco"],
         correctIndex: 0,
+        hint: "Not a drink or a number — it's the cognate for a housing unit.",
         explanation: "Departamento.",
         wordCardIds: ["departamento"],
         xp: 3,
@@ -2316,6 +2359,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         prompt: "“I get up early” is…",
         options: ["Me levanto temprano.", "Me gusta temprano.", "Lavo temprano siempre.", "Soy temprano."],
         correctIndex: 0,
+        hint: "You need the reflexive get-up verb (levantarse), not gustar, lavar, or ser.",
         explanation: "Me levanto temprano.",
         wordCardIds: ["levantarse", "temprano"],
         xp: 3,
@@ -2351,7 +2395,9 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         ["I clean the kitchen and wash the dishes.", "I wake up and drive only.", "I study the weekend.", "I order coffee at night."],
         0,
         "Limpio la cocina y lavo los platos.",
-        ["limpiar", "cocina", "lavar"]
+        ["limpiar", "cocina", "lavar"],
+        3,
+        "Two chores in a row: limpio la cocina, then lavo los platos."
       ),
       {
         id: "u4l12-6",
@@ -2386,6 +2432,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         situation: "You're done helping — they say gracias.",
         options: ["De nada.", "Me levanto.", "Cinco dólares cocina.", "Hablo carro."],
         correctIndex: 0,
+        hint: "Reply to gracias, not another chore or a price.",
         explanation: "De nada.",
         wordCardIds: ["de-nada"],
         xp: 3,
@@ -2396,6 +2443,7 @@ export const INTERMEDIATE_LESSONS: Record<string, Lesson> = {
         prompt: "“In the morning” is…",
         options: ["por la mañana", "por el carro", "por los platos", "por el fin"],
         correctIndex: 0,
+        hint: "Only one option is followed by a real time-of-day word.",
         explanation: "por la mañana.",
         wordCardIds: ["por-la-manana"],
         xp: 3,

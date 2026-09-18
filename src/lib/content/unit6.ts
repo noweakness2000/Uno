@@ -30,7 +30,8 @@ function listen(
   correctIndex: number,
   explanation: string,
   wordCardIds: string[],
-  xp = 3
+  xp = 3,
+  hint?: string
 ): import("../types").ListeningChooseExercise {
   const voice = voiceForIndex(listenVoiceIndex);
   listenVoiceIndex += 1;
@@ -44,6 +45,7 @@ function listen(
     correctIndex,
     explanation,
     wordCardIds,
+    hint,
     xp,
   };
 }
@@ -357,6 +359,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
           "¿Quiero el baño ayer?",
         ],
         correctIndex: 0,
+        hint: "Only one option pairs a real question word with a location — the others use comer, gustar, or querer.",
         explanation: "¿Dónde está el baño?",
         wordCardIds: ["donde-esta", "bano"],
         xp: 3,
@@ -370,6 +373,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
         prompt: "Opposite of cerca?",
         options: ["jugo", "lejos", "cuenta", "despierto"],
         correctIndex: 1,
+        hint: "Not a drink, a bill, or a wake-up word — it's the opposite of cerca.",
         explanation: "cerca = near; lejos = far.",
         wordCardIds: ["cerca", "lejos"],
         xp: 3,
@@ -390,7 +394,9 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
         ["The café is nearby.", "The café is far.", "I want coffee.", "Turn left."],
         0,
         "El café está cerca = The café is nearby.",
-        ["cerca"]
+        ["cerca"],
+        3,
+        "Cerca means 'near' — está cerca describes location, not a drink."
       ),
       {
         id: "u6l1-5",
@@ -399,6 +405,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
         situation: "Someone asks if the station is close; it isn't.",
         options: ["Está lejos.", "Me gusta lejos.", "Quiero lejos.", "Comí lejos."],
         correctIndex: 0,
+        hint: "Saying something is far uses está + lejos, not gustar, querer, or comer.",
         explanation: "Está lejos.",
         wordCardIds: ["lejos", "estacion"],
         xp: 3,
@@ -450,7 +457,9 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
         ["The station is far.", "The station is nearby.", "Turn right at the station.", "I like the station."],
         0,
         "La estación está lejos.",
-        ["estacion", "lejos"]
+        ["estacion", "lejos"],
+        3,
+        "Lejos means 'far' — the opposite of cerca."
       ),
     ],
   },
@@ -474,6 +483,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
           "¿Quiero lejos centro?",
         ],
         correctIndex: 1,
+        hint: "You need cómo llego (how do I get) plus al centro — the others swap in gustar or comer.",
         explanation: "¿Cómo llego al centro?",
         wordCardIds: ["como-llego", "el-centro"],
         xp: 3,
@@ -503,6 +513,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
           "La cuenta, por favor.",
         ],
         correctIndex: 2,
+        hint: "You need todo recto (straight) then a la derecha (right) — the others are unrelated café/food lines.",
         explanation: "Todo recto y luego a la derecha.",
         wordCardIds: ["todo-recto", "a-la-derecha"],
         xp: 4,
@@ -513,7 +524,9 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
         ["How do I get downtown?", "Where is the bathroom?", "I like downtown.", "I went downtown yesterday."],
         0,
         "¿Cómo llego al centro? = How do I get downtown?",
-        ["como-llego", "el-centro"]
+        ["como-llego", "el-centro"],
+        3,
+        "Cómo llego is 'how do I get'; al centro means 'downtown'."
       ),
       {
         id: "u6l2-5",
@@ -536,7 +549,9 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
         ["I'm going downtown by metro.", "I want juice downtown.", "Turn left downtown.", "I woke up downtown."],
         0,
         "Voy al centro en metro.",
-        ["el-centro", "metro"]
+        ["el-centro", "metro"],
+        3,
+        "Voy al centro is 'I'm going downtown'; en metro names the transport."
       ),
       {
         id: "u6l2-7",
@@ -588,6 +603,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
           "Comí a la derecha.",
         ],
         correctIndex: 2,
+        hint: "Derecha is 'right' — the others swap in izquierda, gustar, or comer.",
         explanation: "Gira a la derecha.",
         wordCardIds: ["gira", "a-la-derecha"],
         xp: 3,
@@ -616,6 +632,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
           "La cuenta dos cuadras.",
         ],
         correctIndex: 0,
+        hint: "You need sigue (keep going) + todo recto + dos cuadras — the others are unrelated food/chore lines.",
         explanation: "Sigue todo recto dos cuadras.",
         wordCardIds: ["todo-recto", "cuadra"],
         xp: 4,
@@ -626,7 +643,9 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
         ["Turn right.", "Turn left.", "Go straight.", "The café is far."],
         0,
         "Gira a la derecha = Turn right.",
-        ["gira", "a-la-derecha"]
+        ["gira", "a-la-derecha"],
+        3,
+        "Derecha is 'right' — not izquierda ('left') or recto ('straight')."
       ),
       {
         id: "u6l3-5",
@@ -665,7 +684,9 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
         ],
         0,
         "Sigue todo recto dos cuadras.",
-        ["todo-recto", "cuadra"]
+        ["todo-recto", "cuadra"],
+        3,
+        "Sigue todo recto is 'keep going straight'; dos cuadras is 'two blocks'."
       ),
       {
         id: "u6l3-8",
@@ -706,6 +727,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
           "Quiero banco ayer.",
         ],
         correctIndex: 0,
+        hint: "You need está cerca (is nearby), not lejos, gustar, or querer.",
         explanation: "El banco está cerca.",
         wordCardIds: ["banco", "cerca"],
         xp: 3,
@@ -731,7 +753,9 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
         ],
         0,
         "La farmacia está a una cuadra.",
-        ["farmacia", "cuadra"]
+        ["farmacia", "cuadra"],
+        3,
+        "A una cuadra means 'one block away' — not far, and not the hotel."
       ),
       {
         id: "u6l4-4",
@@ -745,6 +769,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
           "Comí la estación.",
         ],
         correctIndex: 0,
+        hint: "The station is far, so you need está + lejos, not gustar or querer.",
         explanation: "Está lejos.",
         wordCardIds: ["lejos", "estacion"],
         xp: 3,
@@ -801,7 +826,9 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
         ],
         0,
         "Mi hotel está cerca del centro.",
-        ["hotel", "cerca", "el-centro"]
+        ["hotel", "cerca", "el-centro"],
+        3,
+        "Cerca del centro is 'near downtown' — not far, and no turn is mentioned."
       ),
     ],
   },
@@ -827,6 +854,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
           "Quiero comí baño.",
         ],
         correctIndex: 1,
+        hint: "A polite ask to a stranger opens with disculpe, not oye or an unrelated verb.",
         explanation: "Disculpe, ¿dónde está el baño? — usted-friendly with strangers.",
         wordCardIds: ["disculpe", "donde-esta", "bano"],
         xp: 4,
@@ -842,6 +870,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
           "La cuenta farmacia.",
         ],
         correctIndex: 0,
+        hint: "You need dónde está — the others swap in ser, gustar, or cuenta.",
         explanation: "¿Dónde está…? works with friends too — tone + Disculpe mark formality.",
         wordCardIds: ["donde-esta", "farmacia"],
         xp: 3,
@@ -867,7 +896,9 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
         ],
         0,
         "Disculpe, ¿dónde está el baño?",
-        ["disculpe", "donde-esta", "bano"]
+        ["disculpe", "donde-esta", "bano"],
+        3,
+        "Disculpe opens it; dónde está el baño asks where the bathroom is."
       ),
       {
         id: "u6l5-5",
@@ -907,6 +938,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
           "Comí izquierda.",
         ],
         correctIndex: 0,
+        hint: "On the left is a la izquierda — the others swap in gustar, querer, or comer.",
         explanation: "Está a la izquierda.",
         wordCardIds: ["a-la-izquierda", "farmacia"],
         xp: 3,
@@ -922,7 +954,9 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
         ],
         0,
         "Disculpe, ¿dónde está la farmacia?",
-        ["disculpe", "farmacia"]
+        ["disculpe", "farmacia"],
+        3,
+        "Disculpe opens it; dónde está la farmacia asks where the pharmacy is."
       ),
       dlg("dlg-u6-metro"),
       dlg("dlg-u6-repeat"),
@@ -952,6 +986,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
           "Me gusta a pie cuenta.",
         ],
         correctIndex: 0,
+        hint: "A pie is 'on foot' — the others garble the word order or swap in ser/gustar.",
         explanation: "Voy al centro a pie.",
         wordCardIds: ["a-pie", "el-centro"],
         xp: 3,
@@ -978,6 +1013,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
           "Quiero lejos carro.",
         ],
         correctIndex: 0,
+        hint: "Driving uses voy en carro — a Unit 4 phrase reused here, not gustar or ducharse.",
         explanation: "Voy en carro. (Unit 4 reuse)",
         wordCardIds: ["carro"],
         xp: 3,
@@ -993,7 +1029,9 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
         ],
         0,
         "Voy al centro a pie.",
-        ["a-pie", "el-centro"]
+        ["a-pie", "el-centro"],
+        3,
+        "A pie means 'on foot' — not by metro."
       ),
       {
         id: "u6l6-5",
@@ -1047,7 +1085,9 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
         ],
         0,
         "Tomo el metro todos los días.",
-        ["metro"]
+        ["metro"],
+        3,
+        "Tomo el metro is 'I take the metro'; todos los días means 'every day'."
       ),
       teach("teach-u6l6-parada", "parada"),
       {
@@ -1061,6 +1101,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
           "¿Soy la parada lejos?",
         ],
         correctIndex: 0,
+        hint: "You need dónde está — the others swap in gustar, comer, or ser.",
         explanation: "¿Dónde está la parada?",
         wordCardIds: ["parada", "donde-esta"],
         xp: 3,
@@ -1088,6 +1129,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
           "Quiero comí mapa.",
         ],
         correctIndex: 0,
+        hint: "A polite ask opens with disculpe and uses tiene (usted), not oye or an unrelated verb.",
         explanation: "Disculpe, ¿tiene un mapa? — formal with strangers.",
         wordCardIds: ["disculpe", "mapa"],
         xp: 4,
@@ -1103,6 +1145,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
           "La cuenta del hotel recto.",
         ],
         correctIndex: 0,
+        hint: "You need está cerca del centro — the others swap in jugo, gustar, or la cuenta.",
         explanation: "El hotel está cerca del centro.",
         wordCardIds: ["hotel", "cerca", "el-centro"],
         xp: 3,
@@ -1128,7 +1171,9 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
         ],
         0,
         "Según el mapa, el hotel está cerca.",
-        ["mapa", "hotel", "cerca"]
+        ["mapa", "hotel", "cerca"],
+        3,
+        "Según el mapa is 'according to the map'; cerca means 'nearby'."
       ),
       {
         id: "u6l7-5",
@@ -1142,6 +1187,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
           "La cuenta dos cuadras.",
         ],
         correctIndex: 0,
+        hint: "You need todo recto + dos cuadras + a la izquierda in sequence — the others are unrelated café lines.",
         explanation: "Todo recto dos cuadras y luego a la izquierda.",
         wordCardIds: ["todo-recto", "cuadra", "a-la-izquierda"],
         xp: 4,
@@ -1183,7 +1229,9 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
         ],
         0,
         "Gira a la izquierda en la esquina.",
-        ["gira", "a-la-izquierda"]
+        ["gira", "a-la-izquierda"],
+        3,
+        "Izquierda is 'left'; en la esquina means 'at the corner'."
       ),
       {
         id: "u6l7-9",
@@ -1222,6 +1270,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
           "¿Soy el baño lejos?",
         ],
         correctIndex: 0,
+        hint: "You need dónde está — the others swap in gustar, comer, or ser.",
         explanation: "¿Dónde está el baño?",
         wordCardIds: ["donde-esta", "bano"],
         xp: 3,
@@ -1247,7 +1296,9 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
         ],
         0,
         "Está cerca del centro.",
-        ["cerca", "el-centro"]
+        ["cerca", "el-centro"],
+        3,
+        "Cerca del centro is 'near downtown' — not far."
       ),
       {
         id: "u6l8-4",
@@ -1261,6 +1312,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
           "Quiero lejos oficina siempre.",
         ],
         correctIndex: 0,
+        hint: "Walking to work uses caminar — a Unit 4 phrase reused here, not ducharse or la cuenta.",
         explanation: "Camino a la oficina.",
         wordCardIds: ["caminar", "oficina"],
         xp: 3,
@@ -1312,6 +1364,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
         prompt: "Unit 5 reuse: word for juice?",
         options: ["oficina", "jugo", "derecha", "cuadra"],
         correctIndex: 1,
+        hint: "Not an office, a direction, or a block — it's the drink word.",
         explanation: "jugo.",
         wordCardIds: ["jugo"],
         xp: 3,
@@ -1327,7 +1380,9 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
         ],
         0,
         "Disculpe, ¿cómo llego al centro?",
-        ["disculpe", "como-llego", "el-centro"]
+        ["disculpe", "como-llego", "el-centro"],
+        3,
+        "Disculpe opens it; cómo llego al centro asks how to get downtown."
       ),
     ],
   },
@@ -1385,7 +1440,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
         ["Disculpe, ¿dónde está la estación de metro?", "Disculpe, dónde está la estación de metro"],
         "Type the line you heard: Disculpe, ¿dónde está la estación de metro?",
         [],
-        { hint: "Replay if needed", voice: "f", xp: 4 }
+        { hint: "Disculpe, then dónde está + la estación de metro (the metro station).", voice: "f", xp: 4 }
       ),
       dictation(
         "u6l9-story-dict-2",
@@ -1393,7 +1448,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
         ["Está cerca. Sigue todo recto dos cuadras."],
         "Type the line you heard: Está cerca. Sigue todo recto dos cuadras.",
         [],
-        { hint: "Replay if needed", voice: "m", xp: 4 }
+        { hint: "Está cerca ('it's nearby'), then sigue todo recto dos cuadras ('keep going straight two blocks').", voice: "m", xp: 4 }
       ),
       {
         id: "u6l9-1",
@@ -1406,6 +1461,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
           "Lavo la estación.",
         ],
         correctIndex: 1,
+        hint: "The polite station ask opens with disculpe, not oye or an unrelated verb.",
         explanation: "Disculpe, ¿dónde está la estación de metro?",
         wordCardIds: ["disculpe", "estacion", "metro"],
         xp: 3,
@@ -1491,7 +1547,9 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
         ],
         0,
         "¿Me puede ayudar? ¿Cómo llego al hotel? — formal.",
-        ["como-llego", "hotel", "usted-server"]
+        ["como-llego", "hotel", "usted-server"],
+        3,
+        "Me puede ayudar is 'can you help me'; cómo llego al hotel asks how to get there."
       ),
       {
         id: "u6l10-4",
@@ -1517,6 +1575,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
           "Soy la parada lejos.",
         ],
         correctIndex: 0,
+        hint: "Pointing out something close uses está cerca, not gustar or comer.",
         explanation: "La parada está cerca.",
         wordCardIds: ["parada", "cerca"],
         xp: 3,
@@ -1532,6 +1591,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
           "Quiero lejos esquina.",
         ],
         correctIndex: 0,
+        hint: "Izquierda is 'left' — the others swap in cuenta or unrelated verbs.",
         explanation: "Gira a la izquierda en la esquina.",
         wordCardIds: ["gira", "a-la-izquierda"],
         xp: 3,
@@ -1561,7 +1621,9 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
         ],
         0,
         "No queda muy lejos caminando.",
-        ["lejos", "caminar"]
+        ["lejos", "caminar"],
+        3,
+        "No queda muy lejos is 'it's not very far'; caminando means 'walking'."
       ),
       {
         id: "u6l10-m1",
@@ -1651,7 +1713,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
         ["Disculpe, ¿tiene un mapa?", "Disculpe, tiene un mapa"],
         "Type the line you heard: Disculpe, ¿tiene un mapa?",
         [],
-        { hint: "Replay if needed", voice: "f", xp: 4 }
+        { hint: "Disculpe, then tiene (usted) + un mapa.", voice: "f", xp: 4 }
       ),
       dictation(
         "u6l11-story-dict-2",
@@ -1659,7 +1721,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
         ["Sí. Su hotel está cerca del centro."],
         "Type the line you heard: Sí. Su hotel está cerca del centro.",
         [],
-        { hint: "Replay if needed", voice: "m", xp: 4 }
+        { hint: "Sí, then su hotel está cerca del centro (near downtown).", voice: "m", xp: 4 }
       ),
       cloze(
         "u6l11-cloze-1",
@@ -1709,6 +1771,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
           "Quiero banco ayer.",
         ],
         correctIndex: 0,
+        hint: "On the right is a la derecha — the others swap in gustar, ducharse, or querer.",
         explanation: "El banco está a la derecha.",
         wordCardIds: ["banco", "a-la-derecha"],
         xp: 3,
@@ -1729,6 +1792,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
         prompt: "Opposite of cerca?",
         options: ["oficina", "lejos", "jugo", "platos"],
         correctIndex: 1,
+        hint: "Not an office, a drink, or dishes — it's the opposite of cerca.",
         explanation: "lejos.",
         wordCardIds: ["cerca", "lejos"],
         xp: 3,
@@ -1744,6 +1808,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
           "¿La cuenta centro?",
         ],
         correctIndex: 2,
+        hint: "You need cómo llego — the others swap in gustar, ser, or la cuenta.",
         explanation: "¿Cómo llego al centro?",
         wordCardIds: ["como-llego", "el-centro"],
         xp: 3,
@@ -1779,7 +1844,9 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
         ],
         2,
         "La farmacia está a la izquierda.",
-        ["farmacia", "a-la-izquierda"]
+        ["farmacia", "a-la-izquierda"],
+        3,
+        "A la izquierda means 'on the left' — not a kitchen or a wake-up time."
       ),
       {
         id: "u6l12-6",
@@ -1819,6 +1886,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
           "¿Soy algo temprano?",
         ],
         correctIndex: 2,
+        hint: "The polite ask opens with disculpe and dónde está, not ducharse or caminar.",
         explanation: "Disculpe, ¿dónde está la parada?",
         wordCardIds: ["disculpe", "parada"],
         xp: 3,
@@ -1834,6 +1902,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
           "Soy temprano arroz.",
         ],
         correctIndex: 2,
+        hint: "A Unit 4 reuse — voy al trabajo en carro, not gustar or querer.",
         explanation: "Voy al trabajo en carro.",
         wordCardIds: ["carro"],
         xp: 3,
@@ -1845,6 +1914,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
         situation: "Someone asks if your hotel is close; it is.",
         options: ["Está cerca.", "Me gusta cerca.", "Quiero cerca.", "Comí cerca."],
         correctIndex: 0,
+        hint: "Confirming something's close uses está cerca, not gustar, querer, or comer.",
         explanation: "Está cerca.",
         wordCardIds: ["cerca", "hotel"],
         xp: 3,

@@ -30,7 +30,8 @@ function listen(
   correctIndex: number,
   explanation: string,
   wordCardIds: string[],
-  xp = 3
+  xp = 3,
+  hint?: string
 ): import("../types").ListeningChooseExercise {
   const voice = voiceForIndex(listenVoiceIndex);
   listenVoiceIndex += 1;
@@ -44,6 +45,7 @@ function listen(
     correctIndex,
     explanation,
     wordCardIds,
+    hint,
     xp,
   };
 }

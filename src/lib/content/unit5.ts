@@ -30,7 +30,8 @@ function listen(
   correctIndex: number,
   explanation: string,
   wordCardIds: string[],
-  xp = 3
+  xp = 3,
+  hint?: string
 ): import("../types").ListeningChooseExercise {
   const voice = voiceForIndex(listenVoiceIndex);
   listenVoiceIndex += 1;
@@ -44,6 +45,7 @@ function listen(
     correctIndex,
     explanation,
     wordCardIds,
+    hint,
     xp,
   };
 }
@@ -434,6 +436,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         prompt: "“I like coffee” is…",
         options: ["Quiero gusta café.", "Soy café.", "Me gusta el café.", "Tengo gusto café."],
         correctIndex: 2,
+        hint: "Gustar flips subject and object — no quiero, soy, or tengo needed.",
         explanation: "Me gusta el café — gustar flips the subject.",
         wordCardIds: ["me-gusta", "cafe"],
         xp: 3,
@@ -451,6 +454,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
           "Quiero un jugo, por favor.",
         ],
         correctIndex: 3,
+        hint: "Ordering uses quiero, not gustar, ser, or a past tense.",
         explanation: "Orders use quiero. Me gusta states preference, not the order itself.",
         wordCardIds: ["quiero", "jugo"],
         xp: 4,
@@ -488,7 +492,9 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         ["I want coffee.", "The check, please.", "I ate coffee.", "I like coffee."],
         3,
         "Me gusta el café = I like coffee.",
-        ["me-gusta", "cafe"]
+        ["me-gusta", "cafe"],
+        3,
+        "Me gusta is 'I like'; café is the thing liked, not something ordered or eaten yesterday."
       ),
       {
         id: "u5l1-6",
@@ -501,6 +507,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
           "Me parece un café.",
         ],
         correctIndex: 1,
+        hint: "For an order, quiero beats gustar, a past tense of ir, or parecer.",
         explanation: "Quiero + item (+ por favor) for ordering.",
         wordCardIds: ["quiero", "cafe"],
         xp: 3,
@@ -537,7 +544,9 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         ["I like orange juice.", "I want an orange juice.", "Where is the juice?", "I went for juice yesterday."],
         1,
         "Quiero un jugo de naranja = I want an orange juice.",
-        ["quiero", "jugo"]
+        ["quiero", "jugo"],
+        3,
+        "Quiero is 'I want'; de naranja names the flavor."
       ),
       {
         id: "u5l1-10",
@@ -551,6 +560,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
           "Sí, la cuenta los tacos.",
         ],
         correctIndex: 2,
+        hint: "Plural liked things need gustan, not gusta or quiero.",
         explanation: "Me gustan los tacos — preference with plural.",
         wordCardIds: ["me-gusta", "tacos"],
         xp: 3,
@@ -571,6 +581,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         prompt: "With a waiter you don't know, the safer default is…",
         options: ["only slang nicknames", "skip the name", "no greeting", "usted"],
         correctIndex: 3,
+        hint: "It's the formal 'you' — three of these options aren't pronouns at all.",
         explanation: "Usted is the polite default with service staff in many places.",
         wordCardIds: ["usted-server"],
         xp: 3,
@@ -599,6 +610,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
           "Fui el menú.",
         ],
         correctIndex: 2,
+        hint: "Polite requests open with disculpe and use the usted form of poder.",
         explanation: "Disculpe + ¿me puede traer…? is polite formal service Spanish.",
         wordCardIds: ["usted-server", "menu"],
         xp: 4,
@@ -609,7 +621,9 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         ["Do you like the check?", "Where is the metro?", "I woke up early.", "Could you bring me the check, please?"],
         3,
         "¿Me trae la cuenta, por favor? — polite bill request.",
-        ["la-cuenta", "usted-server"]
+        ["la-cuenta", "usted-server"],
+        3,
+        "Me trae is 'could you bring me'; la cuenta is what's being brought."
       ),
       {
         id: "u5l2-5",
@@ -631,6 +645,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         prompt: "“Excuse me” to get a server's attention:",
         options: ["Adiós", "Todo recto", "Disculpe", "Ayer"],
         correctIndex: 2,
+        hint: "It's the polite word that also works to get someone's attention — not a farewell, a direction, or 'yesterday'.",
         explanation: "Disculpe is the polite attention-getter.",
         wordCardIds: ["usted-server", "disculpe"],
         xp: 3,
@@ -667,7 +682,9 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         ["I like the menu.", "Where is the apartment?", "Excuse me, could you bring me a menu?", "I went yesterday."],
         2,
         "Polite menu request (formal).",
-        ["usted-server", "menu"]
+        ["usted-server", "menu"],
+        3,
+        "Disculpe opens it; me puede traer is the polite 'could you bring me'."
       ),
       {
         id: "u5l2-10",
@@ -681,6 +698,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
           "¿Me trae la cuenta, por favor?",
         ],
         correctIndex: 3,
+        hint: "The polite bill request uses me trae, not gustar, quiero, or caminar.",
         explanation: "¿Me trae la cuenta, por favor?",
         wordCardIds: ["la-cuenta", "usted-server"],
         xp: 3,
@@ -703,6 +721,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         prompt: "“Food / meal” is…",
         options: ["cuenta", "comida", "oficina", "carro"],
         correctIndex: 1,
+        hint: "Not a bill, an office, or a car — it's the word for food or a meal.",
         explanation: "comida = food or a meal.",
         wordCardIds: ["comida"],
         xp: 3,
@@ -742,7 +761,9 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         ["The check is really good.", "The food is really good.", "I want juice.", "Turn left."],
         1,
         "La comida está muy buena.",
-        ["comida"]
+        ["comida"],
+        3,
+        "La comida is 'the food' — la cuenta ('the check') isn't mentioned here."
       ),
       {
         id: "u5l3-5",
@@ -756,6 +777,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
           "Camino tacos.",
         ],
         correctIndex: 2,
+        hint: "Deciding on an item uses quiero, not gustar, ser, or caminar.",
         explanation: "Quiero tacos, por favor.",
         wordCardIds: ["quiero", "tacos"],
         xp: 3,
@@ -793,7 +815,9 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         ["Do you like the day?", "Where is the office?", "Do you have a daily special menu?", "I woke up early."],
         2,
         "¿Tienen menú del día?",
-        ["menu"]
+        ["menu"],
+        3,
+        "Tienen is 'do you (all) have'; menú del día names what's being asked about."
       ),
       {
         id: "u5l3-9",
@@ -801,6 +825,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         prompt: "The list of dishes you ask for is the…",
         options: ["propina", "departamento", "derecha", "menú"],
         correctIndex: 3,
+        hint: "Not a tip, an apartment, or a direction — it's what lists the dishes.",
         explanation: "menú — the menu.",
         wordCardIds: ["menu"],
         xp: 3,
@@ -820,6 +845,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         prompt: "“I like chicken” is…",
         options: ["Me gustan el pollo.", "Quiero gusta pollo.", "Me gusta el pollo.", "Soy el pollo."],
         correctIndex: 2,
+        hint: "El pollo is singular, so gustar needs its singular form — with no quiero or ser mixed in.",
         explanation: "Singular liked thing → me gusta.",
         wordCardIds: ["me-gusta", "pollo"],
         xp: 3,
@@ -855,7 +881,9 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         ["I want tacos only as a bill.", "I walk tacos.", "I like tacos.", "The check likes tacos."],
         2,
         "Me gustan los tacos.",
-        ["me-gusta", "tacos"]
+        ["me-gusta", "tacos"],
+        3,
+        "Me gustan (plural) matches los tacos — not a bill or a walk."
       ),
       {
         id: "u5l4-5",
@@ -869,6 +897,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
           "Me gusta la comida mexicana.",
         ],
         correctIndex: 3,
+        hint: "Stating a food preference uses gustar, not quiero, ser, or despertarse.",
         explanation: "Me gusta la comida… for preference.",
         wordCardIds: ["me-gusta", "comida"],
         xp: 3,
@@ -910,6 +939,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
           "Quiero pan, por favor.",
         ],
         correctIndex: 3,
+        hint: "For an order, quiero beats gustar, ir, or descansar.",
         explanation: "Quiero for the order; me gusta for preference.",
         wordCardIds: ["quiero", "pan", "me-gusta"],
         xp: 3,
@@ -920,7 +950,9 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         ["I like only water.", "I want chicken with rice.", "Where is the metro?", "I get up early."],
         1,
         "Quiero pollo con arroz.",
-        ["quiero", "pollo", "arroz"]
+        ["quiero", "pollo", "arroz"],
+        3,
+        "Quiero is 'I want'; con arroz names the side."
       ),
       {
         id: "u5l4-m1",
@@ -973,6 +1005,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
           "Me gustaría un café, por favor.",
         ],
         correctIndex: 3,
+        hint: "The soft, polite order ends in -ía — not plain gustar, ser, or caminar.",
         explanation: "Me gustaría = I would like — polite order.",
         wordCardIds: ["me-gustaria", "cafe"],
         xp: 3,
@@ -1000,6 +1033,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
           "¿Soy el mesero pollo?",
         ],
         correctIndex: 2,
+        hint: "Asking for a recommendation uses recomienda (usted), not gustar or caminar.",
         explanation: "¿Me recomienda…? (formal).",
         wordCardIds: ["usted-server", "pollo"],
         xp: 4,
@@ -1010,7 +1044,9 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         ["I like coffee forever only.", "The check is coffee.", "I walked to coffee.", "I would like a coffee, please."],
         3,
         "Me gustaría un café, por favor.",
-        ["me-gustaria", "cafe"]
+        ["me-gustaria", "cafe"],
+        3,
+        "Me gustaría is the softer 'I would like' — listen for that -ía ending."
       ),
       {
         id: "u5l5-5",
@@ -1065,6 +1101,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
           "Me levanto tacos.",
         ],
         correctIndex: 1,
+        hint: "Casual peer ordering still uses quiero + por favor, not usted forms or unrelated verbs.",
         explanation: "With peers / stalls, quiero + por favor is natural.",
         wordCardIds: ["quiero", "tacos"],
         xp: 3,
@@ -1075,7 +1112,9 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         ["Do you like something yesterday?", "Where is rice?", "Could you recommend something, please?", "I shower please."],
         2,
         "¿Me recomienda algo, por favor?",
-        ["usted-server"]
+        ["usted-server"],
+        3,
+        "Me recomienda is the polite 'could you recommend'; algo means 'something'."
       ),
     ],
   },
@@ -1098,6 +1137,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
           "Me despierto agua.",
         ],
         correctIndex: 1,
+        hint: "Ordering water uses un plus por favor — the others swap in a bill, a train, or an unrelated verb.",
         explanation: "Un agua, por favor — el/un with singular agua.",
         wordCardIds: ["agua"],
         xp: 3,
@@ -1135,7 +1175,9 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         ["A check with milk.", "A coffee with milk, please.", "I like rice.", "Turn right."],
         1,
         "Un café con leche, por favor.",
-        ["cafe", "leche"]
+        ["cafe", "leche"],
+        3,
+        "Café con leche is 'coffee with milk' — not a check."
       ),
       {
         id: "u5l6-5",
@@ -1149,6 +1191,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
           "Lavo agua la oficina.",
         ],
         correctIndex: 2,
+        hint: "Ordering water at the counter uses quiero, not gustar, ser, or lavar.",
         explanation: "Quiero un agua, por favor.",
         wordCardIds: ["quiero", "agua"],
         xp: 3,
@@ -1186,7 +1229,9 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         ["Do you have a car?", "Where is the kitchen?", "Do you have fresh juice?", "I rest on weekends."],
         2,
         "¿Tienen jugo natural?",
-        ["jugo"]
+        ["jugo"],
+        3,
+        "Tienen jugo natural asks if they have (fresh) juice — not a car or a kitchen."
       ),
       {
         id: "u5l6-9",
@@ -1194,6 +1239,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         prompt: "“I like tea” is…",
         options: ["Me gustan el té.", "Quiero gusta té.", "La cuenta té.", "Me gusta el té."],
         correctIndex: 3,
+        hint: "El té is singular, so it pairs with gusta, not gustan or quiero.",
         explanation: "Me gusta el té.",
         wordCardIds: ["me-gusta", "te"],
         xp: 3,
@@ -1215,6 +1261,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         prompt: "“Restaurant” is…",
         options: ["departamento", "oficina", "restaurante", "derecha"],
         correctIndex: 2,
+        hint: "It's a near-cognate of the English word — not an apartment, an office, or a direction.",
         explanation: "restaurante.",
         wordCardIds: ["restaurante"],
         xp: 3,
@@ -1245,6 +1292,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
           "Soy para oficina.",
         ],
         correctIndex: 1,
+        hint: "Takeaway is para llevar — the others mix in unrelated nouns or verbs.",
         explanation: "Para llevar, por favor.",
         wordCardIds: ["para-llevar"],
         xp: 4,
@@ -1255,7 +1303,9 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         ["Shall we leave the metro?", "Do you like juice?", "Shall we leave a tip?", "Where is downtown?"],
         2,
         "¿Dejamos propina?",
-        ["propina"]
+        ["propina"],
+        3,
+        "Dejamos propina is 'shall we leave a tip' — propina is the tip, not the metro."
       ),
       {
         id: "u5l7-5",
@@ -1309,6 +1359,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
           "¿Quieres cena en el restaurante?",
         ],
         correctIndex: 3,
+        hint: "You need quieres + cena (dinner) + restaurante, not unrelated nouns.",
         explanation: "¿Quieres cena en el restaurante?",
         wordCardIds: ["cena", "restaurante", "quiero"],
         xp: 3,
@@ -1319,7 +1370,9 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         ["Tip or check only?", "To go or for here?", "Wake up or shower?", "Left or right?"],
         1,
         "¿Para llevar o para comer aquí?",
-        ["para-llevar"]
+        ["para-llevar"],
+        3,
+        "The classic to-go-or-here question — llevar vs. comer aquí."
       ),
       dlg("dlg-u5-problem"),
     ],
@@ -1363,7 +1416,9 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         ["I order juice only.", "The tip is included.", "I work in an office.", "Turn left."],
         2,
         "Unit 4 reuse: Trabajo en una oficina.",
-        ["trabajar", "oficina"]
+        ["trabajar", "oficina"],
+        3,
+        "Trabajo en una oficina — a Unit 4 phrase reused here."
       ),
       {
         id: "u5l8-4",
@@ -1389,6 +1444,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
           "Todo recto, por favor.",
         ],
         correctIndex: 1,
+        hint: "Asking for the check uses la cuenta, not an apartment, a chore, or a direction.",
         explanation: "La cuenta, por favor.",
         wordCardIds: ["la-cuenta"],
         xp: 3,
@@ -1413,6 +1469,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         prompt: "Review: “Thank you” is…",
         options: ["Propina", "Arroz", "Temprano", "Gracias"],
         correctIndex: 3,
+        hint: "The other three are food and time words, not a Unit 1 politeness word.",
         explanation: "Gracias — keep polite basics warm.",
         wordCardIds: ["gracias"],
         xp: 2,
@@ -1438,6 +1495,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         prompt: "Word for juice?",
         options: ["cuenta", "oficina", "jugo", "platos"],
         correctIndex: 2,
+        hint: "Not a bill, an office, or dishes — it's the drink word.",
         explanation: "jugo.",
         wordCardIds: ["jugo"],
         xp: 3,
@@ -1504,7 +1562,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         ["Entramos a un restaurante cerca del centro."],
         "Type the line you heard: Entramos a un restaurante cerca del centro.",
         [],
-        { hint: "Replay if needed", voice: "f", xp: 4 }
+        { hint: "Entramos (we went in) + a un restaurante + cerca del centro ('near downtown').", voice: "f", xp: 4 }
       ),
       dictation(
         "u5l9-story-dict-2",
@@ -1512,7 +1570,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         ["Disculpe, ¿me puede traer un menú?", "Disculpe, me puede traer un menú"],
         "Type the line you heard: Disculpe, ¿me puede traer un menú?",
         [],
-        { hint: "Replay if needed", voice: "m", xp: 4 }
+        { hint: "Opens with the polite disculpe, then me puede traer ('could you bring me') + un menú.", voice: "m", xp: 4 }
       ),
       {
         id: "u5l9-1",
@@ -1525,6 +1583,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
           "Lavo el menú.",
         ],
         correctIndex: 1,
+        hint: "The polite menu request opens with disculpe, not oye or an unrelated verb.",
         explanation: "Disculpe, ¿me puede traer un menú?",
         wordCardIds: ["usted-server", "menu"],
         xp: 3,
@@ -1604,7 +1663,9 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         ["Do you wash the chicken?", "Do you recommend the chicken?", "Where is the tip?", "I study chicken."],
         1,
         "¿Me recomienda el pollo?",
-        ["usted-server", "pollo"]
+        ["usted-server", "pollo"],
+        3,
+        "Me recomienda is 'do you recommend'; el pollo is what's being asked about."
       ),
       {
         id: "u5l10-4",
@@ -1630,6 +1691,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
           "Me gustaría un café, por favor.",
         ],
         correctIndex: 3,
+        hint: "The soft, polite order ends in -ía — not plain gustar, levantarse, or despertarse.",
         explanation: "Me gustaría un café, por favor.",
         wordCardIds: ["me-gustaria", "cafe"],
         xp: 3,
@@ -1654,6 +1716,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         prompt: "Review: “Where are you from?” is…",
         options: ["¿Qué pollo eres?", "¿Cómo cuenta eres?", "¿De dónde eres?", "¿Fin de semana eres?"],
         correctIndex: 2,
+        hint: "Only one option pairs a real question word with eres in a sentence that makes sense.",
         explanation: "¿De dónde eres? — earlier-unit classic.",
         wordCardIds: ["de-donde-eres"],
         xp: 2,
@@ -1679,6 +1742,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         situation: "Someone says gracias after you pass the menu.",
         options: ["Me ducho.", "De nada.", "Quiero metros.", "Soy temprano."],
         correctIndex: 1,
+        hint: "Reply to gracias, not a chore, an order, or a time word.",
         explanation: "De nada.",
         wordCardIds: ["de-nada"],
         xp: 3,
@@ -1774,7 +1838,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         ["Hola, ¿cómo estás? ¿Quieres un café?", "Hola, cómo estás Quieres un café"],
         "Type the line you heard: Hola, ¿cómo estás? ¿Quieres un café?",
         [],
-        { hint: "Replay if needed", voice: "f", xp: 4 }
+        { hint: "A greeting and how-are-you, then quieres ('do you want') + un café.", voice: "f", xp: 4 }
       ),
       dictation(
         "u5l11-story-dict-2",
@@ -1782,7 +1846,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         ["Sí, me gusta el café con leche."],
         "Type the line you heard: Sí, me gusta el café con leche.",
         [],
-        { hint: "Replay if needed", voice: "m", xp: 4 }
+        { hint: "Sí, then me gusta + el café con leche ('coffee with milk').", voice: "m", xp: 4 }
       ),
       {
         id: "u5l11-1",
@@ -1847,6 +1911,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         prompt: "Word for juice?",
         options: ["oficina", "jugo", "platos", "derecha"],
         correctIndex: 1,
+        hint: "Not an office, dishes, or a direction — it's the drink word.",
         explanation: "jugo.",
         wordCardIds: ["jugo"],
         xp: 3,
@@ -1857,6 +1922,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         prompt: "“I like coffee” is…",
         options: ["Quiero gusta café.", "Soy café siempre.", "Me gusta el café.", "La cuenta café."],
         correctIndex: 2,
+        hint: "Gustar flips subject and object — no quiero, ser, or cuenta needed.",
         explanation: "Me gusta el café.",
         wordCardIds: ["me-gusta", "cafe"],
         xp: 3,
@@ -1892,7 +1958,9 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         ["I clean the kitchen only.", "Wake up at seven.", "A coffee with milk, please.", "Turn left downtown."],
         2,
         "Un café con leche, por favor.",
-        ["cafe", "leche"]
+        ["cafe", "leche"],
+        3,
+        "Café con leche, por favor — not a kitchen, a wake-up time, or a direction."
       ),
       {
         id: "u5l12-6",
@@ -1932,6 +2000,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
           "¿Soy algo temprano?",
         ],
         correctIndex: 2,
+        hint: "Asking for a recommendation uses recomienda, not ducharse, caminar, or ser.",
         explanation: "¿Me recomienda algo, por favor?",
         wordCardIds: ["usted-server"],
         xp: 3,
@@ -1947,6 +2016,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
           "Me levanto temprano.",
         ],
         correctIndex: 3,
+        hint: "The reflexive get-up verb, not gustar, quiero, or ser.",
         explanation: "Me levanto temprano.",
         wordCardIds: ["levantarse", "temprano"],
         xp: 3,
@@ -1958,6 +2028,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         situation: "You're done helping — they say gracias.",
         options: ["Propina arroz.", "De nada.", "Me despierto menú.", "Todo recto jugo."],
         correctIndex: 1,
+        hint: "Reply to gracias, not a tip, a chore, or a direction.",
         explanation: "De nada.",
         wordCardIds: ["de-nada"],
         xp: 3,
