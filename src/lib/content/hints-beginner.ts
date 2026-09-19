@@ -112,7 +112,7 @@ export const EXERCISE_HINTS: Record<string, string> = {
   "u2l8-1": "Origin uses ser + de.",
   "u2l8-2": "Residence uses vivir + en.",
   "u2l8-4": "Hablar + un poco — which option has both ideas?",
-  "u2l8-7": "Hablo inglés, pero un poco de… — contrast with pero.",
+  "u2l8-7": "The honest line contrasts two languages with pero — and both halves use the speaking verb.",
   "u2l10-1": "Think of paisano — someone from the same ____.",
   "u2l10-3": "Origin = soy de, current home = vivo en.",
   "u2l10-4": "Soy de = origin.",

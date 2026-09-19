@@ -1755,7 +1755,7 @@ export const UNIT8_LESSONS: Record<string, Lesson> = {
             explanation: "¿Te gustaría salir el viernes?",
           },
           {
-            prompt: "What do they suggest next?",
+            prompt: "What does the narrator suggest next?",
             options: ["Go to the movies", "Only clean forever", "Ask for the check only", "Sleep at the station"],
             correctIndex: 0,
             explanation: "¿Qué tal si vamos al cine?",

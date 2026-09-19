@@ -842,7 +842,7 @@ export const UNIT3_LESSONS: Record<string, Lesson> = {
         id: "u3l7-p3",
         type: "translate",
         prompt: "Say in Spanish: “She is thirty years old.”",
-        acceptedAnswers: ["Ella tiene treinta anos.", "Tiene treinta anos.", "Ella tiene treinta", "Tiene treinta"],
+        acceptedAnswers: ["Ella tiene treinta años.", "Ella tiene treinta años", "Tiene treinta años.", "Tiene treinta años"],
         hint: "Age uses tener: the él/ella form + the number + the ‘years’ word. The subject pronoun is optional.",
         explanation: "Third person of tener is tiene.",
         wordCardIds: ["tener", "numeros"],
@@ -1016,7 +1016,7 @@ export const UNIT3_LESSONS: Record<string, Lesson> = {
             explanation: "Cuesta quince pesos.",
           },
           {
-            prompt: "How many do they want?",
+            prompt: "How many does the shopper want?",
             options: ["Four", "Zero", "One hundred", "None — they leave angry"],
             correctIndex: 0,
             explanation: "Quiero cuatro, por favor.",

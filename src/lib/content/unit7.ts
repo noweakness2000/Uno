@@ -317,7 +317,7 @@ export const UNIT7_WORD_CARDS: Record<string, WordCard> = {
     gender: "n/a",
     gloss: "to clean (past)",
     meaningSummary:
-      "Regular -ar past tense for chores: limpié, limpiaste, limpió… Limpie el departamento ayer.",
+      "Regular -ar past tense for chores: limpié, limpiaste, limpió… Limpié el departamento ayer.",
     conjugations: LATAM_PRETERITE([
       "limpié",
       "limpiaste",
@@ -1074,7 +1074,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
       {
         id: "u7l5-10",
         type: "select",
-        prompt: "Best order for a day story?",
+        prompt: "Which set gives three distinct past-time words for telling about your day?",
         options: [
           "anoche / ayer / esta mañana (all same)",
           "esta mañana · ayer · anoche",
@@ -1082,8 +1082,8 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
           "Never use hoy",
         ],
         correctIndex: 1,
-        hint: "Only one option actually orders three distinct time words rather than collapsing or dismissing them.",
-        explanation: "esta mañana · ayer · anoche — clear past timeline words.",
+        hint: "You need three different past time words — one for earlier today, one for the day before, one for last night. Rule out any option that treats them as the same or throws one away.",
+        explanation: "esta mañana · ayer · anoche — three different past-time words, each pointing to a different moment.",
         wordCardIds: ["esta-manana", "anoche", "ayer"],
         xp: 3,
       },
@@ -1540,13 +1540,13 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
         ],
         [
           {
-            prompt: "Where did they go yesterday?",
+            prompt: "Where did the narrator go yesterday?",
             options: ["Only the bathroom", "Downtown", "The pharmacy tip", "The check forever"],
             correctIndex: 1,
             explanation: "Ayer fui al centro con Ana.",
           },
           {
-            prompt: "What did they eat/drink?",
+            prompt: "What did the narrator and Ana eat and drink?",
             options: ["Tacos and juice", "Only metro tickets", "Soap", "Nothing said"],
             correctIndex: 0,
             explanation: "Comimos tacos y tomamos jugo.",
@@ -1797,7 +1797,7 @@ export const UNIT7_LESSONS: Record<string, Lesson> = {
             explanation: "Esta mañana desayuné café en mi departamento.",
           },
           {
-            prompt: "Where did they go next?",
+            prompt: "Where did the narrator go next?",
             options: ["The supermarket", "Only the tip jar", "Only the bank tip", "Nowhere"],
             correctIndex: 0,
             explanation: "Luego fui al supermercado.",

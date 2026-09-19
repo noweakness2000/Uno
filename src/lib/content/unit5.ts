@@ -1540,13 +1540,13 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
             explanation: "Me gustaría el pollo con arroz.",
           },
           {
-            prompt: "What drink do they want?",
+            prompt: "What drink does the speaker want?",
             options: ["Only tea", "Orange juice", "Milk alone", "Nothing to drink"],
             correctIndex: 1,
             explanation: "También quiero un jugo de naranja.",
           },
           {
-            prompt: "How do they end the meal?",
+            prompt: "How does the speaker end the meal?",
             options: ["Ask for the metro", "Go to sleep", "Wash clothes", "Ask for the check"],
             correctIndex: 3,
             explanation: "¿Me trae la cuenta, por favor?",
@@ -1562,7 +1562,7 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
         ["Entramos a un restaurante cerca del centro."],
         "Type the line you heard: Entramos a un restaurante cerca del centro.",
         [],
-        { hint: "Entramos (we went in) + a un restaurante + cerca del centro ('near downtown').", voice: "f", xp: 4 }
+        { hint: "Entramos (we go in / we enter â€” present, like the rest of the story) + a un restaurante + cerca del centro ('near downtown').", voice: "f", xp: 4 }
       ),
       dictation(
         "u5l9-story-dict-2",
@@ -1811,13 +1811,13 @@ export const UNIT5_LESSONS: Record<string, Lesson> = {
             explanation: "Yo quiero un té, por favor.",
           },
           {
-            prompt: "What else do they ask for?",
+            prompt: "What else do the two friends order?",
             options: ["An apartment", "The office", "Directions only", "Bread"],
             correctIndex: 3,
             explanation: "También pedimos pan.",
           },
           {
-            prompt: "How do they finish?",
+            prompt: "How do the two friends finish?",
             options: [
               "Wake up early",
               "Pay the check and leave a tip",

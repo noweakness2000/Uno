@@ -1406,7 +1406,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
         ],
         [
           {
-            prompt: "What are they looking for?",
+            prompt: "What is the speaker looking for?",
             options: ["Only a juice bar", "The metro station", "The check", "A kitchen"],
             correctIndex: 1,
             explanation: "la estación de metro.",
@@ -1424,7 +1424,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
             explanation: "Luego gira a la derecha.",
           },
           {
-            prompt: "How will they finish the trip downtown?",
+            prompt: "How will the speaker finish the trip downtown?",
             options: ["Only sleep", "Take the metro", "Wash clothes", "Ask for the tip"],
             correctIndex: 1,
             explanation: "Voy a tomar el metro al centro.",
@@ -1691,7 +1691,7 @@ export const UNIT6_LESSONS: Record<string, Lesson> = {
             explanation: "cerca del centro.",
           },
           {
-            prompt: "How can they go?",
+            prompt: "How can the traveler go?",
             options: ["Only by plane", "On foot — it's not far", "Only by washing clothes", "Never"],
             correctIndex: 1,
             explanation: "Puede ir a pie. No está lejos.",

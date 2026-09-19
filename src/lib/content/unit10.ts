@@ -740,7 +740,7 @@ export const UNIT10_LESSONS: Record<string, Lesson> = {
       listen("u10l2-4", "Trabajo desde casa tres días.", ["I work from home three days.", "I have a fever three days.", "I go to the pharmacy.", "I book a flight."], 0, "Trabajo desde casa tres días.", ["desde-casa", "trabajar"], 3, "Trabajo desde casa is 'I work from home' — not a fever, a pharmacy, or a flight."),
       { id: "u10l2-5", type: "situational-choose", prompt: "Pick the best line.", situation: "A coworker asks how you work this week; you are remote.", options: ["Trabajo desde casa.", "Tengo fiebre de proyecto.", "Me duele el correo.", "Voy a la farmacia a la reunión."], correctIndex: 0, hint: "Answering about remote work uses trabajo desde casa, not fiebre, doler, or farmacia.", explanation: "Trabajo desde casa.", wordCardIds: ["desde-casa"], xp: 3 },
       { id: "u10l2-6", type: "match-pairs", prompt: "Match career phrases.", pairs: [{ left: "la carrera", right: "the degree / major" }, { left: "la entrevista", right: "the interview" }, { left: "el correo", right: "the email" }, { left: "desde casa", right: "from home" }], explanation: "Career toolkit.", wordCardIds: ["carrera", "entrevista", "correo", "desde-casa"], xp: 4 },
-      { id: "u10l2-7", type: "translate", prompt: "Translate: ‘The interview went well.’", acceptedAnswers: ["La entrevista fue bien.", "La entrevista fue bien", "La entrevista salió bien."], hint: "La + a cognate of ‘interview’ (starts with entre-) + the past él/ella form of ir (‘went’, irregular) + the ‘well’ adverb.", explanation: "La entrevista fue bien.", wordCardIds: ["entrevista"], xp: 4 },
+      { id: "u10l2-7", type: "translate", prompt: "Translate: ‘The interview went well.’", acceptedAnswers: ["La entrevista salió bien.", "La entrevista salió bien", "La entrevista estuvo bien.", "La entrevista estuvo bien"], hint: "La + a cognate of ‘interview’ (starts with entre-) + the past él/ella form of salir (‘turned out’ — Spanish uses salir, not ir, for how something went) + the ‘well’ adverb.", explanation: "La entrevista salió bien. (Salir bien = to go / turn out well; estuvo bien also works.)", wordCardIds: ["entrevista"], xp: 4 },
       conjugate("u10l2-conj-1", "estudiar", "tú", "Present indicative", ["estudias", "Estudias"], "tú + estudiar → estudias.", ["estudiar"]),
     ],
   },
@@ -865,7 +865,7 @@ export const UNIT10_LESSONS: Record<string, Lesson> = {
         ],
         [
           { prompt: "Where will the narrator work tomorrow?", options: ["From home", "Only at the airport", "At the pharmacy forever", "Nowhere"], correctIndex: 0, explanation: "Mañana voy a trabajar desde casa." },
-          { prompt: "What will they have in the morning?", options: ["A meeting", "A flight only", "Nothing", "A new car"], correctIndex: 0, explanation: "Tendré una reunión por la mañana." },
+          { prompt: "What will the narrator have in the morning?", options: ["A meeting", "A flight only", "Nothing", "A new car"], correctIndex: 0, explanation: "Tendré una reunión por la mañana." },
           { prompt: "How does the narrator feel today?", options: ["Not well — head hurts", "Perfect forever", "Only hungry for juice", "Lost at the hotel"], correctIndex: 0, explanation: "Hoy no estoy bien — me duele la cabeza." },
           { prompt: "What does the colleague suggest?", options: ["Go to the pharmacy", "Cancel Spanish", "Eat the passport", "Skip rest forever"], correctIndex: 0, explanation: "Deberías ir a la farmacia." },
         ],
@@ -874,7 +874,7 @@ export const UNIT10_LESSONS: Record<string, Lesson> = {
       ),
       { id: "u10l9-1", type: "select", prompt: "From the story — soft advice was…", options: ["Deberías ir a la farmacia.", "Debes comer el proyecto.", "Íbamos al imperfecto.", "Fui la entrevista."], correctIndex: 0, hint: "The story's soft advice uses deberías, not debes with the wrong verb or unrelated lines.", explanation: "Deberías ir a la farmacia.", wordCardIds: ["deberia", "farmacia"], xp: 3 },
       { id: "u10l9-2", type: "match-pairs", prompt: "Match story details.", pairs: [{ left: "tomorrow", right: "work from home" }, { left: "morning", right: "a meeting" }, { left: "today", right: "head hurts" }, { left: "plan", right: "buy medicine and rest" }], explanation: "Story comprehension.", wordCardIds: ["desde-casa", "reunion", "me-duele", "medicina"], xp: 4 },
-      listen("u10l9-3", "De acuerdo. Compraré medicina y descansaré.", ["They agree to buy medicine and rest.", "They cancel the meeting forever.", "They fly tonight only.", "They disagree with rest."], 0, "The final plan.", ["de-acuerdo", "medicina", "descansar"], 3, "De acuerdo signals agreement; compraré y descansaré name the plan."),
+      listen("u10l9-3", "De acuerdo. Compraré medicina y descansaré.", ["I agree — I'll buy medicine and rest.", "I'm cancelling the meeting forever.", "I'm flying tonight only.", "I refuse to rest."], 0, "The final plan.", ["de-acuerdo", "medicina", "descansar"], 3, "De acuerdo signals agreement; compraré y descansaré name the plan."),
     ],
   },
   "u10-l10": {
