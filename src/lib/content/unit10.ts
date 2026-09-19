@@ -286,7 +286,7 @@ export const UNIT10_WORD_CARDS: Record<string, WordCard> = {
       "Job (or media) interview. Tengo una entrevista mañana / La entrevista es a las nueve.",
     examples: [
       { es: "Tengo una entrevista mañana.", en: "I have an interview tomorrow." },
-      { es: "La entrevista fue bien.", en: "The interview went well." },
+      { es: "La entrevista salió bien.", en: "The interview went well." },
     ],
     useWhen: "Job hunting and hiring conversations.",
     dontUseWhen: "n/a",
