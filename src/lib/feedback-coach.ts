@@ -1,3 +1,4 @@
+import { normalizeAnswer } from "@/lib/grading";
 import type { Exercise } from "@/lib/types";
 
 /** Expand thin wrong-answer copy into clearer 1–3 sentence coaching. */
@@ -6,7 +7,12 @@ export function enrichWrongExplanation(
   explanation: string,
   correctAnswer: string
 ): string {
-  const base = (explanation || "").trim();
+  let base = (explanation || "").trim();
+  const answerNorm = correctAnswer ? normalizeAnswer(correctAnswer) : "";
+  // Some explanations are just the answer itself ("Quiero un café, por
+  // favor.") — the panel already shows it under "Correct answer", so use the
+  // coaching fallback instead of repeating it.
+  if (answerNorm && normalizeAnswer(base) === answerNorm) base = "";
   const sentenceCount = base
     .split(/[.!?]+/)
     .map((s) => s.trim())
@@ -16,9 +22,11 @@ export function enrichWrongExplanation(
     return base;
   }
 
-  const answerBit = correctAnswer
-    ? ` The expected answer is “${correctAnswer}”.`
-    : "";
+  // Skip when the explanation already quotes the answer; never end on “….”.
+  const answerBit =
+    correctAnswer && !normalizeAnswer(base).includes(answerNorm)
+      ? ` The expected answer is “${correctAnswer.trim().replace(/[.]+$/, "")}”${/[!?]$/.test(correctAnswer.trim()) ? "" : "."}`
+      : "";
 
   switch (exercise.type) {
     case "dictation":

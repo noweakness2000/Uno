@@ -31,6 +31,10 @@ import {
   type ConjugateMiss,
 } from "@/lib/grading";
 import { hintFor } from "@/lib/hints";
+import {
+  isNearMissIgnoringSubjectPronouns,
+  typedAnswerMatches,
+} from "@/lib/subject-pronouns";
 import { verbFormsFor } from "@/lib/verb-forms";
 import { useLessonStore } from "@/store/lesson-store";
 import { useUserStore } from "@/store/user-store";
@@ -404,13 +408,13 @@ export function TranslateView({
   }, [exercise.id]);
 
   const check = () => {
-    const ok = exercise.acceptedAnswers.some((a) => answersMatch(a, value));
+    const ok = exercise.acceptedAnswers.some((a) => typedAnswerMatches(a, value));
     if (ok) {
       setNearMissUsed(false);
       onSubmit(true);
       return;
     }
-    if (!nearMissUsed && isNearMiss(value, exercise.acceptedAnswers)) {
+    if (!nearMissUsed && isNearMissIgnoringSubjectPronouns(value, exercise.acceptedAnswers)) {
       setNearMissUsed(true);
       return;
     }
@@ -1009,7 +1013,7 @@ export function ConjugateView({
   }, [exercise.id]);
 
   const check = () => {
-    const ok = exercise.acceptedAnswers.some((a) => answersMatch(a, value));
+    const ok = exercise.acceptedAnswers.some((a) => typedAnswerMatches(a, value));
     if (ok) {
       setNearMissUsed(false);
       onSubmit(true);
@@ -1022,7 +1026,7 @@ export function ConjugateView({
         setNearMissUsed(true);
         return;
       }
-      if (isNearMiss(value, exercise.acceptedAnswers)) {
+      if (isNearMissIgnoringSubjectPronouns(value, exercise.acceptedAnswers)) {
         setNearMissUsed(true);
         return;
       }
